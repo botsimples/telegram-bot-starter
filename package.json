@@ -1,0 +1,16 @@
+{
+  "name": "telegram-bot-starter",
+  "version": "1.0.0",
+  "description": "Bot Telegram simples com /start (copy + mídia + botões) para webhook",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "express": "^4.19.2"
+  }
+}
