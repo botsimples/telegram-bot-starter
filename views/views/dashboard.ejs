@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel BotSimples</title>
+  <style>
+    body {
+      background: #0f0f10;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 { color: #9b6dff; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+    }
+    th { background: #1b1b1d; }
+    tr:nth-child(even) { background: #151515; }
+  </style>
+</head>
+<body>
+  <h1>Dashboard — BotSimples</h1>
+
+  <h2>👥 Usuários</h2>
+  <table>
+    <tr><th>ID</th><th>Nome</th><th>Username</th><th>Data</th></tr>
+    <% users.forEach(u => { %>
+      <tr>
+        <td><%= u.telegramId %></td>
+        <td><%= u.firstName || '' %> <%= u.lastName || '' %></td>
+        <td>@<%= u.username || '' %></td>
+        <td><%= u.dateJoined.toLocaleDateString() %></td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <h2>💸 Pagamentos</h2>
+  <table>
+    <tr><th>ID Pagamento</th><th>ID Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr>
+    <% payments.forEach(p => { %>
+      <tr>
+        <td><%= p.paymentId %></td>
+        <td><%= p.telegramId %></td>
+        <td>R$ <%= p.amount.toFixed(2) %></td>
+        <td><%= p.status %></td>
+        <td><%= p.date.toLocaleDateString() %></td>
+      </tr>
+    <% }) %>
+  </table>
+</body>
+</html>
