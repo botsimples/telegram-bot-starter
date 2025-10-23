@@ -60,15 +60,16 @@ app.post("/telegram-webhook", async (req, res) => {
         const retorno = pagamento.data;
         console.log("Pagamento WiinPay:", retorno);
 
-        // aqui você adapta se a API devolver o campo copiaecola / qrcode / link
+        // tenta extrair o código Pix da resposta
         const codigoPix =
+          retorno?.data?.qr_code ||
           retorno?.payment?.pixCopiaECola ||
           retorno?.pix?.code ||
-          JSON.stringify(retorno, null, 2);
+          "Código Pix não encontrado.";
 
         await axios.post(`${API}/sendMessage`, {
           chat_id: chatId,
-          text: `💰 *Pagamento via PIX gerado!*\n\nCopie e cole o código abaixo:\n\n\`${codigoPix}\``,
+          text: `💰 *Pagamento via PIX gerado com sucesso!*\n\nCopie o código abaixo e cole no seu banco para pagar:\n\n\`${codigoPix}\`\n\n⚡ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
           parse_mode: "Markdown",
         });
       }
