@@ -1,27 +1,64 @@
 const express = require("express");
 const axios = require("axios");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
 app.use(express.json());
 
+// === VARIÁVEIS ===
 const TOKEN = process.env.TELEGRAM_TOKEN;
 const API = `https://api.telegram.org/bot${TOKEN}`;
-
-// === CONFIG WiinPay ===
 const WIINPAY_API_KEY = process.env.WIINPAY_API_KEY;
-const WEBHOOK_URL = "https://telegram-bot-starter.onrender.com/pix/webhook"; // pode deixar assim por enquanto
+const MONGO_URI = process.env.MONGO_URI;
 
-// rota padrão
+// === CONECTAR AO MONGO ===
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB conectado com sucesso!"))
+  .catch(err => console.error("Erro ao conectar ao MongoDB:", err));
+
+// === MODELOS ===
+const User = mongoose.model("User", new mongoose.Schema({
+  telegramId: Number,
+  username: String,
+  firstName: String,
+  lastName: String,
+  dateJoined: { type: Date, default: Date.now },
+}));
+
+const Payment = mongoose.model("Payment", new mongoose.Schema({
+  telegramId: Number,
+  paymentId: String,
+  amount: Number,
+  status: { type: String, default: "pending" },
+  date: { type: Date, default: Date.now },
+}));
+
+// === ROTA PADRÃO ===
 app.get("/", (req, res) => res.send("Bot online ✅"));
 
-// webhook do Telegram
+// === WEBHOOK TELEGRAM ===
 app.post("/telegram-webhook", async (req, res) => {
   try {
     const update = req.body;
 
-    // mensagem /start
+    // /start
     if (update.message && update.message.text === "/start") {
       const chatId = update.message.chat.id;
+      const user = update.message.from;
+
+      // salva usuário no banco (só se for novo)
+      await User.findOneAndUpdate(
+        { telegramId: user.id },
+        {
+          telegramId: user.id,
+          username: user.username,
+          firstName: user.first_name,
+          lastName: user.last_name,
+        },
+        { upsert: true, new: true }
+      );
+
       const caption = "🔥 *Bem-vindo!*\n\nEscolha uma opção abaixo 👇";
 
       const keyboard = {
@@ -40,32 +77,31 @@ app.post("/telegram-webhook", async (req, res) => {
       });
     }
 
-    // clique em botões
+    // CALLBACK BUTTON
     if (update.callback_query) {
       const cq = update.callback_query;
       const chatId = cq.message.chat.id;
       const data = cq.data;
 
       if (data === "comprar_plano") {
-        // === Cria pagamento na WiinPay ===
         const pagamento = await axios.post("https://api.wiinpay.com.br/payment/create", {
           api_key: WIINPAY_API_KEY,
           value: 9.90,
           name: "Cliente Telegram",
           email: "cliente@teste.com",
           description: "Plano VIP Telegram",
-          webhook_url: WEBHOOK_URL,
+          webhook_url: "https://telegram-bot-starter.onrender.com/pix/webhook",
         });
 
         const retorno = pagamento.data;
-        console.log("Pagamento WiinPay:", retorno);
+        const codigoPix = retorno?.pix?.code || JSON.stringify(retorno, null, 2);
 
-        // tenta extrair o código Pix da resposta
-        const codigoPix =
-          retorno?.data?.qr_code ||
-          retorno?.payment?.pixCopiaECola ||
-          retorno?.pix?.code ||
-          "Código Pix não encontrado.";
+        // salva pagamento
+        await Payment.create({
+          telegramId: chatId,
+          paymentId: retorno.data?.paymentId || "none",
+          amount: 9.9,
+        });
 
         await axios.post(`${API}/sendMessage`, {
           chat_id: chatId,
@@ -74,7 +110,6 @@ app.post("/telegram-webhook", async (req, res) => {
         });
       }
 
-      // responde callback
       await axios.post(`${API}/answerCallbackQuery`, {
         callback_query_id: cq.id,
       });
@@ -87,11 +122,24 @@ app.post("/telegram-webhook", async (req, res) => {
   }
 });
 
-// webhook Pix (opcional)
-app.post("/pix/webhook", (req, res) => {
-  console.log("Pagamento confirmado:", req.body);
-  res.sendStatus(200);
+// === WEBHOOK DE PAGAMENTO (confirmação automática) ===
+app.post("/pix/webhook", async (req, res) => {
+  try {
+    const body = req.body;
+    const paymentId = body?.data?.paymentId;
+
+    if (paymentId) {
+      await Payment.findOneAndUpdate({ paymentId }, { status: "paid" });
+      console.log("Pagamento confirmado:", paymentId);
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("Erro no webhook:", err.message);
+    res.sendStatus(200);
+  }
 });
 
+// === INICIAR SERVIDOR ===
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Servidor rodando na porta", PORT));
+app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
