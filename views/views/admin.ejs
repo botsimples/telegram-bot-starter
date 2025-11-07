@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel BotSimples — Admin</title>
+  <style>
+    body {
+      background: #0f0f10;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1, h2 { color: #9b6dff; }
+    form { margin-bottom: 30px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      background: #1b1b1d;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 5px;
+    }
+    button {
+      background: #9b6dff;
+      border: none;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+    }
+    th { background: #1b1b1d; }
+    tr:nth-child(even) { background: #151515; }
+  </style>
+</head>
+<body>
+  <h1>Painel Admin — BotSimples</h1>
+
+  <h2>💳 Criar Novo Plano</h2>
+  <form method="POST" action="/admin/plan/create">
+    <input name="name" placeholder="Nome do plano" required>
+    <input name="price" placeholder="Valor (R$)" type="number" step="0.01" required>
+    <textarea name="description" placeholder="Descrição" required></textarea>
+    <button type="submit">Salvar Plano</button>
+  </form>
+
+  <h3>Planos Existentes</h3>
+  <table>
+    <tr><th>Nome</th><th>Valor</th><th>Descrição</th><th>Ações</th></tr>
+    <% plans.forEach(p => { %>
+      <tr>
+        <td><%= p.name %></td>
+        <td>R$ <%= p.price.toFixed(2) %></td>
+        <td><%= p.description %></td>
+        <td>
+          <form method="POST" action="/admin/plan/delete" style="display:inline;">
+            <input type="hidden" name="id" value="<%= p._id %>">
+            <button>Excluir</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <h2>🔘 Criar Novo Botão</h2>
+  <form method="POST" action="/admin/button/create">
+    <input name="text" placeholder="Texto do botão" required>
+    <select name="action">
+      <option value="url">Abrir URL</option>
+      <option value="callback">Callback interno</option>
+      <option value="flow">Ir para fluxo</option>
+    </select>
+    <input name="value" placeholder="URL ou dado do botão" required>
+    <button type="submit">Salvar Botão</button>
+  </form>
+
+  <h3>Botões Existentes</h3>
+  <table>
+    <tr><th>Texto</th><th>Ação</th><th>Valor</th><th>Ações</th></tr>
+    <% buttons.forEach(b => { %>
+      <tr>
+        <td><%= b.text %></td>
+        <td><%= b.action %></td>
+        <td><%= b.value %></td>
+        <td>
+          <form method="POST" action="/admin/button/delete" style="display:inline;">
+            <input type="hidden" name="id" value="<%= b._id %>">
+            <button>Excluir</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+
+</body>
+</html>
