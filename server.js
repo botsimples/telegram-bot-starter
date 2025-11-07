@@ -1,10 +1,13 @@
 const express = require("express");
 const axios = require("axios");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // === VARIÁVEIS ===
 const TOKEN = process.env.TELEGRAM_TOKEN;
@@ -13,26 +16,124 @@ const WIINPAY_API_KEY = process.env.WIINPAY_API_KEY;
 const MONGO_URI = process.env.MONGO_URI;
 
 // === CONECTAR AO MONGO ===
-mongoose.connect(MONGO_URI)
+mongoose
+  .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
-  .catch(err => console.error("Erro ao conectar ao MongoDB:", err));
+  .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
+
+// === MIDDLEWARE DE SESSÃO ===
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "painel-botsimples",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // === MODELOS ===
-const User = mongoose.model("User", new mongoose.Schema({
-  telegramId: Number,
-  username: String,
-  firstName: String,
-  lastName: String,
-  dateJoined: { type: Date, default: Date.now },
-}));
+const User = mongoose.model(
+  "User",
+  new mongoose.Schema({
+    telegramId: Number,
+    username: String,
+    firstName: String,
+    lastName: String,
+    dateJoined: { type: Date, default: Date.now },
+  })
+);
 
-const Payment = mongoose.model("Payment", new mongoose.Schema({
-  telegramId: Number,
-  paymentId: String,
-  amount: Number,
-  status: { type: String, default: "pending" },
-  date: { type: Date, default: Date.now },
-}));
+const Payment = mongoose.model(
+  "Payment",
+  new mongoose.Schema({
+    telegramId: Number,
+    paymentId: String,
+    amount: Number,
+    status: { type: String, default: "pending" },
+    date: { type: Date, default: Date.now },
+  })
+);
+
+const Plan = mongoose.model(
+  "Plan",
+  new mongoose.Schema({
+    name: String,
+    price: Number,
+    description: String,
+  })
+);
+
+const Button = mongoose.model(
+  "Button",
+  new mongoose.Schema({
+    text: String,
+    action: String,
+    value: String,
+  })
+);
+
+// === CONFIGURAR VIEWS ===
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// === LOGIN ADMIN ===
+app.get("/login", (req, res) => {
+  if (req.session.loggedIn) return res.redirect("/admin");
+  res.send(`
+    <form method="POST" action="/login" style="font-family:sans-serif;text-align:center;margin-top:80px">
+      <h2>Login do Painel</h2>
+      <input name="user" placeholder="Usuário" style="padding:8px;margin:5px"/><br>
+      <input name="pass" placeholder="Senha" type="password" style="padding:8px;margin:5px"/><br>
+      <button style="padding:8px 16px">Entrar</button>
+    </form>
+  `);
+});
+
+app.post("/login", (req, res) => {
+  const { user, pass } = req.body;
+  if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
+    req.session.loggedIn = true;
+    return res.redirect("/admin");
+  }
+  res.send("Usuário ou senha inválidos. <a href='/login'>Tentar novamente</a>");
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => res.redirect("/login"));
+});
+
+function requireLogin(req, res, next) {
+  if (!req.session.loggedIn) return res.redirect("/login");
+  next();
+}
+
+// === PAINEL ADMIN ===
+app.get("/admin", requireLogin, async (req, res) => {
+  const plans = await Plan.find();
+  const buttons = await Button.find();
+  res.render("admin", { plans, buttons });
+});
+
+// === CRUD PLANOS ===
+app.post("/admin/plan/create", requireLogin, async (req, res) => {
+  await Plan.create(req.body);
+  res.redirect("/admin");
+});
+
+app.post("/admin/plan/delete", requireLogin, async (req, res) => {
+  await Plan.findByIdAndDelete(req.body.id);
+  res.redirect("/admin");
+});
+
+// === CRUD BOTÕES ===
+app.post("/admin/button/create", requireLogin, async (req, res) => {
+  await Button.create(req.body);
+  res.redirect("/admin");
+});
+
+app.post("/admin/button/delete", requireLogin, async (req, res) => {
+  await Button.findByIdAndDelete(req.body.id);
+  res.redirect("/admin");
+});
 
 // === ROTA PADRÃO ===
 app.get("/", (req, res) => res.send("Bot online ✅"));
@@ -47,7 +148,6 @@ app.post("/telegram-webhook", async (req, res) => {
       const chatId = update.message.chat.id;
       const user = update.message.from;
 
-      // salva usuário no banco (só se for novo)
       await User.findOneAndUpdate(
         { telegramId: user.id },
         {
@@ -84,19 +184,22 @@ app.post("/telegram-webhook", async (req, res) => {
       const data = cq.data;
 
       if (data === "comprar_plano") {
-        const pagamento = await axios.post("https://api.wiinpay.com.br/payment/create", {
-          api_key: WIINPAY_API_KEY,
-          value: 9.90,
-          name: "Cliente Telegram",
-          email: "cliente@teste.com",
-          description: "Plano VIP Telegram",
-          webhook_url: "https://telegram-bot-starter.onrender.com/pix/webhook",
-        });
+        const pagamento = await axios.post(
+          "https://api.wiinpay.com.br/payment/create",
+          {
+            api_key: WIINPAY_API_KEY,
+            value: 9.9,
+            name: "Cliente Telegram",
+            email: "cliente@teste.com",
+            description: "Plano VIP Telegram",
+            webhook_url:
+              "https://telegram-bot-starter.onrender.com/pix/webhook",
+          }
+        );
 
         const retorno = pagamento.data;
         const codigoPix = retorno?.pix?.code || JSON.stringify(retorno, null, 2);
 
-        // salva pagamento
         await Payment.create({
           telegramId: chatId,
           paymentId: retorno.data?.paymentId || "none",
@@ -105,7 +208,7 @@ app.post("/telegram-webhook", async (req, res) => {
 
         await axios.post(`${API}/sendMessage`, {
           chat_id: chatId,
-          text: `💰 *Pagamento via PIX gerado com sucesso!*\n\nCopie o código abaixo e cole no seu banco para pagar:\n\n\`${codigoPix}\`\n\n⚡ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
+          text: `💰 *Pagamento via PIX gerado com sucesso!*\n\nCopie o código abaixo e cole no seu banco:\n\n\`${codigoPix}\`\n\n⚡ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
           parse_mode: "Markdown",
         });
       }
@@ -122,7 +225,7 @@ app.post("/telegram-webhook", async (req, res) => {
   }
 });
 
-// === WEBHOOK DE PAGAMENTO (confirmação automática) ===
+// === WEBHOOK DE PAGAMENTO ===
 app.post("/pix/webhook", async (req, res) => {
   try {
     const body = req.body;
@@ -142,4 +245,6 @@ app.post("/pix/webhook", async (req, res) => {
 
 // === INICIAR SERVIDOR ===
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Servidor rodando na porta ${PORT}`)
+);
