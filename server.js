@@ -140,6 +140,8 @@ app.get("/", (req, res) => res.send("Bot online ✅"));
 
 // === WEBHOOK TELEGRAM ===
 app.post("/telegram-webhook", async (req, res) => {
+  console.log("📩 Atualização recebida:", JSON.stringify(req.body, null, 2));
+
   try {
     const update = req.body;
 
@@ -248,3 +250,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
   console.log(`🚀 Servidor rodando na porta ${PORT}`)
 );
+
+add log
