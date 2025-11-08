@@ -71,7 +71,6 @@ const Button = mongoose.model(
   })
 );
 
-// === MODELO DE GATEWAY PIX ===
 const Gateway = mongoose.model(
   "Gateway",
   new mongoose.Schema({
@@ -119,7 +118,7 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// === PAINEL ADMIN (Planos, Botões e Gateways) ===
+// === PAINEL ADMIN ===
 app.get("/admin", requireLogin, async (req, res) => {
   const plans = await Plan.find();
   const buttons = await Button.find();
@@ -170,7 +169,12 @@ app.post("/admin/gateway/create", requireLogin, async (req, res) => {
 
 app.post("/admin/gateway/update", requireLogin, async (req, res) => {
   const { id, clientId, clientSecret, token } = req.body;
-  await Gateway.findByIdAndUpdate(id, { clientId, clientSecret, token, atualizadoEm: Date.now() });
+  await Gateway.findByIdAndUpdate(id, {
+    clientId,
+    clientSecret,
+    token,
+    atualizadoEm: Date.now(),
+  });
   res.redirect("/admin");
 });
 
@@ -206,10 +210,14 @@ app.post("/telegram-webhook", async (req, res) => {
         { upsert: true, new: true }
       );
 
-      const pagamento = await Payment.findOne({ telegramId: chatId, status: "paid" });
+      const pagamento = await Payment.findOne({
+        telegramId: chatId,
+        status: "paid",
+      });
 
       if (!pagamento) {
-        const caption = "🔥 *Bem-vindo ao BotSimples!*\n\nEscolha uma opção abaixo 👇";
+        const caption =
+          "🔥 *Bem-vindo ao BotSimples!*\n\nEscolha uma opção abaixo 👇";
         const keyboard = {
           inline_keyboard: [
             [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
@@ -226,7 +234,9 @@ app.post("/telegram-webhook", async (req, res) => {
         });
       } else {
         const buttons = await Button.find();
-        const inlineKeyboard = buttons.map((b) => [{ text: b.text, callback_data: b.action }]);
+        const inlineKeyboard = buttons.map((b) => [
+          { text: b.text, callback_data: b.action },
+        ]);
 
         await axios.post(`${API}/sendMessage`, {
           chat_id: chatId,
@@ -243,8 +253,8 @@ app.post("/telegram-webhook", async (req, res) => {
       const data = cq.data;
 
       if (data === "comprar_plano") {
-        // Pega o gateway ativo
         const ativo = await Gateway.findOne({ ativo: true });
+
         if (!ativo) {
           await axios.post(`${API}/sendMessage`, {
             chat_id: chatId,
@@ -254,48 +264,56 @@ app.post("/telegram-webhook", async (req, res) => {
         }
 
         let retorno;
+
+        // === WIINPAY ===
         if (ativo.nome.toLowerCase() === "wiinpay") {
-          retorno = await axios.post("https://api.wiinpay.com.br/payment/create", {
-            api_key: WIINPAY_API_KEY,
-            value: 9.9,
-            name: "Cliente Telegram",
-            email: "cliente@teste.com",
-            description: "Plano VIP Telegram",
-            webhook_url: "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook",
-          });
-else if (ativo.nome.toLowerCase() === "syncpay") {
-  try {
-    // 1️⃣ Gera o token de acesso (OAuth2)
-    const tokenResp = await axios.post("https://api.syncpay.com.br/v1/oauth/token", {
-      client_id: ativo.clientId,
-      client_secret: ativo.clientSecret,
-      grant_type: "client_credentials"
-    });
+          retorno = await axios.post(
+            "https://api.wiinpay.com.br/payment/create",
+            {
+              api_key: WIINPAY_API_KEY,
+              value: 9.9,
+              name: "Cliente Telegram",
+              email: "cliente@teste.com",
+              description: "Plano VIP Telegram",
+              webhook_url:
+                "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook",
+            }
+          );
+        }
 
-    const accessToken = tokenResp.data.access_token;
+        // === SYNCPAY ===
+        else if (ativo.nome.toLowerCase() === "syncpay") {
+          try {
+            const tokenResp = await axios.post(
+              "https://api.syncpay.com.br/v1/oauth/token",
+              {
+                client_id: ativo.clientId,
+                client_secret: ativo.clientSecret,
+                grant_type: "client_credentials",
+              }
+            );
 
-    // 2️⃣ Cria a cobrança PIX
-    const cobranca = await axios.post(
-      "https://api.syncpay.com.br/v1/pix/cob",
-      {
-        valor: "9.90",
-        descricao: "Plano VIP Telegram",
-        webhook: "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook"
-      },
-      {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      }
-    );
+            const accessToken = tokenResp.data.access_token;
 
-    // 3️⃣ Retorna o código real pro cliente
-    retorno = { data: { pix: { code: cobranca.data.pixCopiaECola } } };
+            const cobranca = await axios.post(
+              "https://api.syncpay.com.br/v1/pix/cob",
+              {
+                valor: "9.90",
+                descricao: "Plano VIP Telegram",
+                webhook:
+                  "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook",
+              },
+              { headers: { Authorization: `Bearer ${accessToken}` } }
+            );
 
-  } catch (err) {
-    console.error("Erro SyncPay:", err.response?.data || err.message);
-    retorno = { data: { pix: { code: "ERRO_SYNC_PAY" } } };
-  }
-}
-
+            retorno = {
+              data: { pix: { code: cobranca.data.pixCopiaECola } },
+            };
+          } catch (err) {
+            console.error("Erro SyncPay:", err.response?.data || err.message);
+            retorno = { data: { pix: { code: "ERRO_SYNC_PAY" } } };
+          }
+        }
 
         const codigoPix = retorno?.data?.pix?.code || "Erro ao gerar PIX";
 
@@ -344,4 +362,6 @@ app.post("/pix/webhook", async (req, res) => {
 
 // === INICIAR SERVIDOR ===
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Servidor rodando na porta ${PORT}`)
+);
