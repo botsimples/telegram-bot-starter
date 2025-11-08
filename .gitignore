@@ -1,0 +1,25 @@
+# === Node e Build ===
+node_modules/
+npm-debug.log
+yarn-error.log
+.DS_Store
+
+# === Ambiente ===
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# === Logs ===
+logs
+*.log
+logs/*.log
+
+# === Sistema ===
+*.pid
+*.seed
+coverage/
+dist/
+tmp/
+.cache/
