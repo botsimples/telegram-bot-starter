@@ -273,7 +273,8 @@ app.post("/telegram-webhook", async (req, res) => {
         // === SYNCPAY ===
         else if (ativo.nome.toLowerCase() === "syncpay") {
           try {
-            const tokenResp = await axios.post("https://api.syncpay.com/v1/oauth/token", {
+            // Gerar token OAuth2
+            const tokenResp = await axios.post("https://api.syncpayments.com.br/v1/oauth/token", {
               client_id: ativo.clientId,
               client_secret: ativo.clientSecret,
               grant_type: "client_credentials",
@@ -281,8 +282,9 @@ app.post("/telegram-webhook", async (req, res) => {
 
             const accessToken = tokenResp.data.access_token;
 
+            // Criar cobrança PIX
             const cobranca = await axios.post(
-              "https://api.syncpay.com/v1/pix/cob",
+              "https://api.syncpayments.com.br/v1/pix/cob",
               {
                 valor: String(plano?.price || "9.90"),
                 descricao: plano?.name || "Plano VIP Telegram",
