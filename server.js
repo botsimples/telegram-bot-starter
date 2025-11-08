@@ -129,12 +129,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     if (data?.startsWith("plano_")) {
       const valor = parseFloat(data.split("_")[1]);
 
-      const ultimoPix = pagamentosPendentes.get(chatId);
-      if (ultimoPix && Date.now() - ultimoPix < 60 * 1000) {
-        await sendMessage(chatId, "⚠️ Você precisa aguardar 1 minuto para gerar outro PIX.");
-        return res.sendStatus(200);
-      }
-
+      // 🚫 Limite de geração removido (sem delay)
       pagamentosPendentes.set(chatId, Date.now());
 
       const pix = await gerarPixWiinPay(valor);
