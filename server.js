@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 const TOKEN = process.env.TELEGRAM_TOKEN;
 const API = `https://api.telegram.org/bot${TOKEN}`;
 const MONGO_URI = process.env.MONGO_URI;
+const SYNC_BASE_URL = process.env.SYNC_BASE_URL || "https://api.syncpayments.com.br";
 
 // === CONECTAR AO MONGO ===
 mongoose
@@ -260,26 +261,11 @@ app.post("/telegram-webhook", async (req, res) => {
         let retorno;
         let paymentId = null;
 
-        // === WIINPAY ===
-        if (ativo.nome.toLowerCase() === "wiinpay") {
-          console.log("🟢 [WIINPAY] Criando cobrança...");
-          const resp = await axios.post("https://api.wiinpay.com.br/payment/create", {
-            api_key: ativo.token || process.env.WIINPAY_API_KEY,
-            value: plano?.price || 9.9,
-            name: "Cliente Telegram",
-            email: "cliente@teste.com",
-            description: plano?.name || "Plano VIP Telegram",
-            webhook_url: process.env.PIX_WEBHOOK_URL,
-          });
-          retorno = resp.data;
-          paymentId = resp.data?.data?.paymentId || null;
-        }
-
         // === SYNCPAY (corrigido final) ===
-        else if (ativo.nome.toLowerCase() === "syncpay") {
+        if (ativo.nome.toLowerCase() === "syncpay") {
           try {
             console.log("🟡 [SYNC] Solicitando token...");
-            const tokenResp = await axios.post("https://api.syncpayments.com.br/api/partner/v1/auth-token", {
+            const tokenResp = await axios.post(`${SYNC_BASE_URL}/api/partner/v1/auth-token`, {
               client_id: ativo.clientId,
               client_secret: ativo.clientSecret,
             });
@@ -289,50 +275,30 @@ app.post("/telegram-webhook", async (req, res) => {
 
             console.log("🟢 [SYNC] Token OK, criando PIX...");
 
-            let cobranca;
-            try {
-              // Novo endpoint
-              cobranca = await axios.post(
-                "https://api.syncpayments.com.br/api/partner/v1/pix/cashin",
-                {
-                  valor: plano?.price || 9.9,
-                  descricao: plano?.name || "Plano VIP Telegram",
-                  callbackUrl: process.env.PIX_WEBHOOK_URL,
+            const cobranca = await axios.post(
+              `${SYNC_BASE_URL}/api/partner/v1/transactions/cashin`,
+              {
+                valor: plano?.price || 9.9,
+                descricao: plano?.name || "Plano VIP Telegram",
+                callbackUrl: process.env.PIX_WEBHOOK_URL,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  "Content-Type": "application/json",
                 },
-                {
-                  headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
-            } catch {
-              // Fallback pra versão anterior
-              cobranca = await axios.post(
-                "https://api.syncpayments.com.br/api/pix/cashin",
-                {
-                  valor: plano?.price || 9.9,
-                  descricao: plano?.name || "Plano VIP Telegram",
-                  callbackUrl: process.env.PIX_WEBHOOK_URL,
-                },
-                {
-                  headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
-            }
+              }
+            );
 
-            console.log("🟢 [SYNC] PIX criado com sucesso:", cobranca.data);
+            console.log("🟢 [SYNC] PIX criado:", cobranca.data);
 
             retorno = {
               data: {
                 pix: { code: cobranca.data?.pix_code || cobranca.data?.pixCopiaCola },
-                paymentId: cobranca.data?.identifier || cobranca.data?.id,
+                paymentId: cobranca.data?.id,
               },
             };
-            paymentId = cobranca.data?.identifier || cobranca.data?.id;
+            paymentId = cobranca.data?.id;
           } catch (err) {
             console.error("❌ [SYNC] Erro:", err.response?.data || err.message);
             retorno = { data: { pix: { code: "ERRO_SYNCPAY" } } };
@@ -374,7 +340,7 @@ app.post("/pix/webhook", async (req, res) => {
     const body = req.body;
     console.log("📥 Webhook recebido:", JSON.stringify(body).slice(0, 1000));
 
-    const paymentId = body?.data?.paymentId || body?.data?.id || null;
+    const paymentId = body?.data?.id || null;
     if (!paymentId) return res.status(400).send("paymentId not found");
 
     const payment = await Payment.findOneAndUpdate({ paymentId }, { status: "paid", meta: body }, { new: true });
