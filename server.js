@@ -261,7 +261,7 @@ app.post("/telegram-webhook", async (req, res) => {
         let retorno;
         let paymentId = null;
 
-        // === SYNCPAY (corrigido final) ===
+        // === SYNCPAY (autoajustável) ===
         if (ativo.nome.toLowerCase() === "syncpay") {
           try {
             console.log("🟡 [SYNC] Solicitando token...");
@@ -271,34 +271,54 @@ app.post("/telegram-webhook", async (req, res) => {
             });
 
             const accessToken = tokenResp.data?.access_token;
-            if (!accessToken) throw new Error("Token inválido");
+            if (!accessToken) throw new Error("Token de acesso inválido");
+            console.log("🟢 [SYNC] Token OK, testando rotas...");
 
-            console.log("🟢 [SYNC] Token OK, criando PIX...");
-
-            const cobranca = await axios.post(
+            const rotas = [
               `${SYNC_BASE_URL}/api/partner/v1/transactions/cashin`,
-              {
-                valor: plano?.price || 9.9,
-                descricao: plano?.name || "Plano VIP Telegram",
-                callbackUrl: process.env.PIX_WEBHOOK_URL,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                  "Content-Type": "application/json",
-                },
+              `${SYNC_BASE_URL}/api/partner/v1/cashin`,
+              `${SYNC_BASE_URL}/api/pix/cashin`,
+              `${SYNC_BASE_URL}/api/cashin`,
+            ];
+
+            let cobranca = null;
+            let rotaUsada = null;
+
+            for (const rota of rotas) {
+              try {
+                console.log(`🔎 [SYNC] Testando rota: ${rota}`);
+                cobranca = await axios.post(
+                  rota,
+                  {
+                    valor: plano?.price || 9.9,
+                    descricao: plano?.name || "Plano VIP Telegram",
+                    callbackUrl: process.env.PIX_WEBHOOK_URL,
+                  },
+                  {
+                    headers: {
+                      Authorization: `Bearer ${accessToken}`,
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
+                rotaUsada = rota;
+                break;
+              } catch (err) {
+                if (err.response?.status === 404) continue;
+                throw err;
               }
-            );
+            }
 
-            console.log("🟢 [SYNC] PIX criado:", cobranca.data);
+            if (!cobranca) throw new Error("Nenhuma rota válida encontrada na SyncPay");
 
+            console.log("🟢 [SYNC] PIX criado com sucesso via:", rotaUsada);
             retorno = {
               data: {
                 pix: { code: cobranca.data?.pix_code || cobranca.data?.pixCopiaCola },
-                paymentId: cobranca.data?.id,
+                paymentId: cobranca.data?.id || cobranca.data?.identifier,
               },
             };
-            paymentId = cobranca.data?.id;
+            paymentId = cobranca.data?.id || cobranca.data?.identifier;
           } catch (err) {
             console.error("❌ [SYNC] Erro:", err.response?.data || err.message);
             retorno = { data: { pix: { code: "ERRO_SYNCPAY" } } };
