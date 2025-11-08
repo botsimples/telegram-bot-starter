@@ -19,7 +19,7 @@ const MONGO_URI = process.env.MONGO_URI;
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
-  .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
+  .catch((err) => console.error("❌ Erro ao conectar ao MongoDB:", err));
 
 // === MIDDLEWARE DE SESSÃO ===
 app.use(
@@ -115,22 +115,26 @@ app.get("/admin", requireLogin, async (req, res) => {
 
 // === CRUD PLANOS ===
 app.post("/admin/plan/create", requireLogin, async (req, res) => {
+  console.log("🟢 Novo plano criado:", req.body);
   await Plan.create(req.body);
   res.redirect("/admin");
 });
 
 app.post("/admin/plan/delete", requireLogin, async (req, res) => {
+  console.log("🗑️ Plano removido:", req.body.id);
   await Plan.findByIdAndDelete(req.body.id);
   res.redirect("/admin");
 });
 
 // === CRUD BOTÕES ===
 app.post("/admin/button/create", requireLogin, async (req, res) => {
+  console.log("🟢 Novo botão criado:", req.body);
   await Button.create(req.body);
   res.redirect("/admin");
 });
 
 app.post("/admin/button/delete", requireLogin, async (req, res) => {
+  console.log("🗑️ Botão removido:", req.body.id);
   await Button.findByIdAndDelete(req.body.id);
   res.redirect("/admin");
 });
@@ -150,6 +154,8 @@ app.post("/telegram-webhook", async (req, res) => {
       const chatId = update.message.chat.id;
       const user = update.message.from;
 
+      console.log(`👤 Usuário iniciou: ${user.username || user.id}`);
+
       await User.findOneAndUpdate(
         { telegramId: user.id },
         {
@@ -161,21 +167,34 @@ app.post("/telegram-webhook", async (req, res) => {
         { upsert: true, new: true }
       );
 
-      const caption = "🔥 *Bem-vindo!*\n\nEscolha uma opção abaixo 👇";
+      // carrega planos e botões do painel
+      const plans = await Plan.find();
+      const buttons = await Button.find();
 
-      const keyboard = {
-        inline_keyboard: [
-          [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
-          [{ text: "📢 Canal VIP", url: "https://t.me/seucanal" }],
-        ],
-      };
+      let caption = "🔥 *Bem-vindo(a)!*\n\nEscolha uma das opções abaixo 👇\n\n";
+
+      if (plans.length > 0) {
+        caption += plans
+          .map(
+            (p) =>
+              `💳 *${p.name}* — R$${p.price.toFixed(2)}\n${p.description}\n`
+          )
+          .join("\n");
+      } else {
+        caption += "Nenhum plano disponível no momento.\n";
+      }
+
+      const inlineKeyboard = buttons.map((b) => {
+        if (b.action === "url") return [{ text: b.text, url: b.value }];
+        else return [{ text: b.text, callback_data: b.value }];
+      });
 
       await axios.post(`${API}/sendPhoto`, {
         chat_id: chatId,
         photo: "https://i.imgur.com/NnZXOqK.png",
         caption,
         parse_mode: "Markdown",
-        reply_markup: keyboard,
+        reply_markup: { inline_keyboard: inlineKeyboard },
       });
     }
 
@@ -185,7 +204,11 @@ app.post("/telegram-webhook", async (req, res) => {
       const chatId = cq.message.chat.id;
       const data = cq.data;
 
+      console.log(`🖱️ Clique no botão: ${data} | ChatID: ${chatId}`);
+
       if (data === "comprar_plano") {
+        console.log("💰 Gerando pagamento WiinPay...");
+
         const pagamento = await axios.post(
           "https://api.wiinpay.com.br/payment/create",
           {
@@ -194,12 +217,13 @@ app.post("/telegram-webhook", async (req, res) => {
             name: "Cliente Telegram",
             email: "cliente@teste.com",
             description: "Plano VIP Telegram",
-            webhook_url:
-              "https://telegram-bot-starter.onrender.com/pix/webhook",
+            webhook_url: "https://telegram-bot-starter.onrender.com/pix/webhook",
           }
         );
 
         const retorno = pagamento.data;
+        console.log("📤 Retorno WiinPay:", retorno);
+
         const codigoPix = retorno?.pix?.code || JSON.stringify(retorno, null, 2);
 
         await Payment.create({
@@ -222,7 +246,7 @@ app.post("/telegram-webhook", async (req, res) => {
 
     res.sendStatus(200);
   } catch (err) {
-    console.error("Erro:", err?.response?.data || err.message);
+    console.error("❌ Erro no webhook:", err?.response?.data || err.message);
     res.sendStatus(200);
   }
 });
@@ -235,20 +259,18 @@ app.post("/pix/webhook", async (req, res) => {
 
     if (paymentId) {
       await Payment.findOneAndUpdate({ paymentId }, { status: "paid" });
-      console.log("Pagamento confirmado:", paymentId);
+      console.log("✅ Pagamento confirmado:", paymentId);
+    } else {
+      console.log("⚠️ Webhook recebido sem paymentId:", body);
     }
 
     res.sendStatus(200);
   } catch (err) {
-    console.error("Erro no webhook:", err.message);
+    console.error("❌ Erro no webhook de pagamento:", err.message);
     res.sendStatus(200);
   }
 });
 
 // === INICIAR SERVIDOR ===
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`🚀 Servidor rodando na porta ${PORT}`)
-);
-
-add log
+app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
