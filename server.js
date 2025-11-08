@@ -275,7 +275,7 @@ app.post("/telegram-webhook", async (req, res) => {
           paymentId = resp.data?.data?.paymentId || null;
         }
 
-        // === SYNCPAY (oficial e corrigido) ===
+        // === SYNCPAY (corrigido final) ===
         else if (ativo.nome.toLowerCase() === "syncpay") {
           try {
             console.log("🟡 [SYNC] Solicitando token...");
@@ -285,26 +285,46 @@ app.post("/telegram-webhook", async (req, res) => {
             });
 
             const accessToken = tokenResp.data?.access_token;
-            if (!accessToken) throw new Error("Token de acesso inválido");
+            if (!accessToken) throw new Error("Token inválido");
 
-            console.log("🟢 [SYNC] Token gerado com sucesso");
+            console.log("🟢 [SYNC] Token OK, criando PIX...");
 
-            const cobranca = await axios.post(
-              "https://api.syncpayments.com.br/api/partner/v1/cashin",
-              {
-                valor: plano?.price || 9.9,
-                descricao: plano?.name || "Plano VIP Telegram",
-                callbackUrl: process.env.PIX_WEBHOOK_URL,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                  "Content-Type": "application/json",
+            let cobranca;
+            try {
+              // Novo endpoint
+              cobranca = await axios.post(
+                "https://api.syncpayments.com.br/api/partner/v1/pix/cashin",
+                {
+                  valor: plano?.price || 9.9,
+                  descricao: plano?.name || "Plano VIP Telegram",
+                  callbackUrl: process.env.PIX_WEBHOOK_URL,
                 },
-              }
-            );
+                {
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+            } catch {
+              // Fallback pra versão anterior
+              cobranca = await axios.post(
+                "https://api.syncpayments.com.br/api/pix/cashin",
+                {
+                  valor: plano?.price || 9.9,
+                  descricao: plano?.name || "Plano VIP Telegram",
+                  callbackUrl: process.env.PIX_WEBHOOK_URL,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+            }
 
-            console.log("🟢 [SYNC] PIX criado:", cobranca.data);
+            console.log("🟢 [SYNC] PIX criado com sucesso:", cobranca.data);
 
             retorno = {
               data: {
