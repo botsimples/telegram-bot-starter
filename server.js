@@ -19,7 +19,7 @@ const MONGO_URI = process.env.MONGO_URI;
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
-  .catch((err) => console.error("❌ Erro ao conectar ao MongoDB:", err));
+  .catch((err) => console.error("❌ Erro ao conectar ao MongoDB:", err.message));
 
 // === MIDDLEWARE DE SESSÃO ===
 app.use(
@@ -106,167 +106,58 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// === PAINEL ADMIN ===
+// === PAINEL ADMIN (CRUD PLANOS) ===
 app.get("/admin", requireLogin, async (req, res) => {
   const plans = await Plan.find();
-  const buttons = await Button.find();
-  res.render("admin", { plans, buttons });
+  res.render("admin", { plans });
 });
 
-// === CRUD PLANOS ===
+// === CRIAR PLANO ===
 app.post("/admin/plan/create", requireLogin, async (req, res) => {
-  console.log("🟢 Novo plano criado:", req.body);
-  await Plan.create(req.body);
-  res.redirect("/admin");
+  try {
+    const { name, price, description } = req.body;
+    await Plan.create({ name, price, description });
+    res.redirect("/admin");
+  } catch (err) {
+    console.error("Erro ao criar plano:", err.message);
+    res.send("Erro ao criar plano.");
+  }
 });
 
+// === EXCLUIR PLANO ===
 app.post("/admin/plan/delete", requireLogin, async (req, res) => {
-  console.log("🗑️ Plano removido:", req.body.id);
-  await Plan.findByIdAndDelete(req.body.id);
-  res.redirect("/admin");
+  try {
+    await Plan.findByIdAndDelete(req.body.id);
+    res.redirect("/admin");
+  } catch (err) {
+    console.error("Erro ao excluir plano:", err.message);
+    res.send("Erro ao excluir plano.");
+  }
 });
 
-// === CRUD BOTÕES ===
-app.post("/admin/button/create", requireLogin, async (req, res) => {
-  console.log("🟢 Novo botão criado:", req.body);
-  await Button.create(req.body);
-  res.redirect("/admin");
-});
-
-app.post("/admin/button/delete", requireLogin, async (req, res) => {
-  console.log("🗑️ Botão removido:", req.body.id);
-  await Button.findByIdAndDelete(req.body.id);
-  res.redirect("/admin");
+// === EDITAR PLANO ===
+app.post("/admin/plan/edit", requireLogin, async (req, res) => {
+  try {
+    const { id, name, price, description } = req.body;
+    await Plan.findByIdAndUpdate(id, { name, price, description });
+    res.redirect("/admin");
+  } catch (err) {
+    console.error("Erro ao editar plano:", err.message);
+    res.send("Erro ao editar plano.");
+  }
 });
 
 // === ROTA PADRÃO ===
 app.get("/", (req, res) => res.send("Bot online ✅"));
 
-// === WEBHOOK TELEGRAM ===
+// === WEBHOOK TELEGRAM (mantém o bot ativo) ===
 app.post("/telegram-webhook", async (req, res) => {
-  console.log("📩 Atualização recebida:", JSON.stringify(req.body, null, 2));
-
   try {
     const update = req.body;
-
-    // /start
-    if (update.message && update.message.text === "/start") {
-      const chatId = update.message.chat.id;
-      const user = update.message.from;
-
-      console.log(`👤 Usuário iniciou: ${user.username || user.id}`);
-
-      await User.findOneAndUpdate(
-        { telegramId: user.id },
-        {
-          telegramId: user.id,
-          username: user.username,
-          firstName: user.first_name,
-          lastName: user.last_name,
-        },
-        { upsert: true, new: true }
-      );
-
-      // carrega planos e botões do painel
-      const plans = await Plan.find();
-      const buttons = await Button.find();
-
-      let caption = "🔥 *Bem-vindo(a)!*\n\nEscolha uma das opções abaixo 👇\n\n";
-
-      if (plans.length > 0) {
-        caption += plans
-          .map(
-            (p) =>
-              `💳 *${p.name}* — R$${p.price.toFixed(2)}\n${p.description}\n`
-          )
-          .join("\n");
-      } else {
-        caption += "Nenhum plano disponível no momento.\n";
-      }
-
-      const inlineKeyboard = buttons.map((b) => {
-        if (b.action === "url") return [{ text: b.text, url: b.value }];
-        else return [{ text: b.text, callback_data: b.value }];
-      });
-
-      await axios.post(`${API}/sendPhoto`, {
-        chat_id: chatId,
-        photo: "https://i.imgur.com/NnZXOqK.png",
-        caption,
-        parse_mode: "Markdown",
-        reply_markup: { inline_keyboard: inlineKeyboard },
-      });
-    }
-
-    // CALLBACK BUTTON
-    if (update.callback_query) {
-      const cq = update.callback_query;
-      const chatId = cq.message.chat.id;
-      const data = cq.data;
-
-      console.log(`🖱️ Clique no botão: ${data} | ChatID: ${chatId}`);
-
-      if (data === "comprar_plano") {
-        console.log("💰 Gerando pagamento WiinPay...");
-
-        const pagamento = await axios.post(
-          "https://api.wiinpay.com.br/payment/create",
-          {
-            api_key: WIINPAY_API_KEY,
-            value: 9.9,
-            name: "Cliente Telegram",
-            email: "cliente@teste.com",
-            description: "Plano VIP Telegram",
-            webhook_url: "https://telegram-bot-starter.onrender.com/pix/webhook",
-          }
-        );
-
-        const retorno = pagamento.data;
-        console.log("📤 Retorno WiinPay:", retorno);
-
-        const codigoPix = retorno?.pix?.code || JSON.stringify(retorno, null, 2);
-
-        await Payment.create({
-          telegramId: chatId,
-          paymentId: retorno.data?.paymentId || "none",
-          amount: 9.9,
-        });
-
-        await axios.post(`${API}/sendMessage`, {
-          chat_id: chatId,
-          text: `💰 *Pagamento via PIX gerado com sucesso!*\n\nCopie o código abaixo e cole no seu banco:\n\n\`${codigoPix}\`\n\n⚡ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
-          parse_mode: "Markdown",
-        });
-      }
-
-      await axios.post(`${API}/answerCallbackQuery`, {
-        callback_query_id: cq.id,
-      });
-    }
-
+    console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
     res.sendStatus(200);
   } catch (err) {
-    console.error("❌ Erro no webhook:", err?.response?.data || err.message);
-    res.sendStatus(200);
-  }
-});
-
-// === WEBHOOK DE PAGAMENTO ===
-app.post("/pix/webhook", async (req, res) => {
-  try {
-    const body = req.body;
-    const paymentId = body?.data?.paymentId;
-
-    if (paymentId) {
-      await Payment.findOneAndUpdate({ paymentId }, { status: "paid" });
-      console.log("✅ Pagamento confirmado:", paymentId);
-    } else {
-      console.log("⚠️ Webhook recebido sem paymentId:", body);
-    }
-
-    res.sendStatus(200);
-  } catch (err) {
-    console.error("❌ Erro no webhook de pagamento:", err.message);
+    console.error("Erro:", err.message);
     res.sendStatus(200);
   }
 });
