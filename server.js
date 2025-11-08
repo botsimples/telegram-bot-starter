@@ -1,3 +1,7 @@
+// ==========================
+// server.js — Painel BotSimples (SaaS Telegram)
+// ==========================
+
 const express = require("express");
 const axios = require("axios");
 const mongoose = require("mongoose");
@@ -47,7 +51,7 @@ const Plan = mongoose.model(
     name: String,
     price: Number,
     description: String,
-    deliverableUrl: { type: String, default: "" }, // entregável automático
+    deliverableUrl: { type: String, default: "" },
   })
 );
 
@@ -86,7 +90,7 @@ const Gateway = mongoose.model(
   })
 );
 
-// === CONFIGURAR VIEWS ===
+// === CONFIGURAÇÃO DAS VIEWS ===
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -185,7 +189,7 @@ app.post("/admin/gateway/ativar", requireLogin, async (req, res) => {
 });
 
 // === ROTA PADRÃO ===
-app.get("/", (req, res) => res.send("Bot online ✅"));
+app.get("/", (req, res) => res.send("✅ BotSimples online e funcionando!"));
 
 // === WEBHOOK TELEGRAM ===
 app.post("/telegram-webhook", async (req, res) => {
@@ -193,6 +197,7 @@ app.post("/telegram-webhook", async (req, res) => {
     const update = req.body;
     console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
 
+    // ===== COMANDO /start =====
     if (update.message && update.message.text === "/start") {
       const chatId = update.message.chat.id;
       const user = update.message.from;
@@ -237,6 +242,7 @@ app.post("/telegram-webhook", async (req, res) => {
       }
     }
 
+    // ===== CALLBACK QUERY =====
     if (update.callback_query) {
       const cq = update.callback_query;
       const chatId = cq.message.chat.id;
@@ -268,39 +274,46 @@ app.post("/telegram-webhook", async (req, res) => {
           paymentId = resp.data?.data?.paymentId || null;
         }
 
-        // === SYNCPAY ===
+        // === SYNCPAY (corrigido) ===
         else if (ativo.nome.toLowerCase() === "syncpay") {
           try {
-            const tokenResp = await axios.post("https://api.syncpay.com.br/api/partner/v1/auth-token", {
+            const tokenResp = await axios.post("https://app.syncpay.com.br/api/partner/v1/auth-token", {
               client_id: ativo.clientId,
               client_secret: ativo.clientSecret,
             });
 
-            const accessToken = tokenResp.data.access_token;
+            const accessToken = tokenResp.data?.access_token;
+            if (!accessToken) throw new Error("Token de acesso inválido");
 
             const cobranca = await axios.post(
-              "https://api.syncpay.com.br/api/partner/v1/cashin",
+              "https://app.syncpay.com.br/api/partner/v1/cashin",
               {
                 valor: plano?.price || 9.9,
                 descricao: plano?.name || "Plano VIP Telegram",
                 callbackUrl: process.env.PIX_WEBHOOK_URL,
               },
-              { headers: { Authorization: `Bearer ${accessToken}` } }
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  "Content-Type": "application/json",
+                },
+              }
             );
 
             retorno = {
               data: {
-                pix: { code: cobranca.data.qrcode },
+                pix: { code: cobranca.data.qrcode || cobranca.data.pixCopiaCola },
                 paymentId: cobranca.data.identifier || cobranca.data.id,
               },
             };
             paymentId = cobranca.data.identifier || cobranca.data.id;
           } catch (err) {
-            console.error("Erro SyncPay:", err.response?.data || err.message);
+            console.error("❌ Erro SyncPay:", err.response?.data || err.message);
             retorno = { data: { pix: { code: "ERRO_SYNCPAY" } } };
           }
         }
 
+        // === RESPOSTA AO USUÁRIO ===
         const codigoPix = retorno?.data?.pix?.code || "Erro ao gerar PIX";
 
         await Payment.create({
@@ -324,7 +337,7 @@ app.post("/telegram-webhook", async (req, res) => {
 
     res.sendStatus(200);
   } catch (err) {
-    console.error("Erro:", err?.response?.data || err.message);
+    console.error("🔥 Erro no webhook Telegram:", err?.response?.data || err.message);
     res.sendStatus(200);
   }
 });
@@ -352,7 +365,7 @@ app.post("/pix/webhook", async (req, res) => {
 
     res.status(200).send("ok");
   } catch (err) {
-    console.error("Erro no webhook:", err.message);
+    console.error("❌ Erro no webhook PIX:", err.message);
     res.status(500).send("error");
   }
 });
