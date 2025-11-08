@@ -1,3 +1,47 @@
+import axios from "axios";
+
+// === GERAR PIX ===
+export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimples") {
+  try {
+    const apiKey = process.env.WIINPAY_API_KEY;
+    const baseUrl = "https://api-v2.wiinpay.com.br";
+
+    console.log("🟡 [WIINPAY] Gerando pagamento via API v2...");
+
+    const response = await axios.post(
+      `${baseUrl}/payment/create`,
+      {
+        api_key: apiKey,
+        value: Number(valor),
+        name: "Cliente BotSimples",
+        email: "cliente@botsimples.com",
+        description: descricao,
+        webhook_url: process.env.WEBHOOK_URL || "https://telegram-bot-starter-ggy2.onrender.com/webhook",
+        metadata: { origem: "telegram-bot" },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+
+    const data = response.data?.data || response.data || {};
+    console.log("🟢 [WIINPAY] PIX gerado com sucesso:", data);
+
+    return {
+      success: true,
+      qr_code: data.qr_code || data.qrcode || data.qrCode || data.qr,
+      paymentId: data.paymentId || data.id || data.transaction_id,
+    };
+  } catch (error) {
+    console.error("❌ [WIINPAY] Erro ao gerar PIX:", error.response?.data || error.message);
+    return { success: false, error: "ERRO_WIINPAY" };
+  }
+}
+
+// === VERIFICAR PAGAMENTO ===
 export async function verificarPixWiinPay(paymentId) {
   try {
     const apiKey = process.env.WIINPAY_API_KEY;
@@ -17,9 +61,9 @@ export async function verificarPixWiinPay(paymentId) {
 
     const data = response.data;
 
-    // ✅ Captura o status corretamente (agora cobre todos os casos, inclusive o seu)
+    // ✅ Captura o status corretamente (inclusive o teu formato atual)
     const status =
-      data?.data?.payment?.status || // <-- caminho real do seu JSON
+      data?.data?.payment?.status || // <-- estrutura real do teu JSON
       data?.payment?.status ||
       data?.data?.status ||
       data?.data?.[0]?.status ||
