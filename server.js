@@ -5,9 +5,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
+import bodyParser from "body-parser";
 
 import adminRoutes from "./models/admin.js";
-import { gerarPixWiinPay, verificarPixWiinPay } from "./integrations/wiinpay.js";
+import Plan from "./models/Plan.js";
+import wiinpay from "./integrations/wiinpay.js";
 
 dotenv.config();
 
@@ -15,9 +17,9 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// === MIDDLEWARES ===
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -25,12 +27,9 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || "painel-botsimples",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   })
 );
-
-// === ROTAS ADMIN PRIMEIRO ===
-app.use("/", adminRoutes);
 
 // === VARIÁVEIS ===
 const TOKEN = process.env.TELEGRAM_TOKEN;
@@ -47,8 +46,9 @@ mongoose
 const mensagensPorChat = new Map();
 const pagamentosPendentes = new Map();
 const qrsGerados = new Map();
+const planoPorChat = new Map();
 
-// === FUNÇÃO: Enviar mensagem ===
+// === FUNÇÕES TELEGRAM ===
 async function sendMessage(chatId, text, options = {}) {
   try {
     const res = await axios.post(`${API}/sendMessage`, {
@@ -68,7 +68,6 @@ async function sendMessage(chatId, text, options = {}) {
   }
 }
 
-// === FUNÇÃO: Enviar vídeo inicial ===
 async function sendVideoInicial(chatId) {
   const videoUrl = "https://t.me/gustavoisp2/30";
   try {
@@ -88,14 +87,13 @@ async function sendVideoInicial(chatId) {
   }
 }
 
-// === FUNÇÃO: Enviar imagem QR (registrando no controle) ===
 async function sendQrCode(chatId, qrData) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
   try {
     const res = await axios.post(`${API}/sendPhoto`, {
       chat_id: chatId,
       photo: qrUrl,
-      caption: "📷 Escaneie o QR Code acima",
+      caption: "📷 Escaneie o QR Code acima para efetuar o pagamento.",
       parse_mode: "HTML",
     });
     const msgId = res.data?.result?.message_id;
@@ -108,18 +106,21 @@ async function sendQrCode(chatId, qrData) {
   }
 }
 
-// === FUNÇÃO: Apagar TODAS as mensagens ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId);
   if (!lista) return;
   for (const msgId of lista) {
     try {
-      await axios.post(`${API}/deleteMessage`, { chat_id: chatId, message_id: msgId });
+      await axios.post(`${API}/deleteMessage`, {
+        chat_id: chatId,
+        message_id: msgId,
+      });
     } catch {}
   }
   mensagensPorChat.set(chatId, []);
   qrsGerados.delete(chatId);
   pagamentosPendentes.delete(chatId);
+  planoPorChat.delete(chatId);
 }
 
 // === WEBHOOK ===
@@ -137,7 +138,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     // === /start ===
     if (message?.text === "/start") {
       await limparMensagens(chatId);
-
       await sendVideoInicial(chatId);
       await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
@@ -152,23 +152,14 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     // === Comprar Plano ===
     if (data === "comprar_plano") {
       await limparMensagens(chatId);
-
-      const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
-        name: String,
-        price: Number,
-        description: String,
-      }));
       const planos = await Plan.find();
-
       if (!planos.length) {
         await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
         return res.sendStatus(200);
       }
-
       const botoes = planos.map(p => [
-        { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p.price}` },
+        { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p._id}` },
       ]);
-
       await sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
         reply_markup: { inline_keyboard: botoes },
       });
@@ -177,36 +168,34 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     // === Selecionar Plano ===
     if (data?.startsWith("plano_")) {
       await limparMensagens(chatId);
-
-      const valor = parseFloat(data.split("_")[1]);
-      const pix = await gerarPixWiinPay(valor);
-
+      const planoId = data.split("_")[1];
+      const plano = await Plan.findById(planoId);
+      if (!plano) {
+        await sendMessage(chatId, "❌ Erro ao encontrar plano selecionado.");
+        return res.sendStatus(200);
+      }
+      planoPorChat.set(chatId, plano);
+      const pix = await wiinpay.gerarPixWiinPay(plano.price);
       if (!pix.success) {
         await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
         return res.sendStatus(200);
       }
-
       qrsGerados.set(chatId, pix.qr_code);
       pagamentosPendentes.set(chatId, pix.paymentId);
 
-      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>\n⚠️ Este código tem validade de 30 minutos.");
+      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
       await sendMessage(chatId, `<code>${pix.qr_code}</code>`);
+      await sendMessage(chatId, "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n✅ Após efetuar o pagamento, clique abaixo para verificar:", {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
+            [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
+          ],
+        },
+      });
 
-      await sendMessage(
-        chatId,
-        "⏰ Lembrete: o pagamento via PIX tem validade de 30 minutos.\n\n" +
-        "✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em <b>Verificar Pagamento</b>.\n\n" +
-        "⚠️ Ao realizar o pagamento, você declara estar ciente de que este é um produto digital de consumo imediato.",
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
-              [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
-              [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
-            ],
-          },
-        }
-      );
+      // 🕐 Verificação automática
+      setTimeout(async () => await checarPagamentoAuto(chatId), 15000);
     }
 
     // === Mostrar QR Code ===
@@ -215,20 +204,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       if (qr) await sendQrCode(chatId, qr);
     }
 
-    // === Verificar Pagamento ===
+    // === Verificar Pagamento (manual) ===
     if (data === "verificar_pagamento") {
-      const paymentId = pagamentosPendentes.get(chatId);
-      if (!paymentId) {
-        await sendMessage(chatId, "⚠️ Nenhum pagamento pendente encontrado.");
-        return res.sendStatus(200);
-      }
-
-      const status = await verificarPixWiinPay(paymentId);
-      if (status.success && status.status === "PAID") {
-        await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b>\nSeu acesso foi liberado automaticamente.");
-      } else {
-        await sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
-      }
+      await checarPagamentoAuto(chatId);
     }
 
     res.sendStatus(200);
@@ -238,8 +216,30 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
   }
 });
 
+// === FUNÇÃO AUTOMÁTICA DE VERIFICAÇÃO ===
+async function checarPagamentoAuto(chatId) {
+  const paymentId = pagamentosPendentes.get(chatId);
+  if (!paymentId) return;
+  const plano = planoPorChat.get(chatId);
+  const status = await wiinpay.verificarPixWiinPay(paymentId);
+  console.log("🧾 [AUTO] Status detectado:", status);
+  if (status.success && status.status === "PAID") {
+    await sendMessage(chatId, "🎉 <b>Pagamento confirmado automaticamente!</b>");
+    if (plano?.deliverable) {
+      await sendMessage(chatId, `🚀 Seu acesso:\n${plano.deliverable}`);
+    } else {
+      await sendMessage(chatId, "✅ Pagamento recebido, porém o plano não possui entregável definido.");
+    }
+    pagamentosPendentes.delete(chatId);
+  } else {
+    console.log("⏳ Aguardando pagamento...");
+    setTimeout(async () => await checarPagamentoAuto(chatId), 15000);
+  }
+}
+
+// === ROTAS PAINEL ===
+app.use("/", adminRoutes);
+
 // === START SERVER ===
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, "0.0.0.0", () =>
-  console.log(`🚀 Servidor rodando na porta ${PORT}`)
-);
+app.listen(PORT, "0.0.0.0", () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
