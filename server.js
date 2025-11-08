@@ -9,7 +9,7 @@ import bodyParser from "body-parser";
 
 import adminRoutes from "./models/admin.js";
 import Plan from "./models/Plan.js";
-import wiinpay from "./integrations/wiinpay.js";
+import { gerarPixWiinPay, verificarPixWiinPay } from "./integrations/wiinpay.js";
 
 dotenv.config();
 
@@ -175,7 +175,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         return res.sendStatus(200);
       }
       planoPorChat.set(chatId, plano);
-      const pix = await wiinpay.gerarPixWiinPay(plano.price);
+      const pix = await gerarPixWiinPay(plano.price);
       if (!pix.success) {
         await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
         return res.sendStatus(200);
@@ -221,14 +221,14 @@ async function checarPagamentoAuto(chatId) {
   const paymentId = pagamentosPendentes.get(chatId);
   if (!paymentId) return;
   const plano = planoPorChat.get(chatId);
-  const status = await wiinpay.verificarPixWiinPay(paymentId);
+  const status = await verificarPixWiinPay(paymentId);
   console.log("🧾 [AUTO] Status detectado:", status);
   if (status.success && status.status === "PAID") {
     await sendMessage(chatId, "🎉 <b>Pagamento confirmado automaticamente!</b>");
     if (plano?.deliverable) {
       await sendMessage(chatId, `🚀 Seu acesso:\n${plano.deliverable}`);
     } else {
-      await sendMessage(chatId, "✅ Pagamento recebido, porém o plano não possui entregável definido.");
+      await sendMessage(chatId, "✅ Pagamento recebido, mas o plano não possui entregável definido.");
     }
     pagamentosPendentes.delete(chatId);
   } else {
