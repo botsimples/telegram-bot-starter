@@ -262,6 +262,7 @@ app.post("/telegram-webhook", async (req, res) => {
 
         // === WIINPAY ===
         if (ativo.nome.toLowerCase() === "wiinpay") {
+          console.log("🟢 [WIINPAY] Criando cobrança...");
           const resp = await axios.post("https://api.wiinpay.com.br/payment/create", {
             api_key: ativo.token || process.env.WIINPAY_API_KEY,
             value: plano?.price || 9.9,
@@ -274,10 +275,11 @@ app.post("/telegram-webhook", async (req, res) => {
           paymentId = resp.data?.data?.paymentId || null;
         }
 
-        // === SYNCPAY (corrigido) ===
+        // === SYNCPAY (oficial e corrigido) ===
         else if (ativo.nome.toLowerCase() === "syncpay") {
           try {
-            const tokenResp = await axios.post("https://app.syncpay.com.br/api/partner/v1/auth-token", {
+            console.log("🟡 [SYNC] Solicitando token...");
+            const tokenResp = await axios.post("https://api.syncpayments.com.br/api/partner/v1/auth-token", {
               client_id: ativo.clientId,
               client_secret: ativo.clientSecret,
             });
@@ -285,8 +287,10 @@ app.post("/telegram-webhook", async (req, res) => {
             const accessToken = tokenResp.data?.access_token;
             if (!accessToken) throw new Error("Token de acesso inválido");
 
+            console.log("🟢 [SYNC] Token gerado com sucesso");
+
             const cobranca = await axios.post(
-              "https://app.syncpay.com.br/api/partner/v1/cashin",
+              "https://api.syncpayments.com.br/api/partner/v1/cashin",
               {
                 valor: plano?.price || 9.9,
                 descricao: plano?.name || "Plano VIP Telegram",
@@ -300,15 +304,17 @@ app.post("/telegram-webhook", async (req, res) => {
               }
             );
 
+            console.log("🟢 [SYNC] PIX criado:", cobranca.data);
+
             retorno = {
               data: {
-                pix: { code: cobranca.data.qrcode || cobranca.data.pixCopiaCola },
-                paymentId: cobranca.data.identifier || cobranca.data.id,
+                pix: { code: cobranca.data?.pix_code || cobranca.data?.pixCopiaCola },
+                paymentId: cobranca.data?.identifier || cobranca.data?.id,
               },
             };
-            paymentId = cobranca.data.identifier || cobranca.data.id;
+            paymentId = cobranca.data?.identifier || cobranca.data?.id;
           } catch (err) {
-            console.error("❌ Erro SyncPay:", err.response?.data || err.message);
+            console.error("❌ [SYNC] Erro:", err.response?.data || err.message);
             retorno = { data: { pix: { code: "ERRO_SYNCPAY" } } };
           }
         }
