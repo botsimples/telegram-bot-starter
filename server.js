@@ -263,9 +263,39 @@ app.post("/telegram-webhook", async (req, res) => {
             description: "Plano VIP Telegram",
             webhook_url: "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook",
           });
-        } else if (ativo.nome.toLowerCase() === "syncpay") {
-          retorno = { data: { pix: { code: "PIXCODEEXEMPLO123" } } }; // placeholder, integr. real depois
-        }
+else if (ativo.nome.toLowerCase() === "syncpay") {
+  try {
+    // 1️⃣ Gera o token de acesso (OAuth2)
+    const tokenResp = await axios.post("https://api.syncpay.com.br/v1/oauth/token", {
+      client_id: ativo.clientId,
+      client_secret: ativo.clientSecret,
+      grant_type: "client_credentials"
+    });
+
+    const accessToken = tokenResp.data.access_token;
+
+    // 2️⃣ Cria a cobrança PIX
+    const cobranca = await axios.post(
+      "https://api.syncpay.com.br/v1/pix/cob",
+      {
+        valor: "9.90",
+        descricao: "Plano VIP Telegram",
+        webhook: "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook"
+      },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      }
+    );
+
+    // 3️⃣ Retorna o código real pro cliente
+    retorno = { data: { pix: { code: cobranca.data.pixCopiaECola } } };
+
+  } catch (err) {
+    console.error("Erro SyncPay:", err.response?.data || err.message);
+    retorno = { data: { pix: { code: "ERRO_SYNC_PAY" } } };
+  }
+}
+
 
         const codigoPix = retorno?.data?.pix?.code || "Erro ao gerar PIX";
 
