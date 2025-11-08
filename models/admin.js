@@ -29,12 +29,11 @@ const Gateway =
   );
 
 // === ROTA PRINCIPAL DO PAINEL ===
-router.get("/", async (req, res) => {
+router.get(["/", "/admin"], async (req, res) => {
   try {
     const planos = (await Plan.find()) || [];
     const gateways = (await Gateway.find()) || [];
 
-    // ✅ Garante que o painel sempre renderize mesmo com banco vazio
     res.render("admin", { planos, gateways });
   } catch (err) {
     console.error("❌ Erro ao carregar painel admin:", err.message);
@@ -49,6 +48,7 @@ router.post("/admin/planos", async (req, res) => {
     await Plan.create({ name, price, description });
     res.sendStatus(200);
   } catch (err) {
+    console.error("❌ Erro ao criar plano:", err.message);
     res.status(500).send(err.message);
   }
 });
@@ -58,6 +58,7 @@ router.put("/admin/planos/:id", async (req, res) => {
     await Plan.findByIdAndUpdate(req.params.id, req.body);
     res.sendStatus(200);
   } catch (err) {
+    console.error("❌ Erro ao atualizar plano:", err.message);
     res.status(500).send(err.message);
   }
 });
@@ -67,6 +68,7 @@ router.delete("/admin/planos/:id", async (req, res) => {
     await Plan.findByIdAndDelete(req.params.id);
     res.sendStatus(200);
   } catch (err) {
+    console.error("❌ Erro ao excluir plano:", err.message);
     res.status(500).send(err.message);
   }
 });
@@ -78,6 +80,7 @@ router.post("/admin/gateways", async (req, res) => {
     await Gateway.create({ name, clientId, clientSecret, token });
     res.sendStatus(200);
   } catch (err) {
+    console.error("❌ Erro ao criar gateway:", err.message);
     res.status(500).send(err.message);
   }
 });
@@ -87,6 +90,7 @@ router.put("/admin/gateways/:id", async (req, res) => {
     await Gateway.findByIdAndUpdate(req.params.id, req.body);
     res.sendStatus(200);
   } catch (err) {
+    console.error("❌ Erro ao atualizar gateway:", err.message);
     res.status(500).send(err.message);
   }
 });
@@ -97,6 +101,7 @@ router.post("/admin/gateways/ativar/:id", async (req, res) => {
     await Gateway.findByIdAndUpdate(req.params.id, { active: true });
     res.sendStatus(200);
   } catch (err) {
+    console.error("❌ Erro ao ativar gateway:", err.message);
     res.status(500).send(err.message);
   }
 });
