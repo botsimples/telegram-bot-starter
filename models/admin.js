@@ -82,3 +82,18 @@ router.post("/admin/gateway/ativar", async (req, res) => {
 });
 
 export default router;
+
+import express from "express";
+const router = express.Router();
+
+// === NOVAS ROTAS FIXAS PARA LOGIN E ADMIN ===
+router.get("/login", (req, res) => {
+  res.render("dashboard", { title: "Login Painel", message: "Login temporário ativo" });
+});
+
+router.get("/admin", (req, res) => {
+  res.render("admin", { title: "Painel Admin", message: "Mongo conectado e painel ativo!" });
+});
+
+export default router;
+
