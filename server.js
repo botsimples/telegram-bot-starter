@@ -66,7 +66,7 @@ async function sendMessage(chatId, text, options = {}) {
   }
 }
 
-// === FUNÇÃO: Apagar TODAS as mensagens anteriores ===
+// === FUNÇÃO: Apagar TODAS as mensagens ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId);
   if (!lista) return;
@@ -79,6 +79,8 @@ async function limparMensagens(chatId) {
     } catch {}
   }
   mensagensPorChat.set(chatId, []);
+  qrsGerados.delete(chatId);
+  pagamentosPendentes.delete(chatId);
 }
 
 // === FUNÇÃO: Enviar imagem QR ===
@@ -88,7 +90,7 @@ async function sendQrCode(chatId, qrData) {
     await axios.post(`${API}/sendPhoto`, {
       chat_id: chatId,
       photo: qrUrl,
-      caption: "📷 Escaneie o QR Code acima ou copie o código PIX abaixo 👇",
+      caption: "📷 Escaneie o QR Code acima",
       parse_mode: "HTML",
     });
   } catch (err) {
@@ -110,7 +112,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
     // === /start ===
     if (message?.text === "/start") {
+      // 🔥 Apaga absolutamente tudo, inclusive QR e PIX antigos
       await limparMensagens(chatId);
+
       await sendMessage(chatId, "🔥 <b>Bem-vindo ao BotSimples!</b>");
       await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
@@ -160,7 +164,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         return res.sendStatus(200);
       }
 
-      qrsGerados.set(chatId, pix.qr_code); // Salva QR para o botão
+      qrsGerados.set(chatId, pix.qr_code);
       pagamentosPendentes.set(chatId, pix.paymentId);
 
       await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>\n⚠️ Este código tem validade de 30 minutos.");
@@ -174,8 +178,8 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         {
           reply_markup: {
             inline_keyboard: [
-              [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
               [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
+              [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
               [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
             ],
           },
