@@ -42,10 +42,11 @@ mongoose
   .catch((err) => console.error("❌ Erro MongoDB:", err.message));
 
 // === MAPAS DE CONTROLE ===
-const pagamentosPendentes = new Map();
 const mensagensPorChat = new Map();
+const pagamentosPendentes = new Map();
+const qrsGerados = new Map();
 
-// === FUNÇÃO: Enviar mensagem Telegram ===
+// === FUNÇÃO: Enviar mensagem ===
 async function sendMessage(chatId, text, options = {}) {
   try {
     const res = await axios.post(`${API}/sendMessage`, {
@@ -62,14 +63,13 @@ async function sendMessage(chatId, text, options = {}) {
     return msgId;
   } catch (err) {
     console.error("Erro ao enviar mensagem Telegram:", err.response?.data || err.message);
-    return null;
   }
 }
 
-// === FUNÇÃO: Apagar TODAS as mensagens antigas ===
-async function limparMensagensAnteriores(chatId) {
+// === FUNÇÃO: Apagar TODAS as mensagens anteriores ===
+async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId);
-  if (!lista || !lista.length) return;
+  if (!lista) return;
   for (const msgId of lista) {
     try {
       await axios.post(`${API}/deleteMessage`, {
@@ -81,10 +81,10 @@ async function limparMensagensAnteriores(chatId) {
   mensagensPorChat.set(chatId, []);
 }
 
-// === FUNÇÃO: Enviar imagem QR Code ===
+// === FUNÇÃO: Enviar imagem QR ===
 async function sendQrCode(chatId, qrData) {
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
   try {
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
     await axios.post(`${API}/sendPhoto`, {
       chat_id: chatId,
       photo: qrUrl,
@@ -106,14 +106,11 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     const callback = update.callback_query;
     const chatId = message?.chat?.id || callback?.message?.chat?.id;
     const data = callback?.data;
-    const messageId = callback?.message?.message_id;
-
     if (!chatId) return res.sendStatus(200);
 
-    // === COMANDO /start ===
+    // === /start ===
     if (message?.text === "/start") {
-      await limparMensagensAnteriores(chatId);
-
+      await limparMensagens(chatId);
       await sendMessage(chatId, "🔥 <b>Bem-vindo ao BotSimples!</b>");
       await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
@@ -126,16 +123,15 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       return res.sendStatus(200);
     }
 
-    // === BOTÃO: COMPRAR PLANO ===
+    // === Comprar Plano ===
     if (data === "comprar_plano") {
-      await limparMensagensAnteriores(chatId);
+      await limparMensagens(chatId);
 
       const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
         name: String,
         price: Number,
-        description: String
+        description: String,
       }));
-
       const planos = await Plan.find();
 
       if (!planos.length) {
@@ -144,7 +140,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       }
 
       const botoes = planos.map(p => [
-        { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p.price}` }
+        { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p.price}` },
       ]);
 
       await sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
@@ -152,20 +148,23 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       });
     }
 
-    // === SELECIONAR PLANO ===
+    // === Selecionar Plano ===
     if (data?.startsWith("plano_")) {
-      const valor = parseFloat(data.split("_")[1]);
-      pagamentosPendentes.set(chatId, Date.now());
+      await limparMensagens(chatId);
 
+      const valor = parseFloat(data.split("_")[1]);
       const pix = await gerarPixWiinPay(valor);
+
       if (!pix.success) {
-        await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay. Tente novamente mais tarde.");
+        await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
         return res.sendStatus(200);
       }
 
+      qrsGerados.set(chatId, pix.qr_code); // Salva QR para o botão
+      pagamentosPendentes.set(chatId, pix.paymentId);
+
       await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>\n⚠️ Este código tem validade de 30 minutos.");
       await sendMessage(chatId, `<code>${pix.qr_code}</code>`);
-      await sendQrCode(chatId, pix.qr_code); // Envia imagem do QR Code 🎯
 
       await sendMessage(
         chatId,
@@ -175,7 +174,8 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         {
           reply_markup: {
             inline_keyboard: [
-              [{ text: "🔍 Verificar Pagamento", callback_data: `verificar_${pix.paymentId}` }],
+              [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
+              [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
               [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
             ],
           },
@@ -183,12 +183,21 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       );
     }
 
-    // === BOTÃO: VERIFICAR PAGAMENTO ===
-    if (data?.startsWith("verificar_")) {
-      // 🧠 Agora não apaga mensagens de PIX
-      const paymentId = data.split("_")[1];
-      const status = await verificarPixWiinPay(paymentId);
+    // === Mostrar QR Code ===
+    if (data === "mostrar_qr") {
+      const qr = qrsGerados.get(chatId);
+      if (qr) await sendQrCode(chatId, qr);
+    }
 
+    // === Verificar Pagamento ===
+    if (data === "verificar_pagamento") {
+      const paymentId = pagamentosPendentes.get(chatId);
+      if (!paymentId) {
+        await sendMessage(chatId, "⚠️ Nenhum pagamento pendente encontrado.");
+        return res.sendStatus(200);
+      }
+
+      const status = await verificarPixWiinPay(paymentId);
       if (status.success && status.status === "PAID") {
         await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b>\nSeu acesso foi liberado automaticamente.");
       } else {
@@ -203,9 +212,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
   }
 });
 
-// === ROTAS DO PAINEL ===
 app.use("/", adminRoutes);
 
-// === INICIAR SERVIDOR ===
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, "0.0.0.0", () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
