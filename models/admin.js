@@ -3,94 +3,102 @@ import mongoose from "mongoose";
 
 const router = express.Router();
 
-// === MODELOS DO BANCO ===
-const Plan = mongoose.model("Plan", new mongoose.Schema({
-  name: String,
-  price: Number,
-  description: String
-}));
+// === MODELOS ===
+const Plan =
+  mongoose.models.Plan ||
+  mongoose.model(
+    "Plan",
+    new mongoose.Schema({
+      name: String,
+      price: Number,
+      description: String,
+    })
+  );
 
-const Button = mongoose.model("Button", new mongoose.Schema({
-  text: String,
-  action: String,
-  value: String
-}));
+const Gateway =
+  mongoose.models.Gateway ||
+  mongoose.model(
+    "Gateway",
+    new mongoose.Schema({
+      name: String,
+      clientId: String,
+      clientSecret: String,
+      token: String,
+      active: { type: Boolean, default: false },
+    })
+  );
 
-const Gateway = mongoose.model("Gateway", new mongoose.Schema({
-  nome: String,
-  clientId: String,
-  clientSecret: String,
-  token: String,
-  ativo: { type: Boolean, default: false }
-}));
-
-// === PAINEL PRINCIPAL ===
+// === ROTA PRINCIPAL DO PAINEL ===
 router.get("/", async (req, res) => {
-  const plans = await Plan.find();
-  const buttons = await Button.find();
-  const gateways = await Gateway.find();
-  res.render("admin", { plans, buttons, gateways });
+  try {
+    const planos = (await Plan.find()) || [];
+    const gateways = (await Gateway.find()) || [];
+
+    // ✅ Garante que o painel sempre renderize mesmo com banco vazio
+    res.render("admin", { planos, gateways });
+  } catch (err) {
+    console.error("❌ Erro ao carregar painel admin:", err.message);
+    res.render("admin", { planos: [], gateways: [] });
+  }
 });
 
 // === CRUD PLANOS ===
-router.post("/admin/plan/create", async (req, res) => {
-  await Plan.create(req.body);
-  res.redirect("/");
+router.post("/admin/planos", async (req, res) => {
+  const { name, price, description } = req.body;
+  try {
+    await Plan.create({ name, price, description });
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post("/admin/plan/edit", async (req, res) => {
-  await Plan.findByIdAndUpdate(req.body.id, req.body);
-  res.redirect("/");
+router.put("/admin/planos/:id", async (req, res) => {
+  try {
+    await Plan.findByIdAndUpdate(req.params.id, req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post("/admin/plan/delete", async (req, res) => {
-  await Plan.findByIdAndDelete(req.body.id);
-  res.redirect("/");
-});
-
-// === CRUD BOTÕES ===
-router.post("/admin/button/create", async (req, res) => {
-  await Button.create(req.body);
-  res.redirect("/");
-});
-
-router.post("/admin/button/edit", async (req, res) => {
-  await Button.findByIdAndUpdate(req.body.id, req.body);
-  res.redirect("/");
-});
-
-router.post("/admin/button/delete", async (req, res) => {
-  await Button.findByIdAndDelete(req.body.id);
-  res.redirect("/");
+router.delete("/admin/planos/:id", async (req, res) => {
+  try {
+    await Plan.findByIdAndDelete(req.params.id);
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 // === CRUD GATEWAYS ===
-router.post("/admin/gateway/create", async (req, res) => {
-  await Gateway.create(req.body);
-  res.redirect("/");
+router.post("/admin/gateways", async (req, res) => {
+  const { name, clientId, clientSecret, token } = req.body;
+  try {
+    await Gateway.create({ name, clientId, clientSecret, token });
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post("/admin/gateway/update", async (req, res) => {
-  await Gateway.findByIdAndUpdate(req.body.id, req.body);
-  res.redirect("/");
+router.put("/admin/gateways/:id", async (req, res) => {
+  try {
+    await Gateway.findByIdAndUpdate(req.params.id, req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post("/admin/gateway/ativar", async (req, res) => {
-  await Gateway.updateMany({}, { ativo: false });
-  await Gateway.findByIdAndUpdate(req.body.id, { ativo: true });
-  res.redirect("/");
-});
-
-// === ROTAS FIXAS: LOGIN / ADMIN ===
-router.get("/login", (req, res) => {
-  res.render("dashboard", { title: "Login Painel", message: "Login temporário ativo", users: [] }); // ✅ corrigido
-});
-
-router.get("/admin", async (req, res) => {
-  const plans = await Plan.find();
-  const buttons = await Button.find();
-  const gateways = await Gateway.find();
-  res.render("admin", { plans, buttons, gateways });
+router.post("/admin/gateways/ativar/:id", async (req, res) => {
+  try {
+    await Gateway.updateMany({}, { active: false });
+    await Gateway.findByIdAndUpdate(req.params.id, { active: true });
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 export default router;
