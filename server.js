@@ -51,7 +51,7 @@ async function sendMessage(chatId, text, options = {}) {
     await axios.post(`${API}/sendMessage`, {
       chat_id: chatId,
       text,
-      parse_mode: "HTML", // ✅ usa HTML seguro
+      parse_mode: "HTML", // usa HTML seguro
       ...options,
     });
   } catch (err) {
@@ -67,7 +67,7 @@ async function deleteMessage(chatId, messageId) {
       message_id: messageId,
     });
   } catch {
-    // ignora erros de mensagem já apagada
+    // ignora erros
   }
 }
 
@@ -87,24 +87,25 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
     // === COMANDO /start ===
     if (message?.text === "/start") {
-      await sendMessage(chatId, `
-<b>🔥 Bem-vindo ao BotSimples!</b><br><br>
-Escolha uma opção abaixo 👇
-      `, {
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
-            [{ text: "📢 Canal VIP", url: "https://t.me/seucanal" }]
-          ]
+      await sendMessage(
+        chatId,
+        `<b>🔥 Bem-vindo ao BotSimples!</b>\n\nEscolha uma opção abaixo 👇`,
+        {
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
+              [{ text: "📢 Canal VIP", url: "https://t.me/seucanal" }],
+            ],
+          },
         }
-      });
+      );
       return res.sendStatus(200);
     }
 
     // === BOTÃO: COMPRAR PLANO ===
     if (data === "comprar_plano") {
       await deleteMessage(chatId, messageId);
-      await sendMessage(chatId, "<b>💳 Escolha o plano que deseja adquirir:</b>", {
+      await sendMessage(chatId, `<b>💳 Escolha o plano que deseja adquirir:</b>`, {
         reply_markup: {
           inline_keyboard: [[{ text: "Mensal — R$9.97", callback_data: "plano_9.97" }]],
         },
@@ -115,7 +116,6 @@ Escolha uma opção abaixo 👇
     if (data?.startsWith("plano_")) {
       const valor = parseFloat(data.split("_")[1]);
 
-      // Evita spam de geração de PIX
       const ultimoPix = pagamentosPendentes.get(chatId);
       if (ultimoPix && Date.now() - ultimoPix < 60 * 1000) {
         await sendMessage(chatId, "⚠️ Você precisa aguardar <b>1 minuto</b> para gerar outro PIX.");
@@ -131,30 +131,30 @@ Escolha uma opção abaixo 👇
       }
 
       // Mensagem 1: aviso
-      await sendMessage(chatId, `
-<b>Toque no código PIX abaixo para copiar:</b><br><br>
-⚠️ <b>Atenção:</b> este código PIX tem validade de <b>30 minutos</b>.
-      `);
+      await sendMessage(
+        chatId,
+        `<b>Toque no código PIX abaixo para copiar:</b>\n\n⚠️ <b>Atenção:</b> este código PIX tem validade de <b>30 minutos</b>.`
+      );
 
       // Mensagem 2: código PIX separado
       await sendMessage(chatId, `<code>${pix.qr_code}</code>`);
 
       // Mensagem 3: lembrete + botões
-      await sendMessage(chatId, `
-⏰ <b>Lembrete:</b> o pagamento via PIX tem validade de <b>30 minutos</b>.<br><br>
-✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em <b>Verificar Pagamento</b>.<br><br>
-⚠️ Ao realizar o pagamento, você declara estar ciente de que este é um produto digital de consumo imediato.
-      `, {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              { text: "✅ Verificar Pagamento", callback_data: `verificar_${pix.paymentId}` },
-              { text: "📷 Ler QR Code", url: "https://pixcopiar.com.br/" }
+      await sendMessage(
+        chatId,
+        `⏰ <b>Lembrete:</b> o pagamento via PIX tem validade de <b>30 minutos</b>.\n\n✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em <b>Verificar Pagamento</b>.\n\n⚠️ Ao realizar o pagamento, você declara estar ciente de que este é um produto digital de consumo imediato.`,
+        {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                { text: "✅ Verificar Pagamento", callback_data: `verificar_${pix.paymentId}` },
+                { text: "📷 Ler QR Code", url: "https://pixcopiar.com.br/" },
+              ],
+              [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
             ],
-            [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }]
-          ],
-        },
-      });
+          },
+        }
+      );
     }
 
     // === BOTÃO: VERIFICAR PAGAMENTO ===
@@ -167,9 +167,9 @@ Escolha uma opção abaixo 👇
 
         const status = response.data?.data?.status;
         if (status === "PAID") {
-          await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b><br>Seu acesso foi liberado automaticamente.");
+          await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b>\nSeu acesso foi liberado automaticamente.");
         } else {
-          await sendMessage(chatId, "⏳ Pagamento ainda <b>não</b> foi confirmado. Tente novamente em alguns segundos.");
+          await sendMessage(chatId, "⏳ Pagamento ainda <b>não</b> foi confirmado.\nTente novamente em alguns segundos.");
         }
       } catch (error) {
         await sendMessage(chatId, "❌ Erro ao verificar pagamento, tente novamente mais tarde.");
