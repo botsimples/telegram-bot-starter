@@ -2,106 +2,53 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Painel BotSimples — Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel BotSimples</title>
   <style>
     body {
-      background: #0f0f10;
-      color: #fff;
       font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    h1, h2 { color: #9b6dff; }
-    form { margin-bottom: 30px; }
-    input, textarea, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      background: #1b1b1d;
+      background-color: #0f0f0f;
       color: #fff;
-      border: 1px solid #333;
-      border-radius: 5px;
+      text-align: center;
+      margin: 0;
+      padding: 40px;
     }
-    button {
-      background: #9b6dff;
-      border: none;
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #333;
-      padding: 8px;
-      text-align: left;
-    }
-    th { background: #1b1b1d; }
-    tr:nth-child(even) { background: #151515; }
+    h1 { color: #ffb347; }
+    table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+    th, td { border: 1px solid #333; padding: 8px; }
+    a, button { background: #ffb347; color: #000; border: none; padding: 8px 14px; margin: 4px; cursor: pointer; text-decoration: none; }
   </style>
 </head>
 <body>
-  <h1>Painel Admin — BotSimples</h1>
+  <h1>📊 Painel BotSimples</h1>
+  <p>Mongo conectado e painel ativo!</p>
 
-  <h2>💳 Criar Novo Plano</h2>
+  <h2>Planos</h2>
+  <table>
+    <tr><th>Nome</th><th>Preço</th><th>Descrição</th><th>Ações</th></tr>
+    <% plans.forEach(plan => { %>
+      <tr>
+        <td><%= plan.name %></td>
+        <td>R$ <%= plan.price %></td>
+        <td><%= plan.description %></td>
+        <td>
+          <form method="POST" action="/admin/plan/delete">
+            <input type="hidden" name="id" value="<%= plan._id %>">
+            <button>Excluir</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <h2>Criar novo plano</h2>
   <form method="POST" action="/admin/plan/create">
-    <input name="name" placeholder="Nome do plano" required>
-    <input name="price" placeholder="Valor (R$)" type="number" step="0.01" required>
-    <textarea name="description" placeholder="Descrição" required></textarea>
-    <button type="submit">Salvar Plano</button>
+    <input name="name" placeholder="Nome" required>
+    <input name="price" placeholder="Preço" type="number" required>
+    <input name="description" placeholder="Descrição" required>
+    <button>Criar</button>
   </form>
 
-  <h3>Planos Existentes</h3>
-  <table>
-    <tr><th>Nome</th><th>Valor</th><th>Descrição</th><th>Ações</th></tr>
-    <% plans.forEach(p => { %>
-      <tr>
-        <td><%= p.name %></td>
-        <td>R$ <%= p.price.toFixed(2) %></td>
-        <td><%= p.description %></td>
-        <td>
-          <form method="POST" action="/admin/plan/delete" style="display:inline;">
-            <input type="hidden" name="id" value="<%= p._id %>">
-            <button>Excluir</button>
-          </form>
-        </td>
-      </tr>
-    <% }) %>
-  </table>
-
-  <h2>🔘 Criar Novo Botão</h2>
-  <form method="POST" action="/admin/button/create">
-    <input name="text" placeholder="Texto do botão" required>
-    <select name="action">
-      <option value="url">Abrir URL</option>
-      <option value="callback">Callback interno</option>
-      <option value="flow">Ir para fluxo</option>
-    </select>
-    <input name="value" placeholder="URL ou dado do botão" required>
-    <button type="submit">Salvar Botão</button>
-  </form>
-
-  <h3>Botões Existentes</h3>
-  <table>
-    <tr><th>Texto</th><th>Ação</th><th>Valor</th><th>Ações</th></tr>
-    <% buttons.forEach(b => { %>
-      <tr>
-        <td><%= b.text %></td>
-        <td><%= b.action %></td>
-        <td><%= b.value %></td>
-        <td>
-          <form method="POST" action="/admin/button/delete" style="display:inline;">
-            <input type="hidden" name="id" value="<%= b._id %>">
-            <button>Excluir</button>
-          </form>
-        </td>
-      </tr>
-    <% }) %>
-  </table>
-
+  <p><a href="/logout">Sair</a></p>
 </body>
 </html>
