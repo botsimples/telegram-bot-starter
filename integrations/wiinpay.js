@@ -1,7 +1,9 @@
 import axios from "axios";
 
-// === GERAR PIX ===
-export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimples") {
+/**
+ * GERA UM NOVO PIX NA WIINPAY
+ */
+export const gerarPixWiinPay = async (valor, descricao = "Pagamento via BotSimples") => {
   try {
     const apiKey = process.env.WIINPAY_API_KEY;
     const baseUrl = "https://api-v2.wiinpay.com.br";
@@ -39,10 +41,12 @@ export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimpl
     console.error("❌ [WIINPAY] Erro ao gerar PIX:", error.response?.data || error.message);
     return { success: false, error: "ERRO_WIINPAY" };
   }
-}
+};
 
-// === VERIFICAR PAGAMENTO ===
-export async function verificarPixWiinPay(paymentId) {
+/**
+ * VERIFICA O STATUS DE UM PAGAMENTO WIINPAY
+ */
+export const verificarPixWiinPay = async (paymentId) => {
   try {
     const apiKey = process.env.WIINPAY_API_KEY;
     const baseUrl = "https://api-v2.wiinpay.com.br";
@@ -56,14 +60,13 @@ export async function verificarPixWiinPay(paymentId) {
       },
     });
 
-    // Mostra tudo que veio da API
     console.log("🧾 [WIINPAY] Resposta bruta:", JSON.stringify(response.data, null, 2));
 
     const data = response.data;
 
-    // ✅ Captura o status corretamente (estrutura real confirmada)
+    // Detecta o status de forma robusta
     const status =
-      data?.data?.payment?.status || // formato principal do WiinPay
+      data?.data?.payment?.status ||
       data?.payment?.status ||
       data?.data?.status ||
       data?.data?.[0]?.status ||
@@ -81,4 +84,4 @@ export async function verificarPixWiinPay(paymentId) {
     console.error("❌ [WIINPAY] Erro ao verificar PIX:", error.response?.data || error.message);
     return { success: false, error: "ERRO_VERIFICAR" };
   }
-}
+};
