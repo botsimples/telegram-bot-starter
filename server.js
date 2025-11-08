@@ -1,5 +1,5 @@
 // ==========================
-// server.js — Painel BotSimples (SaaS Telegram)
+// server.js — Painel BotSimples (Universal Gateways)
 // ==========================
 
 const express = require("express");
@@ -17,7 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 const TOKEN = process.env.TELEGRAM_TOKEN;
 const API = `https://api.telegram.org/bot${TOKEN}`;
 const MONGO_URI = process.env.MONGO_URI;
-const SYNC_BASE_URL = process.env.SYNC_BASE_URL || "https://api.syncpayments.com.br";
 
 // === CONECTAR AO MONGO ===
 mongoose
@@ -190,7 +189,7 @@ app.post("/admin/gateway/ativar", requireLogin, async (req, res) => {
 });
 
 // === ROTA PADRÃO ===
-app.get("/", (req, res) => res.send("✅ BotSimples online e funcionando!"));
+app.get("/", (req, res) => res.send("✅ BotSimples Universal rodando!"));
 
 // === WEBHOOK TELEGRAM ===
 app.post("/telegram-webhook", async (req, res) => {
@@ -198,19 +197,13 @@ app.post("/telegram-webhook", async (req, res) => {
     const update = req.body;
     console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
 
-    // ===== COMANDO /start =====
     if (update.message && update.message.text === "/start") {
       const chatId = update.message.chat.id;
       const user = update.message.from;
 
       await User.findOneAndUpdate(
         { telegramId: user.id },
-        {
-          telegramId: user.id,
-          username: user.username,
-          firstName: user.first_name,
-          lastName: user.last_name,
-        },
+        { telegramId: user.id, username: user.username, firstName: user.first_name, lastName: user.last_name },
         { upsert: true, new: true }
       );
 
@@ -231,25 +224,17 @@ app.post("/telegram-webhook", async (req, res) => {
       });
     }
 
-    // ===== CALLBACK QUERY =====
+    // === CALLBACKS ===
     if (update.callback_query) {
       const cq = update.callback_query;
       const chatId = cq.message.chat.id;
       const data = cq.data;
 
-      // === LISTA DE PLANOS ===
+      // --- ESCOLHER PLANO ---
       if (data === "comprar_plano") {
         const planos = await Plan.find();
-        if (!planos.length) {
-          await axios.post(`${API}/sendMessage`, {
-            chat_id: chatId,
-            text: "❌ Nenhum plano disponível no momento.",
-          });
-          return res.sendStatus(200);
-        }
-
         const inlineKeyboard = planos.map((p) => [
-          { text: `${p.name} — R$${p.price}`, callback_data: `comprar_${p._id}` },
+          { text: `${p.name} — R$${p.price}`, callback_data: `plano_${p._id}` },
         ]);
 
         await axios.post(`${API}/sendMessage`, {
@@ -257,100 +242,30 @@ app.post("/telegram-webhook", async (req, res) => {
           text: "💳 Escolha o plano que deseja adquirir:",
           reply_markup: { inline_keyboard: inlineKeyboard },
         });
-
-        await axios.post(`${API}/answerCallbackQuery`, { callback_query_id: cq.id });
-        return res.sendStatus(200);
       }
 
-      // === USUÁRIO ESCOLHEU PLANO ===
-      if (data.startsWith("comprar_")) {
-        const planoId = data.replace("comprar_", "");
+      // --- GERAR PIX ---
+      if (data.startsWith("plano_")) {
+        const planoId = data.replace("plano_", "");
         const plano = await Plan.findById(planoId);
         const ativo = await Gateway.findOne({ ativo: true });
 
-        if (!plano || !ativo) {
-          await axios.post(`${API}/sendMessage`, {
+        if (!plano || !ativo)
+          return await axios.post(`${API}/sendMessage`, {
             chat_id: chatId,
-            text: "❌ Erro ao localizar plano ou gateway ativo.",
+            text: "❌ Nenhum plano ou gateway ativo encontrado.",
           });
-          return res.sendStatus(200);
-        }
 
-        let retorno;
-        let paymentId = null;
-
-        // === SYNCPAY (rota autoajustável) ===
-        if (ativo.nome.toLowerCase() === "syncpay") {
-          try {
-            console.log("🟡 [SYNC] Solicitando token...");
-            const tokenResp = await axios.post(`${SYNC_BASE_URL}/api/partner/v1/auth-token`, {
-              client_id: ativo.clientId,
-              client_secret: ativo.clientSecret,
-            });
-
-            const accessToken = tokenResp.data?.access_token;
-            if (!accessToken) throw new Error("Token inválido");
-
-            console.log("🟢 [SYNC] Token OK, testando rotas...");
-
-            const rotas = [
-              `${SYNC_BASE_URL}/api/partner/v1/transactions/cashin`,
-              `${SYNC_BASE_URL}/api/partner/v1/cashin`,
-              `${SYNC_BASE_URL}/api/pix/cashin`,
-              `${SYNC_BASE_URL}/api/cashin`,
-              `${SYNC_BASE_URL}/api/partner/v2/cashin`,
-            ];
-
-            let cobranca = null;
-            let rotaUsada = null;
-
-            for (const rota of rotas) {
-              try {
-                console.log(`🔎 [SYNC] Testando rota: ${rota}`);
-                cobranca = await axios.post(
-                  rota,
-                  {
-                    valor: plano.price,
-                    descricao: plano.name,
-                    callbackUrl: process.env.PIX_WEBHOOK_URL,
-                  },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${accessToken}`,
-                      "Content-Type": "application/json",
-                    },
-                  }
-                );
-                rotaUsada = rota;
-                break;
-              } catch (err) {
-                if (err.response?.status === 404) continue;
-                throw err;
-              }
-            }
-
-            if (!cobranca) throw new Error("Nenhuma rota válida encontrada na SyncPay");
-
-            console.log("🟢 [SYNC] PIX criado com sucesso via:", rotaUsada);
-            retorno = {
-              data: {
-                pix: { code: cobranca.data?.pix_code || cobranca.data?.pixCopiaCola },
-                paymentId: cobranca.data?.id || cobranca.data?.identifier,
-              },
-            };
-            paymentId = cobranca.data?.id || cobranca.data?.identifier;
-          } catch (err) {
-            console.error("❌ [SYNC] Erro:", err.response?.data || err.message);
-            retorno = { data: { pix: { code: "ERRO_SYNCPAY" } } };
+        const integration = require(`./integrations/${ativo.nome.toLowerCase()}`);
+        const { pixCode, paymentId } = await integration.gerarPix(
+          plano,
+          process.env.PIX_WEBHOOK_URL,
+          {
+            apiKey: ativo.token,
+            clientId: ativo.clientId,
+            clientSecret: ativo.clientSecret,
           }
-        }
-
-        // === WIINPAY (placeholder) ===
-        if (ativo.nome.toLowerCase() === "wiinpay") {
-          retorno = { data: { pix: { code: "WIINPAY_EM_BREVE" } } };
-        }
-
-        const codigoPix = retorno?.data?.pix?.code || "Erro ao gerar PIX";
+        );
 
         await Payment.create({
           telegramId: chatId,
@@ -358,24 +273,22 @@ app.post("/telegram-webhook", async (req, res) => {
           amount: plano.price,
           gateway: ativo.nome,
           planId: plano._id,
-          meta: retorno?.data,
+          meta: { pixCode },
         });
 
         await axios.post(`${API}/sendMessage`, {
           chat_id: chatId,
-          text: `💰 Pagamento via PIX gerado!\n\n\`${codigoPix}\`\n\n💵 Valor: *R$${plano.price}*\n📦 Plano: *${plano.name}*\n\n⚡ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
+          text: `💰 Pagamento via PIX gerado!\n\n\`${pixCode}\`\n\n💵 Valor: *R$${plano.price}*\n📦 Plano: *${plano.name}*\n\n⚡ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
           parse_mode: "Markdown",
         });
-
-        await axios.post(`${API}/answerCallbackQuery`, { callback_query_id: cq.id });
       }
 
-      res.sendStatus(200);
+      await axios.post(`${API}/answerCallbackQuery`, { callback_query_id: cq.id });
     }
 
     res.sendStatus(200);
   } catch (err) {
-    console.error("🔥 Erro no webhook Telegram:", err?.response?.data || err.message);
+    console.error("🔥 Erro no webhook Telegram:", err.response?.data || err.message);
     res.sendStatus(200);
   }
 });
@@ -384,9 +297,9 @@ app.post("/telegram-webhook", async (req, res) => {
 app.post("/pix/webhook", async (req, res) => {
   try {
     const body = req.body;
-    console.log("📥 Webhook recebido:", JSON.stringify(body).slice(0, 1000));
+    console.log("📥 Webhook recebido:", JSON.stringify(body).slice(0, 800));
 
-    const paymentId = body?.data?.id || null;
+    const paymentId = body?.data?.id || body?.id;
     if (!paymentId) return res.status(400).send("paymentId not found");
 
     const payment = await Payment.findOneAndUpdate({ paymentId }, { status: "paid", meta: body }, { new: true });
@@ -397,7 +310,7 @@ app.post("/pix/webhook", async (req, res) => {
 
     await axios.post(`${API}/sendMessage`, {
       chat_id: payment.telegramId,
-      text: `✅ Pagamento confirmado!\n\nAqui está seu entregável:\n${deliver || "Acesso liberado."}`,
+      text: `✅ Pagamento confirmado!\n\nAqui está seu acesso:\n${deliver || "Acesso liberado."}`,
       parse_mode: "Markdown",
     });
 
