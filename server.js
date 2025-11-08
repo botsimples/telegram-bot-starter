@@ -6,7 +6,6 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
 import bodyParser from "body-parser";
-
 import adminRoutes from "./models/admin.js";
 import { gerarPixWiinPay, verificarPixWiinPay } from "./integrations/wiinpay.js";
 
@@ -44,13 +43,12 @@ mongoose
 // === MAPA DE PAGAMENTOS PENDENTES ===
 const pagamentosPendentes = new Map();
 
-// === FUNÇÃO: Enviar mensagem Telegram (corrigido Markdown) ===
+// === FUNÇÃO: Enviar mensagem Telegram ===
 async function sendMessage(chatId, text, options = {}) {
   try {
-    const safeText = text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, "\\$1");
     await axios.post(`${API}/sendMessage`, {
       chat_id: chatId,
-      text: safeText,
+      text,
       parse_mode: "MarkdownV2",
       ...options,
     });
@@ -59,16 +57,14 @@ async function sendMessage(chatId, text, options = {}) {
   }
 }
 
-// === FUNÇÃO: Apagar mensagens anteriores ===
+// === FUNÇÃO: Apagar mensagens ===
 async function deleteMessage(chatId, messageId) {
   try {
     await axios.post(`${API}/deleteMessage`, {
       chat_id: chatId,
       message_id: messageId,
     });
-  } catch {
-    // ignora
-  }
+  } catch {}
 }
 
 // === WEBHOOK TELEGRAM ===
@@ -77,9 +73,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     const update = req.body;
     console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
 
-    const callback = update.callback_query;
     const message = update.message;
-    const chatId = callback?.message?.chat?.id || message?.chat?.id;
+    const callback = update.callback_query;
+    const chatId = message?.chat?.id || callback?.message?.chat?.id;
     const data = callback?.data;
     const messageId = callback?.message?.message_id;
 
@@ -87,8 +83,16 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
     // === COMANDO /START ===
     if (message?.text === "/start") {
-      await sendMessage(chatId, "🔥 *Bem-vindo ao BotSimples!*");
-      await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
+      const bemvindo = await axios.post(`${API}/sendMessage`, {
+        chat_id: chatId,
+        text: "🔥 *Bem-vindo ao BotSimples!*",
+        parse_mode: "MarkdownV2",
+      });
+
+      const opcoes = await axios.post(`${API}/sendMessage`, {
+        chat_id: chatId,
+        text: "Escolha uma opção abaixo 👇",
+        parse_mode: "MarkdownV2",
         reply_markup: {
           inline_keyboard: [
             [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
@@ -96,15 +100,28 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
           ],
         },
       });
+
+      // Salva o ID da mensagem de boas-vindas
+      app.locals[`welcome_${chatId}`] = bemvindo.data.result.message_id;
     }
 
     // === BOTÃO: COMPRAR PLANO ===
     if (data === "comprar_plano") {
-      await deleteMessage(chatId, messageId);
+      const msgBemVindo = app.locals[`welcome_${chatId}`];
+      if (msgBemVindo) await deleteMessage(chatId, msgBemVindo); // apaga o bem-vindo
+      await deleteMessage(chatId, messageId); // apaga o “escolha uma opção”
 
-      // Busca planos do banco
-      const Plan = mongoose.model("Plan", new mongoose.Schema({ name: String, price: Number }));
+      // Carrega planos
+      const Plan =
+        mongoose.models.Plan ||
+        mongoose.model("Plan", new mongoose.Schema({ name: String, price: Number }));
+
       const planos = await Plan.find();
+      if (!planos.length) {
+        await sendMessage(chatId, "⚠️ Nenhum plano cadastrado ainda.");
+        return res.sendStatus(200);
+      }
+
       const botoes = planos.map((p) => [
         { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p.price}` },
       ]);
@@ -114,7 +131,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       });
     }
 
-    // === SELECIONAR PLANO ===
+    // === BOTÃO: SELECIONAR PLANO ===
     if (data?.startsWith("plano_")) {
       const valor = parseFloat(data.split("_")[1]);
 
@@ -132,29 +149,25 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         return res.sendStatus(200);
       }
 
-      await deleteMessage(chatId, messageId);
-
-      // MENSAGEM 1: Aviso
-      await sendMessage(chatId, `*Toque no código PIX abaixo para copiar:*\n\n⚠️ *Atenção*\nEste código PIX tem validade de 30 minutos.`);
-
-      // MENSAGEM 2: Código PIX separado
-      await sendMessage(chatId, `\`${pix.qr_code}\``);
-
-      // MENSAGEM 3: Lembrete + botões
       await sendMessage(
         chatId,
-        `⏰ *Lembrete:* O pagamento via PIX tem validade de *30 minutos*.\n\n✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em *Verificar Pagamento*.\n\n⚠️ Ao realizar o pagamento, você declara que leu e concorda com os Termos de Serviço e está ciente de que este é um produto digital de consumo imediato, não passível de reembolso por arrependimento.`,
+        `*Toque no código PIX abaixo para copiar:*\n\n⚠️ *Atenção*\nEste código PIX tem validade de 30 minutos.`,
+      );
+
+      await sendMessage(chatId, `\`${pix.qr_code}\``);
+
+      await sendMessage(
+        chatId,
+        `⏰ *Lembrete:* O pagamento via PIX tem validade de *30 minutos*.\n\n✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique abaixo para *Verificar Pagamento*.\n\n⚠️ Ao pagar, você concorda com os Termos de Serviço.`,
         {
           reply_markup: {
             inline_keyboard: [
               [{ text: "🔍 Verificar Pagamento", callback_data: `verificar_${pix.paymentId}` }],
-              [
-                { text: "📷 Ler QR Code", url: pix.qr_code_link || "https://pixcopiar.com.br" },
-                { text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" },
-              ],
+              [{ text: "📷 Ler QR Code", url: "https://pixcopiar.com.br/" }],
+              [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
             ],
           },
-        }
+        },
       );
     }
 
@@ -164,9 +177,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       const status = await verificarPixWiinPay(paymentId);
 
       if (status.success && status.status === "PAID") {
-        await sendMessage(chatId, "🎉 Pagamento confirmado! Seu acesso foi liberado automaticamente.");
+        await sendMessage(chatId, "🎉 *Pagamento confirmado!* Seu acesso foi liberado automaticamente.");
       } else {
-        await sendMessage(chatId, "⏳ Pagamento ainda *não* foi confirmado. Tente novamente em alguns segundos.");
+        await sendMessage(chatId, "⏳ Pagamento ainda *não confirmado*. Tente novamente em alguns segundos.");
       }
     }
 
