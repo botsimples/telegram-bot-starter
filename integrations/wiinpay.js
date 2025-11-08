@@ -1,6 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
 
-async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimples") {
+export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimples") {
   try {
     const apiKey = process.env.WIINPAY_API_KEY;
     const baseUrl = "https://api-v2.wiinpay.com.br";
@@ -22,17 +22,16 @@ async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimples") {
     );
 
     const data = response.data?.data || {};
+
     console.log("🟢 [WIINPAY] PIX gerado com sucesso:", data);
 
     return {
       success: true,
-      qr_code: data.qr_code,
-      paymentId: data.paymentId,
+      qr_code: data.qr_code || data.pixCopiaECola || "",
+      paymentId: data.paymentId || data.id || "",
     };
   } catch (error) {
-    console.error("❌ [WIINPAY] Erro:", error.response?.data || error.message);
+    console.error("❌ [WIINPAY] Erro ao gerar PIX:", error.response?.data || error.message);
     return { success: false, error: "ERRO_WIINPAY" };
   }
 }
-
-module.exports = { gerarPixWiinPay };
