@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Painel BotSimples</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: #1a1a1a;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 0 15px #111;
+    }
+    input {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #333;
+      color: white;
+    }
+    button {
+      background: gold;
+      color: black;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .erro {
+      color: #ff5555;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form class="login-box" method="POST" action="/login">
+    <h2>🔐 Painel BotSimples</h2>
+    <% if (typeof erro !== 'undefined') { %>
+      <div class="erro"><%= erro %></div>
+    <% } %>
+    <input type="text" name="username" placeholder="Usuário" required />
+    <input type="password" name="password" placeholder="Senha" required />
+    <button type="submit">Entrar</button>
+  </form>
+</body>
+</html>
