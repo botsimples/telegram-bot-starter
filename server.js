@@ -147,6 +147,19 @@ app.post("/admin/button/edit", requireLogin, async (req, res) => {
   res.redirect("/admin");
 });
 
+// === MODELO DE GATEWAY PIX ===
+const Gateway = mongoose.model(
+  "Gateway",
+  new mongoose.Schema({
+    nome: String,            // Ex: "SyncPay" ou "WiinPay"
+    clientId: String,        // ID da aplicação
+    clientSecret: String,    // Secret da aplicação (se aplicável)
+    token: String,           // Token de autenticação
+    ativo: { type: Boolean, default: false }, // Apenas um pode estar ativo
+    atualizadoEm: { type: Date, default: Date.now }
+  })
+);
+
 // === ROTA PADRÃO ===
 app.get("/", (req, res) => res.send("Bot online ✅"));
 
