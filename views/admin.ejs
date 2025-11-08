@@ -1,102 +1,196 @@
-import express from "express";
-import mongoose from "mongoose";
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Painel BotSimples</title>
+    <style>
+      body {
+        background-color: #111;
+        color: #f5f5f5;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      h1, h2 {
+        text-align: center;
+        color: #ffb400;
+      }
+      table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: #1a1a1a;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      th, td {
+        border: 1px solid #333;
+        padding: 10px;
+        text-align: center;
+      }
+      input {
+        padding: 6px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        background-color: #222;
+        color: #fff;
+      }
+      button {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 6px;
+        background-color: #ffb400;
+        color: #000;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background-color: #ffcc33;
+      }
+      hr {
+        margin: 40px auto;
+        width: 80%;
+        border-color: #333;
+      }
+    </style>
+  </head>
 
-const router = express.Router();
+  <body>
+    <h1>⚙️ Painel BotSimples</h1>
 
-// === MODELOS ===
-const Plan = mongoose.models.Plan || mongoose.model(
-  "Plan",
-  new mongoose.Schema({
-    name: String,
-    price: Number,
-    description: String,
-  })
-);
+    <h2>💳 Planos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Preço</th>
+          <th>Descrição</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="planos">
+        <% (planos || []).forEach(plan => { %>
+        <tr>
+          <td><input type="text" id="name_<%= plan._id %>" value="<%= plan.name %>"></td>
+          <td><input type="text" id="price_<%= plan._id %>" value="<%= plan.price %>"></td>
+          <td><input type="text" id="desc_<%= plan._id %>" value="<%= plan.description %>"></td>
+          <td>
+            <button onclick="salvarPlano('<%= plan._id %>')">Salvar</button>
+            <button onclick="excluirPlano('<%= plan._id %>')">Excluir</button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
 
-const Gateway = mongoose.models.Gateway || mongoose.model(
-  "Gateway",
-  new mongoose.Schema({
-    name: String,
-    clientId: String,
-    clientSecret: String,
-    token: String,
-    active: { type: Boolean, default: false },
-  })
-);
+    <div style="text-align:center;">
+      <h3>Criar novo plano</h3>
+      <input id="novoNome" placeholder="Nome" />
+      <input id="novoPreco" placeholder="Preço" />
+      <input id="novoDesc" placeholder="Descrição" />
+      <button onclick="criarPlano()">Criar</button>
+    </div>
 
-// === ROTA PRINCIPAL ADMIN ===
-router.get("/", async (req, res) => {
-  try {
-    const planos = await Plan.find();
-    const gateways = await Gateway.find();
+    <hr />
 
-    res.render("admin", {
-      planos: planos || [],
-      gateways: gateways || [],
-    });
-  } catch (err) {
-    console.error("❌ Erro ao carregar painel admin:", err);
-    res.status(500).send("Erro ao carregar painel.");
-  }
-});
+    <h2>🏦 Gateways de Pagamento</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Client ID</th>
+          <th>Client Secret</th>
+          <th>Token</th>
+          <th>Ativo</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="gateways">
+        <% (gateways || []).forEach(gw => { %>
+        <tr>
+          <td><%= gw.name %></td>
+          <td><input id="id_<%= gw._id %>" value="<%= gw.clientId %>" /></td>
+          <td><input id="secret_<%= gw._id %>" value="<%= gw.clientSecret %>" /></td>
+          <td><input id="token_<%= gw._id %>" value="<%= gw.token || '' %>" /></td>
+          <td><%= gw.active ? '🟢' : '🔴' %></td>
+          <td>
+            <button onclick="salvarGateway('<%= gw._id %>')">Salvar</button>
+            <button onclick="ativarGateway('<%= gw._id %>')">Ativar</button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
 
-// === CRUD PLANOS ===
-router.post("/admin/planos", async (req, res) => {
-  const { name, price, description } = req.body;
-  try {
-    await Plan.create({ name, price, description });
-    res.sendStatus(200);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+    <div style="text-align:center;">
+      <h3>Criar novo Gateway</h3>
+      <input id="novoGatewayNome" placeholder="Nome (ex: SyncPay)" />
+      <input id="novoGatewayClientId" placeholder="Client ID" />
+      <input id="novoGatewaySecret" placeholder="Client Secret" />
+      <input id="novoGatewayToken" placeholder="Token (opcional)" />
+      <button onclick="criarGateway()">Criar</button>
+    </div>
 
-router.put("/admin/planos/:id", async (req, res) => {
-  try {
-    await Plan.findByIdAndUpdate(req.params.id, req.body);
-    res.sendStatus(200);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+    <script>
+      async function criarPlano() {
+        const name = document.getElementById('novoNome').value;
+        const price = document.getElementById('novoPreco').value;
+        const description = document.getElementById('novoDesc').value;
+        await fetch('/admin/planos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, price, description })
+        });
+        location.reload();
+      }
 
-router.delete("/admin/planos/:id", async (req, res) => {
-  try {
-    await Plan.findByIdAndDelete(req.params.id);
-    res.sendStatus(200);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+      async function salvarPlano(id) {
+        const name = document.getElementById('name_' + id).value;
+        const price = document.getElementById('price_' + id).value;
+        const description = document.getElementById('desc_' + id).value;
+        await fetch('/admin/planos/' + id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, price, description })
+        });
+        location.reload();
+      }
 
-// === CRUD GATEWAYS ===
-router.post("/admin/gateways", async (req, res) => {
-  const { name, clientId, clientSecret, token } = req.body;
-  try {
-    await Gateway.create({ name, clientId, clientSecret, token });
-    res.sendStatus(200);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+      async function excluirPlano(id) {
+        await fetch('/admin/planos/' + id, { method: 'DELETE' });
+        location.reload();
+      }
 
-router.put("/admin/gateways/:id", async (req, res) => {
-  try {
-    await Gateway.findByIdAndUpdate(req.params.id, req.body);
-    res.sendStatus(200);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+      async function criarGateway() {
+        const name = document.getElementById('novoGatewayNome').value;
+        const clientId = document.getElementById('novoGatewayClientId').value;
+        const clientSecret = document.getElementById('novoGatewaySecret').value;
+        const token = document.getElementById('novoGatewayToken').value;
+        await fetch('/admin/gateways', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, clientId, clientSecret, token })
+        });
+        location.reload();
+      }
 
-router.post("/admin/gateways/ativar/:id", async (req, res) => {
-  try {
-    await Gateway.updateMany({}, { active: false });
-    await Gateway.findByIdAndUpdate(req.params.id, { active: true });
-    res.sendStatus(200);
-  } catch (err) {
-    res.status(500).send(err.message);
-  }
-});
+      async function salvarGateway(id) {
+        const clientId = document.getElementById('id_' + id).value;
+        const clientSecret = document.getElementById('secret_' + id).value;
+        const token = document.getElementById('token_' + id).value;
+        await fetch('/admin/gateways/' + id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientId, clientSecret, token })
+        });
+        location.reload();
+      }
 
-export default router;
+      async function ativarGateway(id) {
+        await fetch('/admin/gateways/ativar/' + id, { method: 'POST' });
+        location.reload();
+      }
+    </script>
+  </body>
+</html>
