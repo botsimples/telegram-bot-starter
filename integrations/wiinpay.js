@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-// === INTEGRAÇÃO WIINPAY v2 ===
+// === INTEGRAÇÃO WIINPAY v2 (corrigido final) ===
 async function gerarPix(plano, callbackUrl, credentials) {
   try {
     const { apiKey } = credentials;
@@ -27,9 +27,16 @@ async function gerarPix(plano, callbackUrl, credentials) {
 
     console.log("🟢 [WIINPAY] PIX gerado com sucesso:", res.data);
 
+    // 🔹 A API da WiinPay devolve "qr_code" e "paymentId"
+    const data = res.data?.data || res.data;
+
     return {
-      pixCode: res.data?.pixCopiaCola || res.data?.pix_code || "ERRO_WIINPAY",
-      paymentId: res.data?.id,
+      pixCode:
+        data?.qr_code ||
+        data?.pix_code ||
+        data?.pixCopiaCola ||
+        "ERRO_WIINPAY",
+      paymentId: data?.paymentId || data?.id || null,
     };
   } catch (err) {
     console.error("❌ [WIINPAY] Erro:", err.response?.data || err.message);
