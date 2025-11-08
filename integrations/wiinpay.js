@@ -1,47 +1,38 @@
 const axios = require("axios");
 
-// === INTEGRAÇÃO WIINPAY v2 (corrigido final) ===
-async function gerarPix(plano, callbackUrl, credentials) {
+async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimples") {
   try {
-    const { apiKey } = credentials;
+    const apiKey = process.env.WIINPAY_API_KEY;
+    const baseUrl = "https://api-v2.wiinpay.com.br";
 
     console.log("🟡 [WIINPAY] Gerando pagamento via API v2...");
 
-    const res = await axios.post(
-      "https://api-v2.wiinpay.com.br/payment/create",
+    const response = await axios.post(
+      `${baseUrl}/v1/pix`,
       {
-        api_key: apiKey,
-        value: plano.price,
-        name: plano.name || "Cliente Telegram",
-        email: "lead@telegram.com",
-        description: plano.description || "Plano VIP Telegram",
-        webhook_url: callbackUrl,
+        amount: valor,
+        description: descricao,
       },
       {
         headers: {
+          Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
       }
     );
 
-    console.log("🟢 [WIINPAY] PIX gerado com sucesso:", res.data);
-
-    // 🔹 A API da WiinPay devolve "qr_code" e "paymentId"
-    const data = res.data?.data || res.data;
+    const data = response.data?.data || {};
+    console.log("🟢 [WIINPAY] PIX gerado com sucesso:", data);
 
     return {
-      pixCode:
-        data?.qr_code ||
-        data?.pix_code ||
-        data?.pixCopiaCola ||
-        "ERRO_WIINPAY",
-      paymentId: data?.paymentId || data?.id || null,
+      success: true,
+      qr_code: data.qr_code,
+      paymentId: data.paymentId,
     };
-  } catch (err) {
-    console.error("❌ [WIINPAY] Erro:", err.response?.data || err.message);
-    return { pixCode: "ERRO_WIINPAY", paymentId: null };
+  } catch (error) {
+    console.error("❌ [WIINPAY] Erro:", error.response?.data || error.message);
+    return { success: false, error: "ERRO_WIINPAY" };
   }
 }
 
-module.exports = { gerarPix };
+module.exports = { gerarPixWiinPay };
