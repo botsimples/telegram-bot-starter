@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import session from "express-session";
 
 const router = express.Router();
 
@@ -28,12 +29,50 @@ const Gateway =
     })
   );
 
+// === MIDDLEWARE DE SESSÃO ===
+router.use(
+  session({
+    secret: process.env.SESSION_SECRET || "painel-botsimples",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// === MIDDLEWARE DE AUTENTICAÇÃO ===
+function verificarLogin(req, res, next) {
+  if (req.session.logado) return next();
+  res.redirect("/login");
+}
+
+// === LOGIN ===
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
+router.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  const ADMIN_USER = process.env.ADMIN_USER || "admin";
+  const ADMIN_PASS = process.env.ADMIN_PASS || "1234";
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    req.session.logado = true;
+    return res.redirect("/admin");
+  }
+
+  res.render("login", { erro: "Usuário ou senha incorretos." });
+});
+
+// === LOGOUT ===
+router.get("/logout", (req, res) => {
+  req.session.destroy(() => res.redirect("/login"));
+});
+
 // === ROTA PRINCIPAL DO PAINEL ===
-router.get(["/", "/admin"], async (req, res) => {
+router.get(["/", "/admin"], verificarLogin, async (req, res) => {
   try {
     const planos = (await Plan.find()) || [];
     const gateways = (await Gateway.find()) || [];
-
     res.render("admin", { planos, gateways });
   } catch (err) {
     console.error("❌ Erro ao carregar painel admin:", err.message);
@@ -42,7 +81,7 @@ router.get(["/", "/admin"], async (req, res) => {
 });
 
 // === CRUD PLANOS ===
-router.post("/admin/planos", async (req, res) => {
+router.post("/admin/planos", verificarLogin, async (req, res) => {
   const { name, price, description } = req.body;
   try {
     await Plan.create({ name, price, description });
@@ -53,7 +92,7 @@ router.post("/admin/planos", async (req, res) => {
   }
 });
 
-router.put("/admin/planos/:id", async (req, res) => {
+router.put("/admin/planos/:id", verificarLogin, async (req, res) => {
   try {
     await Plan.findByIdAndUpdate(req.params.id, req.body);
     res.sendStatus(200);
@@ -63,7 +102,7 @@ router.put("/admin/planos/:id", async (req, res) => {
   }
 });
 
-router.delete("/admin/planos/:id", async (req, res) => {
+router.delete("/admin/planos/:id", verificarLogin, async (req, res) => {
   try {
     await Plan.findByIdAndDelete(req.params.id);
     res.sendStatus(200);
@@ -74,7 +113,7 @@ router.delete("/admin/planos/:id", async (req, res) => {
 });
 
 // === CRUD GATEWAYS ===
-router.post("/admin/gateways", async (req, res) => {
+router.post("/admin/gateways", verificarLogin, async (req, res) => {
   const { name, clientId, clientSecret, token } = req.body;
   try {
     await Gateway.create({ name, clientId, clientSecret, token });
@@ -85,7 +124,7 @@ router.post("/admin/gateways", async (req, res) => {
   }
 });
 
-router.put("/admin/gateways/:id", async (req, res) => {
+router.put("/admin/gateways/:id", verificarLogin, async (req, res) => {
   try {
     await Gateway.findByIdAndUpdate(req.params.id, req.body);
     res.sendStatus(200);
@@ -95,7 +134,7 @@ router.put("/admin/gateways/:id", async (req, res) => {
   }
 });
 
-router.post("/admin/gateways/ativar/:id", async (req, res) => {
+router.post("/admin/gateways/ativar/:id", verificarLogin, async (req, res) => {
   try {
     await Gateway.updateMany({}, { active: false });
     await Gateway.findByIdAndUpdate(req.params.id, { active: true });
