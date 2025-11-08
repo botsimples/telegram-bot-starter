@@ -30,12 +30,12 @@ app.use(
   })
 );
 
-// === VARIÁVEIS GERAIS ===
+// === VARIÁVEIS ===
 const TOKEN = process.env.TELEGRAM_TOKEN;
 const API = `https://api.telegram.org/bot${TOKEN}`;
 const MONGO_URI = process.env.MONGO_URI;
 
-// === CONEXÃO AO MONGO ===
+// === CONEXÃO ===
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
@@ -66,6 +66,26 @@ async function sendMessage(chatId, text, options = {}) {
   }
 }
 
+// === FUNÇÃO: Enviar imagem QR (registrando no controle) ===
+async function sendQrCode(chatId, qrData) {
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
+  try {
+    const res = await axios.post(`${API}/sendPhoto`, {
+      chat_id: chatId,
+      photo: qrUrl,
+      caption: "📷 Escaneie o QR Code acima",
+      parse_mode: "HTML",
+    });
+    const msgId = res.data?.result?.message_id;
+    if (msgId) {
+      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
+      mensagensPorChat.get(chatId).push(msgId);
+    }
+  } catch (err) {
+    console.error("Erro ao enviar QR Code:", err.response?.data || err.message);
+  }
+}
+
 // === FUNÇÃO: Apagar TODAS as mensagens ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId);
@@ -83,22 +103,7 @@ async function limparMensagens(chatId) {
   pagamentosPendentes.delete(chatId);
 }
 
-// === FUNÇÃO: Enviar imagem QR ===
-async function sendQrCode(chatId, qrData) {
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
-  try {
-    await axios.post(`${API}/sendPhoto`, {
-      chat_id: chatId,
-      photo: qrUrl,
-      caption: "📷 Escaneie o QR Code acima",
-      parse_mode: "HTML",
-    });
-  } catch (err) {
-    console.error("Erro ao enviar QR Code:", err.response?.data || err.message);
-  }
-}
-
-// === WEBHOOK TELEGRAM ===
+// === WEBHOOK ===
 app.post(`/webhook/${TOKEN}`, async (req, res) => {
   try {
     const update = req.body;
@@ -112,7 +117,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
     // === /start ===
     if (message?.text === "/start") {
-      // 🔥 Apaga absolutamente tudo, inclusive QR e PIX antigos
       await limparMensagens(chatId);
 
       await sendMessage(chatId, "🔥 <b>Bem-vindo ao BotSimples!</b>");
