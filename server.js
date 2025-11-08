@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
 import bodyParser from "body-parser";
+
 import adminRoutes from "./models/admin.js";
 import { gerarPixWiinPay, verificarPixWiinPay } from "./integrations/wiinpay.js";
 
@@ -49,7 +50,7 @@ async function sendMessage(chatId, text, options = {}) {
     await axios.post(`${API}/sendMessage`, {
       chat_id: chatId,
       text,
-      parse_mode: "MarkdownV2",
+      parse_mode: "HTML",
       ...options,
     });
   } catch (err) {
@@ -57,14 +58,16 @@ async function sendMessage(chatId, text, options = {}) {
   }
 }
 
-// === FUNÇÃO: Apagar mensagens ===
+// === FUNÇÃO: Apagar mensagens anteriores ===
 async function deleteMessage(chatId, messageId) {
   try {
     await axios.post(`${API}/deleteMessage`, {
       chat_id: chatId,
       message_id: messageId,
     });
-  } catch {}
+  } catch {
+    // ignora erros de deleção
+  }
 }
 
 // === WEBHOOK TELEGRAM ===
@@ -81,18 +84,10 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
     if (!chatId) return res.sendStatus(200);
 
-    // === COMANDO /START ===
+    // === COMANDO /start ===
     if (message?.text === "/start") {
-      const bemvindo = await axios.post(`${API}/sendMessage`, {
-        chat_id: chatId,
-        text: "🔥 *Bem-vindo ao BotSimples!*",
-        parse_mode: "MarkdownV2",
-      });
-
-      const opcoes = await axios.post(`${API}/sendMessage`, {
-        chat_id: chatId,
-        text: "Escolha uma opção abaixo 👇",
-        parse_mode: "MarkdownV2",
+      await sendMessage(chatId, "🔥 <b>Bem-vindo ao BotSimples!</b>");
+      await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
           inline_keyboard: [
             [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
@@ -100,38 +95,37 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
           ],
         },
       });
-
-      // Salva o ID da mensagem de boas-vindas
-      app.locals[`welcome_${chatId}`] = bemvindo.data.result.message_id;
+      return res.sendStatus(200);
     }
 
     // === BOTÃO: COMPRAR PLANO ===
     if (data === "comprar_plano") {
-      const msgBemVindo = app.locals[`welcome_${chatId}`];
-      if (msgBemVindo) await deleteMessage(chatId, msgBemVindo); // apaga o bem-vindo
-      await deleteMessage(chatId, messageId); // apaga o “escolha uma opção”
+      await deleteMessage(chatId, messageId);
 
-      // Carrega planos
-      const Plan =
-        mongoose.models.Plan ||
-        mongoose.model("Plan", new mongoose.Schema({ name: String, price: Number }));
-
+      // Buscar planos do banco
+      const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
+        name: String,
+        price: Number,
+        description: String
+      }));
       const planos = await Plan.find();
+
       if (!planos.length) {
-        await sendMessage(chatId, "⚠️ Nenhum plano cadastrado ainda.");
+        await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
         return res.sendStatus(200);
       }
 
-      const botoes = planos.map((p) => [
-        { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p.price}` },
+      // Cria os botões dinamicamente
+      const botoes = planos.map(p => [
+        { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p.price}` }
       ]);
 
-      await sendMessage(chatId, "💳 *Escolha o plano que deseja adquirir:*", {
+      await sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
         reply_markup: { inline_keyboard: botoes },
       });
     }
 
-    // === BOTÃO: SELECIONAR PLANO ===
+    // === SELECIONAR PLANO ===
     if (data?.startsWith("plano_")) {
       const valor = parseFloat(data.split("_")[1]);
 
@@ -149,25 +143,23 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         return res.sendStatus(200);
       }
 
-      await sendMessage(
-        chatId,
-        `*Toque no código PIX abaixo para copiar:*\n\n⚠️ *Atenção*\nEste código PIX tem validade de 30 minutos.`,
-      );
-
-      await sendMessage(chatId, `\`${pix.qr_code}\``);
-
-      await sendMessage(
-        chatId,
-        `⏰ *Lembrete:* O pagamento via PIX tem validade de *30 minutos*.\n\n✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique abaixo para *Verificar Pagamento*.\n\n⚠️ Ao pagar, você concorda com os Termos de Serviço.`,
+      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b><br>⚠️ <i>Este código PIX tem validade de 30 minutos.</i>");
+      await sendMessage(chatId, `<code>${pix.qr_code}</code>`);
+      await sendMessage(chatId,
+        "⏰ <b>Lembrete:</b> O pagamento via PIX tem validade de <b>30 minutos</b>.<br><br>" +
+        "✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em <b>Verificar Pagamento</b>.<br><br>" +
+        "⚠️ Ao realizar o pagamento, você declara estar ciente de que este é um produto digital de consumo imediato.",
         {
           reply_markup: {
             inline_keyboard: [
               [{ text: "🔍 Verificar Pagamento", callback_data: `verificar_${pix.paymentId}` }],
-              [{ text: "📷 Ler QR Code", url: "https://pixcopiar.com.br/" }],
-              [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
+              [
+                { text: "📷 Ler QR Code", url: `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(pix.qr_code)}` },
+                { text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" },
+              ],
             ],
           },
-        },
+        }
       );
     }
 
@@ -177,9 +169,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       const status = await verificarPixWiinPay(paymentId);
 
       if (status.success && status.status === "PAID") {
-        await sendMessage(chatId, "🎉 *Pagamento confirmado!* Seu acesso foi liberado automaticamente.");
+        await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b><br>Seu acesso foi liberado automaticamente.");
       } else {
-        await sendMessage(chatId, "⏳ Pagamento ainda *não confirmado*. Tente novamente em alguns segundos.");
+        await sendMessage(chatId, "⏳ Pagamento ainda <b>não confirmado</b>. Tente novamente em alguns segundos.");
       }
     }
 
