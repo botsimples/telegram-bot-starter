@@ -1,21 +1,44 @@
-const express = require("express");
-const axios = require("axios");
-const mongoose = require("mongoose");
-const { gerarPixWiinPay } = require("./integrations/wiinpay");
-require("dotenv").config();
+import express from "express";
+import mongoose from "mongoose";
+import session from "express-session";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import axios from "axios";
+import bodyParser from "body-parser";
+
+import adminRoutes from "./models/admin.js";
+import { gerarPixWiinPay } from "./integrations/wiinpay.js";
+
+dotenv.config();
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// === VARIÁVEIS ===
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "painel-botsimples",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// === VARIÁVEIS GERAIS ===
 const TOKEN = process.env.TELEGRAM_TOKEN;
 const API = `https://api.telegram.org/bot${TOKEN}`;
 const MONGO_URI = process.env.MONGO_URI;
 
+// === CONEXÃO AO MONGO ===
 mongoose
   .connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB conectado"))
+  .then(() => console.log("✅ MongoDB conectado com sucesso!"))
   .catch((err) => console.error("❌ Erro MongoDB:", err.message));
 
 // === MAPA DE PAGAMENTOS PENDENTES ===
@@ -42,12 +65,12 @@ async function deleteMessage(chatId, messageId) {
       chat_id: chatId,
       message_id: messageId,
     });
-  } catch (err) {
-    // silencioso
+  } catch {
+    // ignora
   }
 }
 
-// === WEBHOOK PRINCIPAL DO TELEGRAM ===
+// === WEBHOOK TELEGRAM ===
 app.post(`/webhook/${TOKEN}`, async (req, res) => {
   try {
     const update = req.body;
@@ -65,18 +88,15 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       await deleteMessage(chatId, messageId);
       await sendMessage(chatId, "💳 Escolha o plano que deseja adquirir:", {
         reply_markup: {
-          inline_keyboard: [
-            [{ text: "Mensal — R$9.97", callback_data: "plano_9.97" }],
-          ],
+          inline_keyboard: [[{ text: "Mensal — R$9.97", callback_data: "plano_9.97" }]],
         },
       });
     }
 
     // === SELECIONAR PLANO ===
-    if (data.startsWith("plano_")) {
+    if (data?.startsWith("plano_")) {
       const valor = parseFloat(data.split("_")[1]);
 
-      // Limitar geração de PIX a cada 1 minuto
       const ultimoPix = pagamentosPendentes.get(chatId);
       if (ultimoPix && Date.now() - ultimoPix < 60 * 1000) {
         await sendMessage(chatId, "⚠️ Você precisa aguardar 1 minuto para gerar outro PIX.");
@@ -100,8 +120,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       // MENSAGEM 2: Código PIX separado
       await sendMessage(chatId, `\`${pix.qr_code}\``);
 
-      // MENSAGEM 3: Lembrete e botões
-      await sendMessage(chatId,
+      // MENSAGEM 3: Lembrete + botões
+      await sendMessage(
+        chatId,
         `⏰ *Lembrete:* O pagamento via PIX tem validade de *30 minutos*\!\n\n✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em *Verificar Pagamento*\.\n\n⚠️ Ao realizar o pagamento, você declara que leu e concorda com os Termos de Serviço e está ciente de que este é um produto digital de consumo imediato, não passível de reembolso por arrependimento\.`,
         {
           reply_markup: {
@@ -110,7 +131,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
                 { text: "✅ Verificar Pagamento", callback_data: `verificar_${pix.paymentId}` },
                 { text: "📷 Ler QR Code", url: "https://pixcopiar.com.br/" },
               ],
-              [{ text: "🆘 Suporte", url: "https://t.me/seusupport" }],
+              [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
             ],
           },
         }
@@ -118,7 +139,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     }
 
     // === BOTÃO: VERIFICAR PAGAMENTO ===
-    if (data.startsWith("verificar_")) {
+    if (data?.startsWith("verificar_")) {
       const paymentId = data.split("_")[1];
       try {
         const response = await axios.get(`https://api-v2.wiinpay.com.br/v1/pix/${paymentId}`, {
@@ -142,6 +163,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// === ROTAS DO PAINEL ===
+app.use("/", adminRoutes);
 
 // === INICIAR SERVIDOR ===
 const PORT = process.env.PORT || 3000;
