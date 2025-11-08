@@ -5,7 +5,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
-import bodyParser from "body-parser";
 
 import adminRoutes from "./models/admin.js";
 import { gerarPixWiinPay, verificarPixWiinPay } from "./integrations/wiinpay.js";
@@ -16,9 +15,9 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// === MIDDLEWARES ===
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -26,9 +25,12 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || "painel-botsimples",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
+
+// === ROTAS ADMIN PRIMEIRO ===
+app.use("/", adminRoutes);
 
 // === VARIÁVEIS ===
 const TOKEN = process.env.TELEGRAM_TOKEN;
@@ -112,10 +114,7 @@ async function limparMensagens(chatId) {
   if (!lista) return;
   for (const msgId of lista) {
     try {
-      await axios.post(`${API}/deleteMessage`, {
-        chat_id: chatId,
-        message_id: msgId,
-      });
+      await axios.post(`${API}/deleteMessage`, { chat_id: chatId, message_id: msgId });
     } catch {}
   }
   mensagensPorChat.set(chatId, []);
@@ -239,7 +238,8 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
   }
 });
 
-app.use("/", adminRoutes);
-
+// === START SERVER ===
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, "0.0.0.0", () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`🚀 Servidor rodando na porta ${PORT}`)
+);
