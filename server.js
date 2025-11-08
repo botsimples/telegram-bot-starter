@@ -71,6 +71,19 @@ const Button = mongoose.model(
   })
 );
 
+// === MODELO DE GATEWAY PIX ===
+const Gateway = mongoose.model(
+  "Gateway",
+  new mongoose.Schema({
+    nome: String,
+    clientId: String,
+    clientSecret: String,
+    token: String,
+    ativo: { type: Boolean, default: false },
+    atualizadoEm: { type: Date, default: Date.now },
+  })
+);
+
 // === CONFIGURAR VIEWS ===
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -106,11 +119,12 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// === PAINEL ADMIN (PLANOS E BOTÕES) ===
+// === PAINEL ADMIN (Planos, Botões e Gateways) ===
 app.get("/admin", requireLogin, async (req, res) => {
   const plans = await Plan.find();
   const buttons = await Button.find();
-  res.render("admin", { plans, buttons });
+  const gateways = await Gateway.find();
+  res.render("admin", { plans, buttons, gateways });
 });
 
 // === CRUD PLANOS ===
@@ -147,18 +161,25 @@ app.post("/admin/button/edit", requireLogin, async (req, res) => {
   res.redirect("/admin");
 });
 
-// === MODELO DE GATEWAY PIX ===
-const Gateway = mongoose.model(
-  "Gateway",
-  new mongoose.Schema({
-    nome: String,            // Ex: "SyncPay" ou "WiinPay"
-    clientId: String,        // ID da aplicação
-    clientSecret: String,    // Secret da aplicação (se aplicável)
-    token: String,           // Token de autenticação
-    ativo: { type: Boolean, default: false }, // Apenas um pode estar ativo
-    atualizadoEm: { type: Date, default: Date.now }
-  })
-);
+// === CRUD GATEWAYS ===
+app.post("/admin/gateway/create", requireLogin, async (req, res) => {
+  const { nome, clientId, clientSecret, token } = req.body;
+  await Gateway.create({ nome, clientId, clientSecret, token });
+  res.redirect("/admin");
+});
+
+app.post("/admin/gateway/update", requireLogin, async (req, res) => {
+  const { id, clientId, clientSecret, token } = req.body;
+  await Gateway.findByIdAndUpdate(id, { clientId, clientSecret, token, atualizadoEm: Date.now() });
+  res.redirect("/admin");
+});
+
+app.post("/admin/gateway/ativar", requireLogin, async (req, res) => {
+  const { id } = req.body;
+  await Gateway.updateMany({}, { ativo: false });
+  await Gateway.findByIdAndUpdate(id, { ativo: true });
+  res.redirect("/admin");
+});
 
 // === ROTA PADRÃO ===
 app.get("/", (req, res) => res.send("Bot online ✅"));
@@ -222,17 +243,31 @@ app.post("/telegram-webhook", async (req, res) => {
       const data = cq.data;
 
       if (data === "comprar_plano") {
-        const pagamento = await axios.post("https://api.wiinpay.com.br/payment/create", {
-          api_key: WIINPAY_API_KEY,
-          value: 9.9,
-          name: "Cliente Telegram",
-          email: "cliente@teste.com",
-          description: "Plano VIP Telegram",
-          webhook_url: "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook",
-        });
+        // Pega o gateway ativo
+        const ativo = await Gateway.findOne({ ativo: true });
+        if (!ativo) {
+          await axios.post(`${API}/sendMessage`, {
+            chat_id: chatId,
+            text: "❌ Nenhum gateway PIX está ativo no momento.",
+          });
+          return res.sendStatus(200);
+        }
 
-        const retorno = pagamento.data;
-        const codigoPix = retorno?.pix?.code || JSON.stringify(retorno, null, 2);
+        let retorno;
+        if (ativo.nome.toLowerCase() === "wiinpay") {
+          retorno = await axios.post("https://api.wiinpay.com.br/payment/create", {
+            api_key: WIINPAY_API_KEY,
+            value: 9.9,
+            name: "Cliente Telegram",
+            email: "cliente@teste.com",
+            description: "Plano VIP Telegram",
+            webhook_url: "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook",
+          });
+        } else if (ativo.nome.toLowerCase() === "syncpay") {
+          retorno = { data: { pix: { code: "PIXCODEEXEMPLO123" } } }; // placeholder, integr. real depois
+        }
+
+        const codigoPix = retorno?.data?.pix?.code || "Erro ao gerar PIX";
 
         await Payment.create({
           telegramId: chatId,
