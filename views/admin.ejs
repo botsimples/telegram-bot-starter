@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel BotSimples</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #0f0f0f;
+      background: #000;
       color: #fff;
       text-align: center;
       margin: 0;
-      padding: 40px;
+      padding: 30px;
     }
     h1 { color: #ffb347; }
-    table { width: 80%; margin: 20px auto; border-collapse: collapse; }
-    th, td { border: 1px solid #333; padding: 8px; }
-    a, button { background: #ffb347; color: #000; border: none; padding: 8px 14px; margin: 4px; cursor: pointer; text-decoration: none; }
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+    }
+    a, button {
+      background: #ffb347;
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      margin: 4px;
+      cursor: pointer;
+    }
+    input {
+      padding: 5px;
+      margin: 4px;
+      border-radius: 4px;
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -28,27 +48,31 @@
     <tr><th>Nome</th><th>Preço</th><th>Descrição</th><th>Ações</th></tr>
     <% plans.forEach(plan => { %>
       <tr>
-        <td><%= plan.name %></td>
-        <td>R$ <%= plan.price %></td>
-        <td><%= plan.description %></td>
-        <td>
-          <form method="POST" action="/admin/plan/delete">
-            <input type="hidden" name="id" value="<%= plan._id %>">
-            <button>Excluir</button>
-          </form>
+        <form method="POST" action="/admin/plan/edit">
+          <input type="hidden" name="id" value="<%= plan._id %>">
+          <td><input name="name" value="<%= plan.name %>"></td>
+          <td><input name="price" value="<%= plan.price %>"></td>
+          <td><input name="description" value="<%= plan.description %>"></td>
+          <td>
+            <button type="submit">Salvar</button>
+        </form>
+        <form method="POST" action="/admin/plan/delete" style="display:inline">
+          <input type="hidden" name="id" value="<%= plan._id %>">
+          <button type="submit" style="background:#ff4444;color:#fff">Excluir</button>
+        </form>
         </td>
       </tr>
     <% }) %>
   </table>
 
-  <h2>Criar novo plano</h2>
+  <h3>Criar novo plano</h3>
   <form method="POST" action="/admin/plan/create">
     <input name="name" placeholder="Nome" required>
-    <input name="price" placeholder="Preço" type="number" required>
-    <input name="description" placeholder="Descrição" required>
-    <button>Criar</button>
+    <input name="price" placeholder="Preço" required>
+    <input name="description" placeholder="Descrição">
+    <button type="submit">Criar</button>
   </form>
 
-  <p><a href="/logout">Sair</a></p>
+  <br><a href="/logout">Sair</a>
 </body>
 </html>
