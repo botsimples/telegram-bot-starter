@@ -1,78 +1,164 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel BotSimples</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #000;
+      background-color: #0d0d0d;
       color: #fff;
       text-align: center;
-      margin: 0;
-      padding: 30px;
+      padding: 40px;
     }
-    h1 { color: #ffb347; }
+    h1 {
+      color: #ffb347;
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: #ffb347;
+      margin-top: 40px;
+    }
     table {
-      width: 80%;
+      width: 90%;
       margin: 20px auto;
       border-collapse: collapse;
     }
     th, td {
-      border: 1px solid #444;
+      border: 1px solid #333;
       padding: 8px;
+      text-align: center;
     }
-    a, button {
-      background: #ffb347;
-      color: #000;
-      border: none;
-      padding: 6px 12px;
-      margin: 4px;
-      cursor: pointer;
+    th {
+      background-color: #111;
     }
     input {
-      padding: 5px;
-      margin: 4px;
-      border-radius: 4px;
+      padding: 6px;
+      margin: 3px;
       border: none;
+      border-radius: 3px;
+    }
+    button {
+      background-color: #ffb347;
+      color: #000;
+      border: none;
+      padding: 7px 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 2px;
+    }
+    button:hover {
+      background-color: #ffa31a;
+    }
+    .logout {
+      background-color: #ff4747;
+      color: white;
+      padding: 7px 14px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .logout:hover {
+      background-color: #e63939;
+    }
+    hr {
+      border: 1px solid #222;
+      margin: 30px 0;
     }
   </style>
 </head>
 <body>
   <h1>📊 Painel BotSimples</h1>
   <p>Mongo conectado e painel ativo!</p>
+  <a href="/logout" class="logout">Sair</a>
 
-  <h2>Planos</h2>
+  <!-- ==================== PLANOS ==================== -->
+  <h2>💰 Planos</h2>
+
   <table>
-    <tr><th>Nome</th><th>Preço</th><th>Descrição</th><th>Ações</th></tr>
+    <tr>
+      <th>Nome</th>
+      <th>Preço</th>
+      <th>Descrição</th>
+      <th>Ações</th>
+    </tr>
     <% plans.forEach(plan => { %>
       <tr>
-        <form method="POST" action="/admin/plan/edit">
-          <input type="hidden" name="id" value="<%= plan._id %>">
-          <td><input name="name" value="<%= plan.name %>"></td>
-          <td><input name="price" value="<%= plan.price %>"></td>
-          <td><input name="description" value="<%= plan.description %>"></td>
-          <td>
+        <td><%= plan.name %></td>
+        <td>R$ <%= plan.price %></td>
+        <td><%= plan.description %></td>
+        <td>
+          <!-- Editar -->
+          <form action="/admin/plan/edit" method="POST" style="display:inline">
+            <input type="hidden" name="id" value="<%= plan._id %>">
+            <input name="name" value="<%= plan.name %>" placeholder="Nome">
+            <input name="price" value="<%= plan.price %>" placeholder="Preço" type="number" step="0.01">
+            <input name="description" value="<%= plan.description %>" placeholder="Descrição">
             <button type="submit">Salvar</button>
-        </form>
-        <form method="POST" action="/admin/plan/delete" style="display:inline">
-          <input type="hidden" name="id" value="<%= plan._id %>">
-          <button type="submit" style="background:#ff4444;color:#fff">Excluir</button>
-        </form>
+          </form>
+
+          <!-- Excluir -->
+          <form action="/admin/plan/delete" method="POST" style="display:inline">
+            <input type="hidden" name="id" value="<%= plan._id %>">
+            <button type="submit">Excluir</button>
+          </form>
         </td>
       </tr>
     <% }) %>
   </table>
 
   <h3>Criar novo plano</h3>
-  <form method="POST" action="/admin/plan/create">
+  <form action="/admin/plan/create" method="POST">
     <input name="name" placeholder="Nome" required>
-    <input name="price" placeholder="Preço" required>
+    <input name="price" type="number" step="0.01" placeholder="Preço" required>
     <input name="description" placeholder="Descrição">
     <button type="submit">Criar</button>
   </form>
 
-  <br><a href="/logout">Sair</a>
+  <hr>
+
+  <!-- ==================== BOTÕES ==================== -->
+  <h2>⚙️ Botões do Bot</h2>
+
+  <table>
+    <tr>
+      <th>Texto</th>
+      <th>Ação</th>
+      <th>Valor</th>
+      <th>Ações</th>
+    </tr>
+    <% buttons.forEach(btn => { %>
+      <tr>
+        <td><%= btn.text %></td>
+        <td><%= btn.action %></td>
+        <td><%= btn.value || "-" %></td>
+        <td>
+          <!-- Editar -->
+          <form action="/admin/button/edit" method="POST" style="display:inline">
+            <input type="hidden" name="id" value="<%= btn._id %>">
+            <input name="text" value="<%= btn.text %>" placeholder="Texto">
+            <input name="action" value="<%= btn.action %>" placeholder="Ação">
+            <input name="value" value="<%= btn.value %>" placeholder="Valor">
+            <button type="submit">Salvar</button>
+          </form>
+
+          <!-- Excluir -->
+          <form action="/admin/button/delete" method="POST" style="display:inline">
+            <input type="hidden" name="id" value="<%= btn._id %>">
+            <button type="submit">Excluir</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <h3>Criar novo botão</h3>
+  <form action="/admin/button/create" method="POST">
+    <input name="text" placeholder="Texto" required>
+    <input name="action" placeholder="Ação (callback_data)" required>
+    <input name="value" placeholder="Valor (opcional)">
+    <button type="submit">Criar</button>
+  </form>
+
 </body>
 </html>
