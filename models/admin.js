@@ -38,10 +38,10 @@ router.use(
   })
 );
 
-/* ========= GUARD ========= */
-function requireLogin(req, _res, next) {
+/* ========= GUARD (exige login no /admin) ========= */
+function requireLogin(req, res, next) {
   if (req.session?.logado) return next();
-  return next(); // <- se quiser travar o /admin sem login, troque esta linha por:  _res.redirect("/login");
+  return res.redirect("/login");
 }
 
 /* ========= LOGIN ========= */
@@ -66,7 +66,7 @@ router.get("/logout", (req, res) => {
 });
 
 /* ========= PAINEL ========= */
-router.get(["/", "/admin"], requireLogin, async (_req, res) => {
+router.get("/admin", requireLogin, async (_req, res) => {
   try {
     const planos = (await Plan.find()) || [];
     const gateways = (await Gateway.find()) || [];
