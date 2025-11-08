@@ -76,6 +76,30 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     const update = req.body;
     console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
 
+    // --- MENSAGEM NORMAL (/start, texto etc.) ---
+    const message = update.message;
+    if (message?.text) {
+      const chatId = message.chat.id;
+      const text = message.text.trim();
+
+      if (text === "/start") {
+        await sendMessage(
+          chatId,
+          "👋 Olá! Seja bem-vindo ao nosso sistema.\n\nEscolha uma opção abaixo para continuar:",
+          {
+            reply_markup: {
+              inline_keyboard: [
+                [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
+                [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
+              ],
+            },
+          }
+        );
+        return res.sendStatus(200);
+      }
+    }
+
+    // --- CALLBACKS (botões inline) ---
     const callback = update.callback_query;
     const chatId = callback?.message?.chat?.id;
     const data = callback?.data;
