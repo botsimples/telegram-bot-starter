@@ -41,33 +41,36 @@ mongoose
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
   .catch((err) => console.error("❌ Erro MongoDB:", err.message));
 
-// === MAPA DE PAGAMENTOS PENDENTES ===
+// === MAPAS DE CONTROLE ===
 const pagamentosPendentes = new Map();
+const ultimasMensagens = new Map();
 
 // === FUNÇÃO: Enviar mensagem Telegram ===
 async function sendMessage(chatId, text, options = {}) {
   try {
-    await axios.post(`${API}/sendMessage`, {
+    const res = await axios.post(`${API}/sendMessage`, {
       chat_id: chatId,
       text,
       parse_mode: "HTML",
       ...options,
     });
+    return res.data?.result?.message_id;
   } catch (err) {
     console.error("Erro ao enviar mensagem Telegram:", err.response?.data || err.message);
+    return null;
   }
 }
 
 // === FUNÇÃO: Apagar mensagens anteriores ===
-async function deleteMessage(chatId, messageId) {
+async function deleteUltimaMensagem(chatId) {
+  const lastMsgId = ultimasMensagens.get(chatId);
+  if (!lastMsgId) return;
   try {
     await axios.post(`${API}/deleteMessage`, {
       chat_id: chatId,
-      message_id: messageId,
+      message_id: lastMsgId,
     });
-  } catch {
-    // ignora erros de deleção
-  }
+  } catch {}
 }
 
 // === WEBHOOK TELEGRAM ===
@@ -86,8 +89,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
     // === COMANDO /start ===
     if (message?.text === "/start") {
-      await sendMessage(chatId, "🔥 <b>Bem-vindo ao BotSimples!</b>");
-      await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
+      await deleteUltimaMensagem(chatId);
+      const msg1 = await sendMessage(chatId, "🔥 <b>Bem-vindo ao BotSimples!</b>");
+      const msg2 = await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
           inline_keyboard: [
             [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
@@ -95,54 +99,59 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
           ],
         },
       });
+      ultimasMensagens.set(chatId, msg2);
       return res.sendStatus(200);
     }
 
     // === BOTÃO: COMPRAR PLANO ===
     if (data === "comprar_plano") {
-      await deleteMessage(chatId, messageId);
+      await deleteUltimaMensagem(chatId);
 
-      // Buscar planos do banco
       const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
         name: String,
         price: Number,
         description: String
       }));
+
       const planos = await Plan.find();
 
       if (!planos.length) {
-        await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
+        const msg = await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
+        ultimasMensagens.set(chatId, msg);
         return res.sendStatus(200);
       }
 
-      // Cria os botões dinamicamente
       const botoes = planos.map(p => [
         { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p.price}` }
       ]);
 
-      await sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
+      const msg = await sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
         reply_markup: { inline_keyboard: botoes },
       });
+      ultimasMensagens.set(chatId, msg);
     }
 
     // === SELECIONAR PLANO ===
     if (data?.startsWith("plano_")) {
-      const valor = parseFloat(data.split("_")[1]);
+      await deleteUltimaMensagem(chatId);
 
-      // 🚫 Limite de geração removido (sem delay)
+      const valor = parseFloat(data.split("_")[1]);
       pagamentosPendentes.set(chatId, Date.now());
 
       const pix = await gerarPixWiinPay(valor);
       if (!pix.success) {
-        await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
+        const msg = await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay. Tente novamente mais tarde.");
+        ultimasMensagens.set(chatId, msg);
         return res.sendStatus(200);
       }
 
-      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b><br>⚠️ <i>Este código PIX tem validade de 30 minutos.</i>");
+      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>\n⚠️ Este código tem validade de 30 minutos.");
       await sendMessage(chatId, `<code>${pix.qr_code}</code>`);
-      await sendMessage(chatId,
-        "⏰ <b>Lembrete:</b> O pagamento via PIX tem validade de <b>30 minutos</b>.<br><br>" +
-        "✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em <b>Verificar Pagamento</b>.<br><br>" +
+
+      const msg = await sendMessage(
+        chatId,
+        "⏰ Lembrete: o pagamento via PIX tem validade de 30 minutos.\n\n" +
+        "✅ Após efetuar o pagamento, se o sistema não reconhecer automaticamente, clique em <b>Verificar Pagamento</b>.\n\n" +
         "⚠️ Ao realizar o pagamento, você declara estar ciente de que este é um produto digital de consumo imediato.",
         {
           reply_markup: {
@@ -156,18 +165,22 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
           },
         }
       );
+      ultimasMensagens.set(chatId, msg);
     }
 
     // === BOTÃO: VERIFICAR PAGAMENTO ===
     if (data?.startsWith("verificar_")) {
+      await deleteUltimaMensagem(chatId);
       const paymentId = data.split("_")[1];
       const status = await verificarPixWiinPay(paymentId);
 
+      let msg;
       if (status.success && status.status === "PAID") {
-        await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b><br>Seu acesso foi liberado automaticamente.");
+        msg = await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b>\nSeu acesso foi liberado automaticamente.");
       } else {
-        await sendMessage(chatId, "⏳ Pagamento ainda <b>não confirmado</b>. Tente novamente em alguns segundos.");
+        msg = await sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
       }
+      ultimasMensagens.set(chatId, msg);
     }
 
     res.sendStatus(200);
