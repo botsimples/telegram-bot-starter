@@ -160,5 +160,48 @@
     <button type="submit">Criar</button>
   </form>
 
+<hr style="margin:40px 0;border-color:#333">
+
+<h2>💳 Gateways de Pagamento</h2>
+
+<table>
+  <tr>
+    <th>Nome</th>
+    <th>Client ID</th>
+    <th>Client Secret</th>
+    <th>Token</th>
+    <th>Ativo</th>
+    <th>Ações</th>
+  </tr>
+  <% gateways.forEach(g => { %>
+  <tr>
+    <form action="/admin/gateway/update" method="POST">
+      <td><%= g.nome %></td>
+      <td><input name="clientId" value="<%= g.clientId %>" style="width:180px"></td>
+      <td><input name="clientSecret" value="<%= g.clientSecret %>" style="width:180px"></td>
+      <td><input name="token" value="<%= g.token %>" style="width:180px"></td>
+      <td><%= g.ativo ? "✅" : "❌" %></td>
+      <td>
+        <input type="hidden" name="id" value="<%= g._id %>">
+        <button type="submit">Salvar</button>
+      </form>
+      <form action="/admin/gateway/ativar" method="POST" style="display:inline">
+        <input type="hidden" name="id" value="<%= g._id %>">
+        <button type="submit">Ativar</button>
+      </form>
+    </td>
+  </tr>
+  <% }) %>
+</table>
+
+<h3>Criar novo Gateway</h3>
+<form action="/admin/gateway/create" method="POST">
+  <input name="nome" placeholder="Nome (ex: SyncPay)" required>
+  <input name="clientId" placeholder="Client ID">
+  <input name="clientSecret" placeholder="Client Secret">
+  <input name="token" placeholder="Token (opcional)">
+  <button type="submit">Criar</button>
+</form>
+
 </body>
 </html>
