@@ -4,46 +4,32 @@ import mongoose from "mongoose";
 const router = express.Router();
 
 // === MODELOS DO BANCO ===
-const Plan = mongoose.model(
-  "Plan",
-  new mongoose.Schema({
-    name: String,
-    price: Number,
-    description: String,
-  })
-);
+const Plan = mongoose.model("Plan", new mongoose.Schema({
+  name: String,
+  price: Number,
+  description: String
+}));
 
-const Button = mongoose.model(
-  "Button",
-  new mongoose.Schema({
-    text: String,
-    action: String,
-    value: String,
-  })
-);
+const Button = mongoose.model("Button", new mongoose.Schema({
+  text: String,
+  action: String,
+  value: String
+}));
 
-const Gateway = mongoose.model(
-  "Gateway",
-  new mongoose.Schema({
-    nome: String,
-    clientId: String,
-    clientSecret: String,
-    token: String,
-    ativo: { type: Boolean, default: false },
-  })
-);
+const Gateway = mongoose.model("Gateway", new mongoose.Schema({
+  nome: String,
+  clientId: String,
+  clientSecret: String,
+  token: String,
+  ativo: { type: Boolean, default: false }
+}));
 
 // === PAINEL PRINCIPAL ===
 router.get("/", async (req, res) => {
-  try {
-    const plans = await Plan.find();
-    const buttons = await Button.find();
-    const gateways = await Gateway.find();
-    res.render("admin", { plans, buttons, gateways });
-  } catch (error) {
-    console.error("Erro ao carregar painel:", error);
-    res.status(500).send("Erro ao carregar painel admin");
-  }
+  const plans = await Plan.find();
+  const buttons = await Button.find();
+  const gateways = await Gateway.find();
+  res.render("admin", { plans, buttons, gateways });
 });
 
 // === CRUD PLANOS ===
@@ -90,35 +76,21 @@ router.post("/admin/gateway/update", async (req, res) => {
 });
 
 router.post("/admin/gateway/ativar", async (req, res) => {
-  await Gateway.updateMany({}, { ativo: false }); // desativa todos
-  await Gateway.findByIdAndUpdate(req.body.id, { ativo: true }); // ativa o escolhido
+  await Gateway.updateMany({}, { ativo: false });
+  await Gateway.findByIdAndUpdate(req.body.id, { ativo: true });
   res.redirect("/");
 });
 
-// === ROTAS FIXAS PARA LOGIN E ADMIN ===
+// === ROTAS FIXAS: LOGIN / ADMIN ===
 router.get("/login", (req, res) => {
-  res.render("dashboard", {
-    title: "Login Painel",
-    message: "Login temporário ativo",
-  });
+  res.render("dashboard", { title: "Login Painel", message: "Login temporário ativo", users: [] }); // ✅ corrigido
 });
 
 router.get("/admin", async (req, res) => {
-  try {
-    const plans = await Plan.find();
-    const buttons = await Button.find();
-    const gateways = await Gateway.find();
-    res.render("admin", {
-      title: "Painel Admin",
-      message: "Mongo conectado e painel ativo!",
-      plans,
-      buttons,
-      gateways,
-    });
-  } catch (error) {
-    console.error("Erro ao abrir /admin:", error);
-    res.status(500).send("Erro ao carregar /admin");
-  }
+  const plans = await Plan.find();
+  const buttons = await Button.find();
+  const gateways = await Gateway.find();
+  res.render("admin", { plans, buttons, gateways });
 });
 
 export default router;
