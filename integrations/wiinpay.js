@@ -1,87 +1,67 @@
 import axios from "axios";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
- * GERA UM NOVO PIX NA WIINPAY
+ * 🔹 Gera um pagamento PIX via WiinPay
  */
-export const gerarPixWiinPay = async (valor, descricao = "Pagamento via BotSimples") => {
+export async function gerarPixWiinPay(valor) {
   try {
-    const apiKey = process.env.WIINPAY_API_KEY;
-    const baseUrl = "https://api-v2.wiinpay.com.br";
-
     console.log("🟡 [WIINPAY] Gerando pagamento via API v2...");
 
     const response = await axios.post(
-      `${baseUrl}/payment/create`,
+      "https://api.wiinpay.com/v2/payments",
       {
-        api_key: apiKey,
-        value: Number(valor),
-        name: "Cliente BotSimples",
+        name: "BotSimples",
         email: "cliente@botsimples.com",
-        description: descricao,
-        webhook_url: process.env.WEBHOOK_URL || "https://telegram-bot-starter-ggy2.onrender.com/webhook",
+        value: valor,
+        webhookUrl: `${process.env.BASE_URL}/webhook`,
         metadata: { origem: "telegram-bot" },
       },
       {
         headers: {
+          Authorization: `Bearer ${process.env.WIINPAY_TOKEN}`,
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
       }
     );
 
-    const data = response.data?.data || response.data || {};
+    const data = response.data?.data || {};
     console.log("🟢 [WIINPAY] PIX gerado com sucesso:", data);
 
     return {
       success: true,
-      qr_code: data.qr_code || data.qrcode || data.qrCode || data.qr,
-      paymentId: data.paymentId || data.id || data.transaction_id,
+      qr_code: data.pixCode,
+      paymentId: data.paymentId,
     };
-  } catch (error) {
-    console.error("❌ [WIINPAY] Erro ao gerar PIX:", error.response?.data || error.message);
-    return { success: false, error: "ERRO_WIINPAY" };
+  } catch (err) {
+    console.error("❌ [WIINPAY] Erro ao gerar pagamento:", err.response?.data || err.message);
+    return { success: false };
   }
-};
+}
 
 /**
- * VERIFICA O STATUS DE UM PAGAMENTO WIINPAY
+ * 🔹 Verifica status do pagamento PIX via WiinPay
  */
-export const verificarPixWiinPay = async (paymentId) => {
+export async function verificarPixWiinPay(paymentId) {
   try {
-    const apiKey = process.env.WIINPAY_API_KEY;
-    const baseUrl = "https://api-v2.wiinpay.com.br";
-
     console.log(`🔍 [WIINPAY] Verificando pagamento ${paymentId}...`);
 
-    const response = await axios.get(`${baseUrl}/payment/list/${paymentId}`, {
+    const response = await axios.get(`https://api.wiinpay.com/v2/payments/${paymentId}`, {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
-        Accept: "application/json",
+        Authorization: `Bearer ${process.env.WIINPAY_TOKEN}`,
+        "Content-Type": "application/json",
       },
     });
 
-    console.log("🧾 [WIINPAY] Resposta bruta:", JSON.stringify(response.data, null, 2));
+    const data = response.data?.data?.payment || {};
+    console.log("🧾 [WIINPAY] Resposta bruta:", JSON.stringify(data, null, 2));
+    console.log("🟢 [WIINPAY] Status detectado:", data.status);
 
-    const data = response.data;
-
-    // Detecta o status de forma robusta
-    const status =
-      data?.data?.payment?.status ||
-      data?.payment?.status ||
-      data?.data?.status ||
-      data?.data?.[0]?.status ||
-      data?.status ||
-      "UNKNOWN";
-
-    console.log("🟢 [WIINPAY] Status detectado:", status);
-
-    if (status?.toUpperCase() === "PAID" || status?.toUpperCase() === "CONFIRMED") {
-      return { success: true, status: "PAID" };
-    }
-
-    return { success: false, status };
-  } catch (error) {
-    console.error("❌ [WIINPAY] Erro ao verificar PIX:", error.response?.data || error.message);
-    return { success: false, error: "ERRO_VERIFICAR" };
+    return { success: true, status: data.status };
+  } catch (err) {
+    console.error("❌ [WIINPAY] Erro ao verificar pagamento:", err.response?.data || err.message);
+    return { success: false, status: "UNKNOWN" };
   }
-};
+}
