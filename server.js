@@ -106,58 +106,160 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// === PAINEL ADMIN (CRUD PLANOS) ===
+// === PAINEL ADMIN (PLANOS E BOTÕES) ===
 app.get("/admin", requireLogin, async (req, res) => {
   const plans = await Plan.find();
-  res.render("admin", { plans });
+  const buttons = await Button.find();
+  res.render("admin", { plans, buttons });
 });
 
-// === CRIAR PLANO ===
+// === CRUD PLANOS ===
 app.post("/admin/plan/create", requireLogin, async (req, res) => {
-  try {
-    const { name, price, description } = req.body;
-    await Plan.create({ name, price, description });
-    res.redirect("/admin");
-  } catch (err) {
-    console.error("Erro ao criar plano:", err.message);
-    res.send("Erro ao criar plano.");
-  }
+  await Plan.create(req.body);
+  res.redirect("/admin");
 });
 
-// === EXCLUIR PLANO ===
 app.post("/admin/plan/delete", requireLogin, async (req, res) => {
-  try {
-    await Plan.findByIdAndDelete(req.body.id);
-    res.redirect("/admin");
-  } catch (err) {
-    console.error("Erro ao excluir plano:", err.message);
-    res.send("Erro ao excluir plano.");
-  }
+  await Plan.findByIdAndDelete(req.body.id);
+  res.redirect("/admin");
 });
 
-// === EDITAR PLANO ===
 app.post("/admin/plan/edit", requireLogin, async (req, res) => {
-  try {
-    const { id, name, price, description } = req.body;
-    await Plan.findByIdAndUpdate(id, { name, price, description });
-    res.redirect("/admin");
-  } catch (err) {
-    console.error("Erro ao editar plano:", err.message);
-    res.send("Erro ao editar plano.");
-  }
+  const { id, name, price, description } = req.body;
+  await Plan.findByIdAndUpdate(id, { name, price, description });
+  res.redirect("/admin");
+});
+
+// === CRUD BOTÕES ===
+app.post("/admin/button/create", requireLogin, async (req, res) => {
+  await Button.create(req.body);
+  res.redirect("/admin");
+});
+
+app.post("/admin/button/delete", requireLogin, async (req, res) => {
+  await Button.findByIdAndDelete(req.body.id);
+  res.redirect("/admin");
+});
+
+app.post("/admin/button/edit", requireLogin, async (req, res) => {
+  const { id, text, action, value } = req.body;
+  await Button.findByIdAndUpdate(id, { text, action, value });
+  res.redirect("/admin");
 });
 
 // === ROTA PADRÃO ===
 app.get("/", (req, res) => res.send("Bot online ✅"));
 
-// === WEBHOOK TELEGRAM (mantém o bot ativo) ===
+// === WEBHOOK TELEGRAM ===
 app.post("/telegram-webhook", async (req, res) => {
   try {
     const update = req.body;
     console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
+
+    // === MENSAGEM /START ===
+    if (update.message && update.message.text === "/start") {
+      const chatId = update.message.chat.id;
+      const user = update.message.from;
+
+      await User.findOneAndUpdate(
+        { telegramId: user.id },
+        {
+          telegramId: user.id,
+          username: user.username,
+          firstName: user.first_name,
+          lastName: user.last_name,
+        },
+        { upsert: true, new: true }
+      );
+
+      const pagamento = await Payment.findOne({ telegramId: chatId, status: "paid" });
+
+      if (!pagamento) {
+        const caption = "🔥 *Bem-vindo ao BotSimples!*\n\nEscolha uma opção abaixo 👇";
+        const keyboard = {
+          inline_keyboard: [
+            [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
+            [{ text: "📢 Canal VIP", url: "https://t.me/seucanal" }],
+          ],
+        };
+
+        await axios.post(`${API}/sendPhoto`, {
+          chat_id: chatId,
+          photo: "https://i.imgur.com/NnZXOqK.png",
+          caption,
+          parse_mode: "Markdown",
+          reply_markup: keyboard,
+        });
+      } else {
+        const buttons = await Button.find();
+        const inlineKeyboard = buttons.map((b) => [{ text: b.text, callback_data: b.action }]);
+
+        await axios.post(`${API}/sendMessage`, {
+          chat_id: chatId,
+          text: `✅ Seu plano está ativo!\n\nEscolha uma opção abaixo:`,
+          reply_markup: { inline_keyboard: inlineKeyboard },
+        });
+      }
+    }
+
+    // === CALLBACK DOS BOTÕES ===
+    if (update.callback_query) {
+      const cq = update.callback_query;
+      const chatId = cq.message.chat.id;
+      const data = cq.data;
+
+      if (data === "comprar_plano") {
+        const pagamento = await axios.post("https://api.wiinpay.com.br/payment/create", {
+          api_key: WIINPAY_API_KEY,
+          value: 9.9,
+          name: "Cliente Telegram",
+          email: "cliente@teste.com",
+          description: "Plano VIP Telegram",
+          webhook_url: "https://telegram-bot-starter-ggy2.onrender.com/pix/webhook",
+        });
+
+        const retorno = pagamento.data;
+        const codigoPix = retorno?.pix?.code || JSON.stringify(retorno, null, 2);
+
+        await Payment.create({
+          telegramId: chatId,
+          paymentId: retorno.data?.paymentId || "none",
+          amount: 9.9,
+        });
+
+        await axios.post(`${API}/sendMessage`, {
+          chat_id: chatId,
+          text: `💰 *Pagamento via PIX gerado com sucesso!*\n\nCopie o código abaixo e cole no seu banco:\n\n\`${codigoPix}\`\n\n⚡ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
+          parse_mode: "Markdown",
+        });
+      }
+
+      await axios.post(`${API}/answerCallbackQuery`, {
+        callback_query_id: cq.id,
+      });
+    }
+
     res.sendStatus(200);
   } catch (err) {
-    console.error("Erro:", err.message);
+    console.error("Erro:", err?.response?.data || err.message);
+    res.sendStatus(200);
+  }
+});
+
+// === WEBHOOK DE PAGAMENTO ===
+app.post("/pix/webhook", async (req, res) => {
+  try {
+    const body = req.body;
+    const paymentId = body?.data?.paymentId;
+
+    if (paymentId) {
+      await Payment.findOneAndUpdate({ paymentId }, { status: "paid" });
+      console.log("Pagamento confirmado:", paymentId);
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("Erro no webhook:", err.message);
     res.sendStatus(200);
   }
 });
