@@ -193,7 +193,6 @@ app.post("/telegram-webhook", async (req, res) => {
     const update = req.body;
     console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
 
-    // === MENSAGEM /START ===
     if (update.message && update.message.text === "/start") {
       const chatId = update.message.chat.id;
       const user = update.message.from;
@@ -238,7 +237,6 @@ app.post("/telegram-webhook", async (req, res) => {
       }
     }
 
-    // === CALLBACK COMPRAR PLANO ===
     if (update.callback_query) {
       const cq = update.callback_query;
       const chatId = cq.message.chat.id;
@@ -273,33 +271,30 @@ app.post("/telegram-webhook", async (req, res) => {
         // === SYNCPAY ===
         else if (ativo.nome.toLowerCase() === "syncpay") {
           try {
-            // Gerar token OAuth2
-            const tokenResp = await axios.post("https://api.syncpayments.com.br/v1/oauth/token", {
+            const tokenResp = await axios.post("https://api.syncpay.com.br/api/partner/v1/auth-token", {
               client_id: ativo.clientId,
               client_secret: ativo.clientSecret,
-              grant_type: "client_credentials",
             });
 
             const accessToken = tokenResp.data.access_token;
 
-            // Criar cobrança PIX
             const cobranca = await axios.post(
-              "https://api.syncpayments.com.br/v1/pix/cob",
+              "https://api.syncpay.com.br/api/partner/v1/cashin",
               {
-                valor: String(plano?.price || "9.90"),
+                valor: plano?.price || 9.9,
                 descricao: plano?.name || "Plano VIP Telegram",
-                webhook: process.env.PIX_WEBHOOK_URL,
+                callbackUrl: process.env.PIX_WEBHOOK_URL,
               },
               { headers: { Authorization: `Bearer ${accessToken}` } }
             );
 
             retorno = {
               data: {
-                pix: { code: cobranca.data.pixCopiaECola },
-                paymentId: cobranca.data.txid || cobranca.data.id,
+                pix: { code: cobranca.data.qrcode },
+                paymentId: cobranca.data.identifier || cobranca.data.id,
               },
             };
-            paymentId = cobranca.data.txid || cobranca.data.id;
+            paymentId = cobranca.data.identifier || cobranca.data.id;
           } catch (err) {
             console.error("Erro SyncPay:", err.response?.data || err.message);
             retorno = { data: { pix: { code: "ERRO_SYNCPAY" } } };
@@ -362,6 +357,5 @@ app.post("/pix/webhook", async (req, res) => {
   }
 });
 
-// === INICIAR SERVIDOR ===
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
