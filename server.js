@@ -66,6 +66,26 @@ async function sendMessage(chatId, text, options = {}) {
   }
 }
 
+// === FUNÇÃO: Enviar vídeo inicial ===
+async function sendVideoInicial(chatId) {
+  const videoUrl = "https://t.me/gustavoisp2/30";
+  try {
+    const res = await axios.post(`${API}/sendVideo`, {
+      chat_id: chatId,
+      video: videoUrl,
+      caption: "🔥 <b>Bem-vindo ao BotSimples!</b>",
+      parse_mode: "HTML",
+    });
+    const msgId = res.data?.result?.message_id;
+    if (msgId) {
+      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
+      mensagensPorChat.get(chatId).push(msgId);
+    }
+  } catch (err) {
+    console.error("Erro ao enviar vídeo inicial:", err.response?.data || err.message);
+  }
+}
+
 // === FUNÇÃO: Enviar imagem QR (registrando no controle) ===
 async function sendQrCode(chatId, qrData) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}`;
@@ -119,12 +139,11 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     if (message?.text === "/start") {
       await limparMensagens(chatId);
 
-      await sendMessage(chatId, "🔥 <b>Bem-vindo ao BotSimples!</b>");
+      await sendVideoInicial(chatId);
       await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
           inline_keyboard: [
             [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
-            [{ text: "📢 Canal VIP", url: "https://t.me/seucanal" }],
           ],
         },
       });
