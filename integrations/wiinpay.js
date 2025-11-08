@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// === GERAR PIX ===
 export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimples") {
   try {
     const apiKey = process.env.WIINPAY_API_KEY;
@@ -8,14 +9,14 @@ export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimpl
     console.log("🟡 [WIINPAY] Gerando pagamento via API v2...");
 
     const response = await axios.post(
-      `${baseUrl}/payment/create`, // ✅ rota correta da v2
+      `${baseUrl}/payment/create`,
       {
         api_key: apiKey,
-        value: valor,
+        value: Number(valor), // 🔧 garante número
         name: "Cliente BotSimples",
         email: "cliente@botsimples.com",
         description: descricao,
-        webhook_url: process.env.WEBHOOK_URL || "https://seuservidor.com/webhook",
+        webhook_url: process.env.WEBHOOK_URL || "https://telegram-bot-starter-ggy2.onrender.com/webhook",
         metadata: { origem: "telegram-bot" },
       },
       {
@@ -31,7 +32,7 @@ export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimpl
 
     return {
       success: true,
-      qr_code: data.qr_code || data.qrcode || data.qrCode,
+      qr_code: data.qr_code || data.qrcode || data.qrCode || data.qr, // 🔧 fallback extra
       paymentId: data.paymentId || data.id || data.transaction_id,
     };
   } catch (error) {
@@ -40,6 +41,7 @@ export async function gerarPixWiinPay(valor, descricao = "Pagamento via BotSimpl
   }
 }
 
+// === VERIFICAR PAGAMENTO ===
 export async function verificarPixWiinPay(paymentId) {
   try {
     const apiKey = process.env.WIINPAY_API_KEY;
@@ -54,14 +56,15 @@ export async function verificarPixWiinPay(paymentId) {
       },
     });
 
-    const status = response.data?.data?.status || response.data?.status;
+    const status = response.data?.data?.status || response.data?.status || "UNKNOWN";
     console.log(`🟢 [WIINPAY] Status retornado: ${status}`);
 
-    if (status === "PAID") {
+    // 🔧 Corrigido: nova API usa "PAID" maiúsculo
+    if (status.toUpperCase() === "PAID") {
       return { success: true, status: "PAID" };
     }
 
-    return { success: false, status: status || "PENDING" };
+    return { success: false, status };
   } catch (error) {
     console.error("❌ [WIINPAY] Erro ao verificar PIX:", error.response?.data || error.message);
     return { success: false, error: "ERRO_VERIFICAR" };
