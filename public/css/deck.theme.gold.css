@@ -363,3 +363,171 @@
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ===========================
+   ⚡️ TIGERFY DASH FLEXION STYLE
+   =========================== */
+
+.deck-page {
+  padding: 30px 40px;
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* ===== HEADER ===== */
+.deck-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.deck-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #ffcc00;
+  margin-bottom: 5px;
+}
+
+.deck-sub {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* ===== BOTÃO FILTRAR ===== */
+.filter-button {
+  background: linear-gradient(135deg, #ffcc00, #b98a00);
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.25);
+}
+.filter-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+}
+.filter-dropdown {
+  display: none;
+}
+
+/* ===== GRID ===== */
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+}
+
+.deck-card {
+  background: rgba(18, 18, 18, 0.9);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  transition: 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
+}
+.deck-card:hover {
+  border-color: rgba(255, 204, 0, 0.25);
+  box-shadow: 0 0 16px rgba(255, 204, 0, 0.12);
+  transform: translateY(-3px);
+}
+.deck-card h2 {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+.deck-card .value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffcc00;
+}
+
+/* ===== CHART ===== */
+.chart-card {
+  background: rgba(15, 15, 15, 0.9);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 12px;
+  padding: 25px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chart-head h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.chart-tabs {
+  display: flex;
+  gap: 8px;
+}
+.chart-tabs button {
+  background: rgba(255, 204, 0, 0.05);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 8px;
+  padding: 5px 12px;
+  color: #ffcc00;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+.chart-tabs button.active {
+  background: #ffcc00;
+  color: #000;
+  font-weight: 700;
+}
+.chart-placeholder {
+  border: 1px dashed rgba(255, 204, 0, 0.12);
+  height: 220px;
+  display: grid;
+  place-items: center;
+  color: #666;
+  font-size: 14px;
+}
+
+/* ===== TABLE ===== */
+.table-card {
+  background: rgba(15, 15, 15, 0.9);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 12px;
+  padding: 25px 30px;
+}
+.table-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 18px;
+}
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  font-size: 13px;
+}
+.styled-table thead {
+  border-bottom: 1px solid rgba(255, 204, 0, 0.15);
+}
+.styled-table th {
+  color: #ffcc00;
+  text-align: left;
+  padding-bottom: 8px;
+  font-weight: 700;
+}
+.styled-table td {
+  padding: 10px 0;
+  color: #bbb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
