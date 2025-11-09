@@ -85,7 +85,7 @@ async function sendVideoInicial(chatId) {
   }
 }
 
-// === FUNÇÃO: Enviar imagem QR (corrigida para nova API) ===
+// === FUNÇÃO: Enviar imagem QR (corrigida) ===
 async function sendQrCode(chatId, qrData) {
   const qrReal = qrData?.qr_code || qrData?.data?.qr_code || qrData;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrReal)}`;
@@ -123,7 +123,7 @@ async function limparMensagens(chatId) {
   pagamentosPendentes.delete(chatId);
 }
 
-// === WEBHOOK ===
+// === WEBHOOK TELEGRAM ===
 app.post(`/webhook/${TOKEN}`, async (req, res) => {
   try {
     const update = req.body;
@@ -196,7 +196,11 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       }
 
       const valor = parseFloat(plano.price);
-      const pix = await gerarPixWiinPay(valor);
+
+      // ✅ Envia chat_id no metadata
+      const pix = await gerarPixWiinPay(valor, {
+        metadata: { origem: "telegram-bot", chat_id: chatId },
+      });
 
       if (!pix.success) {
         await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
@@ -207,13 +211,12 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       qrsGerados.set(chatId, qrReal);
       pagamentosPendentes.set(chatId, pix.paymentId || pix.data?.paymentId);
 
-      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>\n⚠️ Este código tem validade de 30 minutos.");
+      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
       await sendMessage(chatId, `<code>${qrReal}</code>`);
 
       await sendMessage(
         chatId,
-        "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n" +
-        "✅ Após efetuar o pagamento, clique abaixo para verificar:",
+        "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n✅ Após efetuar o pagamento, clique abaixo para verificar:",
         {
           reply_markup: {
             inline_keyboard: [
@@ -251,6 +254,50 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     res.sendStatus(200);
   } catch (err) {
     console.error("🔥 Erro no webhook Telegram:", err);
+    res.sendStatus(500);
+  }
+});
+
+// === WEBHOOK WIINPAY (entrega automática) ===
+app.post("/webhook", async (req, res) => {
+  try {
+    const { data } = req.body;
+    if (!data || !data.payment) return res.sendStatus(400);
+
+    const payment = data.payment;
+    const status = payment.status;
+    const valor = payment.total;
+    const chatId = payment.metadata?.chat_id;
+
+    console.log("📦 [WEBHOOK] Pagamento recebido:", status, "R$", valor);
+
+    const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
+      name: String,
+      price: Number,
+      description: String,
+      deliverable: String,
+    }));
+
+    const plano = await Plan.findOne({
+      price: { $gte: valor - 0.1, $lte: valor + 0.1 },
+    });
+
+    if (!plano) {
+      console.log("⚠️ Nenhum plano encontrado com esse valor:", valor);
+      return res.sendStatus(200);
+    }
+
+    if (status === "PAID" && chatId) {
+      await axios.post(`${API}/sendMessage`, {
+        chat_id: chatId,
+        text: `🎉 <b>Pagamento confirmado!</b>\n${plano.description || "Seu acesso foi liberado automaticamente."}\n\n${plano.deliverable}`,
+        parse_mode: "HTML",
+      });
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("❌ Erro no webhook WiinPay:", err.message);
     res.sendStatus(500);
   }
 });
