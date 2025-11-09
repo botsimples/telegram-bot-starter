@@ -53,16 +53,28 @@ router.get("/admin", async (req, res) => {
 
 // === CRUD PLANOS ===
 router.post("/admin/planos", async (req, res) => {
-  const { name, price, description, deliverable } = req.body;
-  await Plan.create({ name, price, description, deliverable });
-  res.sendStatus(200);
+  try {
+    let { name, price, description, deliverable } = req.body;
+    price = parseFloat(String(price).replace(",", "."));
+    await Plan.create({ name, price, description, deliverable });
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("❌ Erro ao criar plano:", err);
+    res.status(500).send("Erro ao criar plano.");
+  }
 });
 
 router.put("/admin/planos/:id", async (req, res) => {
-  const { id } = req.params;
-  const { name, price, description, deliverable } = req.body;
-  await Plan.findByIdAndUpdate(id, { name, price, description, deliverable });
-  res.sendStatus(200);
+  try {
+    const { id } = req.params;
+    let { name, price, description, deliverable } = req.body;
+    price = parseFloat(String(price).replace(",", "."));
+    await Plan.findByIdAndUpdate(id, { name, price, description, deliverable });
+    res.sendStatus(200);
+  } catch (err) {
+    console.error("❌ Erro ao atualizar plano:", err);
+    res.status(500).send("Erro ao atualizar plano.");
+  }
 });
 
 router.delete("/admin/planos/:id", async (req, res) => {
