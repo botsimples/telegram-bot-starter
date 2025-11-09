@@ -420,3 +420,103 @@ body {
   color: #777;
   margin-top: 40px;
 }
+
+/* ======== MODAL (PADRÃO HOTTRACK) ======== */
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+}
+
+.modal-bg.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box {
+  background: #0e0e0e;
+  border: 1px solid rgba(255, 204, 0, 0.15);
+  border-radius: 12px;
+  padding: 40px;
+  width: 420px;
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.08);
+  text-align: left;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-box h2 {
+  color: #ffcc00;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.modal-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-box input,
+.modal-box textarea {
+  width: 100%;
+  padding: 12px;
+  background: #111;
+  border: 1px solid rgba(255, 204, 0, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.modal-box input:focus,
+.modal-box textarea:focus {
+  border-color: #ffcc00;
+}
+
+.modal-box textarea {
+  resize: none;
+  height: 80px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: #aaa;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-cancel:hover {
+  color: #ffcc00;
+}
