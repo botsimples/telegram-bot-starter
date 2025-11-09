@@ -20,24 +20,15 @@ router.post("/login", (req, res) => {
   }
 });
 
-/* === DECK (painel principal) === */
 router.get("/", async (req, res) => {
   try {
     const planos = await Plan.find().sort({ createdAt: -1 });
-    const users = [];
-    const payments = [];
-    res.render("deck", { 
-      title: "Deck - BotSimples", 
-      planos, 
-      users, 
-      payments 
-    });
+    res.render("deck", { planos });
   } catch (err) {
-    console.error("❌ Erro ao carregar Deck:", err.message);
-    res.status(500).send("Erro ao carregar Deck.");
+    console.error("Erro ao carregar dashboard:", err.message);
+    res.status(500).send("Erro ao carregar dashboard.");
   }
 });
-
 
 /* === ADMIN (Planos e Gateways) === */
 router.get("/admin", async (req, res) => {
