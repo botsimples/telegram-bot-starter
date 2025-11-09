@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import Plan from "./Plan.js";
 import Bot from "./Bot.js";
 import ApiPix from "./ApiPix.js";
@@ -8,33 +7,33 @@ const router = express.Router();
 
 /* === LOGIN === */
 router.get("/login", (req, res) => {
-  res.render("login", { message: "" });
+  res.render("login", { title: "Entrar - BotSimples", message: "" });
 });
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  // autenticação simples
+
   if (username === "admin" && password === "123") {
     return res.redirect("/");
   } else {
-    return res.render("login", { message: "Credenciais inválidas" });
+    return res.render("login", { title: "Entrar - BotSimples", message: "Credenciais inválidas" });
   }
 });
 
-/* === DASHBOARD / DECK === */
+/* === DECK (antigo dashboard) === */
 router.get("/", async (req, res) => {
   try {
     const planos = await Plan.find().sort({ createdAt: -1 });
     const users = [];
     const payments = [];
-    res.render("dashboard", { title: "Deck - BotSimples", planos, users, payments });
+    res.render("deck", { title: "Deck - BotSimples", planos, users, payments });
   } catch (err) {
-    console.error("❌ Erro ao carregar dashboard:", err.message);
-    res.status(500).send("Erro ao carregar dashboard.");
+    console.error("❌ Erro ao carregar Deck:", err.message);
+    res.status(500).send("Erro ao carregar Deck.");
   }
 });
 
-/* === ADMIN (Planos e Gateways antigos, opcional) === */
+/* === ADMIN (Planos e Gateways) === */
 router.get("/admin", async (req, res) => {
   try {
     const planos = await Plan.find().sort({ createdAt: -1 });
@@ -74,8 +73,8 @@ router.get("/bots", async (req, res) => {
     const bots = await Bot.find().sort({ createdAt: -1 });
     res.render("bots", { title: "Ofertas - BotSimples", bots });
   } catch (err) {
-    console.error("❌ Erro ao carregar ofertas:", err.message);
-    res.status(500).send("Erro ao carregar ofertas.");
+    console.error("❌ Erro ao carregar Ofertas:", err.message);
+    res.status(500).send("Erro ao carregar Ofertas.");
   }
 });
 
@@ -85,8 +84,8 @@ router.post("/bots/add", async (req, res) => {
     await Bot.create({ username, token, note });
     res.redirect("/bots");
   } catch (err) {
-    console.error("❌ Erro ao adicionar oferta:", err.message);
-    res.status(500).send("Erro ao adicionar oferta.");
+    console.error("❌ Erro ao adicionar Oferta:", err.message);
+    res.status(500).send("Erro ao adicionar Oferta.");
   }
 });
 
@@ -95,8 +94,8 @@ router.post("/bots/delete/:id", async (req, res) => {
     await Bot.findByIdAndDelete(req.params.id);
     res.redirect("/bots");
   } catch (err) {
-    console.error("❌ Erro ao deletar oferta:", err.message);
-    res.status(500).send("Erro ao deletar oferta.");
+    console.error("❌ Erro ao deletar Oferta:", err.message);
+    res.status(500).send("Erro ao deletar Oferta.");
   }
 });
 
