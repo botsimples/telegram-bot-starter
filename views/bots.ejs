@@ -1,30 +1,12 @@
-<div class="page-container">
-  <div class="page-header">
-    <h1>Ofertas</h1>
-    <p>Gerencie seus bots e fluxos conectados ao sistema TigerFy.</p>
   </div>
 
   <div class="actions">
+    <a href="#" class="btn-primary">+ Nova Oferta</a>
     <button onclick="openModal('modalOferta')" class="btn-primary">+ Nova Oferta</button>
   </div>
 
   <div class="cards-grid">
-    <% if (bots && bots.length > 0) { %>
-      <% bots.forEach(bot => { %>
-        <div class="dash-card wide">
-          <div class="card-header">
-            <h2><%= bot.username %></h2>
-            <span class="tag">Ativo</span>
-          </div>
-          <p><%= bot.note || 'Nenhuma observação adicionada.' %></p>
-          <div class="card-footer">
-            <button class="btn-secondary">Editar</button>
-            <button class="btn-danger">Excluir</button>
-          </div>
-        </div>
-      <% }) %>
-    <% } else { %>
-      <p class="empty-text">Nenhuma oferta cadastrada.</p>
+@@ -28,3 +28,19 @@
     <% } %>
   </div>
 </div>
