@@ -1,92 +1,91 @@
-// ==============================
-// ⚡ TIGERFY SERVER.JS (CommonJS)
-// ==============================
+// ==========================
+// 🔥 TIGERFY SERVER
+// ==========================
 
-const express = require("express");
-const path = require("path");
-const mongoose = require("mongoose");
-const session = require("express-session");
-const dotenv = require("dotenv");
-const expressLayouts = require("express-ejs-layouts");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const dotenv = require('dotenv');
+const path = require('path');
+const expressLayouts = require('express-ejs-layouts');
 
-// 🔧 Configurações básicas
 dotenv.config();
 const app = express();
 
-// ==============================
-// 🗂️ Configuração de Views e Public
-// ==============================
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+// ==========================
+// ⚙️ CONFIGURAÇÕES
+// ==========================
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
-app.use(express.static(path.join(__dirname, "public")));
-app.set("layout", "layout"); // layout padrão
+app.set('layout', 'layout');
 
-// ==============================
-// 📦 Middlewares
-// ==============================
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "tigerfysecret",
+    secret: 'tigerfy_secret',
     resave: false,
     saveUninitialized: false,
   })
 );
 
-// ==============================
-// 🌐 Banco de Dados MongoDB
-// ==============================
+// ==========================
+// 🧠 CONEXÃO COM MONGO
+// ==========================
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB conectado!"))
-  .catch((err) => console.error("❌ Erro ao conectar MongoDB:", err));
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB conectado!'))
+  .catch((err) => console.error('❌ Erro ao conectar MongoDB:', err));
 
-// ==============================
-// 🧭 Rotas Principais
-// ==============================
+// ==========================
+// 🌐 ROTAS
+// ==========================
 
-// Página inicial → redireciona pro deck
-app.get("/", (req, res) => res.redirect("/deck"));
+// Página inicial
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
+
+// Login
+app.get('/login', (req, res) => {
+  res.render('login');
+});
 
 // Dashboard principal
-app.get("/deck", (req, res) =>
-  res.render("deck", { title: "Estatísticas Gerais", active: "deck" })
-);
+app.get('/deck', (req, res) => {
+  res.render('deck', { title: 'Dashboard' });
+});
 
 // Ofertas
-app.get("/bots", (req, res) =>
-  res.render("bots", { title: "Ofertas", active: "bots" })
-);
+app.get('/ofertas', (req, res) => {
+  res.render('ofertas', { title: 'Ofertas' });
+});
 
-// Adquirentes (API PIX)
-app.get("/api_pix", (req, res) =>
-  res.render("api_pix", { title: "Adquirentes", active: "api_pix" })
-);
+// Adquirentes
+app.get('/adquirentes', (req, res) => {
+  res.render('adquirentes', { title: 'Adquirentes' });
+});
 
 // Conquistas
-app.get("/conquistas", (req, res) =>
-  res.render("conquistas", { title: "Conquistas", active: "conquistas" })
-);
+app.get('/conquistas', (req, res) => {
+  res.render('conquistas', { title: 'Conquistas' });
+});
 
-// Perfil do usuário
-app.get("/perfil", (req, res) =>
-  res.render("perfil", { title: "Meu Perfil", active: "perfil" })
-);
+// Perfil
+app.get('/perfil', (req, res) => {
+  res.render('perfil', { title: 'Meu Perfil' });
+});
 
-// Página de login (exemplo)
-app.get("/login", (req, res) =>
-  res.render("login", { title: "Login - TigerFy", active: "" })
-);
-
-// ==============================
-// 🚀 Servidor
-// ==============================
+// ==========================
+// 🚀 SERVIDOR ONLINE
+// ==========================
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () =>
-  console.log(`🚀 Servidor online na porta ${PORT}\n✅ TigerFy pronto!`)
-);
+
+app.listen(PORT, () => {
+  console.log('🚀 Servidor online na porta ' + PORT);
+  console.log('✅ TigerFy pronto!');
+});
