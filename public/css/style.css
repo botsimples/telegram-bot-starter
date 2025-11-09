@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 /* base hottrack */
-body { @apply bg-hot-bg text-slate-100; }
-.panel { @apply bg-hot-card/70 backdrop-blur rounded-xl border border-white/5 shadow-lg; }
-.btn { @apply px-4 py-2 rounded-lg font-medium bg-hot.primary/20 hover:bg-hot.primary/30 transition; }
+body {
+  @apply bg-neutral-900 text-slate-100;
+}
+
+.panel {
+  @apply bg-neutral-800/70 backdrop-blur rounded-xl border border-white/5 shadow-lg;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium bg-blue-600/20 hover:bg-blue-600/30 transition;
+}
