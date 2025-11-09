@@ -1749,3 +1749,110 @@ body::after {
   max-width: 100% !important;
   overflow-x: hidden !important;
 }
+
+/* ===== SIDEBAR TIGERFY STYLE (HOTTRACK REWORK) ===== */
+
+.sidebar {
+  width: 230px;
+  background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(255, 204, 0, 0.08);
+  padding: 28px 18px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 4px 0 18px rgba(255, 204, 0, 0.05);
+}
+
+/* Header da logo */
+.sidebar-header .logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffcc00;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 40px;
+  letter-spacing: 0.3px;
+}
+
+/* Links principais */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #bfbfbf;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  transition: 0.25s;
+}
+
+.menu a .icon {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.menu a:hover {
+  background: rgba(255, 204, 0, 0.06);
+  color: #ffcc00;
+}
+
+.menu a.active {
+  background: linear-gradient(135deg, #ffcc00, #b98a00);
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+.menu a.active .icon {
+  opacity: 1;
+}
+
+/* Divisor */
+.menu-divider {
+  height: 1px;
+  background: rgba(255, 204, 0, 0.15);
+  margin: 18px 0;
+}
+
+/* Footer (botão sair) */
+.sidebar-footer {
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 204, 0, 0.15);
+}
+
+.logout-btn {
+  width: 100%;
+  background: rgba(255, 204, 0, 0.08);
+  border: 1px solid rgba(255, 204, 0, 0.15);
+  border-radius: 10px;
+  color: #ffcc00;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.25s ease;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #ffcc00, #b98a00);
+  color: #000;
+  box-shadow: 0 0 14px rgba(255, 204, 0, 0.3);
+}
