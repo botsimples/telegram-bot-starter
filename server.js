@@ -69,17 +69,12 @@ async function sendMessage(chatId, text, options = {}) {
 async function sendVideoInicial(chatId) {
   const videoUrl = "https://t.me/gustavoisp2/30";
   try {
-    const res = await axios.post(`${API}/sendVideo`, {
+    await axios.post(`${API}/sendVideo`, {
       chat_id: chatId,
       video: videoUrl,
       caption: "🔥 <b>Bem-vindo ao BotSimples!</b>",
       parse_mode: "HTML",
     });
-    const msgId = res.data?.result?.message_id;
-    if (msgId) {
-      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-      mensagensPorChat.get(chatId).push(msgId);
-    }
   } catch (err) {
     console.error("Erro ao enviar vídeo inicial:", err.response?.data || err.message);
   }
@@ -90,17 +85,12 @@ async function sendQrCode(chatId, qrData) {
   const qrReal = qrData?.qr_code || qrData?.data?.qr_code || qrData;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrReal)}`;
   try {
-    const res = await axios.post(`${API}/sendPhoto`, {
+    await axios.post(`${API}/sendPhoto`, {
       chat_id: chatId,
       photo: qrUrl,
       caption: "📷 Escaneie o QR Code acima para pagar via PIX",
       parse_mode: "HTML",
     });
-    const msgId = res.data?.result?.message_id;
-    if (msgId) {
-      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-      mensagensPorChat.get(chatId).push(msgId);
-    }
   } catch (err) {
     console.error("Erro ao enviar QR Code:", err.response?.data || err.message);
   }
@@ -197,7 +187,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
       const valor = parseFloat(plano.price);
 
-      // ✅ Envia o chat_id e plan_id no metadata
+      // ✅ Envia chat_id e plan_id no metadata
       const pix = await gerarPixWiinPay(valor, {
         metadata: { origem: "telegram-bot", chat_id: chatId, plan_id: plano._id },
       });
@@ -209,7 +199,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
       const qrReal = pix.qr_code || pix.data?.qr_code;
       qrsGerados.set(chatId, qrReal);
-      pagamentosPendentes.set(chatId, pix.paymentId || pix.data?.paymentId);
+      pagamentosPendentes.set(chatId, { paymentId: pix.paymentId, planId: plano._id });
 
       await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
       await sendMessage(chatId, `<code>${qrReal}</code>`);
@@ -235,17 +225,30 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       if (qr) await sendQrCode(chatId, qr);
     }
 
-    // === Verificar Pagamento ===
+    // === Verificar Pagamento (entregável do painel) ===
     if (data === "verificar_pagamento") {
-      const paymentId = pagamentosPendentes.get(chatId);
-      if (!paymentId) {
+      const pagamento = pagamentosPendentes.get(chatId);
+      if (!pagamento || !pagamento.paymentId) {
         await sendMessage(chatId, "⚠️ Nenhum pagamento pendente encontrado.");
         return res.sendStatus(200);
       }
 
-      const status = await verificarPixWiinPay(paymentId);
+      const status = await verificarPixWiinPay(pagamento.paymentId);
       if (status.success && status.status === "PAID") {
-        await sendMessage(chatId, "🎉 <b>Pagamento confirmado!</b>\nSeu acesso foi liberado automaticamente.");
+        const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
+          name: String,
+          price: Number,
+          description: String,
+          deliverable: String,
+        }));
+
+        const plano = await Plan.findById(pagamento.planId);
+        if (plano && plano.deliverable) {
+          await sendMessage(chatId, plano.deliverable);
+          console.log(`🎁 Entregável manual (${plano.name}) enviado para ${chatId}`);
+        } else {
+          await sendMessage(chatId, "✅ Pagamento confirmado, mas nenhum entregável foi configurado.");
+        }
       } else {
         await sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
       }
@@ -281,10 +284,7 @@ app.post("/webhook", async (req, res) => {
 
     let plano = null;
 
-    // Tenta pelo ID do plano
     if (planId) plano = await Plan.findById(planId);
-
-    // Se não achar, tenta pelo valor
     if (!plano) plano = await Plan.findOne({ price: { $gte: valor - 0.1, $lte: valor + 0.1 } });
 
     if (!plano) {
@@ -292,14 +292,14 @@ app.post("/webhook", async (req, res) => {
       return res.sendStatus(200);
     }
 
-    // Envia entregável quando pago
+    // ✅ Envia o entregável configurado
     if (status === "PAID" && chatId) {
-      console.log(`🎁 Enviando entregável do plano ${plano.name} para o chat ${chatId}`);
       await axios.post(`${API}/sendMessage`, {
         chat_id: chatId,
-        text: `🎉 <b>Pagamento confirmado!</b>\n<b>${plano.name}</b> ativado com sucesso.\n\n${plano.deliverable}`,
+        text: plano.deliverable || "✅ Entregável não configurado.",
         parse_mode: "HTML",
       });
+      console.log(`🎁 Entregável automático (${plano.name}) enviado para ${chatId}`);
     }
 
     res.sendStatus(200);
