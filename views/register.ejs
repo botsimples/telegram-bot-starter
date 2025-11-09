@@ -1,91 +1,130 @@
-<div class="login-page">
-  <h1>Registrar na TigerFy ⚡</h1>
+<div class="login-wrapper">
+  <div class="login-card">
+    <h1>⚡ TigerFy</h1>
+    <p class="subtitle">Crie sua conta para acessar a plataforma</p>
 
-  <form method="POST" action="/register" class="login-form">
-    <input type="text" placeholder="Usuário" name="username" required />
-    <input type="email" placeholder="E-mail" name="email" required />
-    <input type="password" placeholder="Senha" name="password" required />
-    <button type="submit">Criar Conta</button>
-  </form>
+    <form method="POST" action="/register" class="login-form">
+      <label for="username">Usuário</label>
+      <input type="text" id="username" name="username" placeholder="Digite seu usuário" required />
 
-  <p class="login-switch">
-    Já possui uma conta?
-    <a href="/login">Entrar</a>
-  </p>
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
+
+      <label for="password">Senha</label>
+      <input type="password" id="password" name="password" placeholder="Digite sua senha" required />
+
+      <button type="submit" class="btn-login">Criar Conta</button>
+    </form>
+
+    <div class="divider"></div>
+
+    <p class="register-text">
+      Já possui uma conta?
+      <a href="/login">Entrar agora</a>
+    </p>
+  </div>
 </div>
 
 <style>
   body {
-    background: #000;
-    color: #fff;
     font-family: "Inter", sans-serif;
+    background: radial-gradient(circle at center, #0d0d0d 0%, #000 100%);
+    color: #fff;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .login-page {
+  .login-wrapper {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+  }
+
+  .login-card {
+    background: #111;
+    border-radius: 16px;
+    padding: 40px 50px;
+    width: 360px;
+    box-shadow: 0 0 40px rgba(255, 204, 0, 0.08);
     text-align: center;
   }
 
-  .login-page h1 {
+  .login-card h1 {
     color: #ffcc00;
-    font-size: 28px;
-    margin-bottom: 30px;
+    font-weight: 800;
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 25px;
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .login-form label {
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ccc;
   }
 
   .login-form input {
     background: #1a1a1a;
-    border: none;
+    border: 1px solid #222;
     border-radius: 8px;
     padding: 12px;
-    width: 260px;
-    margin: 8px 0;
     color: #fff;
-    text-align: center;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s;
   }
 
   .login-form input:focus {
+    border-color: #ffcc00;
     outline: none;
-    border: 1px solid #ffcc00;
   }
 
-  .login-form button {
-    width: 260px;
+  .btn-login {
     background: #ffcc00;
-    border: none;
-    border-radius: 8px;
     color: #000;
     font-weight: 700;
+    border: none;
+    border-radius: 8px;
     padding: 12px;
-    margin-top: 12px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background 0.3s ease;
   }
 
-  .login-form button:hover {
+  .btn-login:hover {
     background: #ffd633;
   }
 
-  .login-switch {
-    margin-top: 15px;
-    font-size: 14px;
+  .divider {
+    height: 1px;
+    background: #222;
+    margin: 30px 0;
+  }
+
+  .register-text {
+    font-size: 13px;
     color: #aaa;
   }
 
-  .login-switch a {
+  .register-text a {
     color: #ffcc00;
     text-decoration: none;
     font-weight: 600;
   }
 
-  .login-switch a:hover {
+  .register-text a:hover {
     text-decoration: underline;
   }
 </style>
