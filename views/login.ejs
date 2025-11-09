@@ -1,71 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <title>Login • BotSimples</title>
-  <style>
-    body {
-      background-color: #111;
-      color: #f5f5f5;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      color: #ffb400;
-      margin-bottom: 20px;
-    }
-    form {
-      background-color: #1a1a1a;
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    input {
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
-      background-color: #222;
-      color: #fff;
-      width: 200px;
-      text-align: center;
-    }
-    button {
-      background-color: #ffb400;
-      border: none;
-      border-radius: 6px;
-      color: #000;
-      font-weight: bold;
-      padding: 10px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #ffcc33;
-    }
-    p {
-      color: #ff5555;
-      font-size: 14px;
-      text-align: center;
-      margin-top: 10px;
-      height: 16px;
-    }
-  </style>
-</head>
-
-<body>
-  <h1>⚙️ Painel BotSimples</h1>
-  <form action="/login" method="POST">
-    <input type="text" name="username" placeholder="Usuário" required />
-    <input type="password" name="password" placeholder="Senha" required />
-    <button type="submit">Entrar</button>
+<main class="max-w-sm mx-auto space-y-4">
+  <h1 class="text-2xl font-semibold text-hot-primary">Entrar</h1>
+  <form method="post" action="/login" class="panel p-4 space-y-3">
+    <input class="input w-full" type="text" name="user" placeholder="Usuário">
+    <input class="input w-full" type="password" name="pass" placeholder="Senha">
+    <button class="btn w-full" type="submit">Entrar</button>
   </form>
-  <p><%= message %></p>
-</body>
-</html>
+  <% if (typeof message !== 'undefined' && message) { %>
+    <p class="text-red-400 text-sm"><%= message %></p>
+  <% } %>
+</main>
