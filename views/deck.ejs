@@ -1,45 +1,238 @@
-<div class="tiger-dashboard">
-  <h2 class="title">📈 Estatísticas Gerais</h2>
-  <p>Visão geral de toda a plataforma.</p>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h2>📊 Estatísticas Gerais</h2>
+    <p>Visão geral de toda a plataforma.</p>
+    <button class="filter-btn">Filtrar Ofertas</button>
+  </div>
 
   <div class="stats-grid">
-    <div class="card">Total de Vendas <span>R$ 0,00</span></div>
-    <div class="card">Vendas no Ano <span>R$ 0,00</span></div>
-    <div class="card">Vendas no Mês <span>R$ 0,00</span></div>
-    <div class="card">Vendas no Dia <span>R$ 0,00</span></div>
+    <div class="card">
+      <h3>Total de Vendas</h3>
+      <p>R$ 0,00</p>
+    </div>
+    <div class="card">
+      <h3>Vendas no Ano</h3>
+      <p>R$ 0,00</p>
+    </div>
+    <div class="card">
+      <h3>Vendas no Mês</h3>
+      <p>R$ 0,00</p>
+    </div>
+    <div class="card">
+      <h3>Vendas no Dia</h3>
+      <p>R$ 0,00</p>
+    </div>
+    <div class="card">
+      <h3>Total Usuários</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Usuários no Ano</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Usuários no Mês</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Usuários no Dia</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Conversões Ativas</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Taxa de Conversão</h3>
+      <p>0%</p>
+    </div>
+    <div class="card">
+      <h3>Ticket Médio</h3>
+      <p>R$ 0,00</p>
+    </div>
+    <div class="card">
+      <h3>Lucro Estimado</h3>
+      <p>R$ 0,00</p>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <div class="chart-header">
+      <h3>Usuários por Horário</h3>
+      <div class="chart-filters">
+        <button>Hoje</button>
+        <button>Ontem</button>
+        <button>Essa Semana</button>
+        <button>Esse Mês</button>
+        <button>Personalizado</button>
+      </div>
+    </div>
+    <div class="chart-box">[ gráfico em breve ]</div>
+  </div>
+
+  <div class="payments-section">
+    <h3>Pagamentos Recentes</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuário</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5">Nenhum pagamento recente</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <style>
-  .tiger-dashboard {
+  body {
+    background: #0d0d0d;
     color: #fff;
-    animation: fadeIn 0.6s ease;
+    font-family: 'Inter', sans-serif;
   }
 
-  .title {
+  .dashboard-container {
+    padding: 40px;
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .dashboard-header h2 {
     color: #ffcc00;
-    margin-bottom: 10px;
+    font-size: 24px;
+  }
+
+  .filter-btn {
+    background: linear-gradient(180deg, #ffcc00, #cfa300);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .filter-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(180deg, #ffd633, #d4a400);
   }
 
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
   }
 
   .card {
-    background: #1a1a1a;
-    border: 1px solid rgba(255, 204, 0, 0.2);
-    padding: 15px;
+    background: #131313;
+    border: 1px solid rgba(255, 204, 0, 0.15);
     border-radius: 10px;
+    padding: 20px;
     text-align: center;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.05);
+    transition: 0.2s;
   }
 
-  .card span {
-    display: block;
-    margin-top: 5px;
+  .card:hover {
+    border-color: #ffcc00;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+  }
+
+  .card h3 {
+    color: #ccc;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+
+  .card p {
     color: #ffcc00;
     font-weight: 700;
+    font-size: 18px;
+  }
+
+  .chart-section {
+    margin-top: 40px;
+    background: #111;
+    border-radius: 12px;
+    padding: 25px;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .chart-filters button {
+    background: #ffcc00;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin-left: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .chart-filters button:hover {
+    background: #ffd633;
+  }
+
+  .chart-box {
+    background: #0d0d0d;
+    border: 1px dashed rgba(255, 204, 0, 0.2);
+    border-radius: 10px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+  }
+
+  .payments-section {
+    margin-top: 40px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #111;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  th {
+    text-align: left;
+    padding: 12px;
+    color: #ffcc00;
+    font-size: 14px;
+  }
+
+  td {
+    padding: 10px;
+    color: #ccc;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  tr:hover td {
+    background: rgba(255, 204, 0, 0.05);
   }
 </style>
