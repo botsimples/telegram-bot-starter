@@ -1,31 +1,45 @@
-<main class="deck-page">
-  <header class="deck-header">
-    <div class="deck-header-left">
-      <h1 class="deck-title">Estatísticas Gerais</h1>
-      <p class="deck-sub">Visão geral de toda a plataforma.</p>
+<main class="tiger-dashboard">
+  <header class="tiger-header">
+    <div class="left">
+      <h1>Estatísticas Gerais</h1>
+      <p>Visão geral de toda a plataforma.</p>
     </div>
-    <div class="deck-header-right">
-      <button class="filter-button">Filtrar Ofertas ⌄</button>
-      <div class="filter-dropdown"></div>
+    <div class="right">
+      <button class="filter-btn">Filtrar Ofertas ⌄</button>
+      <div class="dropdown"></div>
     </div>
   </header>
 
-  <section class="deck-grid">
-    <div class="deck-card"><h2>Total de Vendas</h2><span class="value">R$ 0,00</span></div>
-    <div class="deck-card"><h2>Vendas no Ano</h2><span class="value">R$ 0,00</span></div>
-    <div class="deck-card"><h2>Vendas no Mês</h2><span class="value">R$ 0,00</span></div>
-    <div class="deck-card"><h2>Vendas no Dia</h2><span class="value">R$ 0,00</span></div>
+  <section class="stats-grid">
+    <div class="stat-card"><h3>Total de Vendas</h3><span>R$ 0,00</span></div>
+    <div class="stat-card"><h3>Vendas no Ano</h3><span>R$ 0,00</span></div>
+    <div class="stat-card"><h3>Vendas no Mês</h3><span>R$ 0,00</span></div>
+    <div class="stat-card"><h3>Vendas no Dia</h3><span>R$ 0,00</span></div>
 
-    <div class="deck-card"><h2>Total Usuários</h2><span class="value">0</span></div>
-    <div class="deck-card"><h2>Usuários no Ano</h2><span class="value">0</span></div>
-    <div class="deck-card"><h2>Usuários no Mês</h2><span class="value">0</span></div>
-    <div class="deck-card"><h2>Usuários no Dia</h2><span class="value">0</span></div>
+    <div class="stat-card"><h3>Total Usuários</h3><span>0</span></div>
+    <div class="stat-card"><h3>Usuários no Ano</h3><span>0</span></div>
+    <div class="stat-card"><h3>Usuários no Mês</h3><span>0</span></div>
+    <div class="stat-card"><h3>Usuários no Dia</h3><span>0</span></div>
   </section>
 
-  <section class="chart-card">
+  <section class="chart-block">
+    <div class="chart-head">
+      <h3>Usuários por Horário</h3>
+      <div class="tabs">
+        <button class="active">Hoje</button>
+        <button>Ontem</button>
+        <button>Essa Semana</button>
+        <button>Esse Mês</button>
+        <button>Personalizado</button>
+      </div>
+    </div>
+    <div class="chart-placeholder">[ gráfico em breve ]</div>
+  </section>
+
+  <section class="chart-block">
     <div class="chart-head">
       <h3>Histórico de Faturamento</h3>
-      <div class="chart-tabs">
+      <div class="tabs">
         <button class="active">7D</button>
         <button>30D</button>
         <button>90D</button>
@@ -34,11 +48,15 @@
     <div class="chart-placeholder">[ gráfico em breve ]</div>
   </section>
 
-  <section class="table-card">
+  <section class="table-block">
     <h3>Pagamentos Recentes</h3>
-    <table class="styled-table">
-      <thead><tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
-      <tbody><tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr></tbody>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+      </tbody>
     </table>
   </section>
 </main>
