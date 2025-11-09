@@ -6,6 +6,11 @@ import ApiPix from "./ApiPix.js";
 
 const router = express.Router();
 
+/* ===== LOGIN ===== */
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
 /* ===== DASHBOARD ===== */
 router.get("/", async (req, res) => {
   try {
