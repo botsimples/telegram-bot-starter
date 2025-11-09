@@ -1,17 +1,28 @@
 <div class="page-header">
-  <h1>Ofertas</h1>
-  <p>Gerencie suas ofertas, planos e bots integrados.</p>
+  <h1>🤖 Ofertas</h1>
+  <p>Gerencie seus bots, fluxos e campanhas conectadas ao sistema TigerFy.</p>
+</div>
+
+<div class="actions">
+  <a href="#" class="btn-primary">+ Nova Oferta</a>
 </div>
 
 <div class="cards-grid">
-  <div class="card">
-    <h2>Bot Principal</h2>
-    <p>Gerencie fluxos, mensagens e entregáveis do bot principal.</p>
-    <button class="btn-primary">Acessar</button>
-  </div>
-  <div class="card">
-    <h2>Campanhas Ativas</h2>
-    <p>Veja bots em execução e métricas básicas.</p>
-    <button class="btn-primary">Visualizar</button>
-  </div>
+  <% if (bots && bots.length > 0) { %>
+    <% bots.forEach(bot => { %>
+      <div class="dash-card wide">
+        <div class="card-header">
+          <h2><%= bot.username %></h2>
+          <span class="tag">Ativo</span>
+        </div>
+        <p><%= bot.note || 'Nenhuma observação adicionada.' %></p>
+        <div class="card-footer">
+          <button class="btn-secondary">Editar</button>
+          <button class="btn-danger">Excluir</button>
+        </div>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p class="empty-text">Nenhuma oferta cadastrada.</p>
+  <% } %>
 </div>
