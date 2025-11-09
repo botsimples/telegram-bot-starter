@@ -1,99 +1,45 @@
 <div class="tiger-dashboard">
-  <!-- HEADER -->
-  <div class="tiger-header">
-    <div>
-      <h1>Estatísticas Gerais</h1>
-      <p>Visão geral de toda a plataforma.</p>
-    </div>
-    <button class="filter-btn">Filtrar Ofertas</button>
-  </div>
+  <h2 class="title">📈 Estatísticas Gerais</h2>
+  <p>Visão geral de toda a plataforma.</p>
 
-  <!-- GRID DE MÉTRICAS -->
   <div class="stats-grid">
-    <div class="stat-card">
-      <h3>Total de Vendas</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Ano</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Mês</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Dia</h3>
-      <span>R$ 0,00</span>
-    </div>
-
-    <div class="stat-card">
-      <h3>Total Usuários</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Ano</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Mês</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Dia</h3>
-      <span>0</span>
-    </div>
-
-    <!-- novos 4 blocos -->
-    <div class="stat-card">
-      <h3>Conversões Ativas</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Taxa de Conversão</h3>
-      <span>0%</span>
-    </div>
-    <div class="stat-card">
-      <h3>Ticket Médio</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Lucro Estimado</h3>
-      <span>R$ 0,00</span>
-    </div>
-  </div>
-
-  <!-- BLOCO DE GRÁFICO -->
-  <div class="chart-block">
-    <div class="chart-head">
-      <h3>Usuários por Horário</h3>
-      <div class="tabs">
-        <button class="active">Hoje</button>
-        <button>Ontem</button>
-        <button>Essa Semana</button>
-        <button>Esse Mês</button>
-        <button>Personalizado</button>
-      </div>
-    </div>
-    <div class="chart-placeholder">[ gráfico em breve ]</div>
-  </div>
-
-  <!-- TABELA -->
-  <div class="table-block">
-    <h3>Pagamentos Recentes</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Usuário</th>
-          <th>Valor</th>
-          <th>Status</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr>
-      </tbody>
-    </table>
+    <div class="card">Total de Vendas <span>R$ 0,00</span></div>
+    <div class="card">Vendas no Ano <span>R$ 0,00</span></div>
+    <div class="card">Vendas no Mês <span>R$ 0,00</span></div>
+    <div class="card">Vendas no Dia <span>R$ 0,00</span></div>
   </div>
 </div>
+
+<style>
+  .tiger-dashboard {
+    color: #fff;
+    animation: fadeIn 0.6s ease;
+  }
+
+  .title {
+    color: #ffcc00;
+    margin-bottom: 10px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .card {
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 204, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .card span {
+    display: block;
+    margin-top: 5px;
+    color: #ffcc00;
+    font-weight: 700;
+  }
+</style>
