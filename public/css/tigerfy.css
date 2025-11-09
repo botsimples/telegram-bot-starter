@@ -172,3 +172,112 @@ body {
     text-shadow: 0 0 15px #ffcc00, 0 0 25px #b38f00;
   }
 }
+
+/* ======== SHARED COMPONENTS ======== */
+.actions {
+  margin-bottom: 25px;
+}
+
+.empty-text {
+  text-align: center;
+  color: #777;
+  font-size: 15px;
+  margin-top: 40px;
+}
+
+/* Botões */
+.btn-primary {
+  background: linear-gradient(90deg, #ffcc00, #b38f00);
+  color: #000;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+  text-decoration: none;
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: rgba(255, 204, 0, 0.1);
+  color: #ffcc00;
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 204, 0, 0.2);
+}
+
+.btn-danger {
+  background: rgba(255, 80, 80, 0.1);
+  color: #ff5555;
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-danger:hover {
+  background: rgba(255, 80, 80, 0.2);
+}
+
+/* ======== CARD EXTENSO ======== */
+.dash-card.wide {
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+  margin-bottom: 20px;
+  background: #111;
+  border: 1px solid rgba(255, 204, 0, 0.2);
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.05);
+  transition: 0.3s ease;
+}
+
+.dash-card.wide:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.card-header h2 {
+  font-size: 18px;
+  color: #ffcc00;
+  margin: 0;
+}
+
+.card-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.tag {
+  background: linear-gradient(90deg, #ffcc00, #b38f00);
+  color: #000;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+}
