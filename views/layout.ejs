@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/tigerfy.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
+
   <body>
     <div class="dashboard">
       <aside class="sidebar">
@@ -14,10 +15,11 @@
           <span class="logo-icon">⚡</span>
           <span class="logo-text">TigerFy</span>
         </div>
+
         <nav class="menu">
-          <a href="/deck"><i class="icon">📊</i> Deck</a>
-          <a href="/bots"><i class="icon">💼</i> Ofertas</a>
-          <a href="/api_pix"><i class="icon">🏦</i> Adquirentes</a>
+          <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">Deck</a>
+          <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">Ofertas</a>
+          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">Adquirentes</a>
         </nav>
       </aside>
 
