@@ -2,333 +2,53 @@ import express from "express";
 import mongoose from "mongoose";
 import session from "express-session";
 import path from "path";
-import { fileURLToPath } from "url";
-import dotenv from "dotenv";
-import axios from "axios";
-import bodyParser from "body-parser";
 import expressLayouts from "express-ejs-layouts";
-import adminRoutes from "./models/admin.js";
-import { gerarPixWiinPay, verificarPixWiinPay } from "./integrations/wiinpay.js";
-
-dotenv.config();
+import adminRoutes from "./models/admin.js"; // ajuste se seu admin.js estiver em outra pasta
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const PORT = process.env.PORT || 10000;
 
-// === CONFIG BÁSICA ===
+/* === CONFIGURAÇÕES GERAIS === */
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
-// === LAYOUT PADRÃO ===
-app.use(expressLayouts);
-app.set("layout", "layout");
-
-// === Variável global (para marcar link ativo no menu) ===
-app.use((req, res, next) => {
-  res.locals.path = req.path;
-  next();
-});
-
+/* === SESSÃO === */
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "painel-botsimples",
+    secret: "botsimples_secret_key",
     resave: false,
     saveUninitialized: true,
   })
 );
 
-// === VARIÁVEIS ===
-const TOKEN = process.env.TELEGRAM_TOKEN;
-const API = `https://api.telegram.org/bot${TOKEN}`;
-const MONGO_URI = process.env.MONGO_URI;
+/* === VIEW ENGINE (EJS + LAYOUTS) === */
+app.set("view engine", "ejs");
+app.set("views", "./views");
+app.use(expressLayouts);
+app.set("layout", "layout"); // usa layout.ejs como base automática
 
-// === CONEXÃO MONGO ===
+/* === MONGO DB === */
 mongoose
-  .connect(MONGO_URI)
+  .connect(process.env.MONGO_URL || "mongodb+srv://seu_link_aqui", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
-  .catch((err) => console.error("❌ Erro MongoDB:", err.message));
+  .catch((err) => console.error("❌ Erro MongoDB:", err));
 
-// === MAPAS ===
-const mensagensPorChat = new Map();
-const pagamentosPendentes = new Map();
-const qrsGerados = new Map();
-
-// === FUNÇÕES AUX ===
-async function sendMessage(chatId, text, options = {}) {
-  try {
-    const res = await axios.post(`${API}/sendMessage`, {
-      chat_id: chatId,
-      text,
-      parse_mode: "HTML",
-      ...options,
-    });
-    const msgId = res.data?.result?.message_id;
-    if (msgId) {
-      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-      mensagensPorChat.get(chatId).push(msgId);
-    }
-    return msgId;
-  } catch (err) {
-    console.error("Erro ao enviar mensagem Telegram:", err.response?.data || err.message);
-  }
-}
-
-async function sendVideoInicial(chatId) {
-  const videoUrl = "https://t.me/gustavoisp2/30";
-  try {
-    const res = await axios.post(`${API}/sendVideo`, {
-      chat_id: chatId,
-      video: videoUrl,
-      caption: "🔥 <b>Bem-vindo ao BotSimples!</b>",
-      parse_mode: "HTML",
-    });
-    const msgId = res.data?.result?.message_id;
-    if (msgId) {
-      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-      mensagensPorChat.get(chatId).push(msgId);
-    }
-  } catch (err) {
-    console.error("Erro ao enviar vídeo inicial:", err.response?.data || err.message);
-  }
-}
-
-async function sendQrCode(chatId, qrData) {
-  const qrReal = qrData?.qr_code || qrData?.data?.qr_code || qrData;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrReal)}`;
-  try {
-    const res = await axios.post(`${API}/sendPhoto`, {
-      chat_id: chatId,
-      photo: qrUrl,
-      caption: "📷 Escaneie o QR Code acima para pagar via PIX",
-      parse_mode: "HTML",
-    });
-    const msgId = res.data?.result?.message_id;
-    if (msgId) {
-      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-      mensagensPorChat.get(chatId).push(msgId);
-    }
-  } catch (err) {
-    console.error("Erro ao enviar QR Code:", err.response?.data || err.message);
-  }
-}
-
-async function limparMensagens(chatId) {
-  const lista = mensagensPorChat.get(chatId) || [];
-  mensagensPorChat.set(chatId, []);
-  qrsGerados.delete(chatId);
-  pagamentosPendentes.delete(chatId);
-
-  await Promise.allSettled(
-    lista.map((msgId) =>
-      axios.post(`${API}/deleteMessage`, {
-        chat_id: chatId,
-        message_id: msgId,
-      })
-    )
-  ).catch(() => {});
-}
-
-// === WEBHOOK TELEGRAM ===
-app.post(`/webhook/${TOKEN}`, async (req, res) => {
-  try {
-    const update = req.body;
-    const message = update.message;
-    const callback = update.callback_query;
-    const chatId = message?.chat?.id || callback?.message?.chat?.id;
-    const data = callback?.data;
-    if (!chatId) return res.sendStatus(200);
-
-    if (message?.text === "/start") {
-      await limparMensagens(chatId);
-      await sendVideoInicial(chatId);
-      await sendMessage(chatId, "👋 <b>Bem-vindo!</b> Escolha uma opção abaixo 👇");
-      await new Promise((r) => setTimeout(r, 250));
-      await sendMessage(chatId, "💳 <b>Selecione o que deseja:</b>", {
-        reply_markup: {
-          inline_keyboard: [[{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }]],
-        },
-      });
-      return res.sendStatus(200);
-    }
-
-    if (data === "comprar_plano") {
-      await limparMensagens(chatId);
-
-      const Plan =
-        mongoose.models.Plan ||
-        mongoose.model(
-          "Plan",
-          new mongoose.Schema({
-            name: String,
-            price: Number,
-            description: String,
-            deliverable: String,
-          })
-        );
-
-      const planos = await Plan.find();
-      if (!planos.length) {
-        await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
-        return res.sendStatus(200);
-      }
-
-      const botoes = planos.map((p) => [
-        { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p._id}` },
-      ]);
-
-      await sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
-        reply_markup: { inline_keyboard: botoes },
-      });
-    }
-
-    if (data?.startsWith("plano_")) {
-      await limparMensagens(chatId);
-      const planId = data.split("_")[1];
-      const Plan =
-        mongoose.models.Plan ||
-        mongoose.model(
-          "Plan",
-          new mongoose.Schema({
-            name: String,
-            price: Number,
-            description: String,
-            deliverable: String,
-          })
-        );
-
-      const plano = await Plan.findById(planId);
-      if (!plano) {
-        await sendMessage(chatId, "⚠️ Erro: plano não encontrado.");
-        return res.sendStatus(200);
-      }
-
-      const valor = parseFloat(plano.price);
-      const pix = await gerarPixWiinPay(valor, {
-        metadata: { origem: "telegram-bot", chat_id: chatId, plan_id: plano._id },
-      });
-
-      if (!pix.success) {
-        await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
-        return res.sendStatus(200);
-      }
-
-      const qrReal = pix.qr_code || pix.data?.qr_code;
-      qrsGerados.set(chatId, qrReal);
-      pagamentosPendentes.set(chatId, { paymentId: pix.paymentId, planId: plano._id });
-
-      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
-      await sendMessage(chatId, `<code>${qrReal}</code>`);
-      await sendMessage(
-        chatId,
-        "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n✅ Após efetuar o pagamento, clique abaixo para verificar:",
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
-              [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
-            ],
-          },
-        }
-      );
-    }
-
-    if (data === "mostrar_qr") {
-      const qr = qrsGerados.get(chatId);
-      if (qr) await sendQrCode(chatId, qr);
-    }
-
-    if (data === "verificar_pagamento") {
-      const pagamento = pagamentosPendentes.get(chatId);
-      if (!pagamento) {
-        await sendMessage(chatId, "⚠️ Nenhum pagamento pendente encontrado.");
-        return res.sendStatus(200);
-      }
-
-      const status = await verificarPixWiinPay(pagamento.paymentId);
-      if (status.success && status.status === "PAID") {
-        const Plan =
-          mongoose.models.Plan ||
-          mongoose.model(
-            "Plan",
-            new mongoose.Schema({
-              name: String,
-              price: Number,
-              description: String,
-              deliverable: String,
-            })
-          );
-
-        const plano = await Plan.findById(pagamento.planId);
-        if (plano && plano.deliverable) {
-          await limparMensagens(chatId);
-          await sendMessage(chatId, plano.deliverable);
-        }
-      } else {
-        await sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
-      }
-    }
-
-    res.sendStatus(200);
-  } catch (err) {
-    console.error("🔥 Erro no webhook Telegram:", err);
-    res.sendStatus(500);
-  }
-});
-
-// === WEBHOOK WIINPAY ===
-app.post("/webhook", async (req, res) => {
-  try {
-    const { data } = req.body;
-    if (!data || !data.payment) return res.sendStatus(400);
-
-    const payment = data.payment;
-    const status = payment.status;
-    const chatId = payment.metadata?.chat_id;
-    const planId = payment.metadata?.plan_id;
-    const valor = payment.total;
-
-    const Plan =
-      mongoose.models.Plan ||
-      mongoose.model(
-        "Plan",
-        new mongoose.Schema({
-          name: String,
-          price: Number,
-          description: String,
-          deliverable: String,
-        })
-      );
-
-    let plano = null;
-    if (planId) plano = await Plan.findById(planId);
-    if (!plano) plano = await Plan.findOne({ price: { $gte: valor - 0.1, $lte: valor + 0.1 } });
-
-    if (status === "PAID" && chatId && plano) {
-      await limparMensagens(chatId);
-      await axios.post(`${API}/sendMessage`, {
-        chat_id: chatId,
-        text: plano.deliverable || "✅ Entregável não configurado.",
-        parse_mode: "HTML",
-      });
-    }
-
-    res.sendStatus(200);
-  } catch (err) {
-    console.error("❌ Erro no webhook WiinPay:", err.message);
-    res.sendStatus(500);
-  }
-});
-
-// === ROTAS ADMIN ===
+/* === ROTAS === */
 app.use("/", adminRoutes);
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, "0.0.0.0", () =>
+/* === ERRO 404 === */
+app.use((req, res) => {
+  res.status(404).render("404", {
+    title: "Página não encontrada",
+    message: "A página solicitada não existe.",
+  });
+});
+
+/* === INICIALIZAÇÃO === */
+app.listen(PORT, () =>
   console.log(`🚀 Servidor rodando na porta ${PORT}`)
 );
