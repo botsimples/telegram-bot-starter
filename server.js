@@ -36,40 +36,37 @@ const TOKEN = process.env.TELEGRAM_TOKEN;
 const API = `https://api.telegram.org/bot${TOKEN}`;
 const MONGO_URI = process.env.MONGO_URI;
 
-// === CONEXÃO ===
+// === CONEXÃO MONGO ===
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
   .catch((err) => console.error("❌ Erro MongoDB:", err.message));
 
-// === MAPAS DE CONTROLE ===
+// === MAPAS ===
 const mensagensPorChat = new Map();
 const pagamentosPendentes = new Map();
 const qrsGerados = new Map();
 
-// === FUNÇÃO: Enviar mensagem ===
-function sendMessage(chatId, text, options = {}) {
-  return axios
-    .post(`${API}/sendMessage`, {
+// === FUNÇÕES AUX ===
+async function sendMessage(chatId, text, options = {}) {
+  try {
+    const res = await axios.post(`${API}/sendMessage`, {
       chat_id: chatId,
       text,
       parse_mode: "HTML",
       ...options,
-    })
-    .then((res) => {
-      const msgId = res.data?.result?.message_id;
-      if (msgId) {
-        if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-        mensagensPorChat.get(chatId).push(msgId);
-      }
-      return msgId;
-    })
-    .catch((err) =>
-      console.error("Erro ao enviar mensagem Telegram:", err.response?.data || err.message)
-    );
+    });
+    const msgId = res.data?.result?.message_id;
+    if (msgId) {
+      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
+      mensagensPorChat.get(chatId).push(msgId);
+    }
+    return msgId;
+  } catch (err) {
+    console.error("Erro ao enviar mensagem Telegram:", err.response?.data || err.message);
+  }
 }
 
-// === FUNÇÃO: Enviar vídeo inicial ===
 async function sendVideoInicial(chatId) {
   const videoUrl = "https://t.me/gustavoisp2/30";
   try {
@@ -89,38 +86,35 @@ async function sendVideoInicial(chatId) {
   }
 }
 
-// === FUNÇÃO: Enviar QR Code ===
-function sendQrCode(chatId, qrData) {
+async function sendQrCode(chatId, qrData) {
   const qrReal = qrData?.qr_code || qrData?.data?.qr_code || qrData;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
     qrReal
   )}`;
-  return axios
-    .post(`${API}/sendPhoto`, {
+  try {
+    const res = await axios.post(`${API}/sendPhoto`, {
       chat_id: chatId,
       photo: qrUrl,
       caption: "📷 Escaneie o QR Code acima para pagar via PIX",
       parse_mode: "HTML",
-    })
-    .then((res) => {
-      const msgId = res.data?.result?.message_id;
-      if (msgId) {
-        if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-        mensagensPorChat.get(chatId).push(msgId);
-      }
-      return msgId;
-    })
-    .catch((err) =>
-      console.error("Erro ao enviar QR Code:", err.response?.data || err.message)
-    );
+    });
+    const msgId = res.data?.result?.message_id;
+    if (msgId) {
+      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
+      mensagensPorChat.get(chatId).push(msgId);
+    }
+  } catch (err) {
+    console.error("Erro ao enviar QR Code:", err.response?.data || err.message);
+  }
 }
 
-// === FUNÇÃO: Limpar mensagens (rápida e assíncrona) ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId) || [];
-  if (!lista.length) return;
+  mensagensPorChat.set(chatId, []);
+  qrsGerados.delete(chatId);
+  pagamentosPendentes.delete(chatId);
 
-  Promise.allSettled(
+  await Promise.allSettled(
     lista.map((msgId) =>
       axios.post(`${API}/deleteMessage`, {
         chat_id: chatId,
@@ -128,10 +122,6 @@ async function limparMensagens(chatId) {
       })
     )
   ).catch(() => {});
-
-  mensagensPorChat.set(chatId, []);
-  qrsGerados.delete(chatId);
-  pagamentosPendentes.delete(chatId);
 }
 
 // === WEBHOOK TELEGRAM ===
@@ -147,16 +137,14 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     // === /start ===
     if (message?.text === "/start") {
       await limparMensagens(chatId);
-
-      // ordem controlada
       await sendVideoInicial(chatId);
-      await sendMessage(chatId, "👋 Bem-vindo! Escolha uma opção abaixo 👇");
+      await sendMessage(chatId, "👋 <b>Bem-vindo!</b> Escolha uma opção abaixo 👇");
+      await new Promise((r) => setTimeout(r, 250));
       await sendMessage(chatId, "💳 <b>Selecione o que deseja:</b>", {
         reply_markup: {
           inline_keyboard: [[{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }]],
         },
       });
-
       return res.sendStatus(200);
     }
 
@@ -178,7 +166,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
       const planos = await Plan.find();
       if (!planos.length) {
-        sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
+        await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
         return res.sendStatus(200);
       }
 
@@ -210,7 +198,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
       const plano = await Plan.findById(planId);
       if (!plano) {
-        sendMessage(chatId, "⚠️ Erro: plano não encontrado.");
+        await sendMessage(chatId, "⚠️ Erro: plano não encontrado.");
         return res.sendStatus(200);
       }
 
@@ -220,7 +208,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       });
 
       if (!pix.success) {
-        sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
+        await sendMessage(chatId, "❌ Erro ao gerar pagamento via WiinPay.");
         return res.sendStatus(200);
       }
 
@@ -228,10 +216,10 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       qrsGerados.set(chatId, qrReal);
       pagamentosPendentes.set(chatId, { paymentId: pix.paymentId, planId: plano._id });
 
-      // ordem visual perfeita
+      // ordem natural
       await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
       await sendMessage(chatId, `<code>${qrReal}</code>`);
-      sendMessage(
+      await sendMessage(
         chatId,
         "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n✅ Após efetuar o pagamento, clique abaixo para verificar:",
         {
@@ -248,14 +236,14 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     // === Mostrar QR Code ===
     if (data === "mostrar_qr") {
       const qr = qrsGerados.get(chatId);
-      if (qr) sendQrCode(chatId, qr);
+      if (qr) await sendQrCode(chatId, qr);
     }
 
     // === Verificar Pagamento ===
     if (data === "verificar_pagamento") {
       const pagamento = pagamentosPendentes.get(chatId);
       if (!pagamento) {
-        sendMessage(chatId, "⚠️ Nenhum pagamento pendente encontrado.");
+        await sendMessage(chatId, "⚠️ Nenhum pagamento pendente encontrado.");
         return res.sendStatus(200);
       }
 
@@ -276,10 +264,10 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         const plano = await Plan.findById(pagamento.planId);
         if (plano && plano.deliverable) {
           await limparMensagens(chatId);
-          sendMessage(chatId, plano.deliverable);
+          await sendMessage(chatId, plano.deliverable);
         }
       } else {
-        sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
+        await sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
       }
     }
 
@@ -319,8 +307,8 @@ app.post("/webhook", async (req, res) => {
     if (!plano) plano = await Plan.findOne({ price: { $gte: valor - 0.1, $lte: valor + 0.1 } });
 
     if (status === "PAID" && chatId && plano) {
-      limparMensagens(chatId);
-      axios.post(`${API}/sendMessage`, {
+      await limparMensagens(chatId);
+      await axios.post(`${API}/sendMessage`, {
         chat_id: chatId,
         text: plano.deliverable || "✅ Entregável não configurado.",
         parse_mode: "HTML",
@@ -334,6 +322,7 @@ app.post("/webhook", async (req, res) => {
   }
 });
 
+// === ROTAS ADMIN / PAINEL ===
 app.use("/", adminRoutes);
 
 const PORT = process.env.PORT || 10000;
