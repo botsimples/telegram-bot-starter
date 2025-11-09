@@ -1,43 +1,27 @@
-<% title = "Ofertas - BotSimples"; %>
+<% title = "Ofertas - TigerFy"; %>
 
-<main class="space-y-8 w-full max-w-5xl animate-fadeIn">
-  <section>
-    <h1 class="text-2xl font-semibold text-hot-primary mb-4">💼 Ofertas</h1>
-    <div class="panel p-4">
-      <h3 class="font-medium mb-3">Criar nova oferta</h3>
-      <div class="grid md:grid-cols-3 gap-3">
-        <input id="nomeOferta" placeholder="Nome da oferta" class="input">
-        <input id="tokenOferta" placeholder="Token do bot" class="input">
-        <input id="webhookOferta" placeholder="Webhook (opcional)" class="input">
-      </div>
-      <button class="btn mt-3" onclick="criarOferta()">Criar Oferta</button>
-    </div>
+<div class="panel fade-in center">
+  <h1 class="title"><i class="fa-solid fa-layer-group"></i> Ofertas</h1>
+  <p class="subtitle">Crie e gerencie suas ofertas e bots integrados.</p>
 
-    <div class="panel mt-6 overflow-x-auto">
-      <table class="min-w-full text-sm">
-        <thead>
-          <tr class="bg-neutral-800 text-left">
-            <th class="p-3">Nome</th>
-            <th class="p-3">Token</th>
-            <th class="p-3">Webhook</th>
-            <th class="p-3">Ações</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaOfertas"></tbody>
-      </table>
-    </div>
-  </section>
+  <div class="form-area">
+    <input placeholder="Nome da oferta" class="input" />
+    <input placeholder="Token do bot" class="input" />
+    <input placeholder="Webhook (opcional)" class="input" />
+    <button class="btn">Criar Oferta</button>
+  </div>
 
-  <script>
-    async function criarOferta() {
-      const data = {
-        username: nomeOferta.value,
-        token: tokenOferta.value,
-        observacao: webhookOferta.value
-      };
-      const res = await fetch('/bots', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-      if(res.ok){ alert('✅ Oferta criada!'); location.reload(); }
-      else alert('❌ Erro ao criar');
-    }
-  </script>
-</main>
+  <table class="tabela">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Token</th>
+        <th>Webhook</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="4">Nenhuma oferta cadastrada</td></tr>
+    </tbody>
+  </table>
+</div>
