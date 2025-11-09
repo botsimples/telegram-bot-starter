@@ -5,29 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
-
   <body>
-    <div class="dashboard">
-      <aside class="sidebar">
-        <div class="logo">
-          <span class="logo-icon">⚡</span>
-          <span class="logo-text">TigerFy</span>
-        </div>
-
-        <nav class="menu">
-          <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">Deck</a>
-          <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">Ofertas</a>
-          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">Adquirentes</a>
-        </nav>
-      </aside>
-
-      <main class="main-container">
-        <div class="content">
-          <%- body %>
-        </div>
-      </main>
+    <div class="sidebar">
+      <div class="logo">
+        ⚡ <span>TigerFy</span>
+      </div>
+      <nav class="menu">
+        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+          📊 <span>Deck</span>
+        </a>
+        <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+          🤖 <span>Ofertas</span>
+        </a>
+        <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+          💸 <span>Adquirentes</span>
+        </a>
+      </nav>
     </div>
+
+    <main class="main-content">
+      <%- body %>
+    </main>
   </body>
 </html>
