@@ -935,3 +935,199 @@ body::before {
   z-index: -1;
   opacity: 0.9;
 }
+
+/* ===========================
+   ESTILO FINAL TIPO FLEXION/HOTTRACK
+   =========================== */
+
+/* Fundo animado com partículas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom, #0a0a0a 0%, #000 100%);
+  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  animation: moveStars 60s linear infinite;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+/* leve movimento do fundo */
+@keyframes moveStars {
+  0% { background-position: 0 0; }
+  100% { background-position: 500px 1000px; }
+}
+
+/* Glow dourado sutil */
+body::after {
+  content: "";
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(255,204,0,0.08), transparent 70%);
+  filter: blur(180px);
+  z-index: -1;
+}
+
+/* Área principal */
+.deck-wrapper {
+  padding: 40px 30px;
+  min-height: 100vh;
+  color: #fff;
+}
+
+/* Cabeçalho */
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffcc00;
+  margin-bottom: 6px;
+}
+
+.page-header p {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 25px;
+}
+
+/* Grid compacto */
+.deck-grid {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.deck-card {
+  background: rgba(18, 18, 18, 0.9);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 12px;
+  padding: 18px;
+  text-align: left;
+  width: 210px;
+  transition: 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.deck-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255, 204, 0, 0.05), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+.deck-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(255, 204, 0, 0.1);
+}
+
+.deck-card h2 {
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 6px;
+}
+
+.deck-card .value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffcc00;
+}
+
+/* Gráfico compacto */
+.chart-section {
+  margin-top: 25px;
+}
+
+.chart-card {
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(255, 204, 0, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba(255, 204, 0, 0.04);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chart-header h2 {
+  font-size: 15px;
+  color: #ffcc00;
+}
+
+.chart-filter {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.chart-placeholder {
+  height: 140px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 204, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  font-size: 13px;
+}
+
+/* Tabela */
+.table-section {
+  margin-top: 30px;
+  background: rgba(15, 15, 15, 0.85);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+
+.table-header h2 {
+  font-size: 15px;
+  color: #ffcc00;
+  margin-bottom: 10px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
+}
+
+.styled-table th {
+  color: #ffcc00;
+  text-align: left;
+}
+
+.styled-table tr:hover {
+  background: rgba(255, 204, 0, 0.03);
+}
+
