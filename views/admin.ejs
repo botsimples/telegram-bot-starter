@@ -1,177 +1,148 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <title>🔥 Painel BotSimples</title>
-  <link href="/css/output.css" rel="stylesheet" />
-</head>
+<main class="space-y-8">
+  <section>
+    <h1 class="text-2xl font-semibold text-hot-primary">Planos</h1>
+    <div class="panel mt-4 overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-neutral-800">
+            <th class="p-3 text-left">Nome</th>
+            <th class="p-3 text-left">Preço</th>
+            <th class="p-3 text-left">Descrição</th>
+            <th class="p-3 text-left">Entregável</th>
+            <th class="p-3 text-left">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (planos || []).forEach(plan => { %>
+          <tr class="odd:bg-neutral-900/40">
+            <td class="p-3"><input id="name_<%= plan._id %>" value="<%= plan.name %>" class="input w-full"></td>
+            <td class="p-3"><input id="price_<%= plan._id %>" value="<%= plan.price %>" class="input w-full"></td>
+            <td class="p-3"><input id="desc_<%= plan._id %>" value="<%= plan.description %>" class="input w-full"></td>
+            <td class="p-3"><input id="deliverable_<%= plan._id %>" value="<%= plan.deliverable || '' %>" class="input w-full"></td>
+            <td class="p-3">
+              <button class="btn" onclick="salvarPlano('<%= plan._id %>')">Salvar</button>
+              <button class="btn" onclick="excluirPlano('<%= plan._id %>')">Excluir</button>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
 
-<body class="bg-neutral-900 text-slate-100 min-h-screen flex flex-col items-center px-4 py-10">
-  <div class="panel w-full max-w-6xl p-8">
-    <h1 class="text-3xl font-bold text-center text-blue-400 mb-8">⚙️ Painel BotSimples</h1>
-
-    <section class="mb-12">
-      <h2 class="text-2xl font-semibold mb-4 text-blue-300">💳 Planos</h2>
-      <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm">
-          <thead class="bg-neutral-800 text-blue-300">
-            <tr>
-              <th class="p-3 border border-neutral-700">Nome</th>
-              <th class="p-3 border border-neutral-700">Preço</th>
-              <th class="p-3 border border-neutral-700">Descrição</th>
-              <th class="p-3 border border-neutral-700">Entregável</th>
-              <th class="p-3 border border-neutral-700">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% (planos || []).forEach(plan => { %>
-            <tr class="odd:bg-neutral-800 even:bg-neutral-900 hover:bg-neutral-700/40 transition">
-              <td class="p-3 border border-neutral-700">
-                <input type="text" id="name_<%= plan._id %>" value="<%= plan.name %>" class="w-full bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-slate-100">
-              </td>
-              <td class="p-3 border border-neutral-700">
-                <input type="text" id="price_<%= plan._id %>" value="<%= plan.price %>" class="w-full bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-slate-100">
-              </td>
-              <td class="p-3 border border-neutral-700">
-                <input type="text" id="desc_<%= plan._id %>" value="<%= plan.description %>" class="w-full bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-slate-100">
-              </td>
-              <td class="p-3 border border-neutral-700">
-                <input type="text" id="deliverable_<%= plan._id %>" value="<%= plan.deliverable || '' %>" class="w-full bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-slate-100">
-              </td>
-              <td class="p-3 border border-neutral-700 text-center">
-                <button onclick="salvarPlano('<%= plan._id %>')" class="btn bg-blue-500/30 hover:bg-blue-500/50">💾</button>
-                <button onclick="excluirPlano('<%= plan._id %>')" class="btn bg-red-500/30 hover:bg-red-500/50 ml-2">🗑️</button>
-              </td>
-            </tr>
-            <% }) %>
-          </tbody>
-        </table>
+    <div class="panel mt-4 p-4">
+      <h3 class="font-medium mb-3">Criar novo plano</h3>
+      <div class="grid md:grid-cols-4 gap-3">
+        <input id="novoNome" placeholder="Nome" class="input">
+        <input id="novoPreco" placeholder="Preço" class="input">
+        <input id="novoDesc" placeholder="Descrição" class="input">
+        <input id="novoDeliver" placeholder="Entregável (link ou texto)" class="input">
       </div>
+      <button class="btn mt-3" onclick="criarPlano()">Criar</button>
+    </div>
+  </section>
 
-      <div class="mt-8 text-center">
-        <h3 class="text-lg mb-2 text-blue-300">Criar novo plano</h3>
-        <div class="flex flex-wrap justify-center gap-2">
-          <input id="novoNome" placeholder="Nome" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1">
-          <input id="novoPreco" placeholder="Preço" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1">
-          <input id="novoDesc" placeholder="Descrição" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1 w-48">
-          <input id="novoDeliver" placeholder="Entregável (link ou texto)" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1 w-64">
-          <button onclick="criarPlano()" class="btn bg-blue-500/30 hover:bg-blue-500/50">➕ Criar</button>
-        </div>
+  <section>
+    <h2 class="text-xl font-semibold text-hot-primary">API PIX (Gateways)</h2>
+    <div class="panel mt-4 overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-neutral-800">
+            <th class="p-3 text-left">Nome</th>
+            <th class="p-3 text-left">Client ID</th>
+            <th class="p-3 text-left">Client Secret</th>
+            <th class="p-3 text-left">Token</th>
+            <th class="p-3 text-left">Ativo</th>
+            <th class="p-3 text-left">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (gateways || []).forEach(gw => { %>
+          <tr class="odd:bg-neutral-900/40">
+            <td class="p-3"><%= gw.name %></td>
+            <td class="p-3"><input id="id_<%= gw._id %>" value="<%= gw.clientId || '' %>" class="input w-full"></td>
+            <td class="p-3"><input id="secret_<%= gw._id %>" value="<%= gw.clientSecret || '' %>" class="input w-full"></td>
+            <td class="p-3"><input id="token_<%= gw._id %>" value="<%= gw.token || '' %>" class="input w-full"></td>
+            <td class="p-3"><%= gw.active ? '🟢' : '🔴' %></td>
+            <td class="p-3">
+              <button class="btn" onclick="salvarGateway('<%= gw._id %>')">Salvar</button>
+              <button class="btn" onclick="ativarGateway('<%= gw._id %>')">Ativar</button>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel mt-4 p-4">
+      <h3 class="font-medium mb-3">Criar novo Gateway</h3>
+      <div class="grid md:grid-cols-4 gap-3">
+        <input id="novoGatewayNome" placeholder="Nome (ex: WiinPay)" class="input">
+        <input id="novoGatewayClientId" placeholder="Client ID" class="input">
+        <input id="novoGatewaySecret" placeholder="Client Secret" class="input">
+        <input id="novoGatewayToken" placeholder="Token (opcional)" class="input">
       </div>
-    </section>
+      <button class="btn mt-3" onclick="criarGateway()">Criar</button>
+    </div>
+  </section>
+</main>
 
-    <section>
-      <h2 class="text-2xl font-semibold mb-4 text-blue-300">🏦 Gateways de Pagamento</h2>
-      <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm">
-          <thead class="bg-neutral-800 text-blue-300">
-            <tr>
-              <th class="p-3 border border-neutral-700">Nome</th>
-              <th class="p-3 border border-neutral-700">Client ID</th>
-              <th class="p-3 border border-neutral-700">Client Secret</th>
-              <th class="p-3 border border-neutral-700">Token</th>
-              <th class="p-3 border border-neutral-700">Ativo</th>
-              <th class="p-3 border border-neutral-700">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% (gateways || []).forEach(gw => { %>
-            <tr class="odd:bg-neutral-800 even:bg-neutral-900 hover:bg-neutral-700/40 transition">
-              <td class="p-3 border border-neutral-700"><%= gw.name %></td>
-              <td class="p-3 border border-neutral-700"><input id="id_<%= gw._id %>" value="<%= gw.clientId %>" class="w-full bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-slate-100"></td>
-              <td class="p-3 border border-neutral-700"><input id="secret_<%= gw._id %>" value="<%= gw.clientSecret %>" class="w-full bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-slate-100"></td>
-              <td class="p-3 border border-neutral-700"><input id="token_<%= gw._id %>" value="<%= gw.token || '' %>" class="w-full bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-slate-100"></td>
-              <td class="p-3 border border-neutral-700 text-center"><%= gw.active ? '🟢' : '🔴' %></td>
-              <td class="p-3 border border-neutral-700 text-center">
-                <button onclick="salvarGateway('<%= gw._id %>')" class="btn bg-blue-500/30 hover:bg-blue-500/50">💾</button>
-                <button onclick="ativarGateway('<%= gw._id %>')" class="btn bg-green-500/30 hover:bg-green-500/50 ml-2">⚡</button>
-              </td>
-            </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
+<script>
+// helpers visuais (esperam CSS do HotTrack)
+const showToast = (msg, ok = true) => {
+  const el = document.getElementById("toast");
+  if (!el) return;
+  el.textContent = msg;
+  el.style.borderLeftColor = ok ? "#ffb400" : "#ff5555";
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"), 2200);
+};
 
-      <div class="mt-8 text-center">
-        <h3 class="text-lg mb-2 text-blue-300">Criar novo Gateway</h3>
-        <div class="flex flex-wrap justify-center gap-2">
-          <input id="novoGatewayNome" placeholder="Nome" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1">
-          <input id="novoGatewayClientId" placeholder="Client ID" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1">
-          <input id="novoGatewaySecret" placeholder="Client Secret" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1">
-          <input id="novoGatewayToken" placeholder="Token (opcional)" class="bg-neutral-800 border border-neutral-600 rounded px-2 py-1 w-48">
-          <button onclick="criarGateway()" class="btn bg-blue-500/30 hover:bg-blue-500/50">➕ Criar</button>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <footer class="text-sm mt-8 text-neutral-500">
-    © 2025 BotSimples — Estilo HotTrack 🔥
-  </footer>
-
-  <script>
-    async function criarPlano() {
-      const body = {
-        name: novoNome.value,
-        price: novoPreco.value,
-        description: novoDesc.value,
-        deliverable: novoDeliver.value
-      };
-      await fetch('/admin/planos', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      location.reload();
-    }
-
-    async function salvarPlano(id) {
-      const body = {
-        name: document.getElementById(`name_${id}`).value,
-        price: document.getElementById(`price_${id}`).value,
-        description: document.getElementById(`desc_${id}`).value,
-        deliverable: document.getElementById(`deliverable_${id}`).value
-      };
-      await fetch('/admin/planos/' + id, {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-    }
-
-    async function excluirPlano(id) {
-      await fetch('/admin/planos/' + id, { method: 'DELETE' });
-      document.getElementById(`row_${id}`).remove();
-    }
-
-    async function criarGateway() {
-      const body = {
-        name: novoGatewayNome.value,
-        clientId: novoGatewayClientId.value,
-        clientSecret: novoGatewaySecret.value,
-        token: novoGatewayToken.value
-      };
-      await fetch('/admin/gateways', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      location.reload();
-    }
-
-    async function salvarGateway(id) {
-      const body = {
-        clientId: document.getElementById(`id_${id}`).value,
-        clientSecret: document.getElementById(`secret_${id}`).value,
-        token: document.getElementById(`token_${id}`).value
-      };
-      await fetch('/admin/gateways/' + id, {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-    }
-
-    async function ativarGateway(id) {
-      await fetch('/admin/gateways/ativar/' + id, { method: 'POST' });
-      location.reload();
-    }
-  </script>
-</body>
-</html>
+async function criarPlano(){
+  const payload = {
+    name: document.getElementById('novoNome').value,
+    price: document.getElementById('novoPreco').value,
+    description: document.getElementById('novoDesc').value,
+    deliverable: document.getElementById('novoDeliver').value,
+  };
+  const res = await fetch('/admin/planos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(res.ok){ showToast('✅ Plano criado!'); location.reload(); } else showToast('❌ Erro ao criar', false);
+}
+async function salvarPlano(id){
+  const payload = {
+    name: document.getElementById(`name_${id}`).value,
+    price: document.getElementById(`price_${id}`).value,
+    description: document.getElementById(`desc_${id}`).value,
+    deliverable: document.getElementById(`deliverable_${id}`).value,
+  };
+  const res = await fetch('/admin/planos/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  showToast(res.ok ? '✅ Plano salvo!' : '❌ Erro ao salvar', res.ok);
+}
+async function excluirPlano(id){
+  if(!confirm('Excluir este plano?')) return;
+  const res = await fetch('/admin/planos/'+id,{method:'DELETE'});
+  if(res.ok){ showToast('🗑️ Plano excluído'); location.reload(); }
+}
+async function criarGateway(){
+  const payload = {
+    name: document.getElementById('novoGatewayNome').value,
+    clientId: document.getElementById('novoGatewayClientId').value,
+    clientSecret: document.getElementById('novoGatewaySecret').value,
+    token: document.getElementById('novoGatewayToken').value,
+  };
+  const res = await fetch('/admin/gateways',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(res.ok){ showToast('✅ Gateway criado!'); location.reload(); } else showToast('❌ Erro ao criar', false);
+}
+async function salvarGateway(id){
+  const payload = {
+    clientId: document.getElementById(`id_${id}`).value,
+    clientSecret: document.getElementById(`secret_${id}`).value,
+    token: document.getElementById(`token_${id}`).value,
+  };
+  const res = await fetch('/admin/gateways/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  showToast(res.ok ? '✅ Gateway salvo!' : '❌ Erro ao salvar', res.ok);
+}
+async function ativarGateway(id){
+  const res = await fetch('/admin/gateways/ativar/'+id,{method:'POST'});
+  if(res.ok){ showToast('✅ Gateway ativado!'); setTimeout(()=>location.reload(),600); }
+}
+</script>
