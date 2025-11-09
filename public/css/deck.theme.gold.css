@@ -226,3 +226,18 @@
 .filter-btn {
   margin-top: 4px;
 }
+
+/* Ajuste de alinhamento fino com a logo */
+.tiger-dashboard {
+  padding-top: 18px !important;  /* antes era ~40px */
+}
+
+/* mantém proporção nas laterais */
+.main-content {
+  padding-top: 0;
+}
+
+.tiger-header {
+  margin-top: 0;
+  margin-bottom: 28px;
+}
