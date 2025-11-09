@@ -6,12 +6,22 @@ import ApiPix from "./ApiPix.js";
 
 const router = express.Router();
 
-/* ===== LOGIN ===== */
+/* === LOGIN === */
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { message: "" });
 });
 
-/* ===== DASHBOARD ===== */
+router.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  // autenticação fake só pra não quebrar
+  if (username === "admin" && password === "123") {
+    res.redirect("/admin");
+  } else {
+    res.render("login", { message: "Credenciais inválidas" });
+  }
+});
+
+/* === DASHBOARD === */
 router.get("/", async (req, res) => {
   try {
     const planos = await Plan.find().sort({ createdAt: -1 });
@@ -24,17 +34,19 @@ router.get("/", async (req, res) => {
   }
 });
 
-/* ===== PLANOS ===== */
+/* === ADMIN (PLANOS E GATEWAYS) === */
 router.get("/admin", async (req, res) => {
   try {
     const planos = await Plan.find().sort({ createdAt: -1 });
-    res.render("admin", { planos });
+    const gateways = await ApiPix.find().sort({ createdAt: -1 });
+    res.render("admin", { planos, gateways });
   } catch (err) {
-    console.error("Erro ao carregar planos:", err.message);
-    res.status(500).send("Erro ao carregar planos.");
+    console.error("Erro ao carregar admin:", err.message);
+    res.status(500).send("Erro ao carregar admin.");
   }
 });
 
+/* === CRUD PLANOS === */
 router.post("/admin/add-plan", async (req, res) => {
   try {
     const { name, price, description, deliverable } = req.body;
@@ -56,7 +68,7 @@ router.post("/admin/delete-plan/:id", async (req, res) => {
   }
 });
 
-/* ===== GERENCIAR BOTS ===== */
+/* === BOTS === */
 router.get("/bots", async (req, res) => {
   try {
     const bots = await Bot.find().sort({ createdAt: -1 });
@@ -88,11 +100,11 @@ router.post("/bots/delete/:id", async (req, res) => {
   }
 });
 
-/* ===== API PIX ===== */
+/* === API PIX === */
 router.get("/api-pix", async (req, res) => {
   try {
-    const configs = await ApiPix.find().sort({ createdAt: -1 });
-    res.render("api_pix", { configs });
+    const apipix = await ApiPix.findOne().sort({ createdAt: -1 }) || { gateways: [] };
+    res.render("api_pix", { apipix });
   } catch (err) {
     console.error("Erro ao carregar API PIX:", err.message);
     res.status(500).send("Erro ao carregar API PIX.");
@@ -107,16 +119,6 @@ router.post("/api-pix/add", async (req, res) => {
   } catch (err) {
     console.error("Erro ao adicionar API PIX:", err.message);
     res.status(500).send("Erro ao adicionar API PIX.");
-  }
-});
-
-router.post("/api-pix/delete/:id", async (req, res) => {
-  try {
-    await ApiPix.findByIdAndDelete(req.params.id);
-    res.redirect("/api-pix");
-  } catch (err) {
-    console.error("Erro ao deletar API PIX:", err.message);
-    res.status(500).send("Erro ao deletar API PIX.");
   }
 });
 
