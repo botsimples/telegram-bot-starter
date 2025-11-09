@@ -7,24 +7,20 @@
     <link rel="stylesheet" href="/css/tigerfy.css" />
   </head>
   <body>
-    <div class="sidebar">
-      <div class="logo">
-        ⚡ <span>TigerFy</span>
+    <% if (!title.includes('Login')) { %>
+      <div class="sidebar">
+        <div class="logo">
+          ⚡ TigerFy
+        </div>
+        <nav class="menu">
+          <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">Deck</a>
+          <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">Ofertas</a>
+          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">Adquirentes</a>
+        </nav>
       </div>
-      <nav class="menu">
-        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-          📊 <span>Deck</span>
-        </a>
-        <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-          🤖 <span>Ofertas</span>
-        </a>
-        <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-          💸 <span>Adquirentes</span>
-        </a>
-      </nav>
-    </div>
+    <% } %>
 
-    <main class="main-content">
+    <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
       <%- body %>
     </main>
   </body>
