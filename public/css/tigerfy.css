@@ -520,3 +520,174 @@ body {
 .btn-cancel:hover {
   color: #ffcc00;
 }
+
+/* ======== FLEXION STYLE DASHBOARD ======== */
+.deck-flexion {
+  position: relative;
+  background: radial-gradient(ellipse at top, #0a0a0a 0%, #000 80%);
+  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.deck-flexion::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 204, 0, 0.03);
+  backdrop-filter: blur(15px);
+  z-index: 0;
+}
+
+.deck-flexion > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ======== DASHBOARD HEADER ======== */
+.deck-flexion .page-header {
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.deck-flexion .page-header h1 {
+  font-size: 28px;
+  color: #ffcc00;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.deck-flexion .page-header p {
+  color: #bbb;
+}
+
+/* ======== CARDS ======== */
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.deck-card {
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid rgba(255, 204, 0, 0.12);
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.08);
+  transition: 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.deck-card:hover {
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+.deck-card h2 {
+  font-size: 15px;
+  color: #bbb;
+  margin-bottom: 10px;
+}
+
+.deck-card .value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffcc00;
+}
+
+/* ======== CHART SECTION ======== */
+.chart-section {
+  margin-top: 40px;
+}
+
+.chart-card {
+  background: rgba(15, 15, 15, 0.85);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 16px;
+  padding: 25px;
+  backdrop-filter: blur(8px);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.chart-header h2 {
+  color: #ffcc00;
+  font-size: 18px;
+}
+
+.chart-filter {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.chart-placeholder {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 14px;
+  border: 1px dashed rgba(255, 204, 0, 0.1);
+}
+
+/* ======== TABLE ======== */
+.table-section {
+  margin-top: 50px;
+  background: rgba(15, 15, 15, 0.85);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  padding: 25px;
+  backdrop-filter: blur(8px);
+}
+
+.table-header h2 {
+  color: #ffcc00;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ccc;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
+}
+
+.styled-table th {
+  color: #ffcc00;
+  text-align: left;
+  font-weight: 600;
+}
+
+.styled-table tr:hover {
+  background: rgba(255, 204, 0, 0.02);
+}
+
+/* ======== BLUR EFFECT GOLD ======== */
+.glow-gold {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,204,0,0.1) 0%, transparent 70%);
+  top: 10%;
+  right: 10%;
+  filter: blur(100px);
+  z-index: 0;
+}
