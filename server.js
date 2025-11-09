@@ -47,9 +47,9 @@ const mensagensPorChat = new Map();
 const pagamentosPendentes = new Map();
 const qrsGerados = new Map();
 
-// === FUNÇÃO: Enviar mensagem (não bloqueante) ===
+// === FUNÇÃO: Enviar mensagem ===
 function sendMessage(chatId, text, options = {}) {
-  axios
+  return axios
     .post(`${API}/sendMessage`, {
       chat_id: chatId,
       text,
@@ -62,6 +62,7 @@ function sendMessage(chatId, text, options = {}) {
         if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
         mensagensPorChat.get(chatId).push(msgId);
       }
+      return msgId;
     })
     .catch((err) =>
       console.error("Erro ao enviar mensagem Telegram:", err.response?.data || err.message)
@@ -69,25 +70,23 @@ function sendMessage(chatId, text, options = {}) {
 }
 
 // === FUNÇÃO: Enviar vídeo inicial ===
-function sendVideoInicial(chatId) {
+async function sendVideoInicial(chatId) {
   const videoUrl = "https://t.me/gustavoisp2/30";
-  axios
-    .post(`${API}/sendVideo`, {
+  try {
+    const res = await axios.post(`${API}/sendVideo`, {
       chat_id: chatId,
       video: videoUrl,
       caption: "🔥 <b>Bem-vindo ao BotSimples!</b>",
       parse_mode: "HTML",
-    })
-    .then((res) => {
-      const msgId = res.data?.result?.message_id;
-      if (msgId) {
-        if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
-        mensagensPorChat.get(chatId).push(msgId);
-      }
-    })
-    .catch((err) =>
-      console.error("Erro ao enviar vídeo inicial:", err.response?.data || err.message)
-    );
+    });
+    const msgId = res.data?.result?.message_id;
+    if (msgId) {
+      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
+      mensagensPorChat.get(chatId).push(msgId);
+    }
+  } catch (err) {
+    console.error("Erro ao enviar vídeo inicial:", err.response?.data || err.message);
+  }
 }
 
 // === FUNÇÃO: Enviar QR Code ===
@@ -96,7 +95,7 @@ function sendQrCode(chatId, qrData) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
     qrReal
   )}`;
-  axios
+  return axios
     .post(`${API}/sendPhoto`, {
       chat_id: chatId,
       photo: qrUrl,
@@ -109,20 +108,18 @@ function sendQrCode(chatId, qrData) {
         if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
         mensagensPorChat.get(chatId).push(msgId);
       }
+      return msgId;
     })
     .catch((err) =>
       console.error("Erro ao enviar QR Code:", err.response?.data || err.message)
     );
 }
 
-// === FUNÇÃO: Limpar mensagens (ultra-rápida) ===
+// === FUNÇÃO: Limpar mensagens (rápida e assíncrona) ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId) || [];
   if (!lista.length) return;
 
-  console.log(`🧹 Limpando ${lista.length} mensagens do chat ${chatId}...`);
-
-  // deleta todas em paralelo
   Promise.allSettled(
     lista.map((msgId) =>
       axios.post(`${API}/deleteMessage`, {
@@ -149,19 +146,23 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
     // === /start ===
     if (message?.text === "/start") {
-      limparMensagens(chatId);
-      sendVideoInicial(chatId);
-      sendMessage(chatId, "Escolha uma opção abaixo 👇", {
+      await limparMensagens(chatId);
+
+      // ordem controlada
+      await sendVideoInicial(chatId);
+      await sendMessage(chatId, "👋 Bem-vindo! Escolha uma opção abaixo 👇");
+      await sendMessage(chatId, "💳 <b>Selecione o que deseja:</b>", {
         reply_markup: {
           inline_keyboard: [[{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }]],
         },
       });
+
       return res.sendStatus(200);
     }
 
     // === Comprar Plano ===
     if (data === "comprar_plano") {
-      limparMensagens(chatId);
+      await limparMensagens(chatId);
 
       const Plan =
         mongoose.models.Plan ||
@@ -185,14 +186,14 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         { text: `${p.name} — R$${p.price.toFixed(2)}`, callback_data: `plano_${p._id}` },
       ]);
 
-      sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
+      await sendMessage(chatId, "💳 <b>Escolha o plano que deseja adquirir:</b>", {
         reply_markup: { inline_keyboard: botoes },
       });
     }
 
     // === Selecionar Plano ===
     if (data?.startsWith("plano_")) {
-      limparMensagens(chatId);
+      await limparMensagens(chatId);
 
       const planId = data.split("_")[1];
       const Plan =
@@ -227,9 +228,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       qrsGerados.set(chatId, qrReal);
       pagamentosPendentes.set(chatId, { paymentId: pix.paymentId, planId: plano._id });
 
-      sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
-      sendMessage(chatId, `<code>${qrReal}</code>`);
-
+      // ordem visual perfeita
+      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
+      await sendMessage(chatId, `<code>${qrReal}</code>`);
       sendMessage(
         chatId,
         "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n✅ Após efetuar o pagamento, clique abaixo para verificar:",
@@ -274,7 +275,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
         const plano = await Plan.findById(pagamento.planId);
         if (plano && plano.deliverable) {
-          limparMensagens(chatId);
+          await limparMensagens(chatId);
           sendMessage(chatId, plano.deliverable);
         }
       } else {
