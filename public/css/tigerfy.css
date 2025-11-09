@@ -1372,65 +1372,188 @@ body::after {
 }
 
 /* ===========================
-   CONTAINER PRINCIPAL
+   🔥 TIGERFY FLEXION GRID 2.0 — ENCAIXADO PERFEITO
    =========================== */
+
 .deck-wrapper {
-  padding: 50px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 50px 40px;
+  width: 100%;
   min-height: 100vh;
-  position: relative;
-  z-index: 1;
+  box-sizing: border-box;
 }
 
-/* CABEÇALHO */
+.page-header {
+  width: 950px;
+  max-width: 95%;
+  text-align: left;
+  margin-bottom: 25px;
+}
+
 .page-header h1 {
   font-size: 22px;
   font-weight: 700;
   color: #ffcc00;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .page-header p {
   font-size: 13px;
   color: #aaa;
-  margin-bottom: 25px;
+  margin: 0;
 }
 
 /* ===========================
-   CARDS COMPACTOS (iguais Flexion)
+   GRADE DE ESTATÍSTICAS CENTRALIZADA
    =========================== */
+
 .deck-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px 18px;
+  width: 950px;
+  max-width: 95%;
   margin-bottom: 35px;
 }
 
 .deck-card {
   background: rgba(18, 18, 18, 0.85);
-  border: 1px solid rgba(255, 204, 0, 0.1);
+  border: 1px solid rgba(255, 204, 0, 0.12);
   border-radius: 12px;
-  padding: 18px 20px;
-  width: 200px;
-  text-align: left;
-  transition: 0.3s ease;
-  box-shadow: 0 0 12px rgba(255, 204, 0, 0.05);
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 95px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
 }
 
 .deck-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 18px rgba(255, 204, 0, 0.12);
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.15);
 }
 
 .deck-card h2 {
   font-size: 13px;
   color: #bbb;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .deck-card .value {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #ffcc00;
+}
+
+/* ===========================
+   GRÁFICO CENTRALIZADO
+   =========================== */
+
+.chart-card {
+  width: 950px;
+  max-width: 95%;
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(255, 204, 0, 0.08);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 35px;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.03);
+  backdrop-filter: blur(8px);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chart-header h2 {
+  color: #ffcc00;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chart-filter {
+  color: #999;
+  font-size: 12px;
+}
+
+.chart-placeholder {
+  height: 130px;
+  border: 1px dashed rgba(255, 204, 0, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 13px;
+}
+
+/* ===========================
+   TABELA CENTRALIZADA
+   =========================== */
+
+.table-section {
+  width: 950px;
+  max-width: 95%;
+  background: rgba(15, 15, 15, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 204, 0, 0.08);
+  padding: 20px 24px;
+  backdrop-filter: blur(8px);
+  margin-bottom: 50px;
+}
+
+.table-header h2 {
+  font-size: 14px;
+  color: #ffcc00;
+  margin-bottom: 10px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
+}
+
+.styled-table th {
+  color: #ffcc00;
+  text-align: left;
+}
+
+.styled-table tr:hover {
+  background: rgba(255, 204, 0, 0.03);
+}
+
+/* ===========================
+   RESPONSIVIDADE FLEXION MOBILE
+   =========================== */
+
+@media (max-width: 1024px) {
+  .deck-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .deck-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
 }
 
 /* ===========================
