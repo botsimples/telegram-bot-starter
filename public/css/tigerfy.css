@@ -1,1547 +1,127 @@
-/* ======== BASE ======== */
-body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background-color: #0b0b0b;
-  color: #fff;
-}
-
-/* ======== SIDEBAR ======== */
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  width: 220px;
-  background: #000;
-  border-right: 1px solid rgba(255, 204, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 40px;
-}
-
-.logo {
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffcc00;
-  margin-bottom: 60px;
-  letter-spacing: 0.5px;
-}
-
-.menu {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  align-items: center;
-}
-
-.menu a {
-  text-decoration: none;
-  color: #bbb;
-  font-weight: 500;
-  font-size: 15px;
-  padding: 10px 25px;
-  width: 80%;
-  border-radius: 8px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.menu a:hover {
-  background: rgba(255, 204, 0, 0.08);
-  color: #ffcc00;
-}
-
-.menu a.active {
-  background: linear-gradient(90deg, #ffcc00, #b38f00);
-  color: #000;
-  font-weight: 700;
-}
-
-/* ======== MAIN CONTENT ======== */
-.main-content {
-  margin-left: 220px;
-  padding: 50px;
-  background: #0b0b0b;
-  background-image: radial-gradient(#2a2a2a 1px, transparent 1px);
-  background-size: 30px 30px;
-  min-height: 100vh;
-}
-
-/* ======== LOGIN ======== */
-.login-bg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle at top, #0a0a0a 0%, #000 100%);
-  background-image: radial-gradient(#1c1c1c 1px, transparent 1px);
-  background-size: 30px 30px;
-  height: 100vh;
-}
-
-.login-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.login-box {
-  background: #0e0e0e;
-  border: 1px solid rgba(255, 204, 0, 0.15);
-  border-radius: 12px;
-  padding: 45px 50px;
-  width: 370px;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(255, 204, 0, 0.05);
-}
-
-.login-header h1 {
-  color: #ffcc00;
-  font-weight: 700;
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.login-header p {
-  color: #ccc;
-  font-size: 14px;
-  margin-bottom: 30px;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 12px 14px;
-  background: #111;
-  border: 1px solid rgba(255, 204, 0, 0.2);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.input-group input:focus {
-  border-color: #ffcc00;
-}
-
-.btn-primary {
-  width: 100%;
-  background: linear-gradient(90deg, #ffcc00, #b38f00);
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  filter: brightness(1.2);
-  transform: translateY(-1px);
-}
-
-.login-footer {
-  margin-top: 20px;
-  color: #777;
-  font-size: 13px;
-}
-
-/* ======== DASHBOARD ======== */
-.page-header h1 {
-  font-size: 26px;
-  color: #ffcc00;
-  margin-bottom: 5px;
-}
-
-.page-header p {
-  color: #aaa;
-  margin-bottom: 35px;
-}
-
-.dashboard-grid {
-  display: flex;
-  gap: 25px;
-  flex-wrap: wrap;
-}
-
-.dash-card {
-  background: #111;
-  border: 1px solid rgba(255, 204, 0, 0.15);
-  border-radius: 12px;
-  padding: 25px;
-  width: 240px;
-  text-align: center;
-  transition: 0.3s ease;
-}
-
-.dash-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.15);
-}
-
-.dash-card h2 {
-  font-size: 15px;
-  color: #bbb;
-  margin-bottom: 8px;
-}
-
-.dash-card .value {
-  font-size: 26px;
-  font-weight: 700;
-  color: #ffcc00;
-}
-
-/* ======== TABLE ======== */
-.table-section {
-  margin-top: 40px;
-  background: #111;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  padding: 25px;
-}
-
-.table-header h2 {
-  color: #ffcc00;
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: #ccc;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.08);
-}
-
-.styled-table th {
-  color: #ffcc00;
-}
-
-.styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.03);
-}
-
-/* ======== PAGE CONTAINER ======== */
-.page-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px;
-}
-
-/* ======== HEADERS ======== */
-.page-header h1 {
-  font-size: 28px;
-  color: #ffcc00;
-  margin-bottom: 8px;
-}
-
-.page-header p {
-  color: #aaa;
-  margin-bottom: 30px;
-}
-
-/* ======== GRID ======== */
-.dashboard-grid {
-  display: flex;
-  gap: 25px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-/* ======== CARD NORMAL ======== */
-.dash-card {
-  background: #111;
-  border: 1px solid rgba(255, 204, 0, 0.15);
-  border-radius: 12px;
-  padding: 25px;
-  width: 240px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.dash-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.1);
-}
-
-.dash-card h2 {
-  color: #bbb;
-  font-size: 15px;
-  margin-bottom: 10px;
-}
-
-.dash-card .value {
-  color: #ffcc00;
-  font-size: 26px;
-  font-weight: 700;
-}
-
-/* ======== CARD WIDE ======== */
-.dash-card.wide {
-  width: 100%;
-  max-width: 700px;
-  text-align: left;
-  padding: 25px;
-  background: #111;
-  border: 1px solid rgba(255, 204, 0, 0.15);
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.card-header h2 {
-  color: #ffcc00;
-  margin: 0;
-  font-size: 18px;
-}
-
-.card-footer {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-/* ======== TAG ======== */
-.tag {
-  background: linear-gradient(90deg, #ffcc00, #b38f00);
-  color: #000;
-  font-weight: 700;
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 5px;
-}
-
-/* ======== BUTTONS ======== */
-.btn-primary {
-  background: linear-gradient(90deg, #ffcc00, #b38f00);
-  color: #000;
-  font-weight: 700;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 22px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.btn-primary:hover {
-  filter: brightness(1.15);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background: rgba(255, 204, 0, 0.1);
-  color: #ffcc00;
-  border: 1px solid rgba(255, 204, 0, 0.2);
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 204, 0, 0.2);
-}
-
-.btn-danger {
-  background: rgba(255, 80, 80, 0.1);
-  color: #ff5555;
-  border: 1px solid rgba(255, 80, 80, 0.3);
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-danger:hover {
-  background: rgba(255, 80, 80, 0.2);
-}
-
-/* ======== TABLE ======== */
-.table-section {
-  margin-top: 40px;
-  background: #111;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  padding: 25px;
-}
-
-.table-header h2 {
-  color: #ffcc00;
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: #ccc;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.08);
-}
-
-.styled-table th {
-  color: #ffcc00;
-  text-align: left;
-}
-
-.styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.03);
-}
-
-.empty-text {
-  text-align: center;
-  color: #777;
-  margin-top: 40px;
-}
-
-/* ======== MODAL (PADRÃO HOTTRACK) ======== */
-.modal-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.3s ease;
-}
-
-.modal-bg.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.modal-box {
-  background: #0e0e0e;
-  border: 1px solid rgba(255, 204, 0, 0.15);
-  border-radius: 12px;
-  padding: 40px;
-  width: 420px;
-  box-shadow: 0 0 25px rgba(255, 204, 0, 0.08);
-  text-align: left;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    transform: scale(0.97);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.modal-box h2 {
-  color: #ffcc00;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 25px;
-}
-
-.modal-box form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.modal-box input,
-.modal-box textarea {
-  width: 100%;
-  padding: 12px;
-  background: #111;
-  border: 1px solid rgba(255, 204, 0, 0.2);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.modal-box input:focus,
-.modal-box textarea:focus {
-  border-color: #ffcc00;
-}
-
-.modal-box textarea {
-  resize: none;
-  height: 80px;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.btn-cancel {
-  background: transparent;
-  color: #aaa;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-cancel:hover {
-  color: #ffcc00;
-}
-
-/* ======== FLEXION STYLE DASHBOARD ======== */
-.deck-flexion {
-  position: relative;
-  background: radial-gradient(ellipse at top, #0a0a0a 0%, #000 80%);
-  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  min-height: 100vh;
-}
-
-.deck-flexion::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 204, 0, 0.03);
-  backdrop-filter: blur(15px);
-  z-index: 0;
-}
-
-.deck-flexion > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ======== DASHBOARD HEADER ======== */
-.deck-flexion .page-header {
-  text-align: left;
-  margin-bottom: 40px;
-}
-
-.deck-flexion .page-header h1 {
-  font-size: 28px;
-  color: #ffcc00;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.deck-flexion .page-header p {
-  color: #bbb;
-}
-
 /* ===========================
-   FLEXIONPAY STYLE — 4x2 ALINHADO
+   🌑 BASE GERAL
    =========================== */
-
-.deck-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(250px, 1fr));
-  grid-template-rows: repeat(2, 100px);
-  gap: 18px;
-  width: 100%;
-  max-width: 1350px;
-  margin: 0 auto 40px;
-  align-items: stretch;
-  justify-items: stretch;
-}
-
-/* === CARD === */
-.deck-card {
-  background: linear-gradient(135deg, rgba(25, 25, 25, 0.95), rgba(10, 10, 10, 0.85));
-  border: 1px solid rgba(255, 204, 0, 0.12);
-  border-radius: 10px;
-  padding: 18px 22px;
-  height: 100%;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.deck-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 18px rgba(255, 204, 0, 0.2);
-}
-
-/* === TEXTO === */
-.deck-card h2 {
-  font-size: 13px;
-  color: #aaa;
-  font-weight: 500;
-  margin-bottom: 5px;
-}
-
-.deck-card .value {
-  font-size: 21px;
-  font-weight: 700;
-  color: #ffcc00;
-}
-
-/* === RESPONSIVO === */
-@media (max-width: 1300px) {
-  .deck-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 1000px;
-  }
-}
-
-@media (max-width: 950px) {
-  .deck-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 700px;
-  }
-}
-
-@media (max-width: 600px) {
-  .deck-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-  }
-}
-
-/* ===========================
-   RESPONSIVIDADE
-   =========================== */
-
-@media (max-width: 1200px) {
-  .deck-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 1000px;
-  }
-}
-
-@media (max-width: 900px) {
-  .deck-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 700px;
-  }
-}
-
-@media (max-width: 600px) {
-  .deck-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-  }
-}
-
-/* ===========================
-   RESPONSIVIDADE
-   =========================== */
-
-@media (max-width: 1100px) {
-  .deck-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 900px;
-  }
-}
-
-@media (max-width: 850px) {
-  .deck-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 700px;
-  }
-}
-
-@media (max-width: 600px) {
-  .deck-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-  }
-}
-
-/* ===========================
-   AJUSTE RESPONSIVO
-   =========================== */
-
-@media (max-width: 1100px) {
-  .deck-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 900px;
-  }
-}
-
-@media (max-width: 850px) {
-  .deck-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 700px;
-  }
-}
-
-@media (max-width: 600px) {
-  .deck-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-  }
-}
-
-/* ======== CHART SECTION OTIMIZADO ======== */
-.chart-box {
-  background: rgba(15, 15, 15, 0.8);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 14px;
-  padding: 20px;
-  margin-top: 30px;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.05);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.chart-header h2 {
-  color: #ffcc00;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.chart-filter {
-  color: #aaa;
-  font-size: 13px;
-}
-
-.chart-placeholder {
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  border: 1px dashed rgba(255, 204, 0, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-/* ======== TABLE ======== */
-.table-section {
-  margin-top: 50px;
-  background: rgba(15, 15, 15, 0.85);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  padding: 25px;
-  backdrop-filter: blur(8px);
-}
-
-.table-header h2 {
-  color: #ffcc00;
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: #ccc;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 12px 8px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
-}
-
-.styled-table th {
-  color: #ffcc00;
-  text-align: left;
-  font-weight: 600;
-}
-
-.styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.02);
-}
-
-/* ======== BLUR EFFECT GOLD ======== */
-.glow-gold {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,204,0,0.1) 0%, transparent 70%);
-  top: 10%;
-  right: 10%;
-  filter: blur(100px);
-  z-index: 0;
-}
-
-/* ======== CORRIGIDO - FUNDO REAL FLEXION ======== */
-.deck-wrapper {
-  position: relative;
-  padding: 60px;
-  min-height: 100vh;
-  background: radial-gradient(ellipse at bottom, #050505 0%, #000 100%);
-  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: #fff;
-  overflow-x: hidden;
-}
-
-/* brilho dourado sutil */
-.glow-gold {
-  position: absolute;
-  top: 10%;
-  right: 10%;
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle, rgba(255, 204, 0, 0.05), transparent 70%);
-  filter: blur(140px);
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* CABEÇALHO */
-.deck-header {
-  position: relative;
-  z-index: 2;
-  margin-bottom: 40px;
-}
-
-.deck-header h1 {
-  color: #ffcc00;
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 5px;
-}
-
-.deck-header p {
-  color: #aaa;
-  font-size: 14px;
-}
-
-/* MÉTRICAS */
-.deck-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
-  z-index: 2;
-  position: relative;
-}
-
-.metric-card {
-  background: rgba(20, 20, 20, 0.65);
-  border: 1px solid rgba(255, 204, 0, 0.15);
-  border-radius: 14px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 0 12px rgba(255, 204, 0, 0.06);
-  backdrop-filter: blur(10px);
-  transition: 0.3s ease;
-}
-
-.metric-card:hover {
-  box-shadow: 0 0 18px rgba(255, 204, 0, 0.15);
-  transform: translateY(-3px);
-}
-
-.metric-title {
-  display: block;
-  color: #aaa;
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.metric-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffcc00;
-}
-
-/* GRÁFICO */
-.chart-box {
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 16px;
-  padding: 25px;
-  margin-bottom: 40px;
-  backdrop-filter: blur(10px);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.chart-header h2 {
-  color: #ffcc00;
-  font-size: 16px;
-}
-
-.chart-filter {
-  color: #888;
-  font-size: 13px;
-}
-
-.chart-placeholder {
-  height: 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  border: 1px dashed rgba(255, 204, 0, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-/* TABELA */
-.table-box {
-  background: rgba(20, 20, 20, 0.6);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  padding: 25px;
-  backdrop-filter: blur(10px);
-}
-
-.table-box h2 {
-  color: #ffcc00;
-  font-size: 16px;
-  margin-bottom: 15px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
-}
-
-.styled-table th {
-  color: #ffcc00;
-  text-align: left;
-}
-
-.styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.03);
-}
-
-/* ========= FIX: remover qualquer azul do container atual ========= */
-.page-container.deck-flexion { 
-  background: transparent !important; 
-}
-.page-container.deck-flexion::before { 
-  background: transparent !important; 
-  backdrop-filter: none !important;
-}
-
-/* ========= Espaço estilo Flexion (usar no wrapper novo) ========= */
-.deck-wrapper {
-  position: relative;
-  min-height: 100vh;
-  padding: 40px 40px 80px;
-  background: radial-gradient(ellipse at bottom, #050505 0%, #000 100%);
-  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: #fff;
-  overflow-x: hidden;
-}
-
-/* brilho dourado sutil (sem tingir a tela) */
-.deck-wrapper .glow-gold {
-  position: absolute;
-  top: 8%;
-  right: 8%;
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, rgba(255,204,0,.06), transparent 70%);
-  filter: blur(130px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* garantir que o conteúdo fique acima do glow */
-.deck-wrapper .page-container {
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* cards/graficos continuam escuros e translúcidos */
-.deck-card,
-.chart-card,
-.table-section,
-.table-box,
-.chart-box {
-  background: rgba(15, 15, 15, 0.85) !important;
-  border: 1px solid rgba(255, 204, 0, 0.12);
-  backdrop-filter: blur(8px);
-}
-
-/* ==== FIX FINAL DO FUNDO AZUL ==== */
-.deck, 
-.deck-flexion, 
-.page-container.deck-flexion, 
-.deck-wrapper {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* remove o azul inline e o bg residual */
 body, html {
-  background: #000 !important;
-}
-
-/* reaplica o fundo escuro espacial */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
   background: radial-gradient(ellipse at bottom, #050505 0%, #000 100%);
-  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  z-index: -1;
-  opacity: 0.9;
+  color: #fff;
+  overflow-x: hidden;
 }
 
-/* ===========================
-   ESTILO FINAL TIPO FLEXION/HOTTRACK
-   =========================== */
-
-/* Fundo animado com partículas */
+/* brilho dourado sutil animado */
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse at bottom, #0a0a0a 0%, #000 100%);
-  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  animation: moveStars 60s linear infinite;
-  opacity: 0.8;
-  z-index: -1;
-}
-
-/* leve movimento do fundo */
-@keyframes moveStars {
-  0% { background-position: 0 0; }
-  100% { background-position: 500px 1000px; }
-}
-
-/* Glow dourado sutil */
-body::after {
   content: "";
   position: fixed;
   width: 600px;
   height: 600px;
   top: -200px;
   right: -200px;
-  background: radial-gradient(circle, rgba(255,204,0,0.08), transparent 70%);
-  filter: blur(180px);
-  z-index: -1;
-}
-
-/* Área principal */
-.deck-wrapper {
-  padding: 40px 30px;
-  min-height: 100vh;
-  color: #fff;
-}
-
-/* Cabeçalho */
-.page-header h1 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffcc00;
-  margin-bottom: 6px;
-}
-
-.page-header p {
-  font-size: 13px;
-  color: #999;
-  margin-bottom: 25px;
-}
-
-/* Grid compacto */
-.deck-grid {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
-
-.deck-card {
-  background: rgba(18, 18, 18, 0.9);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 12px;
-  padding: 18px;
-  text-align: left;
-  width: 210px;
-  transition: 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
-  position: relative;
-  overflow: hidden;
-}
-
-.deck-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent, rgba(255, 204, 0, 0.05), transparent);
-  transform: translateX(-100%);
-  animation: shimmer 5s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-  100% { transform: translateX(100%); }
-}
-
-.deck-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 18px rgba(255, 204, 0, 0.1);
-}
-
-.deck-card h2 {
-  font-size: 13px;
-  color: #bbb;
-  margin-bottom: 6px;
-}
-
-.deck-card .value {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffcc00;
-}
-
-/* Gráfico compacto */
-.chart-section {
-  margin-top: 25px;
-}
-
-.chart-card {
-  background: rgba(20, 20, 20, 0.8);
-  border: 1px solid rgba(255, 204, 0, 0.08);
-  border-radius: 12px;
-  padding: 20px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 0 14px rgba(255, 204, 0, 0.04);
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.chart-header h2 {
-  font-size: 15px;
-  color: #ffcc00;
-}
-
-.chart-filter {
-  font-size: 12px;
-  color: #aaa;
-}
-
-.chart-placeholder {
-  height: 140px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 204, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #555;
-  font-size: 13px;
-}
-
-/* Tabela */
-.table-section {
-  margin-top: 30px;
-  background: rgba(15, 15, 15, 0.85);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 12px;
-  padding: 20px;
-  backdrop-filter: blur(6px);
-}
-
-.table-header h2 {
-  font-size: 15px;
-  color: #ffcc00;
-  margin-bottom: 10px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  color: #ccc;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
-}
-
-.styled-table th {
-  color: #ffcc00;
-  text-align: left;
-}
-
-.styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.03);
-}
-
-/* ===========================
-   FUNDO GRADIENTE HOTTRACK PRO
-   =========================== */
-
-body {
-  background: radial-gradient(ellipse at top left, #1a1a1a 0%, #000 80%);
-  background-size: cover;
-  background-attachment: fixed;
-  position: relative;
-  overflow-x: hidden;
-  color: #fff;
-}
-
-/* brilho dourado animado */
-body::before {
-  content: "";
-  position: fixed;
-  width: 700px;
-  height: 700px;
-  bottom: -250px;
-  right: -200px;
-  background: radial-gradient(circle, rgba(255, 204, 0, 0.08) 0%, transparent 70%);
-  filter: blur(200px);
-  animation: pulseGlow 10s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(255,204,0,0.1), transparent 70%);
+  filter: blur(160px);
+  animation: goldPulse 8s ease-in-out infinite alternate;
   z-index: 0;
 }
-
-@keyframes pulseGlow {
-  0% { opacity: 0.6; transform: scale(1); }
-  100% { opacity: 1; transform: scale(1.2); }
-}
-
-/* fundo pontilhado sutil (igual HotTrack) */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(rgba(255, 204, 0, 0.04) 1px, transparent 1px);
-  background-size: 30px 30px;
-  z-index: -1;
-}
-
-/* ===========================
-   ÁREA DO DASHBOARD
-   =========================== */
-
-.deck-wrapper {
-  padding: 50px 40px;
-  min-height: 100vh;
-  position: relative;
-  z-index: 1;
-}
-
-/* título */
-.page-header h1 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffcc00;
-  margin-bottom: 5px;
-}
-
-.page-header p {
-  font-size: 13px;
-  color: #aaa;
-  margin-bottom: 25px;
-}
-
-/* ===========================
-   CARDS COMPACTOS E SUAVES
-   =========================== */
-.deck-grid {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
-
-.deck-card {
-  background: rgba(18, 18, 18, 0.75);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 10px;
-  padding: 16px 18px;
-  width: 200px;
-  box-shadow: 0 0 12px rgba(255, 204, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.deck-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 18px rgba(255, 204, 0, 0.15);
-}
-
-.deck-card h2 {
-  font-size: 13px;
-  color: #bbb;
-  margin-bottom: 6px;
-}
-
-.deck-card .value {
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffcc00;
-}
-
-/* ===========================
-   GRÁFICO OTIMIZADO
-   =========================== */
-.chart-card {
-  background: rgba(20, 20, 20, 0.7);
-  border: 1px solid rgba(255, 204, 0, 0.08);
-  border-radius: 12px;
-  padding: 18px 20px;
-  backdrop-filter: blur(6px);
-  max-width: 950px;
-  margin: 0 auto 35px;
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.03);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.chart-header h2 {
-  color: #ffcc00;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.chart-filter {
-  color: #888;
-  font-size: 12px;
-}
-
-.chart-placeholder {
-  height: 130px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed rgba(255, 204, 0, 0.1);
-  border-radius: 6px;
-  color: #555;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-/* ===========================
-   TABELA
-   =========================== */
-.table-section {
-  background: rgba(15, 15, 15, 0.75);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  padding: 20px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.03);
-}
-
-.table-header h2 {
-  font-size: 14px;
-  color: #ffcc00;
-  margin-bottom: 10px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  color: #ccc;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
-}
-
-.styled-table th {
-  color: #ffcc00;
-  text-align: left;
-}
-
-.styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.03);
-}
-
-/* ===========================
-   🔥 FLEXION STYLE COMPACT GOLD
-   =========================== */
-
-body {
-  background: radial-gradient(ellipse at top left, #0c0c0c 0%, #000 100%);
-  background-attachment: fixed;
-  background-size: cover;
-  position: relative;
-  color: #fff;
-  overflow-x: hidden;
-}
-
-/* brilho dourado sutil */
-body::before {
-  content: "";
-  position: fixed;
-  width: 700px;
-  height: 700px;
-  top: -200px;
-  right: -150px;
-  background: radial-gradient(circle, rgba(255, 204, 0, 0.1), transparent 70%);
-  filter: blur(200px);
-  animation: pulseGold 8s ease-in-out infinite alternate;
-  z-index: 0;
-}
-@keyframes pulseGold {
+@keyframes goldPulse {
   0% { opacity: 0.4; transform: scale(1); }
   100% { opacity: 1; transform: scale(1.15); }
 }
 
-/* grade sutil no fundo */
+/* textura sutil estilo Flexion */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 204, 0, 0.03) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255,204,0,0.03) 1px, transparent 1px);
   background-size: 35px 35px;
-  opacity: 0.4;
+  opacity: 0.35;
   z-index: -1;
 }
 
 /* ===========================
-   🔥 TIGERFY FLEXION GRID 2.0 — ENCAIXADO PERFEITO
+   ⚙️ LAYOUT PRINCIPAL
    =========================== */
-
 .deck-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 50px 40px;
-  width: 100%;
+  padding: 50px 30px;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-.page-header {
+.page-container {
   width: 950px;
   max-width: 95%;
-  text-align: left;
-  margin-bottom: 25px;
-}
-
-.page-header h1 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffcc00;
-  margin-bottom: 5px;
-}
-
-.page-header p {
-  font-size: 13px;
-  color: #aaa;
-  margin: 0;
+  z-index: 1;
+  position: relative;
 }
 
 /* ===========================
-   GRADE DE ESTATÍSTICAS CENTRALIZADA
+   🏷️ CABEÇALHO / FILTRO
    =========================== */
+.deck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
 
+.deck-header h1 {
+  font-size: 22px;
+  color: #ffcc00;
+  font-weight: 700;
+}
+
+.deck-filter {
+  background: rgba(25,25,25,0.7);
+  border: 1px solid rgba(255,204,0,0.25);
+  border-radius: 8px;
+  color: #ffcc00;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s ease;
+}
+.deck-filter:hover {
+  background: rgba(255,204,0,0.1);
+}
+
+/* ===========================
+   📊 GRID DE MÉTRICAS
+   =========================== */
 .deck-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px 18px;
-  width: 950px;
-  max-width: 95%;
+  gap: 18px;
   margin-bottom: 35px;
 }
 
 .deck-card {
-  background: rgba(18, 18, 18, 0.85);
-  border: 1px solid rgba(255, 204, 0, 0.12);
+  background: rgba(18,18,18,0.85);
+  border: 1px solid rgba(255,204,0,0.12);
   border-radius: 12px;
   padding: 18px 22px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 95px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
+  transition: all 0.25s ease;
+  box-shadow: 0 0 8px rgba(255,204,0,0.05);
 }
-
 .deck-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.15);
+  box-shadow: 0 0 14px rgba(255,204,0,0.12);
 }
 
 .deck-card h2 {
   font-size: 13px;
   color: #bbb;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
-
 .deck-card .value {
   font-size: 22px;
   font-weight: 700;
@@ -1549,203 +129,98 @@ body::after {
 }
 
 /* ===========================
-   GRÁFICO CENTRALIZADO
+   📈 GRÁFICO
    =========================== */
-
 .chart-card {
-  width: 950px;
-  max-width: 95%;
-  background: rgba(15, 15, 15, 0.8);
-  border: 1px solid rgba(255, 204, 0, 0.08);
+  background: rgba(15,15,15,0.8);
+  border: 1px solid rgba(255,204,0,0.08);
   border-radius: 12px;
   padding: 20px 24px;
   margin-bottom: 35px;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.03);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 10px rgba(255,204,0,0.03);
 }
-
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
-
 .chart-header h2 {
-  color: #ffcc00;
   font-size: 14px;
+  color: #ffcc00;
   font-weight: 600;
 }
-
 .chart-filter {
-  color: #999;
   font-size: 12px;
+  color: #999;
 }
-
 .chart-placeholder {
   height: 130px;
-  border: 1px dashed rgba(255, 204, 0, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
+  border: 1px dashed rgba(255,204,0,0.1);
+  border-radius: 8px;
+  color: #666;
+  background: rgba(255,255,255,0.02);
   font-size: 13px;
 }
 
 /* ===========================
-   TABELA CENTRALIZADA
+   💳 TABELA
    =========================== */
-
 .table-section {
-  width: 950px;
-  max-width: 95%;
-  background: rgba(15, 15, 15, 0.8);
+  background: rgba(15,15,15,0.85);
   border-radius: 10px;
-  border: 1px solid rgba(255, 204, 0, 0.08);
+  border: 1px solid rgba(255,204,0,0.08);
   padding: 20px 24px;
   backdrop-filter: blur(8px);
+  box-shadow: 0 0 10px rgba(255,204,0,0.03);
   margin-bottom: 50px;
 }
-
 .table-header h2 {
   font-size: 14px;
   color: #ffcc00;
   margin-bottom: 10px;
 }
-
 .styled-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
   color: #ccc;
 }
-
 .styled-table th,
 .styled-table td {
   padding: 8px 10px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
+  border-bottom: 1px solid rgba(255,204,0,0.05);
 }
-
 .styled-table th {
   color: #ffcc00;
   text-align: left;
 }
-
 .styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.03);
+  background: rgba(255,204,0,0.03);
 }
 
 /* ===========================
-   RESPONSIVIDADE FLEXION MOBILE
+   📱 RESPONSIVIDADE
    =========================== */
-
 @media (max-width: 1024px) {
   .deck-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
   }
 }
-
 @media (max-width: 600px) {
   .deck-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
   }
-}
-
-/* ===========================
-   GRÁFICO COMPACTO
-   =========================== */
-.chart-card {
-  background: rgba(15, 15, 15, 0.8);
-  border: 1px solid rgba(255, 204, 0, 0.08);
-  border-radius: 12px;
-  padding: 18px 20px;
-  max-width: 950px;
-  margin: 0 auto 35px;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.03);
-  backdrop-filter: blur(8px);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.chart-header h2 {
-  font-size: 14px;
-  color: #ffcc00;
-  font-weight: 600;
-}
-
-.chart-filter {
-  font-size: 12px;
-  color: #999;
-}
-
-.chart-placeholder {
-  height: 130px;
-  border: 1px dashed rgba(255, 204, 0, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #555;
-  font-size: 13px;
-}
-
-/* ===========================
-   TABELA
-   =========================== */
-.table-section {
-  background: rgba(15, 15, 15, 0.8);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 204, 0, 0.08);
-  padding: 20px;
-  backdrop-filter: blur(8px);
-}
-
-.table-header h2 {
-  font-size: 14px;
-  color: #ffcc00;
-  margin-bottom: 10px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  color: #ccc;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
-}
-
-.styled-table th {
-  color: #ffcc00;
-  text-align: left;
-}
-
-.styled-table tr:hover {
-  background: rgba(255, 204, 0, 0.03);
-}
-
-.chart-card,
-.table-section {
-  max-width: 950px;
-  margin: 0 auto 35px;
-}
-
-.main-content,
-.deck-wrapper {
-  max-width: 100% !important;
-  overflow-x: hidden !important;
+  .deck-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .deck-filter {
+    width: 100%;
+  }
 }
