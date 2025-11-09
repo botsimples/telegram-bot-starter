@@ -1,165 +1,117 @@
 import express from "express";
 import mongoose from "mongoose";
 import Plan from "./Plan.js";
-import Bot from "./bot.js";           // nosso schema acima
-import ApiPix from "./ApiPix.js";     // nosso schema acima
+import Bot from "./Bot.js";
+import ApiPix from "./ApiPix.js";
 
 const router = express.Router();
 
-/* ===== Helpers ===== */
-async function getOrCreateApiPix() {
-  let doc = await ApiPix.findOne();
-  if (!doc) doc = await ApiPix.create({ gateways: [], priority: {} });
-  return doc;
-}
-
-/* ===== Dashboard (já existente) ===== */
+/* ===== DASHBOARD ===== */
 router.get("/", async (req, res) => {
-  const planos = await Plan.find().sort({ createdAt: -1 });
-  res.render("dashboard", { planos });
-});
-
-/* ======== BOTS ======== */
-router.get("/bots", async (req, res) => {
-  const bots = await Bot.find().sort({ createdAt: -1 });
-  res.render("bots", { bots });
-});
-
-router.post("/bots", async (req, res) => {
   try {
-    const { username, token, note } = req.body;
-    if (!username || !token) return res.status(400).json({ ok: false, msg: "username e token são obrigatórios" });
-    const bot = await Bot.create({ username, token, note });
-    res.json({ ok: true, bot });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
+    const planos = await Plan.find().sort({ createdAt: -1 });
+    const users = [];
+    const payments = [];
+    res.render("dashboard", { planos, users, payments });
+  } catch (err) {
+    console.error("Erro ao carregar dashboard:", err.message);
+    res.status(500).send("Erro ao carregar dashboard.");
   }
 });
 
-router.put("/bots/:id", async (req, res) => {
-  try {
-    const { username, token, note, isActive } = req.body;
-    const bot = await Bot.findByIdAndUpdate(
-      req.params.id,
-      { username, token, note, isActive },
-      { new: true }
-    );
-    res.json({ ok: true, bot });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
-  }
-});
-
-router.delete("/bots/:id", async (req, res) => {
-  try {
-    await Bot.findByIdAndDelete(req.params.id);
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
-  }
-});
-
-/* ======== API PIX ======== */
-router.get("/api-pix", async (req, res) => {
-  const apipix = await getOrCreateApiPix();
-  res.render("api_pix", { apipix });
-});
-
-// criar gateway
-router.post("/api-pix/gateways", async (req, res) => {
-  try {
-    const { name, clientId, clientSecret, token } = req.body;
-    const apipix = await getOrCreateApiPix();
-    apipix.gateways.push({ name, clientId, clientSecret, token, active: false });
-    await apipix.save();
-    res.json({ ok: true, apipix });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
-  }
-});
-
-// atualizar gateway
-router.put("/api-pix/gateways/:gid", async (req, res) => {
-  try {
-    const { clientId, clientSecret, token, active } = req.body;
-    const apipix = await getOrCreateApiPix();
-    const gw = apipix.gateways.id(req.params.gid);
-    if (!gw) return res.status(404).json({ ok: false, msg: "Gateway não encontrado" });
-    if (clientId !== undefined) gw.clientId = clientId;
-    if (clientSecret !== undefined) gw.clientSecret = clientSecret;
-    if (token !== undefined) gw.token = token;
-    if (active !== undefined) gw.active = !!active;
-    await apipix.save();
-    res.json({ ok: true, apipix });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
-  }
-});
-
-// excluir gateway
-router.delete("/api-pix/gateways/:gid", async (req, res) => {
-  try {
-    const apipix = await getOrCreateApiPix();
-    apipix.gateways.id(req.params.gid)?.deleteOne();
-    await apipix.save();
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
-  }
-});
-
-// salvar prioridade
-router.post("/api-pix/priority", async (req, res) => {
-  try {
-    const { primary, secondary, tertiary } = req.body;
-    const apipix = await getOrCreateApiPix();
-    apipix.priority = { primary, secondary, tertiary };
-    await apipix.save();
-    res.json({ ok: true, apipix });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
-  }
-});
-
-/* ======== Planos (mantém o que já tinha) ======== */
+/* ===== PLANOS ===== */
 router.get("/admin", async (req, res) => {
-  const planos = await Plan.find().sort({ createdAt: -1 });
-  const apipix = await getOrCreateApiPix();
-  res.render("admin", { planos, gateways: apipix.gateways });
-});
-
-router.post("/admin/planos", async (req, res) => {
   try {
-    let { name, price, description, deliverable } = req.body;
-    price = parseFloat(String(price).replace(",", "."));
-    const plan = await Plan.create({ name, price, description, deliverable });
-    res.json({ ok: true, plan });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
+    const planos = await Plan.find().sort({ createdAt: -1 });
+    res.render("admin", { planos });
+  } catch (err) {
+    console.error("Erro ao carregar planos:", err.message);
+    res.status(500).send("Erro ao carregar planos.");
   }
 });
 
-router.put("/admin/planos/:id", async (req, res) => {
+router.post("/admin/add-plan", async (req, res) => {
   try {
-    let { name, price, description, deliverable } = req.body;
-    if (price !== undefined) price = parseFloat(String(price).replace(",", "."));
-    const plan = await Plan.findByIdAndUpdate(
-      req.params.id,
-      { name, price, description, deliverable },
-      { new: true }
-    );
-    res.json({ ok: true, plan });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
+    const { name, price, description, deliverable } = req.body;
+    await Plan.create({ name, price, description, deliverable });
+    res.redirect("/admin");
+  } catch (err) {
+    console.error("Erro ao adicionar plano:", err.message);
+    res.status(500).send("Erro ao adicionar plano.");
   }
 });
 
-router.delete("/admin/planos/:id", async (req, res) => {
+router.post("/admin/delete-plan/:id", async (req, res) => {
   try {
     await Plan.findByIdAndDelete(req.params.id);
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ ok: false, msg: e.message });
+    res.redirect("/admin");
+  } catch (err) {
+    console.error("Erro ao deletar plano:", err.message);
+    res.status(500).send("Erro ao deletar plano.");
+  }
+});
+
+/* ===== GERENCIAR BOTS ===== */
+router.get("/bots", async (req, res) => {
+  try {
+    const bots = await Bot.find().sort({ createdAt: -1 });
+    res.render("bots", { bots });
+  } catch (err) {
+    console.error("Erro ao carregar bots:", err.message);
+    res.status(500).send("Erro ao carregar bots.");
+  }
+});
+
+router.post("/bots/add", async (req, res) => {
+  try {
+    const { username, token, note } = req.body;
+    await Bot.create({ username, token, note });
+    res.redirect("/bots");
+  } catch (err) {
+    console.error("Erro ao adicionar bot:", err.message);
+    res.status(500).send("Erro ao adicionar bot.");
+  }
+});
+
+router.post("/bots/delete/:id", async (req, res) => {
+  try {
+    await Bot.findByIdAndDelete(req.params.id);
+    res.redirect("/bots");
+  } catch (err) {
+    console.error("Erro ao deletar bot:", err.message);
+    res.status(500).send("Erro ao deletar bot.");
+  }
+});
+
+/* ===== API PIX ===== */
+router.get("/api-pix", async (req, res) => {
+  try {
+    const configs = await ApiPix.find().sort({ createdAt: -1 });
+    res.render("api_pix", { configs });
+  } catch (err) {
+    console.error("Erro ao carregar API PIX:", err.message);
+    res.status(500).send("Erro ao carregar API PIX.");
+  }
+});
+
+router.post("/api-pix/add", async (req, res) => {
+  try {
+    const { provider, key, secret } = req.body;
+    await ApiPix.create({ provider, key, secret });
+    res.redirect("/api-pix");
+  } catch (err) {
+    console.error("Erro ao adicionar API PIX:", err.message);
+    res.status(500).send("Erro ao adicionar API PIX.");
+  }
+});
+
+router.post("/api-pix/delete/:id", async (req, res) => {
+  try {
+    await ApiPix.findByIdAndDelete(req.params.id);
+    res.redirect("/api-pix");
+  } catch (err) {
+    console.error("Erro ao deletar API PIX:", err.message);
+    res.status(500).send("Erro ao deletar API PIX.");
   }
 });
 
