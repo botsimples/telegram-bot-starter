@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
 import bodyParser from "body-parser";
+import expressLayouts from "express-ejs-layouts";
 import adminRoutes from "./models/admin.js";
 import { gerarPixWiinPay, verificarPixWiinPay } from "./integrations/wiinpay.js";
 
@@ -20,8 +21,19 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// === LAYOUT PADRÃO ===
+app.use(expressLayouts);
+app.set("layout", "layout");
+
+// === Variável global (para marcar link ativo no menu) ===
+app.use((req, res, next) => {
+  res.locals.path = req.path;
+  next();
+});
 
 app.use(
   session({
@@ -88,9 +100,7 @@ async function sendVideoInicial(chatId) {
 
 async function sendQrCode(chatId, qrData) {
   const qrReal = qrData?.qr_code || qrData?.data?.qr_code || qrData;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-    qrReal
-  )}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrReal)}`;
   try {
     const res = await axios.post(`${API}/sendPhoto`, {
       chat_id: chatId,
@@ -134,7 +144,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     const data = callback?.data;
     if (!chatId) return res.sendStatus(200);
 
-    // === /start ===
     if (message?.text === "/start") {
       await limparMensagens(chatId);
       await sendVideoInicial(chatId);
@@ -148,7 +157,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       return res.sendStatus(200);
     }
 
-    // === Comprar Plano ===
     if (data === "comprar_plano") {
       await limparMensagens(chatId);
 
@@ -179,10 +187,8 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       });
     }
 
-    // === Selecionar Plano ===
     if (data?.startsWith("plano_")) {
       await limparMensagens(chatId);
-
       const planId = data.split("_")[1];
       const Plan =
         mongoose.models.Plan ||
@@ -216,7 +222,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       qrsGerados.set(chatId, qrReal);
       pagamentosPendentes.set(chatId, { paymentId: pix.paymentId, planId: plano._id });
 
-      // ordem natural
       await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
       await sendMessage(chatId, `<code>${qrReal}</code>`);
       await sendMessage(
@@ -233,13 +238,11 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       );
     }
 
-    // === Mostrar QR Code ===
     if (data === "mostrar_qr") {
       const qr = qrsGerados.get(chatId);
       if (qr) await sendQrCode(chatId, qr);
     }
 
-    // === Verificar Pagamento ===
     if (data === "verificar_pagamento") {
       const pagamento = pagamentosPendentes.get(chatId);
       if (!pagamento) {
@@ -322,7 +325,7 @@ app.post("/webhook", async (req, res) => {
   }
 });
 
-// === ROTAS ADMIN / PAINEL ===
+// === ROTAS ADMIN ===
 app.use("/", adminRoutes);
 
 const PORT = process.env.PORT || 10000;
