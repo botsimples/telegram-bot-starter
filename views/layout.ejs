@@ -8,165 +8,98 @@
   <script src="https://kit.fontawesome.com/4ac4b9c31e.js" crossorigin="anonymous"></script>
 
   <style>
-    :root {
-      --bg-dark: #0d1117;
-      --bg-panel: #111827;
-      --bg-hover: #1e293b;
-      --text-light: #d1d5db;
-      --primary: #3b82f6;
-      --primary-glow: rgba(59, 130, 246, 0.5);
-    }
-
     html, body {
-      margin: 0;
-      padding: 0;
+      background-color: #0d1117;
       font-family: 'Inter', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-light);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .container {
-      display: flex;
-      min-height: 100vh;
-      width: 100%;
-    }
-
-    .sidebar {
-      width: 250px;
-      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
-      border-right: 1px solid #1f2937;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .sidebar-header {
-      padding: 1.8rem 1.5rem;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      letter-spacing: 1px;
-    }
-
-    .sidebar nav ul {
-      list-style: none;
-      padding: 0;
+      color: #d1d5db;
+      height: 100%;
       margin: 0;
     }
 
-    .sidebar nav li {
-      margin-bottom: 6px;
-    }
-
-    .sidebar nav a {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      color: var(--text-light);
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: all 0.25s ease-in-out;
-    }
-
-    .sidebar nav a i {
-      margin-right: 0.75rem;
-      width: 20px;
-      text-align: center;
-    }
-
-    .sidebar nav a:hover {
-      background-color: var(--bg-hover);
-      color: var(--primary);
-      box-shadow: 0 0 10px var(--primary-glow);
-      transform: translateX(3px);
-    }
-
-    .sidebar nav a.active {
-      background: linear-gradient(90deg, #2563eb, #3b82f6);
-      color: white;
-      box-shadow: 0 0 10px var(--primary-glow);
-      font-weight: 600;
-    }
-
-    .logout {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      color: #f87171;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: all 0.25s;
-    }
-
-    .logout:hover {
-      color: #fca5a5;
-      transform: translateX(3px);
-    }
-
-    .content {
-      flex: 1;
-      padding: 2rem;
-      background: var(--bg-dark);
+    .fade-in {
       animation: fadeIn 0.4s ease-in-out;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .panel {
-      background: var(--bg-panel);
-      border: 1px solid #1f2937;
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    .sidebar {
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      border-right: 1px solid #1f2937;
+      min-height: 100vh;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #cbd5e1;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      margin: 4px 8px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .sidebar a:hover {
+      background: #1e293b;
+      color: #38bdf8;
+    }
+
+    .sidebar .active {
+      background: #1e3a8a;
+      color: #60a5fa;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 2rem;
+      min-height: 100vh;
+      background-color: #0d1117;
     }
 
     @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-      .sidebar {
-        width: 100%;
-      }
-      .sidebar-header {
-        text-align: center;
-      }
-      .content {
-        padding: 1.2rem;
-      }
+      .sidebar { position: relative; width: 100%; min-height: auto; }
+      .content { margin-left: 0; }
     }
   </style>
 </head>
 
-<body>
-  <div class="container fade-in">
-    <aside class="sidebar">
-      <div>
-        <div class="sidebar-header">BotSimples</div>
-        <nav>
-          <ul>
-            <li><a href="/" class="<%= title.includes('Deck') ? 'active' : '' %>"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-            <li><a href="/bots" class="<%= title.includes('Ofertas') ? 'active' : '' %>"><i class="fa-solid fa-box-open"></i> Ofertas</a></li>
-            <li><a href="/api_pix" class="<%= title.includes('Adquirentes') ? 'active' : '' %>"><i class="fa-solid fa-building-columns"></i> Adquirentes</a></li>
-          </ul>
-        </nav>
-      </div>
-
-      <div class="p-4">
-        <a href="/login" class="logout">
-          <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Sair
+<body class="fade-in">
+  <aside class="sidebar">
+    <div>
+      <div class="px-6 text-2xl font-bold text-blue-400 tracking-wide mb-6">BotSimples</div>
+      <nav>
+        <a href="/" class="<%= (title && title.includes('Dashboard')) ? 'active' : '' %>">
+          <i class="fa-solid fa-chart-line"></i> Dashboard
         </a>
-      </div>
-    </aside>
+        <a href="/bots" class="<%= (title && title.includes('Ofertas')) ? 'active' : '' %>">
+          <i class="fa-solid fa-box-open"></i> Ofertas
+        </a>
+        <a href="/api_pix" class="<%= (title && title.includes('Adquirentes')) ? 'active' : '' %>">
+          <i class="fa-solid fa-building-columns"></i> Adquirentes
+        </a>
+      </nav>
+    </div>
 
-    <main class="content">
-      <%- typeof body !== 'undefined' ? body : '' %>
-    </main>
-  </div>
+    <div class="p-4">
+      <a href="/login" class="flex items-center text-red-400 hover:text-red-300 text-sm">
+        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Sair
+      </a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <%- body %>
+  </main>
 </body>
 </html>
