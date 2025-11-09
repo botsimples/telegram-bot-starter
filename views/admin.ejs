@@ -44,11 +44,50 @@
     }
     button:hover { background-color: #ffcc33; }
     hr { margin: 40px auto; width: 80%; border-color: #333; }
+
+    /* Feedback visual */
+    #toast {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 10px;
+      border-left: 6px solid #ffb400;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #000;
+      z-index: 9999;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .loader {
+      border: 4px solid #222;
+      border-top: 4px solid #ffb400;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 
 <body>
   <h1>⚙️ Painel BotSimples</h1>
+
+  <div id="toast"></div>
 
   <h2>💳 Planos</h2>
   <table>
@@ -63,7 +102,7 @@
     </thead>
     <tbody id="planos">
       <% (planos || []).forEach(plan => { %>
-      <tr>
+      <tr id="row_<%= plan._id %>">
         <td><input type="text" id="name_<%= plan._id %>" value="<%= plan.name %>"></td>
         <td><input type="text" id="price_<%= plan._id %>" value="<%= plan.price %>"></td>
         <td><input type="text" id="desc_<%= plan._id %>" value="<%= plan.description %>"></td>
@@ -102,7 +141,7 @@
     </thead>
     <tbody id="gateways">
       <% (gateways || []).forEach(gw => { %>
-      <tr>
+      <tr id="gw_<%= gw._id %>">
         <td><%= gw.name %></td>
         <td><input id="id_<%= gw._id %>" value="<%= gw.clientId %>" /></td>
         <td><input id="secret_<%= gw._id %>" value="<%= gw.clientSecret %>" /></td>
@@ -127,38 +166,103 @@
   </div>
 
   <script>
+    const showToast = (msg, ok = true) => {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.style.borderLeftColor = ok ? "#ffb400" : "#ff5555";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2500);
+    };
+
+    const showLoader = (btn) => {
+      const loader = document.createElement("span");
+      loader.classList.add("loader");
+      btn.appendChild(loader);
+      return loader;
+    };
+
     async function criarPlano() {
       const name = novoNome.value, price = novoPreco.value, description = novoDesc.value, deliverable = novoDeliver.value;
-      await fetch('/admin/planos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, price, description, deliverable }) });
-      location.reload();
+      const btn = event.target, loader = showLoader(btn);
+      try {
+        const res = await fetch('/admin/planos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, price, description, deliverable })
+        });
+        loader.remove();
+        if (res.ok) {
+          showToast("✅ Plano criado com sucesso!");
+          setTimeout(() => location.reload(), 1000);
+        } else showToast("❌ Erro ao criar plano", false);
+      } catch {
+        loader.remove();
+        showToast("❌ Erro de conexão", false);
+      }
     }
 
     async function salvarPlano(id) {
-      const name = name_[id].value, price = price_[id].value, description = desc_[id].value, deliverable = deliverable_[id].value;
-      await fetch('/admin/planos/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, price, description, deliverable }) });
-      location.reload();
+      const name = document.getElementById(`name_${id}`).value;
+      const price = document.getElementById(`price_${id}`).value;
+      const description = document.getElementById(`desc_${id}`).value;
+      const deliverable = document.getElementById(`deliverable_${id}`).value;
+      const btn = event.target, loader = showLoader(btn);
+      try {
+        const res = await fetch('/admin/planos/' + id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, price, description, deliverable })
+        });
+        loader.remove();
+        if (res.ok) showToast("✅ Plano atualizado!");
+        else showToast("❌ Erro ao salvar plano", false);
+      } catch {
+        loader.remove();
+        showToast("❌ Erro de conexão", false);
+      }
     }
 
     async function excluirPlano(id) {
-      await fetch('/admin/planos/' + id, { method: 'DELETE' });
-      location.reload();
+      if (!confirm("Tem certeza que deseja excluir este plano?")) return;
+      const res = await fetch('/admin/planos/' + id, { method: 'DELETE' });
+      if (res.ok) {
+        showToast("🗑️ Plano excluído");
+        document.getElementById(`row_${id}`).remove();
+      }
     }
 
     async function criarGateway() {
       const name = novoGatewayNome.value, clientId = novoGatewayClientId.value, clientSecret = novoGatewaySecret.value, token = novoGatewayToken.value;
-      await fetch('/admin/gateways', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, clientId, clientSecret, token }) });
-      location.reload();
+      const res = await fetch('/admin/gateways', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, clientId, clientSecret, token })
+      });
+      if (res.ok) {
+        showToast("✅ Gateway criado!");
+        setTimeout(() => location.reload(), 1000);
+      }
     }
 
     async function salvarGateway(id) {
-      const clientId = id_[id].value, clientSecret = secret_[id].value, token = token_[id].value;
-      await fetch('/admin/gateways/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ clientId, clientSecret, token }) });
-      location.reload();
+      const clientId = document.getElementById(`id_${id}`).value;
+      const clientSecret = document.getElementById(`secret_${id}`).value;
+      const token = document.getElementById(`token_${id}`).value;
+      const res = await fetch('/admin/gateways/' + id, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId, clientSecret, token })
+      });
+      if (res.ok) showToast("✅ Gateway atualizado!");
+      else showToast("❌ Erro ao atualizar gateway", false);
     }
 
     async function ativarGateway(id) {
-      await fetch('/admin/gateways/ativar/' + id, { method: 'POST' });
-      location.reload();
+      const res = await fetch('/admin/gateways/ativar/' + id, { method: 'POST' });
+      if (res.ok) {
+        showToast("✅ Gateway ativado!");
+        setTimeout(() => location.reload(), 800);
+      }
     }
   </script>
 </body>
