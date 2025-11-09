@@ -1,29 +1,30 @@
 <main class="deck-page">
   <header class="deck-header">
     <div>
-      <h1 class="deck-title">Deck Geral</h1>
-      <div class="deck-sub">Visão geral das métricas do sistema TigerFy.</div>
+      <h1 class="deck-title">Estatísticas Gerais</h1>
+      <p class="deck-sub">Visão geral de toda a plataforma.</p>
     </div>
 
     <div class="deck-filter">
-      <select id="offerFilter">
-        <option value="">Filtrar Oferta</option>
-        <!-- ... -->
-      </select>
+      <button class="filter-button">Filtrar Oferta ⌄</button>
+      <div class="filter-dropdown">
+        <p class="empty">Nenhuma oferta cadastrada.</p>
+      </div>
     </div>
   </header>
 
   <section class="deck-grid">
-    <!-- Linha 1 -->
     <div class="deck-card"><h2>Total de Vendas</h2><span class="value">R$ 0,00</span></div>
     <div class="deck-card"><h2>Vendas no Ano</h2><span class="value">R$ 0,00</span></div>
     <div class="deck-card"><h2>Vendas no Mês</h2><span class="value">R$ 0,00</span></div>
     <div class="deck-card"><h2>Vendas no Dia</h2><span class="value">R$ 0,00</span></div>
-    <!-- Linha 2 -->
-    <div class="deck-card small"><h2>Total Usuários</h2><span class="value">0</span></div>
-    <div class="deck-card small"><h2>Usuários no Ano</h2><span class="value">0</span></div>
-    <div class="deck-card small"><h2>Usuários no Mês</h2><span class="value">0</span></div>
-    <div class="deck-card small"><h2>Usuários no Dia</h2><span class="value">0</span></div>
+
+    <div class="deck-card"><h2>Total Usuários</h2><span class="value">0</span></div>
+    <div class="deck-card"><h2>Usuários no Ano</h2><span class="value">0</span></div>
+    <div class="deck-card"><h2>Usuários no Mês</h2><span class="value">0</span></div>
+    <div class="deck-card"><h2>Usuários no Dia</h2><span class="value">0</span></div>
+
+    <div class="deck-card highlight"><h2>Conversões Ativas</h2><span class="value">0</span></div>
   </section>
 
   <section class="chart-card">
