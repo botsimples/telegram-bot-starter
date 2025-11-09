@@ -37,52 +37,29 @@ app.set("layout", "layout");
    CONEXÃO MONGODB
 ============================ */
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB conectado!"))
   .catch((err) => console.error("❌ Erro MongoDB:", err));
 
 /* ============================
    ROTAS PRINCIPAIS
 ============================ */
-app.get("/", (req, res) => {
-  res.redirect("/deck");
-});
-
-app.get("/deck", (req, res) => {
-  res.render("deck", { title: "Deck - TigerFy" });
-});
-
-app.get("/bots", (req, res) => {
-  res.render("bots", { title: "Ofertas - TigerFy" });
-});
-
-app.get("/api_pix", (req, res) => {
-  res.render("api_pix", { title: "Adquirentes - TigerFy" });
-});
-
-/* Rotas Admin */
 app.use("/", adminRoutes);
 
 /* ============================
    PÁGINA 404 PERSONALIZADA
 ============================ */
 app.use((req, res) => {
-  try {
-    res.status(404).render("404", {
-      title: "Página não encontrada - TigerFy",
-      message: "A página solicitada não existe.",
-    });
-  } catch {
-    res.status(404).send("404 - Página não encontrada");
-  }
+  res.status(404).render("404", {
+    title: "Página não encontrada - TigerFy",
+    active: "",
+    message: "A página solicitada não existe.",
+  });
 });
 
 /* ============================
    SERVIDOR ONLINE
 ============================ */
 app.listen(PORT, () => {
-  console.log("🚀 Servidor online na porta " + PORT);
+  console.log(`🚀 Servidor online na porta ${PORT}`);
 });
