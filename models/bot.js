@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const botSchema = new mongoose.Schema({
-  nome: String,
-  token: String,
-  username: String,
-  ativo: { type: Boolean, default: true },
-  gateways: [{ type: mongoose.Schema.Types.ObjectId, ref: "Gateway" }],
-  settings: { type: mongoose.Schema.Types.ObjectId, ref: "Settings" },
-  criadoEm: { type: Date, default: Date.now },
-});
+const botSchema = new mongoose.Schema(
+  {
+    username: { type: String, required: true, trim: true }, // sem @
+    token: { type: String, required: true, trim: true },
+    note: { type: String, default: "" },
+    isActive: { type: Boolean, default: true },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Bot", botSchema);
+export default mongoose.models.Bot || mongoose.model("Bot", botSchema);
