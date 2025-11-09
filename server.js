@@ -66,14 +66,17 @@ app.post('/register', (req, res) => {
   // Apenas simula o cadastro (sem aprovação automática)
   console.log('🆕 Novo cadastro pendente:', { username, email });
 
-  // Exibe mensagem de sucesso (futuramente: página de “aguarde aprovação”)
-  res.send(`
-    <div style="font-family: Inter; text-align:center; margin-top: 100px; color: #fff; background: #000;">
-      <h2>Cadastro enviado com sucesso! ⚡</h2>
-      <p>Seu acesso será liberado após aprovação do administrador.</p>
-      <a href="/login" style="color: #ffcc00; font-weight: bold;">Voltar ao Login</a>
-    </div>
-  `);
+ app.post('/register', (req, res) => {
+  const { username, email } = req.body;
+
+  console.log('🆕 Novo cadastro pendente:', { username, email });
+
+  // Redireciona para a tela estilizada de sucesso
+  res.render('register_success', {
+    title: 'Cadastro Enviado',
+    layout: false,
+    whatsapp: 'https://wa.me/5543999562213?text=Opa%20Gustavo%2C%20fiz%20meu%20cadastro%20na%20TigerFy%20⚡'
+  });
 });
 
 // Dashboard (Deck)
