@@ -852,3 +852,57 @@ body {
   background: rgba(255, 204, 0, 0.03);
 }
 
+/* ========= FIX: remover qualquer azul do container atual ========= */
+.page-container.deck-flexion { 
+  background: transparent !important; 
+}
+.page-container.deck-flexion::before { 
+  background: transparent !important; 
+  backdrop-filter: none !important;
+}
+
+/* ========= Espaço estilo Flexion (usar no wrapper novo) ========= */
+.deck-wrapper {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 40px 80px;
+  background: radial-gradient(ellipse at bottom, #050505 0%, #000 100%);
+  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* brilho dourado sutil (sem tingir a tela) */
+.deck-wrapper .glow-gold {
+  position: absolute;
+  top: 8%;
+  right: 8%;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(255,204,0,.06), transparent 70%);
+  filter: blur(130px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* garantir que o conteúdo fique acima do glow */
+.deck-wrapper .page-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* cards/graficos continuam escuros e translúcidos */
+.deck-card,
+.chart-card,
+.table-section,
+.table-box,
+.chart-box {
+  background: rgba(15, 15, 15, 0.85) !important;
+  border: 1px solid rgba(255, 204, 0, 0.12);
+  backdrop-filter: blur(8px);
+}
