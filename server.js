@@ -183,16 +183,20 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       qrsGerados.set(chatId, pix.qr_code);
       pagamentosPendentes.set(chatId, pix.paymentId);
 
-      await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
-      await sendMessage(chatId, `<code>${pix.qr_code}</code>`);
-      await sendMessage(chatId, "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n✅ Após efetuar o pagamento, clique abaixo para verificar:", {
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
-            [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
-          ],
-        },
-      });
+await sendMessage(
+  chatId,
+  "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n" +
+  "✅ Após efetuar o pagamento, clique abaixo para verificar:",
+  {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
+        [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
+        [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
+      ],
+    },
+  }
+);
 
       // 🕐 Verificação automática
       setTimeout(async () => await checarPagamentoAuto(chatId), 15000);
