@@ -21,6 +21,18 @@
     <% } %>
 
     <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
+
+<script>
+  // === Abrir e fechar modal ===
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+</script>
+
       <%- body %>
     </main>
   </body>
