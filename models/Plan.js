@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const planSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
-  description: String,
-  deliverable: String, // 🔥 novo campo: link ou mensagem pós-pagamento
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  description: { type: String, default: "" },
+  deliverable: { type: String, default: "" }, // link ou mensagem de entrega
 });
 
 export default mongoose.models.Plan || mongoose.model("Plan", planSchema);
