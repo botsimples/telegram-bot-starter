@@ -1,66 +1,60 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <title>Bots Conectados</title>
-  <link rel="stylesheet" href="/css/output.css" />
-</head>
-<body class="bg-hot-bg text-slate-100 min-h-screen">
-  <div class="max-w-6xl mx-auto py-10 px-4">
-    <h1 class="text-2xl font-semibold mb-6">🤖 Bots Conectados</h1>
+<main class="space-y-6">
+  <h1 class="text-2xl font-semibold text-hot-primary">Bots</h1>
 
-    <!-- Add Bot -->
-    <div class="panel p-5 mb-8">
-      <h2 class="text-lg font-medium mb-4">Adicionar Novo Bot</h2>
-      <div class="grid gap-3 md:grid-cols-3">
-        <input id="in_user" class="input" placeholder="Username (sem @)" />
-        <input id="in_token" class="input" placeholder="Token do Bot" />
-        <input id="in_note" class="input" placeholder="Observação (opcional)" />
-      </div>
-      <button class="btn mt-4" onclick="addBot()">Adicionar Bot</button>
+  <div class="panel p-4">
+    <h3 class="font-medium mb-3">Criar novo bot</h3>
+    <div class="grid md:grid-cols-3 gap-3">
+      <input id="botName" placeholder="Nome do bot" class="input">
+      <input id="botToken" placeholder="Token do Telegram" class="input">
+      <input id="botWebhook" placeholder="Webhook URL (opcional)" class="input">
     </div>
-
-    <!-- List -->
-    <div class="panel p-5">
-      <h2 class="text-lg font-medium mb-4">Bots Salvos</h2>
-      <div id="list" class="space-y-3">
-        <% bots.forEach(b => { %>
-          <div class="flex flex-col md:flex-row md:items-center justify-between border border-white/10 rounded-lg p-3">
-            <div>
-              <div class="font-semibold">@<%= b.username %></div>
-              <div class="text-xs text-white/60 break-all">Token: <%= b.token %></div>
-              <% if (b.note) { %><div class="text-xs text-white/70 mt-1"><%= b.note %></div><% } %>
-            </div>
-            <div class="mt-3 md:mt-0 flex gap-2">
-              <button class="btn" onclick="toggleActive('<%= b._id %>', <%= !b.isActive %>)">
-                <%= b.isActive ? 'Desativar' : 'Ativar' %>
-              </button>
-              <button class="btn bg-red-500 hover:bg-red-400" onclick="delBot('<%= b._id %>')">Excluir</button>
-            </div>
-          </div>
-        <% }) %>
-      </div>
-    </div>
+    <button class="btn mt-3" onclick="criarBot()">Criar</button>
   </div>
 
-  <script>
-    async function addBot() {
-      const username = document.getElementById('in_user').value.trim();
-      const token = document.getElementById('in_token').value.trim();
-      const note = document.getElementById('in_note').value.trim();
-      if (!username || !token) return alert('Informe username e token.');
-      const r = await fetch('/bots', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username, token, note }) });
-      if (r.ok) location.reload(); else alert('Erro ao criar bot');
-    }
-    async function delBot(id) {
-      if (!confirm('Excluir este bot?')) return;
-      const r = await fetch('/bots/' + id, { method:'DELETE' });
-      if (r.ok) location.reload();
-    }
-    async function toggleActive(id, val) {
-      const r = await fetch('/bots/' + id, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ isActive: val }) });
-      if (r.ok) location.reload();
-    }
-  </script>
-</body>
-</html>
+  <div class="panel overflow-x-auto">
+    <table class="min-w-full text-sm">
+      <thead>
+        <tr class="bg-neutral-800">
+          <th class="p-3 text-left">Nome</th>
+          <th class="p-3 text-left">Token</th>
+          <th class="p-3 text-left">Webhook</th>
+          <th class="p-3 text-left">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% (bots || []).forEach(b => { %>
+        <tr class="odd:bg-neutral-900/40">
+          <td class="p-3"><%= b.name %></td>
+          <td class="p-3"><code class="text-xs"><%= (b.token||'').slice(0,15) %>…</code></td>
+          <td class="p-3"><%= b.webhookUrl || '' %></td>
+          <td class="p-3">
+            <button class="btn" onclick="testar('<%= b._id %>')">Testar</button>
+            <button class="btn" onclick="excluir('<%= b._id %>')">Excluir</button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+async function criarBot(){
+  const payload = {
+    name: document.getElementById('botName').value,
+    token: document.getElementById('botToken').value,
+    webhookUrl: document.getElementById('botWebhook').value,
+  };
+  const res = await fetch('/admin/bots',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(res.ok){ location.reload(); }
+}
+async function excluir(id){
+  if(!confirm('Excluir este bot?')) return;
+  const res = await fetch('/admin/bots/'+id,{method:'DELETE'});
+  if(res.ok){ location.reload(); }
+}
+async function testar(id){
+  await fetch('/admin/bots/test/'+id);
+  alert('Teste disparado (ver logs).');
+}
+</script>
