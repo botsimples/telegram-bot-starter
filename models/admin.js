@@ -1,11 +1,28 @@
 import express from "express";
 import mongoose from "mongoose";
-import Plan from "./Plan.js";
 
 const router = express.Router();
 
-// === LOGIN E SESSÃO ===
-router.get("/login", (req, res) => res.render("login"));
+// === MODELOS ===
+const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
+  name: String,
+  price: Number,
+  description: String,
+  deliverable: String,
+}));
+
+const Gateway = mongoose.models.Gateway || mongoose.model("Gateway", new mongoose.Schema({
+  name: String,
+  clientId: String,
+  clientSecret: String,
+  token: String,
+  active: { type: Boolean, default: false },
+}));
+
+// === LOGIN ===
+router.get("/login", (req, res) => {
+  res.render("login", { message: "" });
+});
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
@@ -16,119 +33,61 @@ router.post("/login", (req, res) => {
     req.session.loggedIn = true;
     return res.redirect("/admin");
   }
-  res.send("❌ Usuário ou senha incorretos!");
+  res.render("login", { message: "❌ Usuário ou senha incorretos!" });
 });
 
+// === PROTEÇÃO DE ROTAS ===
 router.use((req, res, next) => {
-  if (req.session.loggedIn || req.path === "/login") return next();
-  return res.redirect("/login");
+  if (!req.session.loggedIn && req.path !== "/login") {
+    return res.redirect("/login");
+  }
+  next();
 });
 
-// === DASHBOARD ===
+// === PAINEL ADMIN ===
 router.get("/admin", async (req, res) => {
-  const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
-  const Gateway =
-    mongoose.models.Gateway || (await import("./Gateway.js")).default;
   const planos = await Plan.find();
   const gateways = await Gateway.find();
   res.render("admin", { planos, gateways });
 });
 
-// === CRUD DE PLANOS ===
-
-// Criar plano
+// === CRUD PLANOS ===
 router.post("/admin/planos", async (req, res) => {
-  try {
-    const { name, price, description, deliverable } = req.body;
-    const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
-    const plano = new Plan({ name, price, description, deliverable });
-    await plano.save();
-    res.json({ success: true, id: plano._id });
-  } catch (err) {
-    console.error("❌ Erro ao criar plano:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
+  const { name, price, description, deliverable } = req.body;
+  await Plan.create({ name, price, description, deliverable });
+  res.sendStatus(200);
 });
 
-// Atualizar plano
 router.put("/admin/planos/:id", async (req, res) => {
-  try {
-    const { name, price, description, deliverable } = req.body;
-    const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
-    const plano = await Plan.findById(req.params.id);
-    if (!plano) return res.status(404).json({ success: false });
-
-    plano.name = name;
-    plano.price = price;
-    plano.description = description;
-    plano.deliverable = deliverable;
-
-    await plano.save();
-    res.json({ success: true });
-  } catch (err) {
-    console.error("❌ Erro ao atualizar plano:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
+  const { id } = req.params;
+  const { name, price, description, deliverable } = req.body;
+  await Plan.findByIdAndUpdate(id, { name, price, description, deliverable });
+  res.sendStatus(200);
 });
 
-// Excluir plano
 router.delete("/admin/planos/:id", async (req, res) => {
-  try {
-    const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
-    await Plan.findByIdAndDelete(req.params.id);
-    res.json({ success: true });
-  } catch (err) {
-    console.error("❌ Erro ao excluir plano:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
+  await Plan.findByIdAndDelete(req.params.id);
+  res.sendStatus(200);
 });
 
-// === CRUD DE GATEWAYS ===
+// === CRUD GATEWAYS ===
 router.post("/admin/gateways", async (req, res) => {
-  try {
-    const Gateway =
-      mongoose.models.Gateway || (await import("./Gateway.js")).default;
-    const { name, clientId, clientSecret, token } = req.body;
-    const gateway = new Gateway({ name, clientId, clientSecret, token });
-    await gateway.save();
-    res.json({ success: true });
-  } catch (err) {
-    console.error("❌ Erro ao criar gateway:", err);
-    res.status(500).json({ success: false });
-  }
+  const { name, clientId, clientSecret, token } = req.body;
+  await Gateway.create({ name, clientId, clientSecret, token });
+  res.sendStatus(200);
 });
 
 router.put("/admin/gateways/:id", async (req, res) => {
-  try {
-    const Gateway =
-      mongoose.models.Gateway || (await import("./Gateway.js")).default;
-    const { clientId, clientSecret, token } = req.body;
-    const gw = await Gateway.findById(req.params.id);
-    if (!gw) return res.status(404).json({ success: false });
-
-    gw.clientId = clientId;
-    gw.clientSecret = clientSecret;
-    gw.token = token;
-    await gw.save();
-
-    res.json({ success: true });
-  } catch (err) {
-    console.error("❌ Erro ao atualizar gateway:", err);
-    res.status(500).json({ success: false });
-  }
+  const { id } = req.params;
+  const { clientId, clientSecret, token } = req.body;
+  await Gateway.findByIdAndUpdate(id, { clientId, clientSecret, token });
+  res.sendStatus(200);
 });
 
 router.post("/admin/gateways/ativar/:id", async (req, res) => {
-  try {
-    const Gateway =
-      mongoose.models.Gateway || (await import("./Gateway.js")).default;
-    await Gateway.updateMany({}, { active: false });
-    await Gateway.findByIdAndUpdate(req.params.id, { active: true });
-    res.json({ success: true });
-  } catch (err) {
-    console.error("❌ Erro ao ativar gateway:", err);
-    res.status(500).json({ success: false });
-  }
+  await Gateway.updateMany({}, { active: false });
+  await Gateway.findByIdAndUpdate(req.params.id, { active: true });
+  res.sendStatus(200);
 });
 
 export default router;
