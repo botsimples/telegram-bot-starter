@@ -60,18 +60,12 @@ app.get('/register', (req, res) => {
   res.render('register', { title: 'Registro', active: '', layout: false });
 });
 
+// Envio de cadastro (com WhatsApp redirect)
 app.post('/register', (req, res) => {
-  const { username, email, password } = req.body;
-
-  // Apenas simula o cadastro (sem aprovação automática)
-  console.log('🆕 Novo cadastro pendente:', { username, email });
-
- app.post('/register', (req, res) => {
   const { username, email } = req.body;
 
   console.log('🆕 Novo cadastro pendente:', { username, email });
 
-  // Redireciona para a tela estilizada de sucesso
   res.render('register_success', {
     title: 'Cadastro Enviado',
     layout: false,
@@ -84,12 +78,12 @@ app.get('/deck', (req, res) => {
   res.render('deck', { title: 'Dashboard', active: 'deck' });
 });
 
-// Ofertas (arquivo bots.ejs)
+// Ofertas
 app.get('/bots', (req, res) => {
   res.render('bots', { title: 'Ofertas', active: 'bots' });
 });
 
-// Adquirentes (arquivo api_pix.ejs)
+// Adquirentes
 app.get('/api_pix', (req, res) => {
   res.render('api_pix', { title: 'Adquirentes', active: 'api_pix' });
 });
