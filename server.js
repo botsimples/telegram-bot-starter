@@ -1,65 +1,56 @@
-import express from "express";
-import mongoose from "mongoose";
-import session from "express-session";
-import expressLayouts from "express-ejs-layouts";
-import adminRoutes from "./models/admin.js";
-
+// server.js
+const express = require('express');
+const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 10000;
 
-/* ============================
-   CONFIGURAÇÃO BÁSICA
-============================ */
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-/* ============================
-   SESSÃO
-============================ */
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "tigerfy_secret_key",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+// === ROTAS PRINCIPAIS ===
 
-/* ============================
-   EJS + LAYOUTS
-============================ */
-app.set("view engine", "ejs");
-app.set("views", "./views");
-app.use(expressLayouts);
-app.set("layout", "layout");
-
-/* ============================
-   CONEXÃO MONGODB
-============================ */
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB conectado!"))
-  .catch((err) => console.error("❌ Erro MongoDB:", err));
-
-/* ============================
-   ROTAS PRINCIPAIS
-============================ */
-app.use("/", adminRoutes);
-
-/* ============================
-   PÁGINA 404 PERSONALIZADA
-============================ */
-app.use((req, res) => {
-  res.status(404).render("404", {
-    title: "Página não encontrada - TigerFy",
-    active: "",
-    message: "A página solicitada não existe.",
-  });
+// Dashboard principal
+app.get('/deck', (req, res) => {
+  res.render('deck', { title: 'Dashboard', active: 'deck' });
 });
 
-/* ============================
-   SERVIDOR ONLINE
-============================ */
+// Ofertas / Bots
+app.get('/bots', (req, res) => {
+  res.render('bots', { title: 'Ofertas', active: 'bots' });
+});
+
+// Adquirentes / API PIX
+app.get('/api_pix', (req, res) => {
+  res.render('api_pix', { title: 'Adquirentes', active: 'api_pix' });
+});
+
+// Conquistas
+app.get('/conquistas', (req, res) => {
+  res.render('conquistas', { title: 'Conquistas', active: 'conquistas' });
+});
+
+// Perfil
+app.get('/perfil', (req, res) => {
+  res.render('perfil', { title: 'Meu Perfil', active: 'perfil' });
+});
+
+// Logout (simples)
+app.get('/logout', (req, res) => {
+  res.redirect('/login');
+});
+
+// Login (exemplo simples)
+app.get('/login', (req, res) => {
+  res.render('login', { title: 'Login', active: 'login' });
+});
+
+// Rota base
+app.get('/', (req, res) => {
+  res.redirect('/deck');
+});
+
+// === SERVIDOR ===
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor online na porta ${PORT}`);
+  console.log(`🔥 TigerFy rodando na porta ${PORT}`);
 });
