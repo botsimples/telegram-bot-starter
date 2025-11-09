@@ -1,6 +1,6 @@
-// ==========================
-// 🔥 TIGERFY SERVER
-// ==========================
+// ===============================
+// 🔥 TIGERFY SERVER (versão estável .js)
+// ===============================
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -13,9 +13,9 @@ const expressLayouts = require('express-ejs-layouts');
 dotenv.config();
 const app = express();
 
-// ==========================
-// ⚙️ CONFIGURAÇÕES
-// ==========================
+// ===============================
+// ⚙️ CONFIGURAÇÕES GERAIS
+// ===============================
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
@@ -33,17 +33,17 @@ app.use(
   })
 );
 
-// ==========================
-// 🧠 CONEXÃO COM MONGO
-// ==========================
+// ===============================
+// 💾 CONEXÃO MONGODB
+// ===============================
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB conectado!'))
   .catch((err) => console.error('❌ Erro ao conectar MongoDB:', err));
 
-// ==========================
-// 🌐 ROTAS
-// ==========================
+// ===============================
+// 🌐 ROTAS PRINCIPAIS
+// ===============================
 
 // Página inicial
 app.get('/', (req, res) => {
@@ -55,7 +55,7 @@ app.get('/login', (req, res) => {
   res.render('login', { title: 'Login', active: '' });
 });
 
-// Dashboard principal
+// Dashboard (Deck)
 app.get('/deck', (req, res) => {
   res.render('deck', { title: 'Dashboard', active: 'deck' });
 });
@@ -65,7 +65,7 @@ app.get('/bots', (req, res) => {
   res.render('ofertas', { title: 'Ofertas', active: 'bots' });
 });
 
-// Adquirentes
+// Adquirentes (API PIX)
 app.get('/api_pix', (req, res) => {
   res.render('adquirentes', { title: 'Adquirentes', active: 'api_pix' });
 });
@@ -85,12 +85,11 @@ app.get('/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/login'));
 });
 
-// ==========================
-// 🚀 SERVIDOR ONLINE
-// ==========================
+// ===============================
+// 🚀 INICIAR SERVIDOR
+// ===============================
 const PORT = process.env.PORT || 10000;
-
 app.listen(PORT, () => {
-  console.log('🚀 Servidor online na porta ' + PORT);
+  console.log(`🚀 Servidor online na porta ${PORT}`);
   console.log('✅ TigerFy pronto!');
 });
