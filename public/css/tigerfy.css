@@ -1,242 +1,122 @@
-/* =========================================
-   TIGERFY ⚡ Tema Dourado inspirado na HotTrack
-   ========================================= */
-
-:root {
-  --gold: #FFD700;
-  --gold-dark: #B8860B;
-  --black: #000000;
-  --bg-dark: #0b0b0b;
-  --text-light: #f5f5f5;
-  --text-muted: #bfbfbf;
-  --border: #1e1e1e;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
-  background-color: var(--black);
-  color: var(--text-light);
-  background-image: radial-gradient(rgba(255, 215, 0, 0.04) 1px, transparent 1px);
-  background-size: 22px 22px;
+  background: radial-gradient(circle at 20% 20%, #0a0a0a 0%, #000 100%);
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* ======= SIDEBAR ======= */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
 .sidebar {
-  width: 250px;
-  background: #080808;
-  border-right: 1px solid var(--border);
+  width: 230px;
+  background: #0a0a0a;
+  border-right: 1px solid rgba(255, 204, 0, 0.1);
+  padding: 25px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  padding: 30px 25px;
-}
-
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 50px;
 }
 
 .logo {
-  font-size: 22px;
+  text-align: center;
   font-weight: 700;
-  color: var(--gold);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 22px;
+  color: #ffcc00;
+  letter-spacing: 0.5px;
 }
 
-.logo i {
+.logo-icon {
   font-size: 24px;
-  color: var(--gold);
-  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7));
+  margin-right: 4px;
 }
 
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  margin-top: 40px;
 }
 
-.menu-item {
+.menu a {
   text-decoration: none;
-  color: var(--text-muted);
+  color: #ccc;
+  padding: 14px 25px;
   font-weight: 500;
-  font-size: 15px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  transition: 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  transition: 0.3s;
 }
 
-.menu-item:hover,
-.menu-item.active {
-  background: rgba(255, 215, 0, 0.1);
-  color: var(--gold);
-}
-
-.logout {
-  margin-top: auto;
-  border-top: 1px solid var(--border);
-  padding-top: 20px;
-}
-
-.logout a {
-  text-decoration: none;
-  color: #ff5555;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: 0.2s;
-}
-
-.logout a:hover {
-  color: #ff7878;
-}
-
-/* ======= MAIN CONTENT ======= */
-.main {
-  margin-left: 250px;
-  width: calc(100% - 250px);
-  min-height: 100vh;
-  background: linear-gradient(180deg, #050505 0%, #0b0b0b 100%);
-  padding: 60px 80px;
-  display: flex;
-  justify-content: center;
+.menu a:hover,
+.menu a.active {
+  background: linear-gradient(90deg, rgba(255, 204, 0, 0.1), transparent);
+  color: #ffcc00;
 }
 
 .main-container {
-  width: 100%;
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  background-image: radial-gradient(#2a2a2a 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.content {
   max-width: 1100px;
-  background: #0d0d0d;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 40px 50px;
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.05);
+  margin: 0 auto;
 }
 
-/* ======= LOGIN ======= */
-.login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: radial-gradient(circle at 30% 20%, #111, #000);
+h1 {
+  font-size: 24px;
+  color: #ffcc00;
+  margin-bottom: 10px;
 }
 
-.login-box {
-  background: #0c0c0c;
-  border: 1px solid #2a2a2a;
-  padding: 50px 60px;
-  border-radius: 14px;
-  width: 420px;
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.1);
-  text-align: center;
-}
-
-.login-box h2 {
-  color: var(--gold);
-  font-weight: 700;
-  font-size: 26px;
-  margin-bottom: 15px;
-}
-
-.login-box p {
-  color: var(--text-muted);
+p {
+  color: #aaa;
+  font-size: 15px;
   margin-bottom: 25px;
+}
+
+/* Cards padrão */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #0e0e0e;
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.05);
+}
+
+.card h2 {
+  color: #ffcc00;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #bbb;
   font-size: 14px;
 }
 
-.login-box input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 18px;
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 15px;
-}
-
-.login-box button {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(90deg, var(--gold), var(--gold-dark));
-  border: none;
-  border-radius: 6px;
+.btn-primary {
+  background: linear-gradient(90deg, #ffcc00, #b38f00);
   color: #000;
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.login-box button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-}
-
-.login-box small {
-  display: block;
-  margin-top: 10px;
-  color: #888;
-  font-size: 13px;
-}
-
-/* ======= FORMS E CONTAINERS ======= */
-form {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-input[type="text"], input[type="number"], input[type="password"] {
-  padding: 10px 12px;
-  background: #111;
-  border: 1px solid #333;
-  color: #fff;
-  border-radius: 6px;
-}
-
-button {
-  background: linear-gradient(90deg, var(--gold), var(--gold-dark));
   border: none;
-  color: #000;
-  font-weight: 600;
   padding: 10px 18px;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.2s;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-}
-
-/* ======= SCROLLBAR ======= */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-dark);
+.btn-primary:hover {
+  opacity: 0.9;
 }
