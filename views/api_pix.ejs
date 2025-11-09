@@ -5,7 +5,7 @@
   </div>
 
   <div class="actions">
-    <a href="#" class="btn-primary">+ Novo Adquirente</a>
+    <button onclick="openModal('modalPix')" class="btn-primary">+ Novo Adquirente</button>
   </div>
 
   <div class="cards-grid">
@@ -26,5 +26,21 @@
     <% } else { %>
       <p class="empty-text">Nenhum adquirente configurado.</p>
     <% } %>
+  </div>
+</div>
+
+<!-- MODAL NOVO ADQUIRENTE -->
+<div id="modalPix" class="modal-bg">
+  <div class="modal-box">
+    <h2>Novo Adquirente</h2>
+    <form action="/api_pix/add" method="POST">
+      <input type="text" name="provider" placeholder="Nome da Adquirente (ex: WiinPay)" required />
+      <input type="text" name="key" placeholder="Client ID" required />
+      <input type="text" name="secret" placeholder="Client Secret" required />
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">Salvar</button>
+        <button type="button" class="btn-cancel" onclick="closeModal('modalPix')">Cancelar</button>
+      </div>
+    </form>
   </div>
 </div>
