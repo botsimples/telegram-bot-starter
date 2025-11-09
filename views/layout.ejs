@@ -1,43 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TigerFy ⚡ Painel</title>
-
-  <!-- Fonte + Ícones -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="/css/tigerfy.css">
-</head>
-<body>
-  <div class="dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/tigerfy.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="dashboard">
+      <aside class="sidebar">
         <div class="logo">
-          <i class="fa-solid fa-bolt"></i>
-          <span>TigerFy</span>
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text">TigerFy</span>
         </div>
-      </div>
-      <nav class="menu">
-        <a href="/deck" class="menu-item"><i class="fa-solid fa-layer-group"></i> Deck</a>
-        <a href="/bots" class="menu-item"><i class="fa-solid fa-briefcase"></i> Ofertas</a>
-        <a href="/api_pix" class="menu-item"><i class="fa-solid fa-building-columns"></i> Adquirentes</a>
-      </nav>
-      <div class="logout">
-        <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
-      </div>
-    </aside>
+        <nav class="menu">
+          <a href="/deck"><i class="icon">📊</i> Deck</a>
+          <a href="/bots"><i class="icon">💼</i> Ofertas</a>
+          <a href="/api_pix"><i class="icon">🏦</i> Adquirentes</a>
+        </nav>
+      </aside>
 
-    <!-- Conteúdo -->
-    <main class="main">
-      <div class="main-container">
-        <%- body %>
-      </div>
-    </main>
-  </div>
-</body>
+      <main class="main-container">
+        <div class="content">
+          <%- body %>
+        </div>
+      </main>
+    </div>
+  </body>
 </html>
