@@ -1,17 +1,28 @@
 <div class="page-header">
-  <h1>Adquirentes</h1>
-  <p>Configure suas gateways (WiinPay, Asaas, Paggue...)</p>
+  <h1>💸 Adquirentes</h1>
+  <p>Gerencie as chaves e credenciais de suas integrações PIX.</p>
+</div>
+
+<div class="actions">
+  <a href="#" class="btn-primary">+ Novo Adquirente</a>
 </div>
 
 <div class="cards-grid">
-  <div class="card">
-    <h2>Nova Integração</h2>
-    <p>Adicione um novo gateway e configure os tokens de API.</p>
-    <button class="btn-primary">Adicionar</button>
-  </div>
-  <div class="card">
-    <h2>Integrações Ativas</h2>
-    <p>Visualize e edite adquirentes já configuradas.</p>
-    <button class="btn-primary">Gerenciar</button>
-  </div>
+  <% if (adquirentes && adquirentes.length > 0) { %>
+    <% adquirentes.forEach(adq => { %>
+      <div class="dash-card wide">
+        <div class="card-header">
+          <h2><%= adq.provider %></h2>
+          <span class="tag">Integrado</span>
+        </div>
+        <p>Key: <%= adq.key %></p>
+        <div class="card-footer">
+          <button class="btn-secondary">Editar</button>
+          <button class="btn-danger">Excluir</button>
+        </div>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p class="empty-text">Nenhum adquirente configurado.</p>
+  <% } %>
 </div>
