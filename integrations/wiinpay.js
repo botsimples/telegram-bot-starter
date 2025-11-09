@@ -2,7 +2,12 @@ import axios from "axios";
 
 const BASE_URL = "https://api-v2.wiinpay.com.br";
 
-export async function gerarPixWiinPay(valor) {
+/**
+ * Gera um pagamento PIX via WiinPay API v2
+ * @param {number} valor - valor do pagamento
+ * @param {object} extraData - dados adicionais (metadata, webhook_url, etc)
+ */
+export async function gerarPixWiinPay(valor, extraData = {}) {
   console.log("🟡 [WIINPAY] Gerando pagamento via API v2...");
 
   try {
@@ -14,7 +19,13 @@ export async function gerarPixWiinPay(valor) {
       description: "Pagamento via BotSimples",
       webhook_url: `${process.env.WEBHOOK_URL || "https://telegram-bot-starter-ggy2.onrender.com/webhook"}`,
       metadata: { origem: "telegram-bot" },
+      ...extraData, // mescla qualquer dado extra vindo da chamada
     };
+
+    // Garante que metadata do extraData substitui ou adiciona corretamente
+    if (extraData.metadata) {
+      payload.metadata = { ...payload.metadata, ...extraData.metadata };
+    }
 
     const headers = {
       "Content-Type": "application/json",
@@ -36,6 +47,10 @@ export async function gerarPixWiinPay(valor) {
   }
 }
 
+/**
+ * Verifica o status de um pagamento PIX via WiinPay API v2
+ * @param {string} paymentId - ID do pagamento retornado na criação
+ */
 export async function verificarPixWiinPay(paymentId) {
   console.log(`🔍 [WIINPAY] Verificando pagamento ${paymentId}...`);
 
