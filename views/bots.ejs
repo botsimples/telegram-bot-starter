@@ -5,7 +5,7 @@
   </div>
 
   <div class="actions">
-    <a href="#" class="btn-primary">+ Nova Oferta</a>
+    <button onclick="openModal('modalOferta')" class="btn-primary">+ Nova Oferta</button>
   </div>
 
   <div class="cards-grid">
@@ -26,5 +26,21 @@
     <% } else { %>
       <p class="empty-text">Nenhuma oferta cadastrada.</p>
     <% } %>
+  </div>
+</div>
+
+<!-- MODAL NOVA OFERTA -->
+<div id="modalOferta" class="modal-bg">
+  <div class="modal-box">
+    <h2>Nova Oferta</h2>
+    <form action="/bots/add" method="POST">
+      <input type="text" name="username" placeholder="Nome do bot" required />
+      <input type="text" name="token" placeholder="Token de acesso" required />
+      <textarea name="note" placeholder="Descrição / Observação"></textarea>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">Salvar</button>
+        <button type="button" class="btn-cancel" onclick="closeModal('modalOferta')">Cancelar</button>
+      </div>
+    </form>
   </div>
 </div>
