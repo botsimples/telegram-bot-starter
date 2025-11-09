@@ -1,5 +1,5 @@
 // ===============================
-// 🔥 TIGERFY SERVER (versão estável .js)
+// 🔥 TIGERFY SERVER (versão estável .js — sincronizado com views reais)
 // ===============================
 
 const express = require('express');
@@ -60,14 +60,14 @@ app.get('/deck', (req, res) => {
   res.render('deck', { title: 'Dashboard', active: 'deck' });
 });
 
-// Ofertas
+// Ofertas (arquivo bots.ejs)
 app.get('/bots', (req, res) => {
-  res.render('ofertas', { title: 'Ofertas', active: 'bots' });
+  res.render('bots', { title: 'Ofertas', active: 'bots' });
 });
 
-// Adquirentes (API PIX)
+// Adquirentes (arquivo api_pix.ejs)
 app.get('/api_pix', (req, res) => {
-  res.render('adquirentes', { title: 'Adquirentes', active: 'api_pix' });
+  res.render('api_pix', { title: 'Adquirentes', active: 'api_pix' });
 });
 
 // Conquistas
