@@ -2,9 +2,9 @@
   "name": "tigerfy",
   "version": "1.0.0",
   "description": "Painel e bot automatizado TigerFy",
-  "main": "server.js",
+  "main": "server.cjs",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.cjs"
   },
   "dependencies": {
     "axios": "^1.6.8",
