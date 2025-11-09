@@ -9,30 +9,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- CSS principal -->
+  <!-- CSS -->
   <link rel="stylesheet" href="/css/tigerfy.css">
 </head>
 <body>
   <div class="dashboard">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo">
-        <i class="fa-solid fa-bolt"></i>
-        <span>TigerFy</span>
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fa-solid fa-bolt"></i>
+          <span>TigerFy</span>
+        </div>
       </div>
       <nav class="menu">
-        <a href="/deck"><i class="fa-solid fa-layer-group"></i> Deck</a>
-        <a href="/bots"><i class="fa-solid fa-robot"></i> Ofertas</a>
-        <a href="/api_pix"><i class="fa-solid fa-building-columns"></i> Adquirentes</a>
-        <div class="logout">
-          <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
-        </div>
+        <a href="/deck" class="menu-item"><i class="fa-solid fa-layer-group"></i> Deck</a>
+        <a href="/bots" class="menu-item"><i class="fa-solid fa-briefcase"></i> Ofertas</a>
+        <a href="/api_pix" class="menu-item"><i class="fa-solid fa-building-columns"></i> Adquirentes</a>
       </nav>
+      <div class="logout">
+        <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+      </div>
     </aside>
 
     <!-- Conteúdo -->
-    <main class="main-content">
-      <div class="content-box">
+    <main class="main">
+      <div class="main-container">
         <%- body %>
       </div>
     </main>
