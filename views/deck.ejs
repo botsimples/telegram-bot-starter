@@ -1,23 +1,31 @@
 <main class="deck-wrapper">
   <div class="page-container">
-    <header class="page-header">
-      <h1>Dashboard Geral</h1>
-      <p>Visão geral das métricas do sistema TigerFy.</p>
+    <header class="deck-header">
+      <h1>Deck Geral</h1>
+      <select class="deck-filter">
+        <option>Filtrar Oferta</option>
+        <option>Mensal</option>
+        <option>Anual</option>
+        <option>Trial</option>
+      </select>
     </header>
 
-<section class="deck-grid">
-  <!-- Linha 1 -->
-  <div class="deck-card"><h2>Total de Vendas</h2><span class="value">R$ 0,00</span></div>
-  <div class="deck-card"><h2>Vendas no Ano</h2><span class="value">R$ 0,00</span></div>
-  <div class="deck-card"><h2>Vendas no Mês</h2><span class="value">R$ 0,00</span></div>
-  <div class="deck-card"><h2>Vendas no Dia</h2><span class="value">R$ 0,00</span></div>
+    <section class="deck-grid">
+      <!-- Linha 1 -->
+      <div class="deck-card"><h2>Total de Vendas</h2><span class="value">R$ 0,00</span></div>
+      <div class="deck-card"><h2>Vendas no Ano</h2><span class="value">R$ 0,00</span></div>
+      <div class="deck-card"><h2>Vendas no Mês</h2><span class="value">R$ 0,00</span></div>
+      <div class="deck-card"><h2>Vendas no Dia</h2><span class="value">R$ 0,00</span></div>
 
-  <!-- Linha 2 -->
-  <div class="deck-card"><h2>Total Usuários</h2><span class="value">0</span></div>
-  <div class="deck-card"><h2>Usuários no Ano</h2><span class="value">0</span></div>
-  <div class="deck-card"><h2>Usuários no Mês</h2><span class="value">0</span></div>
-  <div class="deck-card"><h2>Usuários no Dia</h2><span class="value">0</span></div>
-</section>
+      <!-- Linha 2 -->
+      <div class="deck-card"><h2>Total Usuários</h2><span class="value">0</span></div>
+      <div class="deck-card"><h2>Usuários no Ano</h2><span class="value">0</span></div>
+      <div class="deck-card"><h2>Usuários no Mês</h2><span class="value">0</span></div>
+      <div class="deck-card"><h2>Usuários no Dia</h2><span class="value">0</span></div>
+
+      <!-- Card extra -->
+      <div class="deck-card"><h2>Conversões Ativas</h2><span class="value">0</span></div>
+    </section>
 
     <section class="chart-section">
       <div class="chart-card">
@@ -32,8 +40,12 @@
     <section class="table-section">
       <div class="table-header"><h2>Pagamentos Recentes</h2></div>
       <table class="styled-table">
-        <thead><tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
-        <tbody><tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr></tbody>
+        <thead>
+          <tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+        </tbody>
       </table>
     </section>
   </div>
