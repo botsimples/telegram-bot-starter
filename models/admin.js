@@ -1,105 +1,166 @@
 import express from "express";
 import mongoose from "mongoose";
+import Plan from "./Plan.js";
+import Bot from "./bot.js";           // nosso schema acima
+import ApiPix from "./ApiPix.js";     // nosso schema acima
 
 const router = express.Router();
 
-// === MODELOS ===
-const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
-  name: String,
-  price: Number,
-  description: String,
-  deliverable: String,
-}));
+/* ===== Helpers ===== */
+async function getOrCreateApiPix() {
+  let doc = await ApiPix.findOne();
+  if (!doc) doc = await ApiPix.create({ gateways: [], priority: {} });
+  return doc;
+}
 
-const Gateway = mongoose.models.Gateway || mongoose.model("Gateway", new mongoose.Schema({
-  name: String,
-  clientId: String,
-  clientSecret: String,
-  token: String,
-  active: { type: Boolean, default: false },
-}));
-
-// === LOGIN ===
-router.get("/login", (req, res) => {
-  res.render("login", { message: "" });
+/* ===== Dashboard (já existente) ===== */
+router.get("/", async (req, res) => {
+  const planos = await Plan.find().sort({ createdAt: -1 });
+  res.render("dashboard", { planos });
 });
 
-router.post("/login", (req, res) => {
-  const { username, password } = req.body;
-  if (
-    username === process.env.ADMIN_USER &&
-    password === process.env.ADMIN_PASS
-  ) {
-    req.session.loggedIn = true;
-    return res.redirect("/admin");
+/* ======== BOTS ======== */
+router.get("/bots", async (req, res) => {
+  const bots = await Bot.find().sort({ createdAt: -1 });
+  res.render("bots", { bots });
+});
+
+router.post("/bots", async (req, res) => {
+  try {
+    const { username, token, note } = req.body;
+    if (!username || !token) return res.status(400).json({ ok: false, msg: "username e token são obrigatórios" });
+    const bot = await Bot.create({ username, token, note });
+    res.json({ ok: true, bot });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
   }
-  res.render("login", { message: "❌ Usuário ou senha incorretos!" });
 });
 
-// === PROTEÇÃO DE ROTAS ===
-router.use((req, res, next) => {
-  if (!req.session.loggedIn && req.path !== "/login") {
-    return res.redirect("/login");
+router.put("/bots/:id", async (req, res) => {
+  try {
+    const { username, token, note, isActive } = req.body;
+    const bot = await Bot.findByIdAndUpdate(
+      req.params.id,
+      { username, token, note, isActive },
+      { new: true }
+    );
+    res.json({ ok: true, bot });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
   }
-  next();
 });
 
-// === PAINEL ADMIN ===
+router.delete("/bots/:id", async (req, res) => {
+  try {
+    await Bot.findByIdAndDelete(req.params.id);
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
+  }
+});
+
+/* ======== API PIX ======== */
+router.get("/api-pix", async (req, res) => {
+  const apipix = await getOrCreateApiPix();
+  res.render("api_pix", { apipix });
+});
+
+// criar gateway
+router.post("/api-pix/gateways", async (req, res) => {
+  try {
+    const { name, clientId, clientSecret, token } = req.body;
+    const apipix = await getOrCreateApiPix();
+    apipix.gateways.push({ name, clientId, clientSecret, token, active: false });
+    await apipix.save();
+    res.json({ ok: true, apipix });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
+  }
+});
+
+// atualizar gateway
+router.put("/api-pix/gateways/:gid", async (req, res) => {
+  try {
+    const { clientId, clientSecret, token, active } = req.body;
+    const apipix = await getOrCreateApiPix();
+    const gw = apipix.gateways.id(req.params.gid);
+    if (!gw) return res.status(404).json({ ok: false, msg: "Gateway não encontrado" });
+    if (clientId !== undefined) gw.clientId = clientId;
+    if (clientSecret !== undefined) gw.clientSecret = clientSecret;
+    if (token !== undefined) gw.token = token;
+    if (active !== undefined) gw.active = !!active;
+    await apipix.save();
+    res.json({ ok: true, apipix });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
+  }
+});
+
+// excluir gateway
+router.delete("/api-pix/gateways/:gid", async (req, res) => {
+  try {
+    const apipix = await getOrCreateApiPix();
+    apipix.gateways.id(req.params.gid)?.deleteOne();
+    await apipix.save();
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
+  }
+});
+
+// salvar prioridade
+router.post("/api-pix/priority", async (req, res) => {
+  try {
+    const { primary, secondary, tertiary } = req.body;
+    const apipix = await getOrCreateApiPix();
+    apipix.priority = { primary, secondary, tertiary };
+    await apipix.save();
+    res.json({ ok: true, apipix });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
+  }
+});
+
+/* ======== Planos (mantém o que já tinha) ======== */
 router.get("/admin", async (req, res) => {
-  const planos = await Plan.find();
-  const gateways = await Gateway.find();
-  res.render("admin", { planos, gateways });
+  const planos = await Plan.find().sort({ createdAt: -1 });
+  const apipix = await getOrCreateApiPix();
+  res.render("admin", { planos, gateways: apipix.gateways });
 });
 
-// === CRUD PLANOS ===
 router.post("/admin/planos", async (req, res) => {
   try {
     let { name, price, description, deliverable } = req.body;
     price = parseFloat(String(price).replace(",", "."));
-    await Plan.create({ name, price, description, deliverable });
-    res.sendStatus(200);
-  } catch (err) {
-    console.error("❌ Erro ao criar plano:", err);
-    res.status(500).send("Erro ao criar plano.");
+    const plan = await Plan.create({ name, price, description, deliverable });
+    res.json({ ok: true, plan });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
   }
 });
 
 router.put("/admin/planos/:id", async (req, res) => {
   try {
-    const { id } = req.params;
     let { name, price, description, deliverable } = req.body;
-    price = parseFloat(String(price).replace(",", "."));
-    await Plan.findByIdAndUpdate(id, { name, price, description, deliverable });
-    res.sendStatus(200);
-  } catch (err) {
-    console.error("❌ Erro ao atualizar plano:", err);
-    res.status(500).send("Erro ao atualizar plano.");
+    if (price !== undefined) price = parseFloat(String(price).replace(",", "."));
+    const plan = await Plan.findByIdAndUpdate(
+      req.params.id,
+      { name, price, description, deliverable },
+      { new: true }
+    );
+    res.json({ ok: true, plan });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
   }
 });
 
 router.delete("/admin/planos/:id", async (req, res) => {
-  await Plan.findByIdAndDelete(req.params.id);
-  res.sendStatus(200);
-});
-
-// === CRUD GATEWAYS ===
-router.post("/admin/gateways", async (req, res) => {
-  const { name, clientId, clientSecret, token } = req.body;
-  await Gateway.create({ name, clientId, clientSecret, token });
-  res.sendStatus(200);
-});
-
-router.put("/admin/gateways/:id", async (req, res) => {
-  const { id } = req.params;
-  const { clientId, clientSecret, token } = req.body;
-  await Gateway.findByIdAndUpdate(id, { clientId, clientSecret, token });
-  res.sendStatus(200);
-});
-
-router.post("/admin/gateways/ativar/:id", async (req, res) => {
-  await Gateway.updateMany({}, { active: false });
-  await Gateway.findByIdAndUpdate(req.params.id, { active: true });
-  res.sendStatus(200);
+  try {
+    await Plan.findByIdAndDelete(req.params.id);
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ ok: false, msg: e.message });
+  }
 });
 
 export default router;
