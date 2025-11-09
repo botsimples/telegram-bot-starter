@@ -1,39 +1,193 @@
-<div class="sidebar">
-  <div class="sidebar-header">
-    <div class="logo">
-      ⚡ <span>TigerFy</span>
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | TigerFy</title>
+
+    <link rel="stylesheet" href="/css/tigerfy.css" />
+
+    <style>
+      /* ===== RESET ===== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #0d0d0d;
+        font-family: "Inter", sans-serif;
+        color: #fff;
+        display: flex;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        width: 230px;
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 25px 0;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .sidebar-header {
+        padding-left: 25px;
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        font-weight: 700;
+        color: #ffcc00;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .menu {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .menu a {
+        color: #aaa;
+        text-decoration: none;
+        padding: 12px 25px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: 0.2s;
+      }
+
+      .menu a:hover {
+        color: #ffcc00;
+        background: rgba(255, 204, 0, 0.05);
+      }
+
+      .menu a.active {
+        color: #000;
+        background: linear-gradient(90deg, #ffcc00, #d4a400);
+        font-weight: 700;
+      }
+
+      .menu-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 20px 0;
+      }
+
+      .sidebar-footer {
+        padding: 0 25px;
+      }
+
+      .logout-btn {
+        width: 100%;
+        background: #1a1a1a;
+        border: none;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 500;
+        border-radius: 8px;
+        padding: 10px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: 0.2s;
+      }
+
+      .logout-btn:hover {
+        background: #ffcc00;
+        color: #000;
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      main {
+        flex: 1;
+        padding: 40px 60px;
+        animation: fadeIn 0.6s ease forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ===== SCROLLBAR ===== */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 204, 0, 0.3);
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">⚡ <span>TigerFy</span></div>
+      </div>
+
+      <nav class="menu">
+        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+          <i class="icon">📊</i>
+          <span>Deck</span>
+        </a>
+
+        <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+          <i class="icon">🔥</i>
+          <span>Ofertas</span>
+        </a>
+
+        <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+          <i class="icon">💳</i>
+          <span>Adquirentes</span>
+        </a>
+
+        <div class="menu-divider"></div>
+
+        <a
+          href="/conquistas"
+          class="<%= active === 'conquistas' ? 'active' : '' %>"
+        >
+          <i class="icon">🏆</i>
+          <span>Conquistas</span>
+        </a>
+
+        <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
+          <i class="icon">👤</i>
+          <span>Meu Perfil</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button onclick="window.location.href='/logout'" class="logout-btn">
+          <i class="icon">🚪</i> <span>Sair</span>
+        </button>
+      </div>
     </div>
-  </div>
 
-  <nav class="menu">
-    <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-      <i class="icon">📊</i>
-      <span>Deck</span>
-    </a>
-    <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-      <i class="icon">🔥</i>
-      <span>Ofertas</span>
-    </a>
-    <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-      <i class="icon">💳</i>
-      <span>Adquirentes</span>
-    </a>
-
-    <div class="menu-divider"></div>
-
-    <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-      <i class="icon">🏆</i>
-      <span>Conquistas</span>
-    </a>
-    <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
-      <i class="icon">👤</i>
-      <span>Meu Perfil</span>
-    </a>
-  </nav>
-
-  <div class="sidebar-footer">
-    <button onclick="window.location.href='/logout'" class="logout-btn">
-      <i class="icon">🚪</i> <span>Sair</span>
-    </button>
-  </div>
-</div>
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+      <%- body %>
+    </main>
+  </body>
+</html>
