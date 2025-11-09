@@ -1,73 +1,20 @@
-/* ===========================
-   TIGERFY DECK GOLD — SAFE OVERRIDES
-   Escopo: .deck-page  (não toca layout global)
-   =========================== */
+/* =======================================================
+   ⚡ TIGERFY DECK GOLD — FLEXION DASH FINAL BUILD
+   ======================================================= */
 
-.deck-page {
-  /* centraliza o deck sem mexer no seu layout existente */
-  max-width: 1160px;
+.deck-page, .tiger-dashboard {
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 32px 20px 60px;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   position: relative;
 }
 
-/* Cabeçalho do Deck */
-.deck-page .deck-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-
-.deck-page .deck-title {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: .2px;
-  color: #ffcc00;
-  margin: 0;
-}
-
-.deck-page .deck-sub {
-  font-size: 13px;
-  color: #a7a7a7;
-  margin-top: 6px;
-}
-
-/* Select “Filtrar Oferta” estilizado (somente aqui) */
-.deck-page .deck-filter {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.deck-page .deck-filter select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background: rgba(18,18,18,.9);
-  border: 1px solid rgba(255,204,0,.25);
-  color: #ffcc00;
-  font-weight: 700;
-  font-size: 13px;
-  padding: 10px 32px 10px 12px;
-  border-radius: 10px;
-  outline: none;
-  cursor: pointer;
-  transition: box-shadow .2s ease, border-color .2s ease, transform .08s ease;
-}
-
-.deck-page .deck-filter select:hover {
-  border-color: rgba(255,204,0,.45);
-  box-shadow: 0 0 0 4px rgba(255,204,0,.06);
-}
-
-.deck-page .deck-filter select:active {
-  transform: translateY(1px);
-}
-
-/* Fundo “gold flexion” apenas atrás do deck */
-.deck-page::before {
+/* Fundo animado dourado */
+.deck-page::before,
+.tiger-dashboard::before {
   content: "";
   position: absolute;
   inset: -120px -80px auto -80px;
@@ -80,512 +27,61 @@
   pointer-events: none;
   animation: deckGoldPulse 9s ease-in-out infinite alternate;
 }
-
 @keyframes deckGoldPulse {
   0%   { opacity: .55; transform: translateY(0) scale(1); }
   100% { opacity: .9;  transform: translateY(6px) scale(1.05); }
 }
 
-/* GRID 4x2 perfeito (replica Flexion, sem esticar demais) */
-.deck-page .deck-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(220px, 1fr));
-  gap: 16px;
-  margin-top: 8px;
-  margin-bottom: 26px;
-}
-
-/* Cartões métricas */
-.deck-page .deck-card {
-  background: linear-gradient(140deg, rgba(20,20,20,.92), rgba(10,10,10,.86));
-  border: 1px solid rgba(255,204,0,.14);
-  border-radius: 12px;
-  padding: 16px 18px;
-  box-shadow: 0 0 10px rgba(255,204,0,.04);
-  transition: transform .15s ease, box-shadow .15s ease, border-color .2s ease;
-}
-
-.deck-page .deck-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 16px rgba(255,204,0,.14);
-  border-color: rgba(255,204,0,.24);
-}
-
-.deck-page .deck-card h2 {
-  margin: 0 0 6px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #bdbdbd;
-}
-
-.deck-page .deck-card .value {
-  font-size: 22px;
-  font-weight: 800;
-  color: #ffcc00;
-  letter-spacing: .2px;
-}
-
-/* Cards “linha 2” (8 itens total) */
-.deck-page .deck-grid .deck-card.small {
-  padding: 14px 16px;
-}
-
-/* Se precisar 3x3 acima de 1300px, descomente:
-@media (min-width: 1360px) {
-  .deck-page { max-width: 1280px; }
-  .deck-page .deck-grid { grid-template-columns: repeat(4, minmax(240px, 1fr)); gap: 18px; }
-}
-*/
-
-/* GRÁFICO – card */
-.deck-page .chart-card {
-  background: rgba(18,18,18,.9);
-  border: 1px solid rgba(255,204,0,.12);
-  border-radius: 12px;
-  padding: 18px 20px;
-  box-shadow: 0 0 12px rgba(255,204,0,.04);
-  margin-bottom: 22px;
-}
-
-.deck-page .chart-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.deck-page .chart-head h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.deck-page .chart-head .hint {
-  font-size: 12px;
-  color: #a5a5a5;
-}
-
-.deck-page .chart-placeholder {
-  height: 150px;
-  border: 1px dashed rgba(255,204,0,.14);
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  color: #6a6a6a;
-  background: rgba(255,255,255,.02);
-}
-
-/* TABELA – Pagamentos Recentes */
-.deck-page .table-card {
-  background: rgba(18,18,18,.92);
-  border: 1px solid rgba(255,204,0,.12);
-  border-radius: 12px;
-  padding: 18px 20px;
-  box-shadow: 0 0 10px rgba(255,204,0,.04);
-}
-
-.deck-page .table-card h3 {
-  margin: 0 0 12px;
-  font-size: 16px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.deck-page .styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  color: #d4d4d4;
-}
-
-.deck-page .styled-table th,
-.deck-page .styled-table td {
-  padding: 10px 8px;
-  border-bottom: 1px solid rgba(255,204,0,.06);
-  text-align: left;
-  white-space: nowrap;
-}
-
-.deck-page .styled-table th {
-  color: #ffcc00;
-  font-weight: 700;
-}
-
-.deck-page .styled-table tr:hover td {
-  background: rgba(255,204,0,.03);
-}
-
-/* RESPONSIVO */
-@media (max-width: 1100px) {
-  .deck-page { padding: 28px 16px 52px; }
-  .deck-page .deck-grid { grid-template-columns: repeat(3, minmax(200px, 1fr)); }
-}
-
-@media (max-width: 820px) {
-  .deck-page .deck-header { flex-direction: column; align-items: flex-start; }
-  .deck-page .deck-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
-}
-
-@media (max-width: 540px) {
-  .deck-page .deck-grid { grid-template-columns: 1fr; }
-}
-
-/* ===========================
-   ⚡️ ESTATÍSTICAS GERAIS (FLEXION GOLD STYLE)
-   =========================== */
-
-.deck-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 35px;
-}
-
-.deck-title {
-  font-size: 26px;
-  font-weight: 800;
-  color: #ffcc00;
-  margin: 0;
-}
-
-.deck-sub {
-  color: #aaa;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-/* Botão Filtrar Oferta */
-.filter-button {
-  background: linear-gradient(135deg, rgba(255, 204, 0, 0.9), rgba(190, 150, 0, 0.9));
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.25s ease;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.25);
-}
-.filter-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 14px rgba(255, 204, 0, 0.4);
-}
-
-/* Dropdown */
-.filter-dropdown {
-  display: none;
-  position: absolute;
-  right: 0;
-  margin-top: 5px;
-  background: rgba(15, 15, 15, 0.95);
-  border: 1px solid rgba(255, 204, 0, 0.2);
-  border-radius: 8px;
-  min-width: 220px;
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.08);
-  animation: fadeIn 0.2s ease;
-}
-.filter-dropdown p.empty {
-  color: #888;
-  font-size: 13px;
-  padding: 12px;
-  text-align: center;
-  margin: 0;
-}
-.filter-button:focus + .filter-dropdown,
-.filter-dropdown:hover {
-  display: block;
-}
-
-/* Cards espaçados estilo Flexion */
-.deck-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin-bottom: 40px;
-}
-.deck-card {
-  background: linear-gradient(180deg, rgba(20,20,20,0.92), rgba(10,10,10,0.88));
-  border: 1px solid rgba(255,204,0,0.1);
-  border-radius: 12px;
-  padding: 20px 24px;
-  text-align: left;
-  transition: 0.3s;
-  box-shadow: 0 0 10px rgba(255,204,0,0.04);
-}
-.deck-card:hover {
-  border-color: rgba(255,204,0,0.25);
-  box-shadow: 0 0 16px rgba(255,204,0,0.12);
-  transform: translateY(-3px);
-}
-.deck-card h2 {
-  font-size: 13px;
-  color: #aaa;
-  margin-bottom: 8px;
-}
-.deck-card .value {
-  font-size: 22px;
-  font-weight: 800;
-  color: #ffcc00;
-}
-.deck-card.highlight {
-  grid-column: span 4;
-  text-align: center;
-  background: linear-gradient(180deg, rgba(255,204,0,0.07), rgba(18,18,18,0.85));
-  border-color: rgba(255,204,0,0.25);
-}
-
-/* Tabela e Gráfico */
-.chart-card, .table-card {
-  background: rgba(15,15,15,0.9);
-  border: 1px solid rgba(255,204,0,0.1);
-  border-radius: 10px;
-  padding: 22px 26px;
-  margin-bottom: 28px;
-}
-
-.chart-head {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-.chart-placeholder {
-  border: 1px dashed rgba(255,204,0,0.12);
-  height: 180px;
-  display: grid;
-  place-items: center;
-  color: #666;
-  font-size: 14px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===========================
-   ⚡️ TIGERFY DASH FLEXION STYLE
-   =========================== */
-
-.deck-page {
-  padding: 30px 40px;
-  max-width: 1600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
-}
-
-/* ===== HEADER ===== */
-.deck-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.deck-title {
-  font-size: 26px;
-  font-weight: 800;
-  color: #ffcc00;
-  margin-bottom: 5px;
-}
-
-.deck-sub {
-  font-size: 14px;
-  color: #aaa;
-}
-
-/* ===== BOTÃO FILTRAR ===== */
-.filter-button {
-  background: linear-gradient(135deg, #ffcc00, #b98a00);
-  color: #000;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.25s ease;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.25);
-}
-.filter-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
-}
-.filter-dropdown {
-  display: none;
-}
-
-/* ===== GRID ===== */
-.deck-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 24px;
-}
-
-.deck-card {
-  background: rgba(18, 18, 18, 0.9);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 12px;
-  padding: 24px;
-  transition: 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
-}
-.deck-card:hover {
-  border-color: rgba(255, 204, 0, 0.25);
-  box-shadow: 0 0 16px rgba(255, 204, 0, 0.12);
-  transform: translateY(-3px);
-}
-.deck-card h2 {
-  font-size: 13px;
-  color: #aaa;
-  margin-bottom: 10px;
-}
-.deck-card .value {
-  font-size: 24px;
-  font-weight: 800;
-  color: #ffcc00;
-}
-
-/* ===== CHART ===== */
-.chart-card {
-  background: rgba(15, 15, 15, 0.9);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 12px;
-  padding: 25px 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.chart-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.chart-head h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-}
-.chart-tabs {
-  display: flex;
-  gap: 8px;
-}
-.chart-tabs button {
-  background: rgba(255, 204, 0, 0.05);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 8px;
-  padding: 5px 12px;
-  color: #ffcc00;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s;
-}
-.chart-tabs button.active {
-  background: #ffcc00;
-  color: #000;
-  font-weight: 700;
-}
-.chart-placeholder {
-  border: 1px dashed rgba(255, 204, 0, 0.12);
-  height: 220px;
-  display: grid;
-  place-items: center;
-  color: #666;
-  font-size: 14px;
-}
-
-/* ===== TABLE ===== */
-.table-card {
-  background: rgba(15, 15, 15, 0.9);
-  border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 12px;
-  padding: 25px 30px;
-}
-.table-card h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 18px;
-}
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: #fff;
-  font-size: 13px;
-}
-.styled-table thead {
-  border-bottom: 1px solid rgba(255, 204, 0, 0.15);
-}
-.styled-table th {
-  color: #ffcc00;
-  text-align: left;
-  padding-bottom: 8px;
-  font-weight: 700;
-}
-.styled-table td {
-  padding: 10px 0;
-  color: #bbb;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* ===============================
-   TIGERFY FLEXION DASH STYLE
-   =============================== */
-
-.tiger-dashboard {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 40px 60px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-/* HEADER */
-.tiger-header {
+/* =======================================================
+   HEADER
+   ======================================================= */
+.tiger-header, .deck-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
-.tiger-header h1 {
+.tiger-header h1, .deck-title {
   font-size: 28px;
   font-weight: 800;
   color: #ffcc00;
   margin-bottom: 5px;
 }
-.tiger-header p {
+.tiger-header p, .deck-sub {
   color: #aaa;
   font-size: 14px;
+  margin-top: 0;
 }
-.filter-btn {
+
+/* Botão Filtrar Ofertas */
+.filter-btn, .filter-button {
   background: linear-gradient(135deg, #ffcc00, #b98a00);
   color: #000;
   border: none;
   border-radius: 10px;
   padding: 10px 20px;
   font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
   transition: 0.25s ease;
   box-shadow: 0 0 10px rgba(255, 204, 0, 0.25);
 }
-.filter-btn:hover {
+.filter-btn:hover, .filter-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 0 14px rgba(255, 204, 0, 0.4);
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
 }
-.dropdown {
+.dropdown, .filter-dropdown {
   display: none;
 }
 
-/* GRID */
-.stats-grid {
+/* =======================================================
+   GRID DE MÉTRICAS
+   ======================================================= */
+.stats-grid, .deck-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
 }
-.stat-card {
+.stat-card, .deck-card {
   background: rgba(20, 20, 20, 0.9);
   border: 1px solid rgba(255, 204, 0, 0.1);
   border-radius: 12px;
@@ -593,24 +89,27 @@
   transition: 0.3s;
   box-shadow: 0 0 10px rgba(255, 204, 0, 0.04);
 }
-.stat-card:hover {
+.stat-card:hover, .deck-card:hover {
   border-color: rgba(255, 204, 0, 0.25);
   box-shadow: 0 0 16px rgba(255, 204, 0, 0.12);
   transform: translateY(-3px);
 }
-.stat-card h3 {
+.stat-card h3, .deck-card h2 {
   font-size: 13px;
   color: #aaa;
   margin-bottom: 10px;
+  font-weight: 600;
 }
-.stat-card span {
+.stat-card span, .deck-card .value {
   font-size: 24px;
   font-weight: 800;
   color: #ffcc00;
 }
 
-/* CHART BLOCK */
-.chart-block {
+/* =======================================================
+   CHARTS / GRÁFICOS
+   ======================================================= */
+.chart-block, .chart-card {
   background: rgba(15, 15, 15, 0.9);
   border: 1px solid rgba(255, 204, 0, 0.1);
   border-radius: 12px;
@@ -629,11 +128,11 @@
   font-size: 16px;
   font-weight: 700;
 }
-.tabs {
+.tabs, .chart-tabs {
   display: flex;
   gap: 8px;
 }
-.tabs button {
+.tabs button, .chart-tabs button {
   background: rgba(255, 204, 0, 0.05);
   border: 1px solid rgba(255, 204, 0, 0.15);
   border-radius: 8px;
@@ -643,12 +142,12 @@
   cursor: pointer;
   transition: 0.25s;
 }
-.tabs button.active {
+.tabs button.active, .chart-tabs button.active {
   background: #ffcc00;
   color: #000;
   font-weight: 700;
 }
-.tabs button:hover {
+.tabs button:hover, .chart-tabs button:hover {
   background: rgba(255, 204, 0, 0.15);
 }
 .chart-placeholder {
@@ -660,38 +159,56 @@
   font-size: 14px;
 }
 
-/* TABLE */
-.table-block {
+/* =======================================================
+   TABELA – PAGAMENTOS RECENTES
+   ======================================================= */
+.table-block, .table-card {
   background: rgba(15, 15, 15, 0.9);
   border: 1px solid rgba(255, 204, 0, 0.1);
   border-radius: 12px;
   padding: 25px 30px;
 }
-.table-block h3 {
+.table-block h3, .table-card h3 {
   font-size: 16px;
   font-weight: 700;
   color: #fff;
   margin-bottom: 18px;
 }
-.table-block table {
+.table-block table, .styled-table {
   width: 100%;
   border-collapse: collapse;
   color: #fff;
   font-size: 13px;
 }
-.table-block thead {
+.table-block thead, .styled-table thead {
   border-bottom: 1px solid rgba(255, 204, 0, 0.15);
 }
-.table-block th {
+.table-block th, .styled-table th {
   color: #ffcc00;
   text-align: left;
   padding-bottom: 8px;
   font-weight: 700;
 }
-.table-block td {
+.table-block td, .styled-table td {
   padding: 10px 0;
   color: #bbb;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+.table-block tr:hover td, .styled-table tr:hover td {
+  background: rgba(255,204,0,.03);
+}
 
-
+/* =======================================================
+   RESPONSIVO
+   ======================================================= */
+@media (max-width: 1100px) {
+  .deck-page, .tiger-dashboard { padding: 28px 24px; }
+  .stats-grid, .deck-grid { grid-template-columns: repeat(3, minmax(200px, 1fr)); }
+}
+@media (max-width: 820px) {
+  .tiger-header, .deck-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .stats-grid, .deck-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
+}
+@media (max-width: 540px) {
+  .stats-grid, .deck-grid { grid-template-columns: 1fr; }
+}
