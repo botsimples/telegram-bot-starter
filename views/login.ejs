@@ -3,34 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title || "Entrar - BotSimples" %></title>
-  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="stylesheet" href="/css/tigerfy.css" />
   <script src="https://kit.fontawesome.com/4ac4b9c31e.js" crossorigin="anonymous"></script>
-  <style>
-    /* mesmo estilo que você tinha, sem mudanças críticas */
-    body {
-      background: radial-gradient(circle at 25% 25%, #0a0f1c, #06090f 80%);
-      font-family: 'Inter', sans-serif;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #e5e7eb;
-      overflow: hidden;
-    }
-    /* ... restante idêntico ao seu login anterior ... */
-  </style>
 </head>
-<body>
-  <div class="neon-glow"></div>
-  <div class="neon-glow"></div>
+
+<body class="login-bg">
   <form class="login-box fade-in" method="POST" action="/login">
-    <h1><i class="fa-solid fa-bolt mr-1"></i> Entrar</h1>
+    <div class="logo">
+      <i class="fa-solid fa-bolt"></i>
+      <span>TigerFy</span>
+    </div>
+
+    <h1>Acessar Painel</h1>
     <input type="text" name="username" placeholder="Usuário" required />
     <input type="password" name="password" placeholder="Senha" required />
-    <button type="submit">Acessar Painel</button>
-    <% if (message) { %><p class="error"><%= message %></p><% } %>
-    <div class="brand">BotSimples • Painel Administrativo</div>
+    <button type="submit">Entrar</button>
+
+    <% if (message) { %>
+      <p class="error"><%= message %></p>
+    <% } %>
+
+    <div class="brand">TigerFy • Acesso Administrativo</div>
   </form>
 </body>
 </html>
