@@ -40,7 +40,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: all 0.3s ease;
     }
 
     .sidebar-header {
@@ -133,7 +132,6 @@
       }
       .sidebar {
         width: 100%;
-        min-height: auto;
       }
       .sidebar-header {
         text-align: center;
@@ -152,7 +150,7 @@
         <div class="sidebar-header">BotSimples</div>
         <nav>
           <ul>
-            <li><a href="/" class="<%= title.includes('Painel') ? 'active' : '' %>"><i class="fa-solid fa-chart-line"></i> Deck</a></li>
+            <li><a href="/" class="<%= title.includes('Deck') ? 'active' : '' %>"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
             <li><a href="/bots" class="<%= title.includes('Ofertas') ? 'active' : '' %>"><i class="fa-solid fa-box-open"></i> Ofertas</a></li>
             <li><a href="/api_pix" class="<%= title.includes('Adquirentes') ? 'active' : '' %>"><i class="fa-solid fa-building-columns"></i> Adquirentes</a></li>
           </ul>
