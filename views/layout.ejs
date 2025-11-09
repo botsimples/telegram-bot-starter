@@ -1,19 +1,11 @@
-<head>
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %> | TigerFy</title>
-    <title><%= title %></title>
-
-    <!-- CSS base e tema dourado -->
     <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
-
-    <!-- Fonte opcional (Flexion style) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   </head>
-
   <body>
     <div class="tigerfy-app fade-in">
       <!-- Sidebar -->
@@ -22,38 +14,28 @@
           <div class="logo">
             ⚡ <span>TigerFy</span>
           </div>
-    <% if (!title.includes('Login')) { %>
-      <div class="sidebar">
-        <div class="logo">
-          ⚡ TigerFy
         </div>
 
-        <div class="logo">⚡ TigerFy</div>
         <nav class="menu">
           <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-            <i>📊</i> <span>Deck</span>
+            📊 <span>Deck</span>
           </a>
           <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-            <i>🔥</i> <span>Ofertas</span>
+            🔥 <span>Ofertas</span>
           </a>
           <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-            <i>💳</i> <span>Adquirentes</span>
+            💳 <span>Adquirentes</span>
           </a>
 
           <div class="menu-divider"></div>
 
           <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-            <i>🏆</i> <span>Conquistas</span>
+            🏆 <span>Conquistas</span>
           </a>
           <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
-            <i>👤</i> <span>Meu Perfil</span>
+            👤 <span>Meu Perfil</span>
           </a>
-          <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">Deck</a>
-          <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">Ofertas</a>
-          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">Adquirentes</a>
         </nav>
-      </div>
-    <% } %>
 
         <div class="sidebar-footer">
           <button onclick="window.location.href='/logout'" class="logout-btn">
@@ -61,36 +43,11 @@
           </button>
         </div>
       </aside>
-    <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
-
-<script>
-  // === Abrir e fechar modal ===
-  function openModal(id) {
-    document.getElementById(id).classList.add('active');
-  }
-
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
-  }
-</script>
-
-      <%- body %>
-    </main>
-
-    <script>
-      // === Abrir e fechar modal ===
-      function openModal(id) {
-        document.getElementById(id).classList.add('active');
-      }
 
       <!-- Main -->
       <main class="main-content">
         <%- body %>
       </main>
     </div>
-      function closeModal(id) {
-        document.getElementById(id).classList.remove('active');
-      }
-    </script>
   </body>
 </html>
