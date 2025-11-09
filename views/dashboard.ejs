@@ -1,58 +1,67 @@
 <% title = "Deck - BotSimples"; %>
-<main class="space-y-6">
-  <h1 class="text-2xl font-semibold text-hot-primary">Dashboard</h1>
 
-  <section class="panel p-4">
-    <h3 class="font-medium mb-3">Usuários</h3>
-    <div class="overflow-x-auto">
-      <table class="min-w-full text-sm">
-        <thead>
-          <tr class="bg-neutral-800">
-            <th class="p-3 text-left">ID</th>
-            <th class="p-3 text-left">Nome</th>
-            <th class="p-3 text-left">Username</th>
-            <th class="p-3 text-left">Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% (users || []).forEach(u => { %>
-          <tr class="odd:bg-neutral-900/40">
-            <td class="p-3"><%= u.telegramId %></td>
-            <td class="p-3"><%= (u.firstName||'') %> <%= (u.lastName||'') %></td>
-            <td class="p-3">@<%= u.username || '' %></td>
-            <td class="p-3"><%= (u.dateJoined && u.dateJoined.toLocaleDateString) ? u.dateJoined.toLocaleDateString() : '' %></td>
-          </tr>
-          <% }) %>
-        </tbody>
-      </table>
+<main class="p-8 w-full max-w-7xl mx-auto animate-fadeIn">
+  <h1 class="text-3xl font-semibold text-hot-primary mb-6">📊 Deck</h1>
+
+  <!-- Cards superiores -->
+  <div class="grid md:grid-cols-4 gap-5">
+    <div class="panel text-center py-5">
+      <h3 class="text-neutral-400 text-sm">Cliques na Página</h3>
+      <p class="text-2xl font-bold mt-1 text-white">0</p>
+    </div>
+    <div class="panel text-center py-5">
+      <h3 class="text-neutral-400 text-sm">PIX Gerados</h3>
+      <p class="text-2xl font-bold mt-1 text-white">0</p>
+    </div>
+    <div class="panel text-center py-5">
+      <h3 class="text-neutral-400 text-sm">Faturamento Total</h3>
+      <p class="text-2xl font-bold mt-1 text-green-400">R$0,00</p>
+    </div>
+    <div class="panel text-center py-5">
+      <h3 class="text-neutral-400 text-sm">PIX Pagos</h3>
+      <p class="text-2xl font-bold mt-1 text-green-400">0</p>
+    </div>
+  </div>
+
+  <!-- Gráfico -->
+  <section class="mt-8 panel p-6">
+    <h2 class="font-semibold text-lg text-hot-primary mb-3">📈 Desempenho de Faturamento</h2>
+    <div class="h-64 flex items-center justify-center text-neutral-500 italic">
+      (gráfico aqui futuramente)
     </div>
   </section>
 
-  <section class="panel p-4">
-    <h3 class="font-medium mb-3">Pagamentos</h3>
-    <div class="overflow-x-auto">
+  <!-- Tabelas -->
+  <div class="grid md:grid-cols-2 gap-6 mt-8">
+    <div class="panel p-4">
+      <h3 class="text-lg text-white mb-3">👥 Usuários</h3>
       <table class="min-w-full text-sm">
         <thead>
-          <tr class="bg-neutral-800">
-            <th class="p-3 text-left">ID Pagamento</th>
-            <th class="p-3 text-left">ID Usuário</th>
-            <th class="p-3 text-left">Valor</th>
-            <th class="p-3 text-left">Status</th>
-            <th class="p-3 text-left">Data</th>
+          <tr class="bg-neutral-800 text-left">
+            <th class="p-2">ID</th>
+            <th class="p-2">Nome</th>
+            <th class="p-2">Username</th>
+            <th class="p-2">Data</th>
           </tr>
         </thead>
-        <tbody>
-          <% (payments || []).forEach(p => { %>
-          <tr class="odd:bg-neutral-900/40">
-            <td class="p-3"><%= p.paymentId %></td>
-            <td class="p-3"><%= p.telegramId %></td>
-            <td class="p-3">R$ <%= (p.amount||0).toFixed ? p.amount.toFixed(2) : p.amount %></td>
-            <td class="p-3"><%= p.status %></td>
-            <td class="p-3"><%= (p.date && p.date.toLocaleDateString) ? p.date.toLocaleDateString() : '' %></td>
-          </tr>
-          <% }) %>
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
-  </section>
+
+    <div class="panel p-4">
+      <h3 class="text-lg text-white mb-3">💰 Pagamentos</h3>
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-neutral-800 text-left">
+            <th class="p-2">ID Pagamento</th>
+            <th class="p-2">Usuário</th>
+            <th class="p-2">Valor</th>
+            <th class="p-2">Status</th>
+            <th class="p-2">Data</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 </main>
