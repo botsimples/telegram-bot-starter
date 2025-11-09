@@ -234,3 +234,189 @@ body {
 .styled-table tr:hover {
   background: rgba(255, 204, 0, 0.03);
 }
+
+/* ======== PAGE CONTAINER ======== */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+/* ======== HEADERS ======== */
+.page-header h1 {
+  font-size: 28px;
+  color: #ffcc00;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #aaa;
+  margin-bottom: 30px;
+}
+
+/* ======== GRID ======== */
+.dashboard-grid {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+/* ======== CARD NORMAL ======== */
+.dash-card {
+  background: #111;
+  border: 1px solid rgba(255, 204, 0, 0.15);
+  border-radius: 12px;
+  padding: 25px;
+  width: 240px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.dash-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.1);
+}
+
+.dash-card h2 {
+  color: #bbb;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.dash-card .value {
+  color: #ffcc00;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* ======== CARD WIDE ======== */
+.dash-card.wide {
+  width: 100%;
+  max-width: 700px;
+  text-align: left;
+  padding: 25px;
+  background: #111;
+  border: 1px solid rgba(255, 204, 0, 0.15);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-header h2 {
+  color: #ffcc00;
+  margin: 0;
+  font-size: 18px;
+}
+
+.card-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* ======== TAG ======== */
+.tag {
+  background: linear-gradient(90deg, #ffcc00, #b38f00);
+  color: #000;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+
+/* ======== BUTTONS ======== */
+.btn-primary {
+  background: linear-gradient(90deg, #ffcc00, #b38f00);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: rgba(255, 204, 0, 0.1);
+  color: #ffcc00;
+  border: 1px solid rgba(255, 204, 0, 0.2);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 204, 0, 0.2);
+}
+
+.btn-danger {
+  background: rgba(255, 80, 80, 0.1);
+  color: #ff5555;
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-danger:hover {
+  background: rgba(255, 80, 80, 0.2);
+}
+
+/* ======== TABLE ======== */
+.table-section {
+  margin-top: 40px;
+  background: #111;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  padding: 25px;
+}
+
+.table-header h2 {
+  color: #ffcc00;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ccc;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 204, 0, 0.08);
+}
+
+.styled-table th {
+  color: #ffcc00;
+  text-align: left;
+}
+
+.styled-table tr:hover {
+  background: rgba(255, 204, 0, 0.03);
+}
+
+.empty-text {
+  text-align: center;
+  color: #777;
+  margin-top: 40px;
+}
