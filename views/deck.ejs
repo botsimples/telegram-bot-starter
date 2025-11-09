@@ -1,39 +1,86 @@
-<div class="deck-container fade-in">
-  <header class="deck-header">
-    <h1>📈 <span>Estatísticas Gerais</span></h1>
-    <p>Visão geral de toda a plataforma.</p>
-    <button class="btn-gold">Filtrar Ofertas</button>
-  </header>
-
-  <section class="stats-grid">
-    <div class="stat-card"><h4>Total de Vendas</h4><p>R$ 0,00</p></div>
-    <div class="stat-card"><h4>Vendas no Ano</h4><p>R$ 0,00</p></div>
-    <div class="stat-card"><h4>Vendas no Mês</h4><p>R$ 0,00</p></div>
-    <div class="stat-card"><h4>Vendas no Dia</h4><p>R$ 0,00</p></div>
-    <div class="stat-card"><h4>Total Usuários</h4><p>0</p></div>
-    <div class="stat-card"><h4>Usuários no Ano</h4><p>0</p></div>
-    <div class="stat-card"><h4>Usuários no Mês</h4><p>0</p></div>
-    <div class="stat-card"><h4>Usuários no Dia</h4><p>0</p></div>
-    <div class="stat-card"><h4>Conversões Ativas</h4><p>0</p></div>
-    <div class="stat-card"><h4>Taxa de Conversão</h4><p>0%</p></div>
-    <div class="stat-card"><h4>Ticket Médio</h4><p>R$ 0,00</p></div>
-    <div class="stat-card"><h4>Lucro Estimado</h4><p>R$ 0,00</p></div>
-  </section>
-
-  <section class="chart-section">
-    <h2>📊 Usuários por Horário</h2>
-    <div class="chart-placeholder">[ gráfico em breve ]</div>
-    <div class="chart-filters">
-      <button class="btn-gold small">Hoje</button>
-      <button class="btn-gold small">Ontem</button>
-      <button class="btn-gold small">Essa Semana</button>
-      <button class="btn-gold small">Esse Mês</button>
-      <button class="btn-gold small">Personalizado</button>
+<div class="tiger-dashboard">
+  <!-- HEADER -->
+  <div class="tiger-header">
+    <div>
+      <h1>Estatísticas Gerais</h1>
+      <p>Visão geral de toda a plataforma.</p>
     </div>
-  </section>
+    <button class="filter-btn">Filtrar Ofertas</button>
+  </div>
 
-  <section class="recent-payments">
-    <h2>💸 Pagamentos Recentes</h2>
+  <!-- GRID DE MÉTRICAS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total de Vendas</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Ano</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Mês</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Dia</h3>
+      <span>R$ 0,00</span>
+    </div>
+
+    <div class="stat-card">
+      <h3>Total Usuários</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Ano</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Mês</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Dia</h3>
+      <span>0</span>
+    </div>
+
+    <!-- novos 4 blocos -->
+    <div class="stat-card">
+      <h3>Conversões Ativas</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Taxa de Conversão</h3>
+      <span>0%</span>
+    </div>
+    <div class="stat-card">
+      <h3>Ticket Médio</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Lucro Estimado</h3>
+      <span>R$ 0,00</span>
+    </div>
+  </div>
+
+  <!-- BLOCO DE GRÁFICO -->
+  <div class="chart-block">
+    <div class="chart-head">
+      <h3>Usuários por Horário</h3>
+      <div class="tabs">
+        <button class="active">Hoje</button>
+        <button>Ontem</button>
+        <button>Essa Semana</button>
+        <button>Esse Mês</button>
+        <button>Personalizado</button>
+      </div>
+    </div>
+    <div class="chart-placeholder">[ gráfico em breve ]</div>
+  </div>
+
+  <!-- TABELA -->
+  <div class="table-block">
+    <h3>Pagamentos Recentes</h3>
     <table>
       <thead>
         <tr>
@@ -45,10 +92,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td colspan="5">Nenhum pagamento recente</td>
-        </tr>
+        <tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr>
       </tbody>
     </table>
-  </section>
+  </div>
 </div>
