@@ -1,17 +1,20 @@
-<div class="login-container">
-  <div class="login-card">
+<div class="login-wrapper">
+  <div class="login-box">
     <div class="login-header">
-      <span class="logo-icon">⚡</span>
-      <h2>TigerFy</h2>
-      <p>Acessar Painel</p>
+      <h1>TigerFy</h1>
+      <p>Acesse sua conta administrativa</p>
     </div>
 
-    <form action="/login" method="POST" class="login-form">
-      <input type="text" name="username" placeholder="Usuário" required />
-      <input type="password" name="password" placeholder="Senha" required />
+    <form action="/login" method="POST">
+      <div class="input-group">
+        <input type="text" name="username" placeholder="Usuário" required />
+      </div>
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Senha" required />
+      </div>
       <button type="submit" class="btn-primary">Entrar</button>
     </form>
 
-    <p class="login-footer">TigerFy • Acesso Administrativo</p>
+    <p class="login-footer">Painel Administrativo © TigerFy</p>
   </div>
 </div>
