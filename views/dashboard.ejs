@@ -1,66 +1,57 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <title>Dashboard — BotSimples</title>
-  <link rel="stylesheet" href="/css/output.css" />
-</head>
-<body class="bg-hot-bg text-slate-100 min-h-screen">
-  <nav class="max-w-6xl mx-auto flex justify-between items-center p-4 border-b border-white/10">
-    <div class="font-semibold text-lg">⚡ BotSimples</div>
-    <div class="flex gap-4 text-sm">
-      <a href="/" class="hover:underline">Dashboard</a>
-      <a href="/bots" class="hover:underline">Bots</a>
-      <a href="/admin" class="hover:underline">Planos</a>
-      <a href="/api-pix" class="hover:underline">API PIX</a>
+<main class="space-y-6">
+  <h1 class="text-2xl font-semibold text-hot-primary">Dashboard</h1>
+
+  <section class="panel p-4">
+    <h3 class="font-medium mb-3">Usuários</h3>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-neutral-800">
+            <th class="p-3 text-left">ID</th>
+            <th class="p-3 text-left">Nome</th>
+            <th class="p-3 text-left">Username</th>
+            <th class="p-3 text-left">Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (users || []).forEach(u => { %>
+          <tr class="odd:bg-neutral-900/40">
+            <td class="p-3"><%= u.telegramId %></td>
+            <td class="p-3"><%= (u.firstName||'') %> <%= (u.lastName||'') %></td>
+            <td class="p-3">@<%= u.username || '' %></td>
+            <td class="p-3"><%= (u.dateJoined && u.dateJoined.toLocaleDateString) ? u.dateJoined.toLocaleDateString() : '' %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
-  </nav>
+  </section>
 
-  <div class="max-w-6xl mx-auto py-10 px-4">
-    <h1 class="text-2xl font-semibold mb-6">📊 Dashboard</h1>
-
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- Usuários -->
-      <div class="panel p-5">
-        <h2 class="text-lg font-medium mb-3">👥 Usuários</h2>
-        <table class="w-full text-sm border border-white/10">
-          <thead class="bg-white/5">
-            <tr><th class="p-2">ID</th><th class="p-2">Nome</th><th class="p-2">Username</th><th class="p-2">Data</th></tr>
-          </thead>
-          <tbody>
-            <% users.forEach(u => { %>
-              <tr class="border-t border-white/10">
-                <td class="p-2"><%= u.telegramId %></td>
-                <td class="p-2"><%= u.firstName || '' %> <%= u.lastName || '' %></td>
-                <td class="p-2">@<%= u.username || '' %></td>
-                <td class="p-2"><%= u.dateJoined.toLocaleDateString() %></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Pagamentos -->
-      <div class="panel p-5">
-        <h2 class="text-lg font-medium mb-3">💸 Pagamentos</h2>
-        <table class="w-full text-sm border border-white/10">
-          <thead class="bg-white/5">
-            <tr><th class="p-2">ID Pagamento</th><th class="p-2">Usuário</th><th class="p-2">Valor</th><th class="p-2">Status</th><th class="p-2">Data</th></tr>
-          </thead>
-          <tbody>
-            <% payments.forEach(p => { %>
-              <tr class="border-t border-white/10">
-                <td class="p-2"><%= p.paymentId %></td>
-                <td class="p-2"><%= p.telegramId %></td>
-                <td class="p-2">R$ <%= p.amount.toFixed(2) %></td>
-                <td class="p-2"><%= p.status %></td>
-                <td class="p-2"><%= p.date.toLocaleDateString() %></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
+  <section class="panel p-4">
+    <h3 class="font-medium mb-3">Pagamentos</h3>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-neutral-800">
+            <th class="p-3 text-left">ID Pagamento</th>
+            <th class="p-3 text-left">ID Usuário</th>
+            <th class="p-3 text-left">Valor</th>
+            <th class="p-3 text-left">Status</th>
+            <th class="p-3 text-left">Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (payments || []).forEach(p => { %>
+          <tr class="odd:bg-neutral-900/40">
+            <td class="p-3"><%= p.paymentId %></td>
+            <td class="p-3"><%= p.telegramId %></td>
+            <td class="p-3">R$ <%= (p.amount||0).toFixed ? p.amount.toFixed(2) : p.amount %></td>
+            <td class="p-3"><%= p.status %></td>
+            <td class="p-3"><%= (p.date && p.date.toLocaleDateString) ? p.date.toLocaleDateString() : '' %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
-  </div>
-</body>
-</html>
+  </section>
+</main>
