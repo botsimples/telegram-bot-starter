@@ -1,197 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %> | TigerFy ⚡</title>
-  <link rel="stylesheet" href="https://unpkg.com/lucide-icons/dist/umd/lucide.min.js" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | TigerFy</title>
 
-  <style>
-    :root {
-      --gold: #ffcc00;
-      --gold-light: #ffd633;
-      --bg-dark: #0d0d0d;
-      --bg-sidebar: #111;
-      --bg-hover: #1a1a1a;
-      --text-muted: #aaa;
-      --border-dark: #1e1e1e;
-    }
+    <!-- CSS base e tema dourado -->
+    <link rel="stylesheet" href="/css/tigerfy.css" />
+    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  </head>
 
-    body {
-      display: flex;
-      height: 100vh;
-      font-family: "Inter", sans-serif;
-      background: var(--bg-dark);
-      color: #fff;
-      overflow: hidden;
-    }
+  <body>
+    <div class="tigerfy-app fade-in">
+      <% if (!title.includes('Login')) { %>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <div class="logo">
+              ⚡ <span>TigerFy</span>
+            </div>
+          </div>
 
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: 250px;
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border-dark);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 25px 0;
-    }
+          <nav class="menu">
+            <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+              📊 <span>Deck</span>
+            </a>
+            <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+              🔥 <span>Ofertas</span>
+            </a>
+            <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+              💳 <span>Adquirentes</span>
+            </a>
 
-    .logo {
-      font-weight: 800;
-      font-size: 20px;
-      color: var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+            <div class="menu-divider"></div>
 
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 30px;
-      padding: 0 20px;
-    }
+            <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
+              🏆 <span>Conquistas</span>
+            </a>
+            <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
+              👤 <span>Meu Perfil</span>
+            </a>
+          </nav>
 
-    .menu a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 500;
-      font-size: 15px;
-      padding: 10px 14px;
-      border-radius: 8px;
-      transition: all 0.25s ease;
-    }
+          <div class="sidebar-footer">
+            <button onclick="window.location.href='/logout'" class="logout-btn">
+              🚪 <span>Sair</span>
+            </button>
+          </div>
+        </aside>
+      <% } %>
 
-    .menu a:hover {
-      background: var(--bg-hover);
-      color: var(--gold);
-    }
-
-    .menu a.active {
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      color: #000;
-      font-weight: 700;
-    }
-
-    .menu-divider {
-      height: 1px;
-      background: var(--border-dark);
-      margin: 14px 20px;
-    }
-
-    .logout {
-      text-align: center;
-      padding: 0 20px;
-    }
-
-    .logout button {
-      width: 100%;
-      background: none;
-      border: 1px solid var(--border-dark);
-      border-radius: 8px;
-      color: var(--text-muted);
-      padding: 10px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.25s;
-    }
-
-    .logout button:hover {
-      background: var(--gold);
-      color: #000;
-    }
-
-    /* ===== CONTEÚDO PRINCIPAL ===== */
-    .main-content {
-      flex: 1;
-      padding: 40px;
-      background: radial-gradient(circle at top left, #141414, #000);
-      overflow-y: auto;
-    }
-
-    .main-content h1 {
-      color: var(--gold);
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .main-content p {
-      color: var(--text-muted);
-      margin-bottom: 25px;
-    }
-
-    /* SCROLLBAR */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--gold);
-      border-radius: 4px;
-    }
-  </style>
-</head>
-
-<body>
-  <aside class="sidebar">
-    <div>
-      <div class="logo">
-        <i data-lucide="zap"></i> TigerFy
-      </div>
-
-      <nav class="menu">
-        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-          <i data-lucide="layout-dashboard"></i> Dashboard
-        </a>
-        <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-          <i data-lucide="bot"></i> HotBot
-        </a>
-        <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-          <i data-lucide="credit-card"></i> API PIX
-        </a>
-        <a href="/integracoes" class="<%= active === 'integracoes' ? 'active' : '' %>">
-          <i data-lucide="workflow"></i> Integrações
-        </a>
-        <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-          <i data-lucide="trophy"></i> Conquistas
-        </a>
-        <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
-          <i data-lucide="user"></i> Meu Perfil
-        </a>
-      </nav>
+      <!-- Main -->
+      <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
+        <%- body %>
+      </main>
     </div>
 
-    <div class="logout">
-      <button onclick="window.location.href='/logout'">
-        <i data-lucide="log-out"></i> Sair da Conta
-      </button>
-    </div>
-  </aside>
-
-  <main class="main-content">
-    <%- body %>
-  </main>
-
-  <script src="https://unpkg.com/lucide-icons"></script>
-  <script>
-    lucide.createIcons();
-  </script>
-</body>
+    <script>
+      // === Controle de modais ===
+      function openModal(id) {
+        document.getElementById(id).classList.add('active');
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+      }
+    </script>
+  </body>
 </html>
