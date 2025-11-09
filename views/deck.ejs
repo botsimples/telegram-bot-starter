@@ -1,28 +1,52 @@
-<main class="tiger-dashboard">
-  <header class="tiger-header">
-    <div class="left">
+<div class="tiger-dashboard">
+  <!-- HEADER -->
+  <div class="tiger-header">
+    <div>
       <h1>Estatísticas Gerais</h1>
       <p>Visão geral de toda a plataforma.</p>
     </div>
-    <div class="right">
-      <button class="filter-btn">Filtrar Ofertas ⌄</button>
-      <div class="dropdown"></div>
+    <button class="filter-btn">Filtrar Ofertas</button>
+  </div>
+
+  <!-- GRID DE MÉTRICAS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total de Vendas</h3>
+      <span>R$ 0,00</span>
     </div>
-  </header>
+    <div class="stat-card">
+      <h3>Vendas no Ano</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Mês</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Dia</h3>
+      <span>R$ 0,00</span>
+    </div>
 
-  <section class="stats-grid">
-    <div class="stat-card"><h3>Total de Vendas</h3><span>R$ 0,00</span></div>
-    <div class="stat-card"><h3>Vendas no Ano</h3><span>R$ 0,00</span></div>
-    <div class="stat-card"><h3>Vendas no Mês</h3><span>R$ 0,00</span></div>
-    <div class="stat-card"><h3>Vendas no Dia</h3><span>R$ 0,00</span></div>
+    <div class="stat-card">
+      <h3>Total Usuários</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Ano</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Mês</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Dia</h3>
+      <span>0</span>
+    </div>
+  </div>
 
-    <div class="stat-card"><h3>Total Usuários</h3><span>0</span></div>
-    <div class="stat-card"><h3>Usuários no Ano</h3><span>0</span></div>
-    <div class="stat-card"><h3>Usuários no Mês</h3><span>0</span></div>
-    <div class="stat-card"><h3>Usuários no Dia</h3><span>0</span></div>
-  </section>
-
-  <section class="chart-block">
+  <!-- BLOCO DE GRÁFICO -->
+  <div class="chart-block">
     <div class="chart-head">
       <h3>Usuários por Horário</h3>
       <div class="tabs">
@@ -34,29 +58,24 @@
       </div>
     </div>
     <div class="chart-placeholder">[ gráfico em breve ]</div>
-  </section>
+  </div>
 
-  <section class="chart-block">
-    <div class="chart-head">
-      <h3>Histórico de Faturamento</h3>
-      <div class="tabs">
-        <button class="active">7D</button>
-        <button>30D</button>
-        <button>90D</button>
-      </div>
-    </div>
-    <div class="chart-placeholder">[ gráfico em breve ]</div>
-  </section>
-
-  <section class="table-block">
+  <!-- TABELA -->
+  <div class="table-block">
     <h3>Pagamentos Recentes</h3>
     <table>
       <thead>
-        <tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr>
+        <tr>
+          <th>ID</th>
+          <th>Usuário</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Data</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+        <tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr>
       </tbody>
     </table>
-  </section>
-</main>
+  </div>
+</div>
