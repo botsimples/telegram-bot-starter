@@ -1,5 +1,5 @@
 // ===============================
-// 🔥 TIGERFY SERVER (versão estável .js — sincronizado com views reais)
+// 🔥 TIGERFY SERVER (versão estável .js — com rota /register)
 // ===============================
 
 const express = require('express');
@@ -53,6 +53,20 @@ app.get('/', (req, res) => {
 // Login
 app.get('/login', (req, res) => {
   res.render('login', { title: 'Login', active: '' });
+});
+
+// Register (cadastro)
+app.get('/register', (req, res) => {
+  res.render('register', { title: 'Registro', active: '' });
+});
+
+// Rota POST para cadastro (placeholder — ainda sem DB)
+app.post('/register', (req, res) => {
+  const { username, email, password } = req.body;
+  console.log('🆕 Novo cadastro recebido:', { username, email, password });
+  // Aqui futuramente vai inserir no MongoDB
+  // Por enquanto redireciona para login
+  res.redirect('/login');
 });
 
 // Dashboard (Deck)
