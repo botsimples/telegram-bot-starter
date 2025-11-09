@@ -24,10 +24,11 @@ export async function gerarPixWiinPay(valor) {
     const { data } = await axios.post(`${BASE_URL}/payment/create`, payload, { headers });
 
     console.log("🟢 [WIINPAY] PIX gerado com sucesso:", data);
+
     return {
       success: true,
-      qr_code: data.qr_code || data.payment?.pixCode,
-      paymentId: data.paymentId || data.payment?.paymentId,
+      qr_code: data.data?.qr_code || data.qr_code,
+      paymentId: data.data?.paymentId || data.paymentId,
     };
   } catch (err) {
     console.error("❌ [WIINPAY] Erro ao gerar pagamento:", err.response?.data || err.message);
@@ -48,7 +49,7 @@ export async function verificarPixWiinPay(paymentId) {
 
     console.log("🧾 [WIINPAY] Resposta bruta:", JSON.stringify(data, null, 2));
 
-    const status = data.payment?.status?.toUpperCase() || "UNKNOWN";
+    const status = data.payment?.status?.toUpperCase() || data.data?.payment?.status?.toUpperCase() || "UNKNOWN";
     console.log("🟢 [WIINPAY] Status detectado:", status);
 
     return { success: true, status };
