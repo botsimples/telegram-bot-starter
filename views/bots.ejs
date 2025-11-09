@@ -1,28 +1,34 @@
-  </div>
+<div class="deck-container fade-in">
+  <header class="deck-header">
+    <h1>🔥 <span>Ofertas Ativas</span></h1>
+    <p>Gerencie e monitore suas campanhas em tempo real.</p>
+    <button class="btn-gold">+ Nova Oferta</button>
+  </header>
 
-  <div class="actions">
-    <a href="#" class="btn-primary">+ Nova Oferta</a>
-    <button onclick="openModal('modalOferta')" class="btn-primary">+ Nova Oferta</button>
-  </div>
+  <section class="stats-grid">
+    <div class="stat-card"><h4>Total de Bots</h4><p>0</p></div>
+    <div class="stat-card"><h4>Ofertas Ativas</h4><p>0</p></div>
+    <div class="stat-card"><h4>Conversões Hoje</h4><p>0</p></div>
+    <div class="stat-card"><h4>Taxa de Conversão</h4><p>0%</p></div>
+  </section>
 
-  <div class="cards-grid">
-@@ -28,3 +28,19 @@
-    <% } %>
-  </div>
-</div>
-
-<!-- MODAL NOVA OFERTA -->
-<div id="modalOferta" class="modal-bg">
-  <div class="modal-box">
-    <h2>Nova Oferta</h2>
-    <form action="/bots/add" method="POST">
-      <input type="text" name="username" placeholder="Nome do bot" required />
-      <input type="text" name="token" placeholder="Token de acesso" required />
-      <textarea name="note" placeholder="Descrição / Observação"></textarea>
-      <div class="modal-actions">
-        <button type="submit" class="btn-primary">Salvar</button>
-        <button type="button" class="btn-cancel" onclick="closeModal('modalOferta')">Cancelar</button>
-      </div>
-    </form>
-  </div>
+  <section class="recent-payments">
+    <h2>📋 Lista de Ofertas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Status</th>
+          <th>Valor</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5">Nenhuma oferta cadastrada ainda</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 </div>
