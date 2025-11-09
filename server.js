@@ -60,13 +60,20 @@ app.get('/register', (req, res) => {
   res.render('register', { title: 'Registro', active: '' });
 });
 
-// Rota POST para cadastro (placeholder — ainda sem DB)
 app.post('/register', (req, res) => {
   const { username, email, password } = req.body;
-  console.log('🆕 Novo cadastro recebido:', { username, email, password });
-  // Aqui futuramente vai inserir no MongoDB
-  // Por enquanto redireciona para login
-  res.redirect('/login');
+
+  // Apenas simula o cadastro (sem aprovação automática)
+  console.log('🆕 Novo cadastro pendente:', { username, email });
+
+  // Exibe mensagem de sucesso (futuramente: página de “aguarde aprovação”)
+  res.send(`
+    <div style="font-family: Inter; text-align:center; margin-top: 100px; color: #fff; background: #000;">
+      <h2>Cadastro enviado com sucesso! ⚡</h2>
+      <p>Seu acesso será liberado após aprovação do administrador.</p>
+      <a href="/login" style="color: #ffcc00; font-weight: bold;">Voltar ao Login</a>
+    </div>
+  `);
 });
 
 // Dashboard (Deck)
