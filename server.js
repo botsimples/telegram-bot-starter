@@ -52,12 +52,12 @@ app.get('/', (req, res) => {
 
 // Login
 app.get('/login', (req, res) => {
-  res.render('login', { title: 'Login', active: '' });
+  res.render('login', { title: 'Login', active: '', layout: false });
 });
 
-// Register (cadastro)
+// Registro
 app.get('/register', (req, res) => {
-  res.render('register', { title: 'Registro', active: '' });
+  res.render('register', { title: 'Registro', active: '', layout: false });
 });
 
 app.post('/register', (req, res) => {
