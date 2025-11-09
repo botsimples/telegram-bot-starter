@@ -599,46 +599,47 @@ body {
   color: #ffcc00;
 }
 
-/* ======== CHART SECTION ======== */
-.chart-section {
-  margin-top: 40px;
-}
-
-.chart-card {
-  background: rgba(15, 15, 15, 0.85);
+/* ======== CHART SECTION OTIMIZADO ======== */
+.chart-box {
+  background: rgba(15, 15, 15, 0.8);
   border: 1px solid rgba(255, 204, 0, 0.1);
-  border-radius: 16px;
-  padding: 25px;
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 30px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
   backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.05);
 }
 
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .chart-header h2 {
   color: #ffcc00;
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .chart-filter {
   color: #aaa;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .chart-placeholder {
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-  height: 220px;
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
-  font-size: 14px;
+  color: #666;
   border: 1px dashed rgba(255, 204, 0, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 /* ======== TABLE ======== */
