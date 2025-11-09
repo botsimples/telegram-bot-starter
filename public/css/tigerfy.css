@@ -224,3 +224,89 @@ body::after {
     width: 100%;
   }
 }
+
+/* ===========================
+   🔧 FIX HEADER E LINKS
+   =========================== */
+a {
+  color: #ffcc00;
+  text-decoration: none;
+  transition: 0.3s;
+}
+a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+header, .topbar, .navbar {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.logo, .sidebar .logo {
+  font-weight: 700;
+  font-size: 18px;
+  color: #ffcc00 !important;
+  text-transform: uppercase;
+}
+
+nav a, .sidebar a {
+  color: #bbb;
+  font-weight: 500;
+  transition: 0.3s;
+}
+nav a:hover, .sidebar a:hover {
+  color: #ffcc00;
+}
+
+/* ===========================
+   ✨ FUNDO ANIMADO FLEXION GOLD
+   =========================== */
+
+body {
+  position: relative;
+  background: radial-gradient(ellipse at bottom, #080808 0%, #000 100%);
+  overflow-x: hidden;
+}
+
+/* camada de partículas douradas animadas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom, #0a0a0a 0%, #000 100%);
+  background-image:
+    radial-gradient(rgba(255, 204, 0, 0.15) 1px, transparent 1px),
+    radial-gradient(rgba(255, 204, 0, 0.07) 1px, transparent 1px);
+  background-size: 120px 120px, 60px 60px;
+  background-position: 0 0, 50px 50px;
+  animation: moveStars 60s linear infinite;
+  z-index: -2;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@keyframes moveStars {
+  from { background-position: 0 0, 50px 50px; }
+  to { background-position: 500px 1000px, 550px 1050px; }
+}
+
+/* brilho suave dourado difuso */
+body::after {
+  content: "";
+  position: fixed;
+  width: 700px;
+  height: 700px;
+  bottom: -300px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(255, 204, 0, 0.1), transparent 70%);
+  filter: blur(180px);
+  animation: pulseGold 10s ease-in-out infinite alternate;
+  z-index: -1;
+  pointer-events: none;
+}
+@keyframes pulseGold {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 0.9; transform: scale(1.15); }
+}
