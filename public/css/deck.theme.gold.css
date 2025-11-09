@@ -212,3 +212,17 @@
 @media (max-width: 540px) {
   .stats-grid, .deck-grid { grid-template-columns: 1fr; }
 }
+
+/* Alinhar botão com o título */
+.tiger-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.tiger-header h1 {
+  line-height: 1;
+}
+.filter-btn {
+  margin-top: 4px;
+}
