@@ -85,7 +85,7 @@ async function sendVideoInicial(chatId) {
   }
 }
 
-// === FUNÇÃO: Enviar imagem QR (corrigida) ===
+// === FUNÇÃO: Enviar QR Code ===
 async function sendQrCode(chatId, qrData) {
   const qrReal = qrData?.qr_code || qrData?.data?.qr_code || qrData;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrReal)}`;
@@ -106,7 +106,7 @@ async function sendQrCode(chatId, qrData) {
   }
 }
 
-// === FUNÇÃO: Apagar TODAS as mensagens ===
+// === FUNÇÃO: Limpar mensagens ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId);
   if (!lista) return;
@@ -197,9 +197,9 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
       const valor = parseFloat(plano.price);
 
-      // ✅ Envia chat_id no metadata
+      // ✅ Envia o chat_id e plan_id no metadata
       const pix = await gerarPixWiinPay(valor, {
-        metadata: { origem: "telegram-bot", chat_id: chatId },
+        metadata: { origem: "telegram-bot", chat_id: chatId, plan_id: plano._id },
       });
 
       if (!pix.success) {
@@ -266,10 +266,11 @@ app.post("/webhook", async (req, res) => {
 
     const payment = data.payment;
     const status = payment.status;
-    const valor = payment.total;
     const chatId = payment.metadata?.chat_id;
+    const planId = payment.metadata?.plan_id;
+    const valor = payment.total;
 
-    console.log("📦 [WEBHOOK] Pagamento recebido:", status, "R$", valor);
+    console.log("📦 [WEBHOOK] Pagamento recebido:", status, "R$", valor, "| Plano:", planId);
 
     const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
       name: String,
@@ -278,19 +279,25 @@ app.post("/webhook", async (req, res) => {
       deliverable: String,
     }));
 
-    const plano = await Plan.findOne({
-      price: { $gte: valor - 0.1, $lte: valor + 0.1 },
-    });
+    let plano = null;
+
+    // Tenta pelo ID do plano
+    if (planId) plano = await Plan.findById(planId);
+
+    // Se não achar, tenta pelo valor
+    if (!plano) plano = await Plan.findOne({ price: { $gte: valor - 0.1, $lte: valor + 0.1 } });
 
     if (!plano) {
-      console.log("⚠️ Nenhum plano encontrado com esse valor:", valor);
+      console.log("⚠️ Nenhum plano encontrado para este pagamento.");
       return res.sendStatus(200);
     }
 
+    // Envia entregável quando pago
     if (status === "PAID" && chatId) {
+      console.log(`🎁 Enviando entregável do plano ${plano.name} para o chat ${chatId}`);
       await axios.post(`${API}/sendMessage`, {
         chat_id: chatId,
-        text: `🎉 <b>Pagamento confirmado!</b>\n${plano.description || "Seu acesso foi liberado automaticamente."}\n\n${plano.deliverable}`,
+        text: `🎉 <b>Pagamento confirmado!</b>\n<b>${plano.name}</b> ativado com sucesso.\n\n${plano.deliverable}`,
         parse_mode: "HTML",
       });
     }
