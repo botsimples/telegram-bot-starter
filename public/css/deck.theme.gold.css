@@ -282,3 +282,48 @@
   0%   { opacity: .4; transform: scale(1); }
   100% { opacity: .8; transform: scale(1.04); }
 }
+
+/* ===== AJUSTE FINO DE POSIÇÃO DO HEADER ===== */
+.tiger-dashboard {
+  padding-top: 34px !important; /* antes 18px, agora equilibrado */
+}
+
+/* Mantém o fade-in */
+.tiger-dashboard {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: brightness(0.8);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: brightness(1);
+  }
+}
+
+/* ===== FUNDO DOURADO SUAVE ===== */
+.tiger-dashboard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom, rgba(255,204,0,.04) 0%, transparent 60%);
+  filter: blur(40px);
+  z-index: -1;
+  animation: goldPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes goldPulse {
+  0%   { opacity: .4; transform: scale(1); }
+  100% { opacity: .8; transform: scale(1.04); }
+}
