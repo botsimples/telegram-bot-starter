@@ -692,28 +692,31 @@ body {
   z-index: 0;
 }
 
-/* ======== NOVO LAYOUT FLEXION ======== */
+/* ======== CORRIGIDO - FUNDO REAL FLEXION ======== */
 .deck-wrapper {
   position: relative;
   padding: 60px;
   min-height: 100vh;
-  background: radial-gradient(ellipse at top, #0a0a0a 0%, #000 80%);
+  background: radial-gradient(ellipse at bottom, #050505 0%, #000 100%);
   background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #fff;
+  overflow-x: hidden;
 }
 
+/* brilho dourado sutil */
 .glow-gold {
   position: absolute;
-  top: 20%;
-  right: 15%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(255, 204, 0, 0.08), transparent 70%);
-  filter: blur(120px);
+  top: 10%;
+  right: 10%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(255, 204, 0, 0.05), transparent 70%);
+  filter: blur(140px);
   z-index: 0;
+  pointer-events: none;
 }
 
 /* CABEÇALHO */
