@@ -1,28 +1,30 @@
-<div class="page-header">
-  <h1>💸 Adquirentes</h1>
-  <p>Gerencie as chaves e credenciais de suas integrações PIX.</p>
-</div>
+<div class="page-container">
+  <div class="page-header">
+    <h1>Adquirentes</h1>
+    <p>Gerencie suas chaves e integrações PIX ativas.</p>
+  </div>
 
-<div class="actions">
-  <a href="#" class="btn-primary">+ Novo Adquirente</a>
-</div>
+  <div class="actions">
+    <a href="#" class="btn-primary">+ Novo Adquirente</a>
+  </div>
 
-<div class="cards-grid">
-  <% if (adquirentes && adquirentes.length > 0) { %>
-    <% adquirentes.forEach(adq => { %>
-      <div class="dash-card wide">
-        <div class="card-header">
-          <h2><%= adq.provider %></h2>
-          <span class="tag">Integrado</span>
+  <div class="cards-grid">
+    <% if (adquirentes && adquirentes.length > 0) { %>
+      <% adquirentes.forEach(adq => { %>
+        <div class="dash-card wide">
+          <div class="card-header">
+            <h2><%= adq.provider %></h2>
+            <span class="tag">Integrado</span>
+          </div>
+          <p>Chave: <%= adq.key %></p>
+          <div class="card-footer">
+            <button class="btn-secondary">Editar</button>
+            <button class="btn-danger">Excluir</button>
+          </div>
         </div>
-        <p>Key: <%= adq.key %></p>
-        <div class="card-footer">
-          <button class="btn-secondary">Editar</button>
-          <button class="btn-danger">Excluir</button>
-        </div>
-      </div>
-    <% }) %>
-  <% } else { %>
-    <p class="empty-text">Nenhum adquirente configurado.</p>
-  <% } %>
+      <% }) %>
+    <% } else { %>
+      <p class="empty-text">Nenhum adquirente configurado.</p>
+    <% } %>
+  </div>
 </div>
