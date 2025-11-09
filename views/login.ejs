@@ -1,12 +1,149 @@
-<% title = "Login - BotSimples"; %>
-<main class="max-w-sm mx-auto space-y-4">
-  <h1 class="text-2xl font-semibold text-hot-primary">Entrar</h1>
-  <form method="post" action="/login" class="panel p-4 space-y-3">
-    <input class="input w-full" type="text" name="user" placeholder="Usuário">
-    <input class="input w-full" type="password" name="pass" placeholder="Senha">
-    <button class="btn w-full" type="submit">Entrar</button>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Entrar - BotSimples" %></title>
+  <link rel="stylesheet" href="/css/output.css" />
+  <script src="https://kit.fontawesome.com/4ac4b9c31e.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at 25% 25%, #0a0f1c, #06090f 80%);
+      font-family: 'Inter', sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #e5e7eb;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); opacity: 1; }
+    }
+
+    .login-box {
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+      width: 360px;
+      padding: 2.5rem;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .login-box:hover {
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 1.8rem;
+    }
+
+    input {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      color: #e5e7eb;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px #38bdf8;
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
+    }
+
+    .error {
+      color: #f87171;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .brand {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-top: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .neon-glow {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%);
+      filter: blur(40px);
+      animation: pulse 4s infinite alternate;
+    }
+
+    .neon-glow:nth-child(1) {
+      top: -50px;
+      left: -50px;
+    }
+
+    .neon-glow:nth-child(2) {
+      bottom: -80px;
+      right: -80px;
+      background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%);
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); opacity: 0.6; }
+      to { transform: scale(1.2); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="neon-glow"></div>
+  <div class="neon-glow"></div>
+
+  <form class="login-box fade-in" method="POST" action="/login">
+    <h1><i class="fa-solid fa-bolt mr-1"></i> Entrar</h1>
+
+    <input type="text" name="username" placeholder="Usuário" required />
+    <input type="password" name="password" placeholder="Senha" required />
+
+    <button type="submit">Acessar Painel</button>
+
+    <% if (message) { %>
+      <p class="error"><%= message %></p>
+    <% } %>
+
+    <div class="brand">BotSimples • Painel Administrativo</div>
   </form>
-  <% if (typeof message !== 'undefined' && message) { %>
-    <p class="text-red-400 text-sm"><%= message %></p>
-  <% } %>
-</main>
+</body>
+</html>
