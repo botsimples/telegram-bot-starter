@@ -2,7 +2,6 @@
   "name": "tigerfy",
   "version": "1.0.0",
   "description": "Painel e bot automatizado TigerFy",
-  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
