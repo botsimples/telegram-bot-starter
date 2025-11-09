@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title><%= title || "Painel BotSimples" %></title>
-  <link rel="stylesheet" href="/css/output.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "BotSimples" %></title>
+  <link rel="stylesheet" href="/css/output.css" />
+  <script src="https://kit.fontawesome.com/4ac4b9c31e.js" crossorigin="anonymous"></script>
 </head>
-<body class="bg-neutral-950 text-white flex h-screen">
-  <% if (title && !title.includes("Login")) { %>
+<body class="bg-[#0d1117] text-gray-200 font-inter flex h-screen overflow-hidden">
+
   <!-- Sidebar -->
-  <aside class="w-64 bg-neutral-900 border-r border-neutral-800 flex flex-col justify-between">
+  <aside class="w-64 bg-[#0f172a] border-r border-gray-800 flex flex-col justify-between">
     <div>
-      <h1 class="text-hot-primary font-bold text-xl p-4">⚙️ BotSimples</h1>
-      <nav class="flex flex-col">
-        <a href="/dashboard" class="nav-link"><i>📊</i> Dashboard</a>
-        <a href="/bots" class="nav-link"><i>💼</i> Ofertas</a>
-        <a href="/api_pix" class="nav-link"><i>🏦</i> Adquirentes</a>
+      <div class="p-6 text-xl font-bold text-blue-400 tracking-wide">BotSimples</div>
+      <nav class="px-4">
+        <ul class="space-y-2">
+          <li>
+            <a href="/" class="flex items-center px-3 py-2 rounded-lg hover:bg-[#1e293b] hover:text-blue-400 transition">
+              <i class="fa-solid fa-chart-line mr-3"></i> Deck
+            </a>
+          </li>
+          <li>
+            <a href="/bots" class="flex items-center px-3 py-2 rounded-lg hover:bg-[#1e293b] hover:text-blue-400 transition">
+              <i class="fa-solid fa-box-open mr-3"></i> Ofertas
+            </a>
+          </li>
+          <li>
+            <a href="/api_pix" class="flex items-center px-3 py-2 rounded-lg hover:bg-[#1e293b] hover:text-blue-400 transition">
+              <i class="fa-solid fa-building-columns mr-3"></i> Adquirentes
+            </a>
+          </li>
+        </ul>
       </nav>
     </div>
-    <div class="p-4 border-t border-neutral-800">
-      <a href="/logout" class="text-red-400 hover:text-red-300">⛔ Sair</a>
+
+    <div class="p-4">
+      <a href="/login" class="flex items-center text-red-400 hover:text-red-300 text-sm">
+        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Sair
+      </a>
     </div>
   </aside>
-  <% } %>
 
-  <!-- Conteúdo principal -->
-  <main class="flex-1 overflow-y-auto p-8 flex items-center justify-center">
-    <%- body %>
+  <!-- Main -->
+  <main class="flex-1 bg-[#0d1117] overflow-y-auto">
+    <div class="min-h-screen">
+      <%- body %>
+    </div>
   </main>
 
-  <style>
-    .nav-link {
-      padding: 0.75rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      color: #ccc;
-      transition: 0.2s;
-    }
-    .nav-link:hover {
-      background: rgba(255,255,255,0.05);
-      color: #fff;
-    }
-    .active {
-      background: rgba(255,255,255,0.1);
-      color: #ffb400;
-    }
-  </style>
 </body>
 </html>
