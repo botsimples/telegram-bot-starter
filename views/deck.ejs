@@ -1,52 +1,44 @@
-<main class="deck-wrapper">
-  <div class="page-container">
-    <header class="deck-header">
-      <h1>Deck Geral</h1>
-      <select class="deck-filter">
-        <option>Filtrar Oferta</option>
-        <option>Mensal</option>
-        <option>Anual</option>
-        <option>Trial</option>
+<main class="deck-page">
+  <header class="deck-header">
+    <div>
+      <h1 class="deck-title">Deck Geral</h1>
+      <div class="deck-sub">Visão geral das métricas do sistema TigerFy.</div>
+    </div>
+
+    <div class="deck-filter">
+      <select id="offerFilter">
+        <option value="">Filtrar Oferta</option>
+        <!-- ... -->
       </select>
-    </header>
+    </div>
+  </header>
 
-    <section class="deck-grid">
-      <!-- Linha 1 -->
-      <div class="deck-card"><h2>Total de Vendas</h2><span class="value">R$ 0,00</span></div>
-      <div class="deck-card"><h2>Vendas no Ano</h2><span class="value">R$ 0,00</span></div>
-      <div class="deck-card"><h2>Vendas no Mês</h2><span class="value">R$ 0,00</span></div>
-      <div class="deck-card"><h2>Vendas no Dia</h2><span class="value">R$ 0,00</span></div>
+  <section class="deck-grid">
+    <!-- Linha 1 -->
+    <div class="deck-card"><h2>Total de Vendas</h2><span class="value">R$ 0,00</span></div>
+    <div class="deck-card"><h2>Vendas no Ano</h2><span class="value">R$ 0,00</span></div>
+    <div class="deck-card"><h2>Vendas no Mês</h2><span class="value">R$ 0,00</span></div>
+    <div class="deck-card"><h2>Vendas no Dia</h2><span class="value">R$ 0,00</span></div>
+    <!-- Linha 2 -->
+    <div class="deck-card small"><h2>Total Usuários</h2><span class="value">0</span></div>
+    <div class="deck-card small"><h2>Usuários no Ano</h2><span class="value">0</span></div>
+    <div class="deck-card small"><h2>Usuários no Mês</h2><span class="value">0</span></div>
+    <div class="deck-card small"><h2>Usuários no Dia</h2><span class="value">0</span></div>
+  </section>
 
-      <!-- Linha 2 -->
-      <div class="deck-card"><h2>Total Usuários</h2><span class="value">0</span></div>
-      <div class="deck-card"><h2>Usuários no Ano</h2><span class="value">0</span></div>
-      <div class="deck-card"><h2>Usuários no Mês</h2><span class="value">0</span></div>
-      <div class="deck-card"><h2>Usuários no Dia</h2><span class="value">0</span></div>
+  <section class="chart-card">
+    <div class="chart-head">
+      <h3>Histórico de Faturamento</h3>
+      <span class="hint">Últimos 7 dias</span>
+    </div>
+    <div class="chart-placeholder">[ gráfico em breve ]</div>
+  </section>
 
-      <!-- Card extra -->
-      <div class="deck-card"><h2>Conversões Ativas</h2><span class="value">0</span></div>
-    </section>
-
-    <section class="chart-section">
-      <div class="chart-card">
-        <div class="chart-header">
-          <h2>Histórico de Faturamento</h2>
-          <span class="chart-filter">Últimos 7 dias</span>
-        </div>
-        <div class="chart-placeholder">[ gráfico em breve ]</div>
-      </div>
-    </section>
-
-    <section class="table-section">
-      <div class="table-header"><h2>Pagamentos Recentes</h2></div>
-      <table class="styled-table">
-        <thead>
-          <tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
-        </tbody>
-      </table>
-    </section>
-  </div>
+  <section class="table-card">
+    <h3>Pagamentos Recentes</h3>
+    <table class="styled-table">
+      <thead><tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+      <tbody><tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr></tbody>
+    </table>
+  </section>
 </main>
