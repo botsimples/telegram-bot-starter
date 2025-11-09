@@ -1,26 +1,46 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login | BotSimples</title>
+  <title>Login - Painel BotSimples</title>
   <style>
-    body{background:#0d0d0d;color:#fff;font-family:system-ui,Arial;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center}
-    .box{width:330px;background:#161616;padding:28px;border-radius:12px;box-shadow:0 0 24px rgba(255,215,0,.08)}
-    h2{margin:0 0 12px;color:gold}
-    input{width:100%;margin:8px 0;padding:12px;border:none;border-radius:8px;background:#242424;color:#fff}
-    button{width:100%;padding:12px;background:gold;border:none;border-radius:8px;font-weight:700;cursor:pointer;color:#000}
-    .erro{color:#ff6666;margin:6px 0 8px;font-size:14px}
+    body {
+      background-color: #111;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    h1 { color: #ffb400; }
+    input {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background: #222;
+      color: white;
+      width: 250px;
+    }
+    button {
+      background-color: #ffb400;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background-color: #ffcc33; }
   </style>
 </head>
 <body>
-  <form class="box" method="POST" action="/login">
-    <h2>🔐 Painel BotSimples</h2>
-    <% if (typeof erro !== 'undefined') { %>
-      <div class="erro"><%= erro %></div>
-    <% } %>
-    <input type="text" name="username" placeholder="Usuário" required />
-    <input type="password" name="password" placeholder="Senha" required />
+  <h1>⚙️ Painel BotSimples</h1>
+  <p><%= message %></p>
+  <form action="/admin" method="GET">
+    <input type="password" placeholder="Senha" required>
     <button type="submit">Entrar</button>
   </form>
 </body>
