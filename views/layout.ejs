@@ -4,14 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
+
+    <!-- CSS base e tema dourado -->
     <link rel="stylesheet" href="/css/tigerfy.css" />
+    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
+
+    <!-- Fonte opcional (Flexion style) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   </head>
+
   <body>
     <% if (!title.includes('Login')) { %>
       <div class="sidebar">
-        <div class="logo">
-          ⚡ TigerFy
-        </div>
+        <div class="logo">⚡ TigerFy</div>
         <nav class="menu">
           <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">Deck</a>
           <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">Ofertas</a>
@@ -21,19 +28,18 @@
     <% } %>
 
     <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
-
-<script>
-  // === Abrir e fechar modal ===
-  function openModal(id) {
-    document.getElementById(id).classList.add('active');
-  }
-
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
-  }
-</script>
-
       <%- body %>
     </main>
+
+    <script>
+      // === Abrir e fechar modal ===
+      function openModal(id) {
+        document.getElementById(id).classList.add('active');
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+      }
+    </script>
   </body>
 </html>
