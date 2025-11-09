@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* base hottrack */
+body { @apply bg-hot-bg text-slate-100; }
+.panel { @apply bg-hot-card/70 backdrop-blur rounded-xl border border-white/5 shadow-lg; }
+.btn { @apply px-4 py-2 rounded-lg font-medium bg-hot.primary/20 hover:bg-hot.primary/30 transition; }
