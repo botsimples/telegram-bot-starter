@@ -1743,3 +1743,9 @@ body::after {
   max-width: 950px;
   margin: 0 auto 35px;
 }
+
+.main-content,
+.deck-wrapper {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
