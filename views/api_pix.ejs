@@ -1,28 +1,33 @@
-  </div>
+<div class="deck-container fade-in">
+  <header class="deck-header">
+    <h1>💳 <span>Adquirentes (API PIX)</span></h1>
+    <p>Gerencie suas chaves e integrações de pagamento.</p>
+    <button class="btn-gold">+ Nova Chave PIX</button>
+  </header>
 
-  <div class="actions">
-    <a href="#" class="btn-primary">+ Novo Adquirente</a>
-    <button onclick="openModal('modalPix')" class="btn-primary">+ Novo Adquirente</button>
-  </div>
+  <section class="stats-grid">
+    <div class="stat-card"><h4>Chaves Ativas</h4><p>0</p></div>
+    <div class="stat-card"><h4>Pagamentos Hoje</h4><p>R$ 0,00</p></div>
+    <div class="stat-card"><h4>Total Transações</h4><p>0</p></div>
+    <div class="stat-card"><h4>Última Atualização</h4><p>--/--/----</p></div>
+  </section>
 
-  <div class="cards-grid">
-@@ -28,3 +28,19 @@
-    <% } %>
-  </div>
-</div>
-
-<!-- MODAL NOVO ADQUIRENTE -->
-<div id="modalPix" class="modal-bg">
-  <div class="modal-box">
-    <h2>Novo Adquirente</h2>
-    <form action="/api_pix/add" method="POST">
-      <input type="text" name="provider" placeholder="Nome da Adquirente (ex: WiinPay)" required />
-      <input type="text" name="key" placeholder="Client ID" required />
-      <input type="text" name="secret" placeholder="Client Secret" required />
-      <div class="modal-actions">
-        <button type="submit" class="btn-primary">Salvar</button>
-        <button type="button" class="btn-cancel" onclick="closeModal('modalPix')">Cancelar</button>
-      </div>
-    </form>
-  </div>
+  <section class="recent-payments">
+    <h2>💰 Transações Recentes</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4">Nenhuma transação recente</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 </div>
