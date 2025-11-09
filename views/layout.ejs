@@ -12,7 +12,10 @@
       background-color: #0d1117;
       font-family: 'Inter', sans-serif;
       color: #d1d5db;
+      height: 100%;
+      margin: 0;
     }
+
     .fade-in {
       animation: fadeIn 0.4s ease-in-out;
     }
@@ -20,48 +23,68 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .sidebar {
       background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
       border-right: 1px solid #1f2937;
+      min-height: 100vh;
     }
+
     .sidebar a {
       transition: all 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
     }
+
     .sidebar a:hover {
       background: #1e293b;
       color: #38bdf8;
     }
+
+    .content {
+      flex: 1;
+      min-height: 100vh;
+      background-color: #0d1117;
+      padding: 2rem;
+    }
+
+    .container {
+      display: flex;
+      height: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .container { flex-direction: column; }
+      .sidebar { width: 100%; }
+    }
   </style>
 </head>
 
-<body class="flex h-screen overflow-hidden">
+<body>
+  <div class="container fade-in">
+    <aside class="sidebar w-64 flex flex-col justify-between">
+      <div>
+        <div class="p-6 text-2xl font-bold text-blue-400 tracking-wide">BotSimples</div>
+        <nav class="px-4">
+          <ul class="space-y-2">
+            <li><a href="/" class="px-3 py-2 rounded-lg"><i class="fa-solid fa-chart-line mr-3"></i> Dashboard</a></li>
+            <li><a href="/bots" class="px-3 py-2 rounded-lg"><i class="fa-solid fa-box-open mr-3"></i> Ofertas</a></li>
+            <li><a href="/api_pix" class="px-3 py-2 rounded-lg"><i class="fa-solid fa-building-columns mr-3"></i> Adquirentes</a></li>
+          </ul>
+        </nav>
+      </div>
 
-  <!-- Sidebar -->
-  <aside class="sidebar w-64 flex flex-col justify-between">
-    <div>
-      <div class="p-6 text-2xl font-bold text-blue-400 tracking-wide">BotSimples</div>
-      <nav class="px-4">
-        <ul class="space-y-2">
-          <li><a href="/" class="flex items-center px-3 py-2 rounded-lg"><i class="fa-solid fa-chart-line mr-3"></i> Deck</a></li>
-          <li><a href="/bots" class="flex items-center px-3 py-2 rounded-lg"><i class="fa-solid fa-box-open mr-3"></i> Ofertas</a></li>
-          <li><a href="/api_pix" class="flex items-center px-3 py-2 rounded-lg"><i class="fa-solid fa-building-columns mr-3"></i> Adquirentes</a></li>
-        </ul>
-      </nav>
-    </div>
+      <div class="p-4">
+        <a href="/login" class="flex items-center text-red-400 hover:text-red-300 text-sm">
+          <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Sair
+        </a>
+      </div>
+    </aside>
 
-    <div class="p-4">
-      <a href="/login" class="flex items-center text-red-400 hover:text-red-300 text-sm">
-        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Sair
-      </a>
-    </div>
-  </aside>
-
-  <!-- Main -->
-  <main class="flex-1 bg-[#0d1117] overflow-y-auto fade-in">
-    <div class="min-h-screen p-8">
-      <%- body %>
-    </div>
-  </main>
-
+    <main class="content">
+      <!-- Aqui vem o conteúdo injetado -->
+      <%- include(view) %>
+    </main>
+  </div>
 </body>
 </html>
