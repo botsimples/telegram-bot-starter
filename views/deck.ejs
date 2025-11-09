@@ -1,59 +1,99 @@
-<div class="container fade-in">
-  <div class="page-head">
-    <div class="lhs">
+<div class="tiger-dashboard">
+  <!-- HEADER -->
+  <div class="tiger-header">
+    <div>
       <h1>Estatísticas Gerais</h1>
       <p>Visão geral de toda a plataforma.</p>
     </div>
-    <button class="btn-gold">Filtrar Ofertas</button>
+    <button class="filter-btn">Filtrar Ofertas</button>
   </div>
 
-  <div class="deck-wrap">
-    <!-- KPIs -->
-    <div class="kpi-grid">
-      <div class="kpi-card"><h4>Total de Vendas</h4><div class="val">R$ 0,00</div></div>
-      <div class="kpi-card"><h4>Vendas no Ano</h4><div class="val">R$ 0,00</div></div>
-      <div class="kpi-card"><h4>Vendas no Mês</h4><div class="val">R$ 0,00</div></div>
-      <div class="kpi-card"><h4>Vendas no Dia</h4><div class="val">R$ 0,00</div></div>
-
-      <div class="kpi-card"><h4>Total Usuários</h4><div class="val">0</div></div>
-      <div class="kpi-card"><h4>Usuários no Ano</h4><div class="val">0</div></div>
-      <div class="kpi-card"><h4>Usuários no Mês</h4><div class="val">0</div></div>
-      <div class="kpi-card"><h4>Usuários no Dia</h4><div class="val">0</div></div>
-
-      <div class="kpi-card"><h4>Conversões Ativas</h4><div class="val">0</div></div>
-      <div class="kpi-card"><h4>Taxa de Conversão</h4><div class="val">0%</div></div>
-      <div class="kpi-card"><h4>Ticket Médio</h4><div class="val">R$ 0,00</div></div>
-      <div class="kpi-card"><h4>Lucro Estimado</h4><div class="val">R$ 0,00</div></div>
+  <!-- GRID DE MÉTRICAS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total de Vendas</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Ano</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Mês</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Vendas no Dia</h3>
+      <span>R$ 0,00</span>
     </div>
 
-    <!-- Gráfico -->
-    <div class="chart-card">
-      <div class="chart-head">
-        <h3>Usuários por Horário</h3>
-        <div class="tabset">
-          <button class="active">Hoje</button>
-          <button>Ontem</button>
-          <button>Essa Semana</button>
-          <button>Esse Mês</button>
-          <button>Personalizado</button>
-        </div>
+    <div class="stat-card">
+      <h3>Total Usuários</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Ano</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Mês</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Usuários no Dia</h3>
+      <span>0</span>
+    </div>
+
+    <!-- novos 4 blocos -->
+    <div class="stat-card">
+      <h3>Conversões Ativas</h3>
+      <span>0</span>
+    </div>
+    <div class="stat-card">
+      <h3>Taxa de Conversão</h3>
+      <span>0%</span>
+    </div>
+    <div class="stat-card">
+      <h3>Ticket Médio</h3>
+      <span>R$ 0,00</span>
+    </div>
+    <div class="stat-card">
+      <h3>Lucro Estimado</h3>
+      <span>R$ 0,00</span>
+    </div>
+  </div>
+
+  <!-- BLOCO DE GRÁFICO -->
+  <div class="chart-block">
+    <div class="chart-head">
+      <h3>Usuários por Horário</h3>
+      <div class="tabs">
+        <button class="active">Hoje</button>
+        <button>Ontem</button>
+        <button>Essa Semana</button>
+        <button>Esse Mês</button>
+        <button>Personalizado</button>
       </div>
-      <div class="chart-placeholder">[ gráfico em breve ]</div>
     </div>
+    <div class="chart-placeholder">[ gráfico em breve ]</div>
+  </div>
 
-    <!-- Tabela -->
-    <div class="table-card">
-      <h3>Pagamentos Recentes</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="5" style="text-align:center;color:#8a8a8a">Nenhum pagamento recente</td></tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- TABELA -->
+  <div class="table-block">
+    <h3>Pagamentos Recentes</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuário</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
