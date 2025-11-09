@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://api-v2.wiinpay.com.br/api"; // ✅ domínio correto e estável
+const BASE_URL = "https://api-v2.wiinpay.com.br"; // 🔥 removido o /api
 
 // === GERAR PIX ===
 export async function gerarPixWiinPay(valor) {
@@ -28,7 +28,7 @@ export async function gerarPixWiinPay(valor) {
       paymentId: data.paymentId,
     };
   } catch (err) {
-    console.error("❌ [WIINPAY] Erro ao gerar pagamento:", err.message);
+    console.error("❌ [WIINPAY] Erro ao gerar pagamento:", err.response?.data || err.message);
     return { success: false, error: err.message };
   }
 }
@@ -51,7 +51,7 @@ export async function verificarPixWiinPay(paymentId) {
 
     return { success: true, status };
   } catch (err) {
-    console.error("❌ [WIINPAY] Erro ao verificar pagamento:", err.message);
+    console.error("❌ [WIINPAY] Erro ao verificar pagamento:", err.response?.data || err.message);
     return { success: false, error: err.message };
   }
 }
