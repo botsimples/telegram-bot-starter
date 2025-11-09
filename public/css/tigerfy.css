@@ -1317,3 +1317,191 @@ body::after {
 .styled-table tr:hover {
   background: rgba(255, 204, 0, 0.03);
 }
+
+/* ===========================
+   🔥 FLEXION STYLE COMPACT GOLD
+   =========================== */
+
+body {
+  background: radial-gradient(ellipse at top left, #0c0c0c 0%, #000 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  position: relative;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* brilho dourado sutil */
+body::before {
+  content: "";
+  position: fixed;
+  width: 700px;
+  height: 700px;
+  top: -200px;
+  right: -150px;
+  background: radial-gradient(circle, rgba(255, 204, 0, 0.1), transparent 70%);
+  filter: blur(200px);
+  animation: pulseGold 8s ease-in-out infinite alternate;
+  z-index: 0;
+}
+@keyframes pulseGold {
+  0% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.15); }
+}
+
+/* grade sutil no fundo */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 204, 0, 0.03) 1px, transparent 1px);
+  background-size: 35px 35px;
+  opacity: 0.4;
+  z-index: -1;
+}
+
+/* ===========================
+   CONTAINER PRINCIPAL
+   =========================== */
+.deck-wrapper {
+  padding: 50px 60px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* CABEÇALHO */
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffcc00;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 25px;
+}
+
+/* ===========================
+   CARDS COMPACTOS (iguais Flexion)
+   =========================== */
+.deck-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 35px;
+}
+
+.deck-card {
+  background: rgba(18, 18, 18, 0.85);
+  border: 1px solid rgba(255, 204, 0, 0.1);
+  border-radius: 12px;
+  padding: 18px 20px;
+  width: 200px;
+  text-align: left;
+  transition: 0.3s ease;
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.05);
+}
+
+.deck-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(255, 204, 0, 0.12);
+}
+
+.deck-card h2 {
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 5px;
+}
+
+.deck-card .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffcc00;
+}
+
+/* ===========================
+   GRÁFICO COMPACTO
+   =========================== */
+.chart-card {
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(255, 204, 0, 0.08);
+  border-radius: 12px;
+  padding: 18px 20px;
+  max-width: 950px;
+  margin: 0 auto 35px;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.03);
+  backdrop-filter: blur(8px);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chart-header h2 {
+  font-size: 14px;
+  color: #ffcc00;
+  font-weight: 600;
+}
+
+.chart-filter {
+  font-size: 12px;
+  color: #999;
+}
+
+.chart-placeholder {
+  height: 130px;
+  border: 1px dashed rgba(255, 204, 0, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 13px;
+}
+
+/* ===========================
+   TABELA
+   =========================== */
+.table-section {
+  background: rgba(15, 15, 15, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 204, 0, 0.08);
+  padding: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.table-header h2 {
+  font-size: 14px;
+  color: #ffcc00;
+  margin-bottom: 10px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 204, 0, 0.05);
+}
+
+.styled-table th {
+  color: #ffcc00;
+  text-align: left;
+}
+
+.styled-table tr:hover {
+  background: rgba(255, 204, 0, 0.03);
+}
+
