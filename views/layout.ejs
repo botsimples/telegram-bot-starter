@@ -1,5 +1,7 @@
-   <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | TigerFy</title>
     <title><%= title %></title>
 
     <!-- CSS base e tema dourado -->
@@ -13,18 +15,52 @@
   </head>
 
   <body>
+    <div class="tigerfy-app fade-in">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            ⚡ <span>TigerFy</span>
+          </div>
     <% if (!title.includes('Login')) { %>
       <div class="sidebar">
         <div class="logo">
           ⚡ TigerFy
         </div>
+
         <div class="logo">⚡ TigerFy</div>
         <nav class="menu">
+          <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+            <i>📊</i> <span>Deck</span>
+          </a>
+          <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+            <i>🔥</i> <span>Ofertas</span>
+          </a>
+          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+            <i>💳</i> <span>Adquirentes</span>
+          </a>
+
+          <div class="menu-divider"></div>
+
+          <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
+            <i>🏆</i> <span>Conquistas</span>
+          </a>
+          <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
+            <i>👤</i> <span>Meu Perfil</span>
+          </a>
           <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">Deck</a>
           <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">Ofertas</a>
-@@ -21,19 +28,18 @@
+          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">Adquirentes</a>
+        </nav>
+      </div>
     <% } %>
 
+        <div class="sidebar-footer">
+          <button onclick="window.location.href='/logout'" class="logout-btn">
+            🚪 <span>Sair</span>
+          </button>
+        </div>
+      </aside>
     <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
 
 <script>
@@ -47,6 +83,11 @@
         document.getElementById(id).classList.add('active');
       }
 
+      <!-- Main -->
+      <main class="main-content">
+        <%- body %>
+      </main>
+    </div>
       function closeModal(id) {
         document.getElementById(id).classList.remove('active');
       }
