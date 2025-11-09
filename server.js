@@ -15,9 +15,11 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// === CONFIG BÁSICA ===
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -106,43 +108,41 @@ async function sendQrCode(chatId, qrData) {
   }
 }
 
-// === FUNÇÃO: Limpar mensagens (correção completa) ===
+// === FUNÇÃO: Limpar mensagens ===
 async function limparMensagens(chatId) {
-  const lista = mensagensPorChat.get(chatId);
-  if (!lista || !lista.length) return;
-
-  console.log(`🧹 Limpando ${lista.length} mensagens do chat ${chatId}...`);
-
-  for (const msgId of lista) {
-    try {
-      await axios.post(`${API}/deleteMessage`, {
-        chat_id: chatId,
-        message_id: msgId,
-      });
-    } catch (err) {
-      // ignora erros de mensagens já deletadas
-    }
-  }
-
-  mensagensPorChat.set(chatId, []);
-  qrsGerados.delete(chatId);
-  pagamentosPendentes.delete(chatId);
-
-  // Espera 500ms pra garantir que o Telegram processe tudo
-  await new Promise((r) => setTimeout(r, 500));
-
-  // Tenta limpar mensagens "soltas" (como entregável ou QR fora do mapa)
   try {
-    await axios.post(`${API}/deleteMessage`, { chat_id: chatId, message_id: (chatId + 1) });
-  } catch {}
+    const lista = mensagensPorChat.get(chatId) || [];
+    for (const msgId of lista) {
+      try {
+        await axios.post(`${API}/deleteMessage`, {
+          chat_id: chatId,
+          message_id: msgId,
+        });
+      } catch {}
+    }
+
+    mensagensPorChat.set(chatId, []);
+    qrsGerados.delete(chatId);
+    pagamentosPendentes.delete(chatId);
+
+    // Limpa possíveis mensagens antigas
+    for (let i = 1; i <= 50; i++) {
+      try {
+        await axios.post(`${API}/deleteMessage`, {
+          chat_id: chatId,
+          message_id: i,
+        });
+      } catch {}
+    }
+  } catch (err) {
+    console.error("Erro ao limpar mensagens:", err.message);
+  }
 }
 
 // === WEBHOOK TELEGRAM ===
 app.post(`/webhook/${TOKEN}`, async (req, res) => {
   try {
     const update = req.body;
-    console.log("📩 Atualização recebida:", JSON.stringify(update, null, 2));
-
     const message = update.message;
     const callback = update.callback_query;
     const chatId = message?.chat?.id || callback?.message?.chat?.id;
@@ -155,9 +155,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       await sendVideoInicial(chatId);
       await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
-          inline_keyboard: [
-            [{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }],
-          ],
+          inline_keyboard: [[{ text: "💳 Comprar Plano", callback_data: "comprar_plano" }]],
         },
       });
       return res.sendStatus(200);
@@ -232,7 +230,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
             inline_keyboard: [
               [{ text: "🔍 Verificar Pagamento", callback_data: "verificar_pagamento" }],
               [{ text: "📷 Ver QR Code", callback_data: "mostrar_qr" }],
-              [{ text: "🆘 Suporte", url: process.env.DEFAULT_SUPPORT_URL || "https://t.me/suporte" }],
             ],
           },
         }
@@ -248,7 +245,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     // === Verificar Pagamento ===
     if (data === "verificar_pagamento") {
       const pagamento = pagamentosPendentes.get(chatId);
-      if (!pagamento || !pagamento.paymentId) {
+      if (!pagamento) {
         await sendMessage(chatId, "⚠️ Nenhum pagamento pendente encontrado.");
         return res.sendStatus(200);
       }
@@ -264,8 +261,8 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
         const plano = await Plan.findById(pagamento.planId);
         if (plano && plano.deliverable) {
+          await limparMensagens(chatId);
           await sendMessage(chatId, plano.deliverable);
-          console.log(`🎁 Entregável manual (${plano.name}) enviado para ${chatId}`);
         }
       } else {
         await sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
@@ -279,7 +276,7 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
   }
 });
 
-// === WEBHOOK WIINPAY (entrega automática) ===
+// === WEBHOOK WIINPAY ===
 app.post("/webhook", async (req, res) => {
   try {
     const { data } = req.body;
@@ -291,8 +288,6 @@ app.post("/webhook", async (req, res) => {
     const planId = payment.metadata?.plan_id;
     const valor = payment.total;
 
-    console.log("📦 [WEBHOOK] Pagamento recebido:", status, "R$", valor, "| Plano:", planId);
-
     const Plan = mongoose.models.Plan || mongoose.model("Plan", new mongoose.Schema({
       name: String,
       price: Number,
@@ -301,18 +296,11 @@ app.post("/webhook", async (req, res) => {
     }));
 
     let plano = null;
-
     if (planId) plano = await Plan.findById(planId);
     if (!plano) plano = await Plan.findOne({ price: { $gte: valor - 0.1, $lte: valor + 0.1 } });
 
-    if (!plano) {
-      console.log("⚠️ Nenhum plano encontrado para este pagamento.");
-      return res.sendStatus(200);
-    }
-
-    // ✅ Envia apenas o entregável configurado
-    if (status === "PAID" && chatId) {
-      console.log(`🎁 Enviando entregável do plano ${plano.name} para o chat ${chatId}`);
+    if (status === "PAID" && chatId && plano) {
+      await limparMensagens(chatId);
       await axios.post(`${API}/sendMessage`, {
         chat_id: chatId,
         text: plano.deliverable || "✅ Entregável não configurado.",
