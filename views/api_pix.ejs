@@ -1,50 +1,21 @@
-<% title = "Adquirente - BotSimples"; %>
-<main class="space-y-6">
-  <h1 class="text-2xl font-semibold text-hot-primary">Prioridade API PIX</h1>
+<% title = "Adquirentes - BotSimples"; %>
 
-  <div class="panel p-4">
-    <p class="text-sm opacity-80 mb-3">Defina a ordem de fallback dos gateways.</p>
-    <div class="grid md:grid-cols-3 gap-3">
-      <div>
-        <label class="block text-xs mb-1">Primário</label>
-        <select id="p1" class="input">
-          <option value="">Nenhum</option>
-          <% (apipix?.gateways || []).forEach(g => { %>
-            <option value="<%= g.name %>" <%= (apipix?.priority?.primary===g.name ? 'selected' : '') %>><%= g.name %></option>
-          <% }) %>
-        </select>
+<main class="p-8 w-full max-w-5xl mx-auto animate-fadeIn">
+  <h1 class="text-3xl font-semibold text-hot-primary mb-6">🏦 Adquirentes</h1>
+
+  <div class="panel p-5">
+    <p class="text-neutral-300">
+      Aqui você poderá configurar suas conexões de gateway (ex: WiinPay, Asaas, Paggue...).
+    </p>
+
+    <div class="mt-6 border-t border-neutral-800 pt-6">
+      <h3 class="text-lg mb-2">Adicionar novo adquirente</h3>
+      <div class="grid md:grid-cols-3 gap-3">
+        <input class="input" placeholder="Nome (ex: WiinPay)">
+        <input class="input" placeholder="Client ID">
+        <input class="input" placeholder="Client Secret">
       </div>
-      <div>
-        <label class="block text-xs mb-1">Secundário</label>
-        <select id="p2" class="input">
-          <option value="">Nenhum</option>
-          <% (apipix?.gateways || []).forEach(g => { %>
-            <option value="<%= g.name %>" <%= (apipix?.priority?.secondary===g.name ? 'selected' : '') %>><%= g.name %></option>
-          <% }) %>
-        </select>
-      </div>
-      <div>
-        <label class="block text-xs mb-1">Terciário</label>
-        <select id="p3" class="input">
-          <option value="">Nenhum</option>
-          <% (apipix?.gateways || []).forEach(g => { %>
-            <option value="<%= g.name %>" <%= (apipix?.priority?.tertiary===g.name ? 'selected' : '') %>><%= g.name %></option>
-          <% }) %>
-        </select>
-      </div>
+      <button class="btn mt-4">Salvar</button>
     </div>
-    <button class="btn mt-3" onclick="salvar()">Salvar prioridade</button>
   </div>
 </main>
-
-<script>
-async function salvar(){
-  const payload = {
-    primary: document.getElementById('p1').value || null,
-    secondary: document.getElementById('p2').value || null,
-    tertiary: document.getElementById('p3').value || null,
-  };
-  const res = await fetch('/admin/api-pix/priority',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-  alert(res.ok ? 'Prioridade salva!' : 'Erro ao salvar');
-}
-</script>
