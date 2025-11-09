@@ -69,12 +69,17 @@ async function sendMessage(chatId, text, options = {}) {
 async function sendVideoInicial(chatId) {
   const videoUrl = "https://t.me/gustavoisp2/30";
   try {
-    await axios.post(`${API}/sendVideo`, {
+    const res = await axios.post(`${API}/sendVideo`, {
       chat_id: chatId,
       video: videoUrl,
       caption: "🔥 <b>Bem-vindo ao BotSimples!</b>",
       parse_mode: "HTML",
     });
+    const msgId = res.data?.result?.message_id;
+    if (msgId) {
+      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
+      mensagensPorChat.get(chatId).push(msgId);
+    }
   } catch (err) {
     console.error("Erro ao enviar vídeo inicial:", err.response?.data || err.message);
   }
@@ -85,32 +90,51 @@ async function sendQrCode(chatId, qrData) {
   const qrReal = qrData?.qr_code || qrData?.data?.qr_code || qrData;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrReal)}`;
   try {
-    await axios.post(`${API}/sendPhoto`, {
+    const res = await axios.post(`${API}/sendPhoto`, {
       chat_id: chatId,
       photo: qrUrl,
       caption: "📷 Escaneie o QR Code acima para pagar via PIX",
       parse_mode: "HTML",
     });
+    const msgId = res.data?.result?.message_id;
+    if (msgId) {
+      if (!mensagensPorChat.has(chatId)) mensagensPorChat.set(chatId, []);
+      mensagensPorChat.get(chatId).push(msgId);
+    }
   } catch (err) {
     console.error("Erro ao enviar QR Code:", err.response?.data || err.message);
   }
 }
 
-// === FUNÇÃO: Limpar mensagens ===
+// === FUNÇÃO: Limpar mensagens (correção completa) ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId);
-  if (!lista) return;
+  if (!lista || !lista.length) return;
+
+  console.log(`🧹 Limpando ${lista.length} mensagens do chat ${chatId}...`);
+
   for (const msgId of lista) {
     try {
       await axios.post(`${API}/deleteMessage`, {
         chat_id: chatId,
         message_id: msgId,
       });
-    } catch {}
+    } catch (err) {
+      // ignora erros de mensagens já deletadas
+    }
   }
+
   mensagensPorChat.set(chatId, []);
   qrsGerados.delete(chatId);
   pagamentosPendentes.delete(chatId);
+
+  // Espera 500ms pra garantir que o Telegram processe tudo
+  await new Promise((r) => setTimeout(r, 500));
+
+  // Tenta limpar mensagens "soltas" (como entregável ou QR fora do mapa)
+  try {
+    await axios.post(`${API}/deleteMessage`, { chat_id: chatId, message_id: (chatId + 1) });
+  } catch {}
 }
 
 // === WEBHOOK TELEGRAM ===
@@ -151,7 +175,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       }));
 
       const planos = await Plan.find();
-
       if (!planos.length) {
         await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
         return res.sendStatus(200);
@@ -185,8 +208,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       }
 
       const valor = parseFloat(plano.price);
-
-      // ✅ Envia o chat_id e plan_id no metadata
       const pix = await gerarPixWiinPay(valor, {
         metadata: { origem: "telegram-bot", chat_id: chatId, plan_id: plano._id },
       });
@@ -245,8 +266,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
         if (plano && plano.deliverable) {
           await sendMessage(chatId, plano.deliverable);
           console.log(`🎁 Entregável manual (${plano.name}) enviado para ${chatId}`);
-        } else {
-          await sendMessage(chatId, "✅ Pagamento confirmado, mas nenhum entregável foi configurado.");
         }
       } else {
         await sendMessage(chatId, "⏳ Pagamento ainda não confirmado. Tente novamente em alguns segundos.");
@@ -291,7 +310,7 @@ app.post("/webhook", async (req, res) => {
       return res.sendStatus(200);
     }
 
-    // ✅ Envia o entregável configurado no painel (sem texto fixo)
+    // ✅ Envia apenas o entregável configurado
     if (status === "PAID" && chatId) {
       console.log(`🎁 Enviando entregável do plano ${plano.name} para o chat ${chatId}`);
       await axios.post(`${API}/sendMessage`, {
