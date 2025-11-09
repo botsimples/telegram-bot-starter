@@ -3,35 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/css/tigerfy.css" />
-  <script src="https://kit.fontawesome.com/4ac4b9c31e.js" crossorigin="anonymous"></script>
+  <title>TigerFy ⚡ Painel</title>
+
+  <!-- Fonte + Ícones -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="/css/tigerfy.css">
 </head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <i class="fa-solid fa-bolt"></i>
+        <span>TigerFy</span>
+      </div>
+      <nav class="menu">
+        <a href="/deck"><i class="fa-solid fa-layer-group"></i> Deck</a>
+        <a href="/bots"><i class="fa-solid fa-robot"></i> Ofertas</a>
+        <a href="/api_pix"><i class="fa-solid fa-building-columns"></i> Adquirentes</a>
+        <div class="logout">
+          <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+        </div>
+      </nav>
+    </aside>
 
-<body class="fade-in">
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <i class="fa-solid fa-bolt"></i>
-      <span>TigerFy</span>
-    </div>
-    <nav class="sidebar-nav">
-      <a href="/deck" class="<%= (title && title.includes('Deck')) ? 'active' : '' %>">
-        <i class="fa-solid fa-chart-line"></i> Deck
-      </a>
-      <a href="/bots" class="<%= (title && title.includes('Ofertas')) ? 'active' : '' %>">
-        <i class="fa-solid fa-layer-group"></i> Ofertas
-      </a>
-      <a href="/api_pix" class="<%= (title && title.includes('Adquirentes')) ? 'active' : '' %>">
-        <i class="fa-solid fa-building-columns"></i> Adquirentes
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <a href="/login"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
-    </div>
-  </aside>
-
-  <main class="content">
-    <%- body %>
-  </main>
+    <!-- Conteúdo -->
+    <main class="main-content">
+      <div class="content-box">
+        <%- body %>
+      </div>
+    </main>
+  </div>
 </body>
 </html>
