@@ -43,15 +43,27 @@ router.get("/admin", async (req, res) => {
 });
 
 // === CRUD PLANOS ===
-router.post("/admin/planos", async (req, res) => {
-  const { name, price, description, deliverable } = req.body;
+router.post("/plan/update/:id", async (req, res) => {
   try {
-    await Plan.create({ name, price, description, deliverable });
-    res.sendStatus(200);
+    const { name, price, description, deliverable } = req.body;
+    const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
+
+    const plano = await Plan.findById(req.params.id);
+    if (!plano) return res.status(404).send("Plano não encontrado.");
+
+    plano.name = name || plano.name;
+    plano.price = price || plano.price;
+    plano.description = description || plano.description;
+    plano.deliverable = deliverable || plano.deliverable;
+
+    await plano.save();
+    res.redirect("/admin");
   } catch (err) {
-    res.status(500).send(err.message);
+    console.error("Erro ao atualizar plano:", err.message);
+    res.status(500).send("Erro ao atualizar plano.");
   }
 });
+
 
 router.put("/admin/planos/:id", async (req, res) => {
   try {
