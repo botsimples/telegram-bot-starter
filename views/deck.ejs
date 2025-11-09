@@ -1,25 +1,158 @@
-<% title = "Deck - TigerFy"; %>
+<main>
+  <section class="page-header">
+    <h1><i class="fa-solid fa-layer-group"></i> Deck</h1>
+    <p>Visão geral de métricas e desempenho do sistema TigerFy.</p>
+  </section>
 
-<div class="panel fade-in">
-  <h1 class="title"><i class="fa-solid fa-chart-line"></i> Deck</h1>
-  <p class="subtitle">Painel central de métricas e visão geral.</p>
+  <section class="deck-grid">
+    <div class="deck-card">
+      <h3>Cliques na Página</h3>
+      <p class="value">0</p>
+    </div>
 
-  <div class="grid-cards">
-    <div class="card">
-      <p>Vendas</p>
-      <h2>0</h2>
+    <div class="deck-card">
+      <h3>PIX Gerados</h3>
+      <p class="value">0</p>
     </div>
-    <div class="card">
-      <p>Leads</p>
-      <h2>0</h2>
+
+    <div class="deck-card">
+      <h3>Faturamento</h3>
+      <p class="value">R$ 0,00</p>
     </div>
-    <div class="card">
-      <p>Receita</p>
-      <h2>R$ 0,00</h2>
+
+    <div class="deck-card">
+      <h3>PIX Pagos</h3>
+      <p class="value">0</p>
     </div>
-    <div class="card">
-      <p>Conversão</p>
-      <h2>0%</h2>
+  </section>
+
+  <section class="deck-tables">
+    <div class="deck-box">
+      <h2><i class="fa-solid fa-users"></i> Usuários Recentes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Username</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+        </tbody>
+      </table>
     </div>
-  </div>
-</div>
+
+    <div class="deck-box">
+      <h2><i class="fa-solid fa-credit-card"></i> Pagamentos Recentes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuário</th>
+            <th>Valor</th>
+            <th>Status</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<style>
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  color: #FFD700;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.page-header p {
+  color: #aaa;
+  margin-top: 8px;
+}
+
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.deck-card {
+  background: #0f0f0f;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.05);
+}
+
+.deck-card h3 {
+  color: #bfbfbf;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.deck-card .value {
+  margin-top: 8px;
+  color: #FFD700;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.deck-tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.deck-box {
+  background: #0f0f0f;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.deck-box h2 {
+  color: #FFD700;
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deck-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.deck-box th {
+  color: #aaa;
+  text-align: left;
+  font-size: 13px;
+  border-bottom: 1px solid #222;
+  padding-bottom: 8px;
+}
+
+.deck-box td {
+  color: #ddd;
+  padding: 8px 0;
+  font-size: 14px;
+}
+</style>
