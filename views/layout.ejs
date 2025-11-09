@@ -1,74 +1,212 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %> | TigerFy</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | TigerFy</title>
 
-    <!-- CSS base e tema dourado -->
-    <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
+  <!-- Fonte e Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Fonte -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  </head>
+  <style>
+    :root {
+      --gold: #ffcc00;
+      --gold-dark: #e6b800;
+      --bg-dark: #0d0d0d;
+      --bg-sidebar: #111;
+      --text-muted: #b3b3b3;
+      --border-dark: #1c1c1c;
+    }
 
-  <body>
-    <div class="tigerfy-app fade-in">
-      <% if (!title.includes('Login')) { %>
-        <!-- Sidebar -->
-        <aside class="sidebar">
-          <div class="sidebar-header">
-            <div class="logo">
-              ⚡ <span>TigerFy</span>
-            </div>
-          </div>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-          <nav class="menu">
-            <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-              📊 <span>Deck</span>
-            </a>
-            <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-              🔥 <span>Ofertas</span>
-            </a>
-            <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-              💳 <span>Adquirentes</span>
-            </a>
+    body {
+      display: flex;
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      background: var(--bg-dark);
+      color: #fff;
+    }
 
-            <div class="menu-divider"></div>
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 240px;
+      background: var(--bg-sidebar);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--border-dark);
+      padding: 20px 0;
+    }
 
-            <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-              🏆 <span>Conquistas</span>
-            </a>
-            <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
-              👤 <span>Meu Perfil</span>
-            </a>
-          </nav>
+    .sidebar-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+    }
 
-          <div class="sidebar-footer">
-            <button onclick="window.location.href='/logout'" class="logout-btn">
-              🚪 <span>Sair</span>
-            </button>
-          </div>
-        </aside>
-      <% } %>
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-      <!-- Main -->
-      <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
-        <%- body %>
-      </main>
+    /* ===== MENU ===== */
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 0 20px;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 15px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .menu a:hover {
+      background: #1a1a1a;
+      color: var(--gold);
+    }
+
+    .menu a.active {
+      background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+      color: #000;
+      font-weight: 700;
+    }
+
+    .menu-divider {
+      height: 1px;
+      background: var(--border-dark);
+      margin: 14px 0;
+    }
+
+    /* ===== LOGOUT ===== */
+    .logout {
+      padding: 0 20px;
+      margin-bottom: 10px;
+    }
+
+    .logout button {
+      width: 100%;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .logout button:hover {
+      background: #1a1a1a;
+      color: var(--gold);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      background: radial-gradient(circle at top left, #141414, #000);
+      overflow-y: auto;
+    }
+
+    .main-content h1 {
+      color: var(--gold);
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .main-content p {
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <% if (!title.includes('Login')) { %>
+  <aside class="sidebar">
+    <div>
+      <div class="sidebar-header">
+        <div class="logo">
+          <i data-lucide="zap"></i>
+          <span>TigerFy</span>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+          <i data-lucide="layout-dashboard"></i> Deck
+        </a>
+        <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+          <i data-lucide="bot"></i> Ofertas
+        </a>
+        <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+          <i data-lucide="credit-card"></i> Adquirentes
+        </a>
+
+        <div class="menu-divider"></div>
+
+        <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
+          <i data-lucide="trophy"></i> Conquistas
+        </a>
+        <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
+          <i data-lucide="user"></i> Meu Perfil
+        </a>
+      </nav>
     </div>
 
-    <script>
-      // === Controle de modais ===
-      function openModal(id) {
-        document.getElementById(id).classList.add('active');
-      }
-      function closeModal(id) {
-        document.getElementById(id).classList.remove('active');
-      }
-    </script>
-  </body>
+    <div class="logout">
+      <button onclick="window.location.href='/logout'">
+        <i data-lucide="log-out"></i> Sair da Conta
+      </button>
+    </div>
+  </aside>
+  <% } %>
+
+  <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
+    <%- body %>
+  </main>
+
+  <script src="https://unpkg.com/lucide-icons"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
 </html>
