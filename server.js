@@ -50,9 +50,15 @@ app.get('/', (req, res) => {
   res.redirect('/login');
 });
 
-// Login
-app.get('/login', (req, res) => {
-  res.render('login', { title: 'Login', active: '', layout: false });
+// Login handler (simples — sem validação ainda)
+app.post('/deck', (req, res) => {
+  const { user, pass } = req.body;
+
+  // Aqui você pode futuramente validar o usuário com o banco
+  console.log(`🧠 Tentativa de login: ${user}`);
+
+  // Por enquanto, sempre redireciona ao deck
+  res.redirect('/deck');
 });
 
 // Registro
