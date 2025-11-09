@@ -3,98 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title || "BotSimples" %></title>
-  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="stylesheet" href="/css/tigerfy.css" />
   <script src="https://kit.fontawesome.com/4ac4b9c31e.js" crossorigin="anonymous"></script>
-
-  <style>
-    html, body {
-      background-color: #0d1117;
-      font-family: 'Inter', sans-serif;
-      color: #d1d5db;
-      height: 100%;
-      margin: 0;
-    }
-
-    .fade-in {
-      animation: fadeIn 0.4s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .sidebar {
-      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
-      border-right: 1px solid #1f2937;
-      min-height: 100vh;
-      width: 250px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      padding-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .sidebar a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #cbd5e1;
-      text-decoration: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      margin: 4px 8px;
-      transition: all 0.2s ease-in-out;
-    }
-
-    .sidebar a:hover {
-      background: #1e293b;
-      color: #38bdf8;
-    }
-
-    .sidebar .active {
-      background: #1e3a8a;
-      color: #60a5fa;
-    }
-
-    .content {
-      margin-left: 250px;
-      padding: 2rem;
-      min-height: 100vh;
-      background-color: #0d1117;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar { position: relative; width: 100%; min-height: auto; }
-      .content { margin-left: 0; }
-    }
-  </style>
 </head>
 
 <body class="fade-in">
   <aside class="sidebar">
-    <div>
-      <div class="px-6 text-2xl font-bold text-blue-400 tracking-wide mb-6">BotSimples</div>
-      <nav>
-        <a href="/" class="<%= (title && title.includes('Dashboard')) ? 'active' : '' %>">
-          <i class="fa-solid fa-chart-line"></i> Dashboard
-        </a>
-        <a href="/bots" class="<%= (title && title.includes('Ofertas')) ? 'active' : '' %>">
-          <i class="fa-solid fa-box-open"></i> Ofertas
-        </a>
-        <a href="/api_pix" class="<%= (title && title.includes('Adquirentes')) ? 'active' : '' %>">
-          <i class="fa-solid fa-building-columns"></i> Adquirentes
-        </a>
-      </nav>
+    <div class="sidebar-logo">
+      <i class="fa-solid fa-bolt"></i>
+      <span>TigerFy</span>
     </div>
-
-    <div class="p-4">
-      <a href="/login" class="flex items-center text-red-400 hover:text-red-300 text-sm">
-        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Sair
+    <nav class="sidebar-nav">
+      <a href="/deck" class="<%= (title && title.includes('Deck')) ? 'active' : '' %>">
+        <i class="fa-solid fa-chart-line"></i> Deck
       </a>
+      <a href="/bots" class="<%= (title && title.includes('Ofertas')) ? 'active' : '' %>">
+        <i class="fa-solid fa-layer-group"></i> Ofertas
+      </a>
+      <a href="/api_pix" class="<%= (title && title.includes('Adquirentes')) ? 'active' : '' %>">
+        <i class="fa-solid fa-building-columns"></i> Adquirentes
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/login"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
     </div>
   </aside>
 
