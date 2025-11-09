@@ -52,32 +52,37 @@ app.get('/', (req, res) => {
 
 // Login
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', { title: 'Login', active: '' });
 });
 
 // Dashboard principal
 app.get('/deck', (req, res) => {
-  res.render('deck', { title: 'Dashboard' });
+  res.render('deck', { title: 'Dashboard', active: 'deck' });
 });
 
 // Ofertas
-app.get('/ofertas', (req, res) => {
-  res.render('ofertas', { title: 'Ofertas' });
+app.get('/bots', (req, res) => {
+  res.render('ofertas', { title: 'Ofertas', active: 'bots' });
 });
 
 // Adquirentes
-app.get('/adquirentes', (req, res) => {
-  res.render('adquirentes', { title: 'Adquirentes' });
+app.get('/api_pix', (req, res) => {
+  res.render('adquirentes', { title: 'Adquirentes', active: 'api_pix' });
 });
 
 // Conquistas
 app.get('/conquistas', (req, res) => {
-  res.render('conquistas', { title: 'Conquistas' });
+  res.render('conquistas', { title: 'Conquistas', active: 'conquistas' });
 });
 
 // Perfil
 app.get('/perfil', (req, res) => {
-  res.render('perfil', { title: 'Meu Perfil' });
+  res.render('perfil', { title: 'Meu Perfil', active: 'perfil' });
+});
+
+// Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => res.redirect('/login'));
 });
 
 // ==========================
