@@ -906,3 +906,31 @@ body {
   border: 1px solid rgba(255, 204, 0, 0.12);
   backdrop-filter: blur(8px);
 }
+
+/* ==== FIX FINAL DO FUNDO AZUL ==== */
+.deck, 
+.deck-flexion, 
+.page-container.deck-flexion, 
+.deck-wrapper {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* remove o azul inline e o bg residual */
+body, html {
+  background: #000 !important;
+}
+
+/* reaplica o fundo escuro espacial */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom, #050505 0%, #000 100%);
+  background-image: url("https://i.ibb.co/8zLhwcF/stars-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
+  opacity: 0.9;
+}
