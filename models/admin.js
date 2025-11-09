@@ -1,115 +1,133 @@
 import express from "express";
 import mongoose from "mongoose";
+import Plan from "./Plan.js";
 
 const router = express.Router();
 
-// === MODELOS ===
-const Plan = mongoose.models.Plan || mongoose.model(
-  "Plan",
-  new mongoose.Schema({
-    name: String,
-    price: Number,
-    description: String,
-    deliverable: String, // 🔥 link ou texto pós-pagamento
-  })
-);
+// === LOGIN E SESSÃO ===
+router.get("/login", (req, res) => res.render("login"));
 
-const Gateway = mongoose.models.Gateway || mongoose.model(
-  "Gateway",
-  new mongoose.Schema({
-    name: String,
-    clientId: String,
-    clientSecret: String,
-    token: String,
-    active: { type: Boolean, default: false },
-  })
-);
-
-// === ROTA LOGIN ===
-router.get("/login", (req, res) => {
-  res.render("login", { message: "Acesse com sua senha de administrador" });
-});
-
-// === ROTA ADMIN PRINCIPAL ===
-router.get("/admin", async (req, res) => {
-  try {
-    const planos = await Plan.find();
-    const gateways = await Gateway.find();
-    res.render("admin", { planos, gateways });
-  } catch (err) {
-    console.error("❌ Erro ao carregar painel admin:", err);
-    res.status(500).send("Erro ao carregar painel.");
+router.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  if (
+    username === process.env.ADMIN_USER &&
+    password === process.env.ADMIN_PASS
+  ) {
+    req.session.loggedIn = true;
+    return res.redirect("/admin");
   }
+  res.send("❌ Usuário ou senha incorretos!");
 });
 
-// === CRUD PLANOS ===
-router.post("/plan/update/:id", async (req, res) => {
+router.use((req, res, next) => {
+  if (req.session.loggedIn || req.path === "/login") return next();
+  return res.redirect("/login");
+});
+
+// === DASHBOARD ===
+router.get("/admin", async (req, res) => {
+  const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
+  const Gateway =
+    mongoose.models.Gateway || (await import("./Gateway.js")).default;
+  const planos = await Plan.find();
+  const gateways = await Gateway.find();
+  res.render("admin", { planos, gateways });
+});
+
+// === CRUD DE PLANOS ===
+
+// Criar plano
+router.post("/admin/planos", async (req, res) => {
   try {
     const { name, price, description, deliverable } = req.body;
     const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
-
-    const plano = await Plan.findById(req.params.id);
-    if (!plano) return res.status(404).send("Plano não encontrado.");
-
-    plano.name = name || plano.name;
-    plano.price = price || plano.price;
-    plano.description = description || plano.description;
-    plano.deliverable = deliverable || plano.deliverable;
-
+    const plano = new Plan({ name, price, description, deliverable });
     await plano.save();
-    res.redirect("/admin");
+    res.json({ success: true, id: plano._id });
   } catch (err) {
-    console.error("Erro ao atualizar plano:", err.message);
-    res.status(500).send("Erro ao atualizar plano.");
+    console.error("❌ Erro ao criar plano:", err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
-
+// Atualizar plano
 router.put("/admin/planos/:id", async (req, res) => {
   try {
-    await Plan.findByIdAndUpdate(req.params.id, req.body);
-    res.sendStatus(200);
+    const { name, price, description, deliverable } = req.body;
+    const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
+    const plano = await Plan.findById(req.params.id);
+    if (!plano) return res.status(404).json({ success: false });
+
+    plano.name = name;
+    plano.price = price;
+    plano.description = description;
+    plano.deliverable = deliverable;
+
+    await plano.save();
+    res.json({ success: true });
   } catch (err) {
-    res.status(500).send(err.message);
+    console.error("❌ Erro ao atualizar plano:", err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
+// Excluir plano
 router.delete("/admin/planos/:id", async (req, res) => {
   try {
+    const Plan = mongoose.models.Plan || (await import("./Plan.js")).default;
     await Plan.findByIdAndDelete(req.params.id);
-    res.sendStatus(200);
+    res.json({ success: true });
   } catch (err) {
-    res.status(500).send(err.message);
+    console.error("❌ Erro ao excluir plano:", err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// === CRUD GATEWAYS ===
+// === CRUD DE GATEWAYS ===
 router.post("/admin/gateways", async (req, res) => {
-  const { name, clientId, clientSecret, token } = req.body;
   try {
-    await Gateway.create({ name, clientId, clientSecret, token });
-    res.sendStatus(200);
+    const Gateway =
+      mongoose.models.Gateway || (await import("./Gateway.js")).default;
+    const { name, clientId, clientSecret, token } = req.body;
+    const gateway = new Gateway({ name, clientId, clientSecret, token });
+    await gateway.save();
+    res.json({ success: true });
   } catch (err) {
-    res.status(500).send(err.message);
+    console.error("❌ Erro ao criar gateway:", err);
+    res.status(500).json({ success: false });
   }
 });
 
 router.put("/admin/gateways/:id", async (req, res) => {
   try {
-    await Gateway.findByIdAndUpdate(req.params.id, req.body);
-    res.sendStatus(200);
+    const Gateway =
+      mongoose.models.Gateway || (await import("./Gateway.js")).default;
+    const { clientId, clientSecret, token } = req.body;
+    const gw = await Gateway.findById(req.params.id);
+    if (!gw) return res.status(404).json({ success: false });
+
+    gw.clientId = clientId;
+    gw.clientSecret = clientSecret;
+    gw.token = token;
+    await gw.save();
+
+    res.json({ success: true });
   } catch (err) {
-    res.status(500).send(err.message);
+    console.error("❌ Erro ao atualizar gateway:", err);
+    res.status(500).json({ success: false });
   }
 });
 
 router.post("/admin/gateways/ativar/:id", async (req, res) => {
   try {
+    const Gateway =
+      mongoose.models.Gateway || (await import("./Gateway.js")).default;
     await Gateway.updateMany({}, { active: false });
     await Gateway.findByIdAndUpdate(req.params.id, { active: true });
-    res.sendStatus(200);
+    res.json({ success: true });
   } catch (err) {
-    res.status(500).send(err.message);
+    console.error("❌ Erro ao ativar gateway:", err);
+    res.status(500).json({ success: false });
   }
 });
 
