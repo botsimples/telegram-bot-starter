@@ -1,45 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %></title>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      ⚡ <span>TigerFy</span>
+    </div>
+  </div>
 
-    <!-- CSS base e tema dourado -->
-    <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
+  <nav class="menu">
+    <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+      <i class="icon">📊</i>
+      <span>Deck</span>
+    </a>
+    <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+      <i class="icon">🔥</i>
+      <span>Ofertas</span>
+    </a>
+    <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+      <i class="icon">💳</i>
+      <span>Adquirentes</span>
+    </a>
 
-    <!-- Fonte opcional (Flexion style) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  </head>
+    <div class="menu-divider"></div>
 
-  <body>
-    <% if (!title.includes('Login')) { %>
-      <div class="sidebar">
-        <div class="logo">⚡ TigerFy</div>
-        <nav class="menu">
-          <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">Deck</a>
-          <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">Ofertas</a>
-          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">Adquirentes</a>
-        </nav>
-      </div>
-    <% } %>
+    <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
+      <i class="icon">🏆</i>
+      <span>Conquistas</span>
+    </a>
+    <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
+      <i class="icon">👤</i>
+      <span>Meu Perfil</span>
+    </a>
+  </nav>
 
-    <main class="<%= title.includes('Login') ? 'login-bg' : 'main-content' %>">
-      <%- body %>
-    </main>
-
-    <script>
-      // === Abrir e fechar modal ===
-      function openModal(id) {
-        document.getElementById(id).classList.add('active');
-      }
-
-      function closeModal(id) {
-        document.getElementById(id).classList.remove('active');
-      }
-    </script>
-  </body>
-</html>
+  <div class="sidebar-footer">
+    <button onclick="window.location.href='/logout'" class="logout-btn">
+      <i class="icon">🚪</i> <span>Sair</span>
+    </button>
+  </div>
+</div>
