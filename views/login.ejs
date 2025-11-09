@@ -1,20 +1,53 @@
-<div class="login-wrapper">
-  <div class="login-box">
-    <div class="login-header">
-      <h1>TigerFy</h1>
-      <p>Acesse sua conta administrativa</p>
-    </div>
+<div class="login-page">
+  <h1>Login TigerFy ⚡</h1>
 
-    <form action="/login" method="POST">
-      <div class="input-group">
-        <input type="text" name="username" placeholder="Usuário" required />
-      </div>
-      <div class="input-group">
-        <input type="password" name="password" placeholder="Senha" required />
-      </div>
-      <button type="submit" class="btn-primary">Entrar</button>
-    </form>
-
-    <p class="login-footer">Painel Administrativo © TigerFy</p>
-  </div>
+  <form method="POST" action="/deck" class="login-form">
+    <input type="text" placeholder="Usuário" name="user" required />
+    <input type="password" placeholder="Senha" name="pass" required />
+    <button type="submit">Entrar</button>
+  </form>
 </div>
+
+<style>
+  .login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+
+  .login-page h1 {
+    color: #ffcc00;
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  .login-form input {
+    background: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    width: 260px;
+    margin: 8px 0;
+    color: #fff;
+    text-align: center;
+  }
+
+  .login-form button {
+    width: 260px;
+    background: #ffcc00;
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 700;
+    padding: 12px;
+    margin-top: 12px;
+    cursor: pointer;
+  }
+
+  .login-form button:hover {
+    background: #ffd633;
+  }
+</style>
