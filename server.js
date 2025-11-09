@@ -96,21 +96,33 @@ async function sendQrCode(chatId, qrData) {
   }
 }
 
-// === FUNÇÃO: Limpar mensagens ===
+// === FUNÇÃO: Limpar mensagens (corrigida e assíncrona) ===
 async function limparMensagens(chatId) {
   const lista = mensagensPorChat.get(chatId);
-  if (!lista) return;
-  for (const msgId of lista) {
-    try {
-      await axios.post(`${API}/deleteMessage`, {
-        chat_id: chatId,
-        message_id: msgId,
-      });
-    } catch {}
-  }
+  if (!lista || lista.length === 0) return;
+
+  console.log(`🧹 Limpando ${lista.length} mensagens do chat ${chatId}...`);
+
+  // usa Promise.all para deletar todas de forma paralela
+  await Promise.all(
+    lista.map(async (msgId) => {
+      try {
+        await axios.post(`${API}/deleteMessage`, {
+          chat_id: chatId,
+          message_id: msgId,
+        });
+      } catch (err) {
+        // ignora erros de mensagens já deletadas
+      }
+    })
+  );
+
   mensagensPorChat.set(chatId, []);
   qrsGerados.delete(chatId);
   pagamentosPendentes.delete(chatId);
+
+  // aguarda 300ms para garantir que Telegram processe a limpeza antes da nova interação
+  await new Promise((resolve) => setTimeout(resolve, 300));
 }
 
 // === WEBHOOK TELEGRAM ===
@@ -128,7 +140,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
     // === /start ===
     if (message?.text === "/start") {
       await limparMensagens(chatId);
-
       await sendVideoInicial(chatId);
       await sendMessage(chatId, "Escolha uma opção abaixo 👇", {
         reply_markup: {
@@ -152,7 +163,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       }));
 
       const planos = await Plan.find();
-
       if (!planos.length) {
         await sendMessage(chatId, "⚠️ Nenhum plano disponível no momento.");
         return res.sendStatus(200);
@@ -186,8 +196,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
       }
 
       const valor = parseFloat(plano.price);
-
-      // ✅ Envia chat_id e plan_id no metadata
       const pix = await gerarPixWiinPay(valor, {
         metadata: { origem: "telegram-bot", chat_id: chatId, plan_id: plano._id },
       });
@@ -203,7 +211,6 @@ app.post(`/webhook/${TOKEN}`, async (req, res) => {
 
       await sendMessage(chatId, "💰 <b>Toque no código PIX abaixo para copiar:</b>");
       await sendMessage(chatId, `<code>${qrReal}</code>`);
-
       await sendMessage(
         chatId,
         "⏰ O pagamento via PIX tem validade de 30 minutos.\n\n✅ Após efetuar o pagamento, clique abaixo para verificar:",
@@ -282,9 +289,7 @@ app.post("/webhook", async (req, res) => {
       deliverable: String,
     }));
 
-    let plano = null;
-
-    if (planId) plano = await Plan.findById(planId);
+    let plano = planId ? await Plan.findById(planId) : null;
     if (!plano) plano = await Plan.findOne({ price: { $gte: valor - 0.1, $lte: valor + 0.1 } });
 
     if (!plano) {
@@ -292,7 +297,6 @@ app.post("/webhook", async (req, res) => {
       return res.sendStatus(200);
     }
 
-    // ✅ Envia o entregável configurado
     if (status === "PAID" && chatId) {
       await axios.post(`${API}/sendMessage`, {
         chat_id: chatId,
