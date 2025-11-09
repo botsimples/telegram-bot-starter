@@ -13,35 +13,35 @@ router.get("/login", (req, res) => {
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  // autenticação fake só pra não quebrar
+  // autenticação simples
   if (username === "admin" && password === "123") {
-    res.redirect("/admin");
+    return res.redirect("/");
   } else {
-    res.render("login", { message: "Credenciais inválidas" });
+    return res.render("login", { message: "Credenciais inválidas" });
   }
 });
 
-/* === DASHBOARD === */
+/* === DASHBOARD / DECK === */
 router.get("/", async (req, res) => {
   try {
     const planos = await Plan.find().sort({ createdAt: -1 });
     const users = [];
     const payments = [];
-    res.render("dashboard", { planos, users, payments });
+    res.render("dashboard", { title: "Deck - BotSimples", planos, users, payments });
   } catch (err) {
-    console.error("Erro ao carregar dashboard:", err.message);
+    console.error("❌ Erro ao carregar dashboard:", err.message);
     res.status(500).send("Erro ao carregar dashboard.");
   }
 });
 
-/* === ADMIN (PLANOS E GATEWAYS) === */
+/* === ADMIN (Planos e Gateways antigos, opcional) === */
 router.get("/admin", async (req, res) => {
   try {
     const planos = await Plan.find().sort({ createdAt: -1 });
     const gateways = await ApiPix.find().sort({ createdAt: -1 });
-    res.render("admin", { planos, gateways });
+    res.render("admin", { title: "Admin - BotSimples", planos, gateways });
   } catch (err) {
-    console.error("Erro ao carregar admin:", err.message);
+    console.error("❌ Erro ao carregar admin:", err.message);
     res.status(500).send("Erro ao carregar admin.");
   }
 });
@@ -53,7 +53,7 @@ router.post("/admin/add-plan", async (req, res) => {
     await Plan.create({ name, price, description, deliverable });
     res.redirect("/admin");
   } catch (err) {
-    console.error("Erro ao adicionar plano:", err.message);
+    console.error("❌ Erro ao adicionar plano:", err.message);
     res.status(500).send("Erro ao adicionar plano.");
   }
 });
@@ -63,19 +63,19 @@ router.post("/admin/delete-plan/:id", async (req, res) => {
     await Plan.findByIdAndDelete(req.params.id);
     res.redirect("/admin");
   } catch (err) {
-    console.error("Erro ao deletar plano:", err.message);
+    console.error("❌ Erro ao deletar plano:", err.message);
     res.status(500).send("Erro ao deletar plano.");
   }
 });
 
-/* === BOTS === */
+/* === OFERTAS (ex-Bots) === */
 router.get("/bots", async (req, res) => {
   try {
     const bots = await Bot.find().sort({ createdAt: -1 });
-    res.render("bots", { bots });
+    res.render("bots", { title: "Ofertas - BotSimples", bots });
   } catch (err) {
-    console.error("Erro ao carregar bots:", err.message);
-    res.status(500).send("Erro ao carregar bots.");
+    console.error("❌ Erro ao carregar ofertas:", err.message);
+    res.status(500).send("Erro ao carregar ofertas.");
   }
 });
 
@@ -85,8 +85,8 @@ router.post("/bots/add", async (req, res) => {
     await Bot.create({ username, token, note });
     res.redirect("/bots");
   } catch (err) {
-    console.error("Erro ao adicionar bot:", err.message);
-    res.status(500).send("Erro ao adicionar bot.");
+    console.error("❌ Erro ao adicionar oferta:", err.message);
+    res.status(500).send("Erro ao adicionar oferta.");
   }
 });
 
@@ -95,30 +95,30 @@ router.post("/bots/delete/:id", async (req, res) => {
     await Bot.findByIdAndDelete(req.params.id);
     res.redirect("/bots");
   } catch (err) {
-    console.error("Erro ao deletar bot:", err.message);
-    res.status(500).send("Erro ao deletar bot.");
+    console.error("❌ Erro ao deletar oferta:", err.message);
+    res.status(500).send("Erro ao deletar oferta.");
   }
 });
 
-/* === API PIX === */
-router.get("/api-pix", async (req, res) => {
+/* === ADQUIRENTES (ex-API PIX) === */
+router.get("/api_pix", async (req, res) => {
   try {
-    const apipix = await ApiPix.findOne().sort({ createdAt: -1 }) || { gateways: [] };
-    res.render("api_pix", { apipix });
+    const adquirentes = await ApiPix.find().sort({ createdAt: -1 });
+    res.render("api_pix", { title: "Adquirentes - BotSimples", adquirentes });
   } catch (err) {
-    console.error("Erro ao carregar API PIX:", err.message);
-    res.status(500).send("Erro ao carregar API PIX.");
+    console.error("❌ Erro ao carregar Adquirentes:", err.message);
+    res.status(500).send("Erro ao carregar Adquirentes.");
   }
 });
 
-router.post("/api-pix/add", async (req, res) => {
+router.post("/api_pix/add", async (req, res) => {
   try {
     const { provider, key, secret } = req.body;
     await ApiPix.create({ provider, key, secret });
-    res.redirect("/api-pix");
+    res.redirect("/api_pix");
   } catch (err) {
-    console.error("Erro ao adicionar API PIX:", err.message);
-    res.status(500).send("Erro ao adicionar API PIX.");
+    console.error("❌ Erro ao adicionar Adquirente:", err.message);
+    res.status(500).send("Erro ao adicionar Adquirente.");
   }
 });
 
