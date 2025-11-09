@@ -1,29 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/css/tigerfy.css" />
-  <script src="https://kit.fontawesome.com/4ac4b9c31e.js" crossorigin="anonymous"></script>
-</head>
-
-<body class="login-bg">
-  <form class="login-box fade-in" method="POST" action="/login">
-    <div class="logo">
-      <i class="fa-solid fa-bolt"></i>
-      <span>TigerFy</span>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <span class="logo-icon">⚡</span>
+      <h2>TigerFy</h2>
+      <p>Acessar Painel</p>
     </div>
 
-    <h1>Acessar Painel</h1>
-    <input type="text" name="username" placeholder="Usuário" required />
-    <input type="password" name="password" placeholder="Senha" required />
-    <button type="submit">Entrar</button>
+    <form action="/login" method="POST" class="login-form">
+      <input type="text" name="username" placeholder="Usuário" required />
+      <input type="password" name="password" placeholder="Senha" required />
+      <button type="submit" class="btn-primary">Entrar</button>
+    </form>
 
-    <% if (message) { %>
-      <p class="error"><%= message %></p>
-    <% } %>
-
-    <div class="brand">TigerFy • Acesso Administrativo</div>
-  </form>
-</body>
-</html>
+    <p class="login-footer">TigerFy • Acesso Administrativo</p>
+  </div>
+</div>
