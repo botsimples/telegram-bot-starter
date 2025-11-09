@@ -3,47 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %> | TigerFy</title>
+  <title><%= title %> | TigerFy ⚡</title>
   <link rel="stylesheet" href="https://unpkg.com/lucide-icons/dist/umd/lucide.min.js" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      margin: 0;
-      display: flex;
-      font-family: "Inter", sans-serif;
-      background-color: #0e1117;
-      color: #fff;
-      height: 100vh;
+    :root {
+      --gold: #ffcc00;
+      --gold-light: #ffd633;
+      --bg-dark: #0d0d0d;
+      --bg-sidebar: #111;
+      --bg-hover: #1a1a1a;
+      --text-muted: #aaa;
+      --border-dark: #1e1e1e;
     }
 
-    /* SIDEBAR */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      font-family: "Inter", sans-serif;
+      background: var(--bg-dark);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* ===== SIDEBAR ===== */
     .sidebar {
-      width: 240px;
-      background-color: #11141c;
+      width: 250px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-dark);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-right: 1px solid #1e2230;
-      padding: 20px 0;
+      padding: 25px 0;
     }
 
     .logo {
+      font-weight: 800;
       font-size: 20px;
-      font-weight: 700;
-      color: #4cc9ff;
+      color: var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .menu {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
+      margin-top: 30px;
       padding: 0 20px;
     }
 
@@ -51,61 +70,81 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #9ca3af;
       text-decoration: none;
-      font-size: 15px;
+      color: var(--text-muted);
       font-weight: 500;
-      padding: 10px 12px;
+      font-size: 15px;
+      padding: 10px 14px;
       border-radius: 8px;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .menu a:hover {
-      background-color: #1c2230;
-      color: #fff;
+      background: var(--bg-hover);
+      color: var(--gold);
     }
 
     .menu a.active {
-      background: linear-gradient(90deg, #007bff 0%, #00d4ff 100%);
-      color: #fff;
-      font-weight: 600;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      color: #000;
+      font-weight: 700;
     }
 
     .menu-divider {
       height: 1px;
-      background-color: #1e2230;
-      margin: 14px 0;
+      background: var(--border-dark);
+      margin: 14px 20px;
     }
 
     .logout {
-      padding: 0 20px;
       text-align: center;
-      margin-bottom: 10px;
+      padding: 0 20px;
     }
 
     .logout button {
       width: 100%;
       background: none;
-      border: none;
-      color: #9ca3af;
-      font-weight: 500;
-      padding: 12px;
+      border: 1px solid var(--border-dark);
       border-radius: 8px;
+      color: var(--text-muted);
+      padding: 10px;
+      font-weight: 500;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.25s;
     }
 
     .logout button:hover {
-      color: #fff;
-      background-color: #1c2230;
+      background: var(--gold);
+      color: #000;
     }
 
-    /* CONTEÚDO PRINCIPAL */
+    /* ===== CONTEÚDO PRINCIPAL ===== */
     .main-content {
       flex: 1;
-      padding: 30px;
+      padding: 40px;
+      background: radial-gradient(circle at top left, #141414, #000);
       overflow-y: auto;
-      background-color: #0e1117;
+    }
+
+    .main-content h1 {
+      color: var(--gold);
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .main-content p {
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold);
+      border-radius: 4px;
     }
   </style>
 </head>
