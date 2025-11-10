@@ -1,0 +1,103 @@
+/* ======= TigerFy Gold Unified Theme ======= */
+body {
+  background: radial-gradient(circle at top left, #111 0%, #000 100%);
+  color: #f1f1f1;
+  font-family: "Inter", sans-serif;
+}
+
+/* títulos */
+h1, h2, h3, h4 {
+  color: #ffcc00;
+  font-weight: 700;
+}
+
+/* cards e boxes */
+.card, .box, .stats-container {
+  background: #131313;
+  border: 1px solid #1f1f1f;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.08);
+}
+
+/* tabelas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #111;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table th {
+  background: #1a1a1a;
+  color: #ffcc00;
+  font-weight: 600;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #222;
+}
+
+table td {
+  padding: 10px;
+  border-bottom: 1px solid #222;
+  color: #ccc;
+}
+
+/* botões */
+button, .btn, input[type="submit"] {
+  background: linear-gradient(90deg, #ffcc00, #e6b800);
+  border: none;
+  color: #000;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover, .btn:hover {
+  filter: brightness(1.15);
+}
+
+/* inputs */
+input, select, textarea {
+  background: #0e0e0e;
+  border: 1px solid #222;
+  color: #eee;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #ffcc00;
+  outline: none;
+}
+
+/* filtros e labels */
+label, small, span, p {
+  color: #bbb;
+}
+
+/* seções */
+section {
+  margin-bottom: 25px;
+}
+
+/* gráficos placeholder */
+.chart-box {
+  border: 1px dashed #333;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  color: #666;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ffcc00;
+  border-radius: 4px;
+}
