@@ -41,7 +41,8 @@
         border-right: 1px solid #1c1c1c;
         display: flex;
         flex-direction: column;
-        padding: 25px 0 20px;
+        justify-content: space-between;
+        padding: 25px 0;
       }
 
       /* LOGO */
@@ -110,13 +111,16 @@
         margin: 15px 24px;
       }
 
-      /* FOOTER */
+      /* FOOTER FIXADO NO FINAL */
       .sidebar-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
         padding: 0 24px;
-        margin-top: 10px;
+        margin-top: auto;
       }
 
-      .logout-btn {
+      .sidebar-footer button {
         width: 100%;
         background: none;
         border: 1px solid #2a2a2a;
@@ -132,7 +136,7 @@
         gap: 8px;
       }
 
-      .logout-btn:hover {
+      .sidebar-footer button:hover {
         background: #1a1a1a;
         color: var(--gold);
         box-shadow: 0 0 8px rgba(255, 204, 0, 0.2);
@@ -171,7 +175,7 @@
               <span>Deck</span>
             </a>
 
-            <!-- OFERTAS (ícone de pasta elegante) -->
+            <!-- OFERTAS -->
             <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6z" />
@@ -179,7 +183,7 @@
               <span>Ofertas</span>
             </a>
 
-            <!-- ADQUIRENTES (ícone de código/programação) -->
+            <!-- ADQUIRENTES -->
             <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
@@ -189,7 +193,7 @@
 
             <div class="menu-divider"></div>
 
-            <!-- CONQUISTAS (troféu refinado) -->
+            <!-- CONQUISTAS -->
             <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m0-4c3.314 0 6-2.686 6-6V5H6v6c0 3.314 2.686 6 6 6zM4 5h16M9 3h6" />
@@ -209,7 +213,16 @@
 
         <!-- FOOTER -->
         <div class="sidebar-footer">
-          <button onclick="window.location.href='/logout'" class="logout-btn">
+          <!-- SUPORTE -->
+          <button onclick="window.open('https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy%20⚡', '_blank')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Suporte</span>
+          </button>
+
+          <!-- SAIR -->
+          <button onclick="window.location.href='/logout'">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H3m0 0l4-4m-4 4l4 4m8-8h5a2 2 0 012 2v6a2 2 0 01-2 2h-5" />
             </svg>
