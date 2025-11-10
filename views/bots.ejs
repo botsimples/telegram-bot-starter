@@ -1,5 +1,5 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
-  <!-- FUNDO ANIMADO DOURADO -->
+  <!-- FUNDO ANIMADO DOURADO SUAVE -->
   <canvas id="bgParticles"></canvas>
 
   <div class="offers-page">
@@ -38,7 +38,7 @@
           <button class="offer-btn">Assistir</button>
         </div>
 
-        <div class="offer-card" onclick="openRoiModal()">
+        <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M9 17l3-3 4 4 5-5"/></svg>
           <h3>Calcular ROI</h3>
           <p>Veja o ROI diário, mensal ou anual das suas ofertas.</p>
@@ -55,7 +55,7 @@
     </div>
   </div>
 
-  <!-- MODAL TUTORIAL -->
+  <!-- MODAL -->
   <div class="modal-bg" id="tutorialModal">
     <div class="modal-content video">
       <h2>🎬 Tutorial TigerFy</h2>
@@ -65,21 +65,23 @@
   </div>
 
   <script>
+    // Tutorial
     function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
     function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
 
-    // Fundo Dourado
-    const c=document.getElementById('bgParticles');const ctx=c.getContext('2d');
+    // Fundo Dourado Suave (atrás da sidebar)
+    const c=document.getElementById('bgParticles');
+    const ctx=c.getContext('2d');
     function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
     window.addEventListener('resize',resize);resize();
-    const p=[];for(let i=0;i<120;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.6,dy:(Math.random()-0.5)*0.6})}
+    const p=[];for(let i=0;i<100;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.8+0.6,dx:(Math.random()-0.5)*0.4,dy:(Math.random()-0.5)*0.4})}
     function draw(){
       ctx.clearRect(0,0,c.width,c.height);
-      const grad=ctx.createRadialGradient(c.width/2,c.height/2,0,c.width/2,c.height/2,c.width/1.2);
-      grad.addColorStop(0,'rgba(255,204,0,0.1)');
-      grad.addColorStop(1,'rgba(0,0,0,0.9)');
+      const grad=ctx.createRadialGradient(c.width/2,c.height/2,0,c.width/2,c.height/2,c.width/1.5);
+      grad.addColorStop(0,'rgba(20,20,20,1)');
+      grad.addColorStop(1,'rgba(0,0,0,1)');
       ctx.fillStyle=grad;ctx.fillRect(0,0,c.width,c.height);
-      ctx.fillStyle='rgba(255,204,0,0.7)';
+      ctx.fillStyle='rgba(255,204,0,0.45)';
       p.forEach(o=>{ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;
         if(o.x<0||o.x>c.width)o.dx*=-1;if(o.y<0||o.y>c.height)o.dy*=-1});
       requestAnimationFrame(draw);
@@ -88,18 +90,18 @@
 
   <style>
     #bgParticles{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      z-index:0;pointer-events:none;
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      z-index:-2;
+      pointer-events:none;
     }
 
     .offers-page{
-      position:relative;
-      z-index:1;
       display:flex;
       justify-content:center;
       align-items:center;
       height:100vh;
-      padding-left:250px; /* compensar sidebar */
+      padding-left:210px; /* compensação visual */
     }
 
     .offers-container{
@@ -127,16 +129,13 @@
     }
 
     .offer-card{
-      width:260px;
-      height:260px;
+      width:260px;height:260px;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,204,0,0.15);
       border-radius:14px;
       padding:25px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
+      display:flex;flex-direction:column;
+      justify-content:space-between;align-items:center;
       transition:.3s;
     }
 
@@ -156,11 +155,11 @@
       padding:8px 16px;font-weight:600;cursor:pointer;
       transition:background .3s;
     }
+
     .offer-btn:hover{background:linear-gradient(90deg,#ffe066,#ffcc00);}
     .disabled{opacity:.5;pointer-events:none;}
     .disabled-btn{background:#555;color:#aaa;cursor:not-allowed;}
 
-    /* Modal */
     .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.85);
       display:none;align-items:center;justify-content:center;z-index:1000;}
     .modal-bg.show{display:flex;}
