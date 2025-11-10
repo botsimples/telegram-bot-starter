@@ -61,6 +61,11 @@ app.post('/deck', (req, res) => {
   res.redirect('/deck');
 });
 
+// Página de Login
+app.get('/login', (req, res) => {
+  res.render('login', { title: 'Login', active: '', layout: false });
+});
+
 // Registro
 app.get('/register', (req, res) => {
   res.render('register', { title: 'Registro', active: '', layout: false });
