@@ -1,5 +1,4 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
-  <!-- FUNDO DOURADO + PONTILHADO -->
   <canvas id="bgParticles"></canvas>
 
   <div class="offers-page">
@@ -10,7 +9,6 @@
       </div>
 
       <div class="offers-grid">
-        <!-- 1 -->
         <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z"/></svg>
           <h3>Gerenciar Ofertas</h3>
@@ -18,7 +16,6 @@
           <button class="offer-btn">Acessar</button>
         </div>
 
-        <!-- 2 -->
         <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
           <h3>Criar Nova Oferta</h3>
@@ -26,7 +23,6 @@
           <button class="offer-btn">Criar</button>
         </div>
 
-        <!-- 3 -->
         <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18l-7 9v7l-4 2v-9L3 4z"/></svg>
           <h3>Criar Funil Visual</h3>
@@ -34,7 +30,6 @@
           <button class="offer-btn">Criar Funil</button>
         </div>
 
-        <!-- 4 -->
         <div class="offer-card" onclick="openTutorial()">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8m-8 4h8m-8 4h4"/></svg>
           <h3>Ver Tutorial</h3>
@@ -42,7 +37,6 @@
           <button class="offer-btn">Assistir</button>
         </div>
 
-        <!-- 5 -->
         <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M9 17l3-3 4 4 5-5"/></svg>
           <h3>Calcular ROI</h3>
@@ -50,7 +44,6 @@
           <button class="offer-btn">Calcular</button>
         </div>
 
-        <!-- 6 -->
         <div class="offer-card disabled">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6.364 1.636l-.707.707M20 12h1M17.657 17.657l-.707-.707M12 19v1M6.343 17.657l.707-.707M4 12H3m2.636-6.364l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
           <h3>IA Ilimitada ⚡</h3>
@@ -61,7 +54,6 @@
     </div>
   </div>
 
-  <!-- MODAL -->
   <div class="modal-bg" id="tutorialModal">
     <div class="modal-content video">
       <h2>🎬 Tutorial TigerFy</h2>
@@ -74,39 +66,65 @@
     function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
     function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
 
-    // Fundo dourado leve e integrado
-    const c=document.getElementById('bgParticles'),ctx=c.getContext('2d');
-    function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
-    window.addEventListener('resize',resize);resize();
+    // Fundo dourado otimizado (sem flicker)
+    const c=document.getElementById('bgParticles');
+    const ctx=c.getContext('2d',{alpha:true});
+    const DPR=window.devicePixelRatio||1;
 
-    const p=[];for(let i=0;i<60;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});}
+    function resize(){
+      c.width=innerWidth*DPR;
+      c.height=innerHeight*DPR;
+      ctx.scale(DPR,DPR);
+    }
+    resize();
+    addEventListener('resize',()=>{cancelAnimationFrame(anim);resize();draw();},{passive:true});
 
+    const p=[];
+    for(let i=0;i<60;i++){
+      p.push({
+        x:Math.random()*innerWidth,
+        y:Math.random()*innerHeight,
+        r:Math.random()*1.2+0.4,
+        dx:(Math.random()-.5)*.25,
+        dy:(Math.random()-.5)*.25
+      });
+    }
+
+    let anim;
     function draw(){
-      ctx.clearRect(0,0,c.width,c.height);
+      ctx.fillStyle='rgba(10,10,10,0.2)'; // leve overlay ao invés de clearRect
+      ctx.fillRect(0,0,innerWidth,innerHeight);
+      ctx.beginPath();
+      for(const o of p){
+        ctx.moveTo(o.x,o.y);
+        ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+        o.x+=o.dx;o.y+=o.dy;
+        if(o.x<0||o.x>innerWidth)o.dx*=-1;
+        if(o.y<0||o.y>innerHeight)o.dy*=-1;
+      }
       ctx.fillStyle='rgba(255,204,0,0.25)';
-      for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>c.width)o.dx*=-1;if(o.y<0||o.y>c.height)o.dy*=-1;}
-      requestAnimationFrame(draw);
-    }draw();
+      ctx.fill();
+      anim=requestAnimationFrame(draw);
+    }
+    draw();
   </script>
 
   <style>
     html,body{
-      margin:0;
-      padding:0;
-      overflow:hidden;
-      height:100%;
+      margin:0;padding:0;overflow:hidden;height:100%;
       background:#0a0a0a;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
 
     #bgParticles{
       position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
+      inset:0;
       z-index:-2;
       mix-blend-mode:screen;
       pointer-events:none;
+      background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);
+      background-size:20px 20px;
     }
 
     .offers-page{
@@ -114,34 +132,22 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      transform:translateX(-75px) translateY(-95px); /* 🔥 remove scroll e centraliza */
+      transform:translateX(-75px) translateY(-95px);
     }
 
     .offers-container{text-align:center;width:90%;max-width:1100px;}
     .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
     .offers-header p{color:#b4b4b4;margin-bottom:40px;}
-
-    .offers-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:25px;
-      justify-items:center;
-    }
+    .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
 
     .offer-card{
-      width:260px;
-      height:260px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,204,0,0.12);
-      border-radius:14px;
-      padding:25px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
-      transition:.3s;
+      width:260px;height:260px;background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,204,0,0.12);border-radius:14px;
+      padding:25px;display:flex;flex-direction:column;
+      justify-content:space-between;align-items:center;
+      transition:.25s ease-out;
+      will-change:transform,box-shadow,background;
     }
-
     .offer-card:hover:not(.disabled){
       background:rgba(255,204,0,0.07);
       box-shadow:0 0 15px rgba(255,204,0,0.25);
@@ -153,47 +159,29 @@
     .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
     .offer-btn{
       background:linear-gradient(90deg,#ffcc00,#d4a100);
-      color:#000;
-      border:none;
-      border-radius:8px;
-      padding:8px 16px;
-      font-weight:600;
-      cursor:pointer;
-      transition:background .3s;
+      color:#000;border:none;border-radius:8px;
+      padding:8px 16px;font-weight:600;cursor:pointer;
+      transition:filter .3s;
     }
-    .offer-btn:hover{background:linear-gradient(90deg,#ffe066,#ffcc00);}
+    .offer-btn:hover{filter:brightness(1.15);}
     .disabled{opacity:.45;pointer-events:none;}
     .disabled-btn{background:#444;color:#aaa;cursor:not-allowed;}
 
     .modal-bg{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.85);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
+      position:fixed;inset:0;background:rgba(0,0,0,0.85);
+      display:none;align-items:center;justify-content:center;z-index:1000;
     }
     .modal-bg.show{display:flex;}
     .modal-content{
       background:rgba(15,15,15,0.95);
       border:1px solid rgba(255,204,0,0.25);
-      border-radius:14px;
-      padding:30px;
-      width:640px;
-      color:#fff;
-      text-align:center;
+      border-radius:14px;padding:30px;width:640px;
+      color:#fff;text-align:center;
     }
     iframe{width:100%;height:320px;border-radius:10px;}
     .confirm{
-      background:#ffcc00;
-      color:#000;
-      border:none;
-      border-radius:8px;
-      font-weight:600;
-      padding:10px 18px;
-      cursor:pointer;
-      margin-top:15px;
+      background:#ffcc00;color:#000;border:none;border-radius:8px;
+      font-weight:600;padding:10px 18px;cursor:pointer;margin-top:15px;
     }
   </style>
 ` }) %>
