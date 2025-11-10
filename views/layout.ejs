@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %> | TigerFy</title>
 
-    <!-- Seus estilos originais -->
+    <!-- ESTILOS -->
     <link rel="stylesheet" href="/css/tigerfy.css" />
     <link rel="stylesheet" href="/css/deck.theme.gold.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
       :root {
@@ -22,7 +22,6 @@
         --divider: #1c1c1c;
       }
 
-      /* NADA global que mexa nos cards/grids do deck */
       body {
         margin: 0;
         font-family: "Inter", sans-serif;
@@ -32,9 +31,12 @@
         min-height: 100vh;
       }
 
-      .tigerfy-app { display: flex; width: 100%; }
+      .tigerfy-app {
+        display: flex;
+        width: 100%;
+      }
 
-      /* SIDEBAR */
+      /* ===== SIDEBAR ===== */
       .sidebar {
         width: 250px;
         backdrop-filter: blur(8px);
@@ -46,59 +48,103 @@
         box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
       }
 
-      /* LOGO alinhada milimetricamente com a coluna dos ícones/textos */
+      /* ===== LOGO HOTTRACK STYLE ===== */
       .sidebar-header {
         margin-bottom: 26px;
         display: flex;
         align-items: center;
         gap: 8px;
-        transform: translateX(-10px); /* move em bloco para a esquerda */
+        transform: translateX(-10px);
       }
-      .logo-icon svg {
-        width: 20px; height: 20px;
-        stroke: var(--gold);
+
+      .logo-icon {
+        font-size: 22px;
+        line-height: 1;
+        filter: drop-shadow(0 0 6px rgba(255, 204, 0, 0.6));
         transform: translateY(1px);
       }
+
       .logo-text {
-        font-size: 19px; font-weight: 800;
-        color: var(--gold); letter-spacing: .4px;
-        transform: translateY(.5px);
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-size: 21px;
+        color: var(--gold);
+        letter-spacing: 0.3px;
+        text-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
+        transform: translateY(1px);
       }
 
-      /* MENU */
-      nav.menu { display: flex; flex-direction: column; gap: 5px; }
+      /* ===== MENU ===== */
+      nav.menu {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
       .menu a {
-        display: flex; align-items: center; gap: 12px;
-        text-decoration: none; color: var(--text-muted);
-        font-weight: 500; padding: 10px 28px;
-        border-radius: 8px; transition: .25s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-weight: 500;
+        padding: 10px 28px;
+        border-radius: 8px;
+        transition: all 0.25s ease;
         position: relative;
       }
-      .menu a:hover { background: var(--hover-bg); color: var(--gold); }
 
-      /* ATIVO — fundo suave + LINHA DOURADA VERTICAL (o que você gostou) */
+      .menu a:hover {
+        background: var(--hover-bg);
+        color: var(--gold);
+      }
+
+      /* ===== ITEM ATIVO ===== */
       .menu a.active {
-        background: linear-gradient(to bottom, rgba(255,204,0,.18), rgba(255,204,0,.05));
-        color: var(--text-active); font-weight: 600;
+        background: linear-gradient(to bottom, rgba(255, 204, 0, 0.18), rgba(255, 204, 0, 0.05));
+        color: var(--text-active);
+        font-weight: 600;
       }
+
+      /* LINHA LATERAL DOURADA */
       .menu a.active::before {
-        content: ""; position: absolute; left: 0; top: 6px; bottom: 6px;
-        width: 3px; border-radius: 2px;
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 6px;
+        bottom: 6px;
+        width: 3px;
+        border-radius: 2px;
         background: linear-gradient(to bottom, #ffea70, #ffcc00, #d3a900);
-        box-shadow: 0 0 6px rgba(255,204,0,.4);
+        box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
       }
 
-      /* divisória minimalista entre seções */
+      /* ===== DIVISÓRIA ===== */
       .menu-divider {
-        height: 1px; width: calc(100% - 48px); align-self: center;
-        background: linear-gradient(to right, rgba(255,204,0,.05), rgba(255,204,0,.25), rgba(255,204,0,.05));
-        margin: 16px 0; border-radius: 1px;
+        height: 1px;
+        width: calc(100% - 48px);
+        align-self: center;
+        background: linear-gradient(to right, rgba(255, 204, 0, 0.05), rgba(255, 204, 0, 0.25), rgba(255, 204, 0, 0.05));
+        margin: 16px 0;
+        border-radius: 1px;
       }
 
-      .menu svg { width: 18px; height: 18px; stroke-width: 1.8; transition: transform .2s; }
-      .menu a:hover svg { transform: translateX(2px); }
+      .menu svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 1.8;
+        transition: transform 0.2s ease;
+      }
 
-      .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+      .menu a:hover svg {
+        transform: translateX(2px);
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 40px;
+        overflow-y: auto;
+      }
     </style>
   </head>
 
@@ -108,11 +154,7 @@
       <aside class="sidebar">
         <!-- LOGO -->
         <div class="sidebar-header">
-          <div class="logo-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-            </svg>
-          </div>
+          <div class="logo-icon">⚡</div>
           <span class="logo-text">TigerFy</span>
         </div>
 
