@@ -1,5 +1,5 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
-  <!-- FUNDO ANIMADO DOURADO -->
+  <!-- FUNDO DOURADO + PONTILHADO -->
   <canvas id="bgParticles"></canvas>
 
   <div class="offers-page">
@@ -67,32 +67,63 @@
     function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
     function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
 
-    // Fundo dourado (atrás do padrão pontilhado)
+    // Fundo dourado leve + pontilhado visível
     const c=document.getElementById('bgParticles'),ctx=c.getContext('2d');
     function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
     window.addEventListener('resize',resize);resize();
-    const p=[];for(let i=0;i<90;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.6+0.5,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3})}
+
+    const particles=[];
+    for(let i=0;i<75;i++){
+      particles.push({
+        x:Math.random()*c.width,
+        y:Math.random()*c.height,
+        r:Math.random()*1.5+0.4,
+        dx:(Math.random()-0.5)*0.25,
+        dy:(Math.random()-0.5)*0.25
+      });
+    }
+
     function draw(){
       ctx.clearRect(0,0,c.width,c.height);
-      const grad=ctx.createRadialGradient(c.width/2,c.height/2,0,c.width/2,c.height/2,c.width/1.2);
-      grad.addColorStop(0,'rgba(15,15,15,1)');
-      grad.addColorStop(1,'rgba(0,0,0,1)');
-      ctx.fillStyle=grad;ctx.fillRect(0,0,c.width,c.height);
+      // camada base escura (pontilhado ainda visível)
+      const grad=ctx.createLinearGradient(0,0,0,c.height);
+      grad.addColorStop(0,'rgba(10,10,10,0.9)');
+      grad.addColorStop(1,'rgba(0,0,0,0.95)');
+      ctx.fillStyle=grad;
+      ctx.fillRect(0,0,c.width,c.height);
+
+      // partículas douradas sutis
       ctx.fillStyle='rgba(255,204,0,0.35)';
-      p.forEach(o=>{ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>c.width)o.dx*=-1;if(o.y<0||o.y>c.height)o.dy*=-1});
+      particles.forEach(p=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+        p.x+=p.dx;p.y+=p.dy;
+        if(p.x<0||p.x>c.width)p.dx*=-1;
+        if(p.y<0||p.y>c.height)p.dy*=-1;
+      });
       requestAnimationFrame(draw);
-    } draw();
+    }
+    draw();
   </script>
 
   <style>
-    #bgParticles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;}
+    html,body{overflow:hidden;height:100%;}
+    #bgParticles{
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      z-index:-2;
+      pointer-events:none;
+      mix-blend-mode:screen; /* integra com o pontilhado */
+    }
 
     .offers-page{
       display:flex;
       justify-content:center;
       align-items:center;
       min-height:100vh;
-      transform:translateX(-60px); /* equilíbrio visual com sidebar */
+      transform:translateX(-85px); /* centraliza em relação à sidebar */
+      margin-top:-30px; /* sobe o grid levemente */
     }
 
     .offers-container{text-align:center;max-width:1100px;width:90%;}
@@ -107,26 +138,36 @@
     }
 
     .offer-card{
-      width:260px;height:260px;background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,204,0,0.15);border-radius:14px;
-      padding:25px;display:flex;flex-direction:column;
-      justify-content:space-between;align-items:center;
+      width:260px;height:260px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,204,0,0.12);
+      border-radius:14px;
+      padding:25px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center;
       transition:.3s;
     }
 
     .offer-card:hover:not(.disabled){
-      background:rgba(255,204,0,0.1);
-      box-shadow:0 0 20px rgba(255,204,0,0.25);
-      transform:translateY(-4px);
+      background:rgba(255,204,0,0.07);
+      box-shadow:0 0 15px rgba(255,204,0,0.25);
+      transform:translateY(-3px);
     }
 
     .offer-icon{width:36px;height:36px;color:#ffcc00;}
     .offer-card h3{color:#fff;margin:10px 0 5px;}
     .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
-    .offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;transition:background .3s;}
+    .offer-btn{
+      background:linear-gradient(90deg,#ffcc00,#d4a100);
+      color:#000;border:none;border-radius:8px;
+      padding:8px 16px;font-weight:600;cursor:pointer;
+      transition:background .3s;
+    }
     .offer-btn:hover{background:linear-gradient(90deg,#ffe066,#ffcc00);}
-    .disabled{opacity:.5;pointer-events:none;}
-    .disabled-btn{background:#555;color:#aaa;cursor:not-allowed;}
+    .disabled{opacity:.45;pointer-events:none;}
+    .disabled-btn{background:#444;color:#aaa;cursor:not-allowed;}
 
     .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:1000;}
     .modal-bg.show{display:flex;}
