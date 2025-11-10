@@ -1,132 +1,58 @@
-<%- include('layout', { title: 'Ofertas', active: 'bots', body: `
-  <canvas id="bgParticles"></canvas>
+<%- include('layout',{title:'Ofertas',active:'bots',body:`
+<canvas id="bgParticles"></canvas>
 
-  <div class="offers-page">
-    <div class="offers-container">
-      <div class="offers-header">
-        <h1>⚡ Minhas Ofertas</h1>
-        <p>Gerencie, crie e visualize fluxos e métricas de suas ofertas de forma prática e visual.</p>
-      </div>
+<div class="offers-page">
+  <div class="offers-container">
+    <div class="offers-header">
+      <h1>⚡ Minhas Ofertas</h1>
+      <p>Gerencie, crie e visualize fluxos e métricas de suas ofertas de forma prática e visual.</p>
+    </div>
 
-      <div class="offers-grid">
-        <div class="offer-card">
-          <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z"/></svg>
-          <h3>Gerenciar Ofertas</h3>
-          <p>Veja e edite todas as ofertas criadas no painel TigerFy.</p>
-          <button class="offer-btn">Acessar</button>
-        </div>
-
-        <div class="offer-card">
-          <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-          <h3>Criar Nova Oferta</h3>
-          <p>Defina o nome, tipo e traqueamento da sua nova oferta.</p>
-          <button class="offer-btn">Criar</button>
-        </div>
-
-        <div class="offer-card">
-          <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18l-7 9v7l-4 2v-9L3 4z"/></svg>
-          <h3>Criar Funil Visual</h3>
-          <p>Monte visualmente o fluxo de cada etapa da oferta.</p>
-          <button class="offer-btn">Criar Funil</button>
-        </div>
-
-        <div class="offer-card" onclick="openTutorial()">
-          <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8m-8 4h8m-8 4h4"/></svg>
-          <h3>Ver Tutorial</h3>
-          <p>Aprenda passo a passo a dominar o painel TigerFy.</p>
-          <button class="offer-btn">Assistir</button>
-        </div>
-
-        <div class="offer-card">
-          <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M9 17l3-3 4 4 5-5"/></svg>
-          <h3>Calcular ROI</h3>
-          <p>Veja o ROI diário, mensal ou anual das suas ofertas.</p>
-          <button class="offer-btn">Calcular</button>
-        </div>
-
-        <div class="offer-card disabled">
-          <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6.364 1.636l-.707.707M20 12h1M17.657 17.657l-.707-.707M12 19v1M6.343 17.657l.707-.707M4 12H3m2.636-6.364l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
-          <h3>IA Ilimitada ⚡</h3>
-          <p>Automatize análises e decisões com IA avançada. <b>Em breve.</b></p>
-          <button class="offer-btn disabled-btn">Em Breve</button>
-        </div>
-      </div>
+    <div class="offers-grid">
+      <!-- cards -->
+      <div class="offer-card"><h3>Gerenciar Ofertas</h3><p>Veja e edite todas as ofertas criadas no painel TigerFy.</p><button class="offer-btn">Acessar</button></div>
+      <div class="offer-card"><h3>Criar Nova Oferta</h3><p>Defina o nome, tipo e traqueamento da sua nova oferta.</p><button class="offer-btn">Criar</button></div>
+      <div class="offer-card"><h3>Criar Funil Visual</h3><p>Monte visualmente o fluxo de cada etapa da oferta.</p><button class="offer-btn">Criar Funil</button></div>
+      <div class="offer-card" onclick="openTutorial()"><h3>Ver Tutorial</h3><p>Aprenda passo a passo a dominar o painel TigerFy.</p><button class="offer-btn">Assistir</button></div>
+      <div class="offer-card"><h3>Calcular ROI</h3><p>Veja o ROI diário, mensal ou anual das suas ofertas.</p><button class="offer-btn">Calcular</button></div>
+      <div class="offer-card disabled"><h3>IA Ilimitada ⚡</h3><p>Automatize análises e decisões com IA avançada. <b>Em breve.</b></p><button class="offer-btn disabled-btn">Em Breve</button></div>
     </div>
   </div>
+</div>
 
-  <div class="modal-bg" id="tutorialModal">
-    <div class="modal-content video">
-      <h2>🎬 Tutorial TigerFy</h2>
-      <iframe src="https://www.youtube.com/embed/WNesCpWnclQ" allowfullscreen></iframe>
-      <button class="confirm" onclick="closeTutorial()">Fechar</button>
-    </div>
-  </div>
+<script>
+const c=document.getElementById('bgParticles'),ctx=c.getContext('2d');
+function resize(){c.width=innerWidth;c.height=innerHeight}
+addEventListener('resize',resize);resize();
+const p=[];for(let i=0;i<70;i++)p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2+0.3,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='rgba(255,204,0,0.25)';
+  for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();
+    o.x+=o.dx;o.y+=o.dy;
+    if(o.x<0||o.x>c.width)o.dx*=-1;
+    if(o.y<0||o.y>c.height)o.dy*=-1;}
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
 
-  <script>
-    function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
-    function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#0a0a0a;}
+#bgParticles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;mix-blend-mode:screen;pointer-events:none;}
 
-    // Fundo dourado suave + partículas integradas
-    const c=document.getElementById('bgParticles'),ctx=c.getContext('2d');
-    function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
-    window.addEventListener('resize',resize);resize();
-    const particles=[];for(let i=0;i<60;i++){particles.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2+0.5,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3})}
-    function draw(){
-      ctx.clearRect(0,0,c.width,c.height);
-      const grad=ctx.createLinearGradient(0,0,0,c.height);
-      grad.addColorStop(0,'rgba(10,10,10,0.9)');
-      grad.addColorStop(1,'rgba(0,0,0,0.95)');
-      ctx.fillStyle=grad;ctx.fillRect(0,0,c.width,c.height);
-      ctx.fillStyle='rgba(255,204,0,0.35)';
-      particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>c.width)p.dx*=-1;if(p.y<0||p.y>c.height)p.dy*=-1});
-      requestAnimationFrame(draw);
-    }draw();
-  </script>
-
-  <style>
-    html,body{overflow:hidden;height:100%;}
-    #bgParticles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;mix-blend-mode:screen;}
-
-    .offers-page{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      transform:translateX(-80px);
-    }
-
-    .offers-container{text-align:center;max-width:1080px;width:90%;}
-    .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
-    .offers-header p{color:#b4b4b4;margin-bottom:40px;}
-
-    .offers-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:25px;
-      justify-items:center;
-    }
-
-    .offer-card{
-      width:260px;height:260px;background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,204,0,0.12);border-radius:14px;
-      padding:25px;display:flex;flex-direction:column;
-      justify-content:space-between;align-items:center;
-      transition:.3s;
-    }
-
-    .offer-card:hover:not(.disabled){background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);transform:translateY(-3px);}
-    .offer-icon{width:36px;height:36px;color:#ffcc00;}
-    .offer-card h3{color:#fff;margin:10px 0 5px;}
-    .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
-    .offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;transition:background .3s;}
-    .offer-btn:hover{background:linear-gradient(90deg,#ffe066,#ffcc00);}
-    .disabled{opacity:.45;pointer-events:none;}
-    .disabled-btn{background:#444;color:#aaa;cursor:not-allowed;}
-
-    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:1000;}
-    .modal-bg.show{display:flex;}
-    .modal-content{background:rgba(15,15,15,0.95);border:1px solid rgba(255,204,0,0.25);border-radius:14px;padding:30px;width:640px;color:#fff;text-align:center;}
-    iframe{width:100%;height:320px;border-radius:10px;}
-    .confirm{background:#ffcc00;color:#000;border:none;border-radius:8px;font-weight:600;padding:10px 18px;cursor:pointer;margin-top:15px;}
-  </style>
-` }) %>
+.offers-page{
+  height:100vh;display:flex;justify-content:center;align-items:center;
+  transform:translateX(-80px); /* compensa sidebar */
+}
+.offers-container{text-align:center;width:90%;max-width:1100px;}
+.offers-header h1{color:#ffcc00;margin:0 0 10px;}
+.offers-header p{color:#b4b4b4;margin:0 0 40px;}
+.offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
+.offer-card{width:260px;height:260px;background:rgba(255,255,255,.03);border:1px solid rgba(255,204,0,.12);border-radius:14px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;transition:.3s;}
+.offer-card:hover:not(.disabled){background:rgba(255,204,0,.07);box-shadow:0 0 12px rgba(255,204,0,.25);}
+.offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;}
+.disabled{opacity:.4;pointer-events:none;}
+.disabled-btn{background:#333;color:#aaa;}
+</style>
+`})%>
