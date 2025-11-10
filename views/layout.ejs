@@ -5,161 +5,269 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %> | TigerFy</title>
 
-    <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-  :root {
-    --gold: #ffcc00;
-    --sidebar-bg: rgba(10, 10, 10, 0.85);
-    --hover-bg: rgba(255, 204, 0, 0.07);
-    --text-muted: #b4b4b4;
-    --text-active: #fff;
-    --divider: #1c1c1c;
-  }
+    <style>
+      /* ===========================================================
+         ⚡ TIGERFY GLOBAL THEME — GOLD PULSE EDITION
+         =========================================================== */
+      :root {
+        --gold: #ffcc00;
+        --gold-dark: #b38f00;
+        --bg-dark: #0a0a0a;
+        --text-muted: #b4b4b4;
+        --text-light: #fff;
+        --transition: 0.25s ease;
+      }
 
-  body {
-    margin: 0;
-    font-family: "Inter", sans-serif;
-    display: flex;
-    background: radial-gradient(circle at top left, #111 0%, #000 100%);
-    color: #fff;
-    min-height: 100vh;
-  }
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", sans-serif;
+        color: var(--text-light);
+        background: radial-gradient(ellipse at top left, #111 0%, #000 100%);
+        overflow-x: hidden;
+        position: relative;
+        min-height: 100vh;
+      }
 
-  .tigerfy-app {
-    display: flex;
-    width: 100%;
-  }
+      /* FUNDO ANIMADO */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          radial-gradient(rgba(255, 204, 0, 0.04) 1px, transparent 1px),
+          radial-gradient(rgba(255, 204, 0, 0.02) 1px, transparent 1px);
+        background-size: 80px 80px, 40px 40px;
+        animation: starsMove 90s linear infinite;
+        z-index: -2;
+        opacity: 0.8;
+      }
+      @keyframes starsMove {
+        0% { background-position: 0 0, 50px 50px; }
+        100% { background-position: 500px 1000px, 550px 1050px; }
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        width: 800px;
+        height: 800px;
+        top: -300px;
+        right: -300px;
+        background: radial-gradient(circle, rgba(255,204,0,0.08), transparent 70%);
+        filter: blur(180px);
+        animation: pulseGlow 8s ease-in-out infinite alternate;
+        z-index: -1;
+      }
+      @keyframes pulseGlow {
+        0% { opacity: 0.4; transform: scale(1); }
+        100% { opacity: 1; transform: scale(1.15); }
+      }
 
-  /* SIDEBAR */
-  .sidebar {
-    width: 250px;
-    backdrop-filter: blur(8px);
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--divider);
-    display: flex;
-    flex-direction: column;
-    padding: 25px 0;
-    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
-  }
+      .tigerfy-app {
+        display: flex;
+        width: 100%;
+      }
 
-  /* LOGO ALINHADA PERFEITAMENTE À COLUNA DOS MENUS */
-  .sidebar-header {
-    margin-bottom: 26px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transform: translateX(-10px); /* move tudo pra esquerda pra alinhar com a coluna de ícones */
-  }
+      /* SIDEBAR */
+      .sidebar {
+        width: 240px;
+        backdrop-filter: blur(8px);
+        background: rgba(10, 10, 10, 0.95);
+        border-right: 1px solid rgba(255, 204, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        padding: 30px 0;
+        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.02);
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+      }
 
-  .logo-icon svg {
-    width: 20px;
-    height: 20px;
-    stroke: var(--gold);
-    transform: translateY(1px);
-  }
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-left: 18px;
+        margin-bottom: 26px;
+      }
 
-  .logo-text {
-    font-size: 19px;
-    font-weight: 800;
-    color: var(--gold);
-    letter-spacing: 0.4px;
-    transform: translateY(0.5px);
-  }
+      .sidebar-header svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--gold);
+      }
 
-  /* MENU */
-  nav.menu {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+      .sidebar-header span {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--gold);
+        letter-spacing: 0.4px;
+      }
 
-  .menu a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: var(--text-muted);
-    font-weight: 500;
-    padding: 10px 28px;
-    border-radius: 8px;
-    transition: all 0.25s ease;
-    position: relative;
-  }
+      nav.menu {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
 
-  .menu a:hover {
-    background: var(--hover-bg);
-    color: var(--gold);
-  }
+      .menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-weight: 500;
+        padding: 10px 26px;
+        border-radius: 8px;
+        transition: var(--transition);
+        position: relative;
+      }
 
-  /* ITEM ATIVO */
-  .menu a.active {
-    background: linear-gradient(to bottom, rgba(255, 204, 0, 0.18), rgba(255, 204, 0, 0.05));
-    color: var(--text-active);
-    font-weight: 600;
-  }
+      .menu a:hover {
+        background: rgba(255, 204, 0, 0.07);
+        color: var(--gold);
+      }
 
-  /* LINHA DOURADA VERTICAL */
-  .menu a.active::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 6px;
-    bottom: 6px;
-    width: 3px;
-    border-radius: 2px;
-    background: linear-gradient(to bottom, #ffea70, #ffcc00, #d3a900);
-    box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
-  }
+      .menu a.active {
+        background: linear-gradient(to right, rgba(255, 204, 0, 0.15), rgba(255, 204, 0, 0.05));
+        color: var(--text-light);
+        font-weight: 600;
+      }
 
-  /* LINHA DIVISÓRIA ESTILO HOTTRACK */
-  .menu-divider {
-    height: 1px;
-    width: calc(100% - 48px);
-    align-self: center;
-    background: linear-gradient(to right, rgba(255, 204, 0, 0.05), rgba(255, 204, 0, 0.25), rgba(255, 204, 0, 0.05));
-    margin: 16px 0;
-    border-radius: 1px;
-  }
+      .menu a.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 6px;
+        bottom: 6px;
+        width: 3px;
+        border-radius: 2px;
+        background: linear-gradient(to bottom, #ffea70, #ffcc00, #d3a900);
+        box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
+      }
 
-  .menu svg {
-    width: 18px;
-    height: 18px;
-    stroke-width: 1.8;
-    transition: transform 0.2s ease;
-  }
+      .menu-divider {
+        height: 1px;
+        width: calc(100% - 48px);
+        align-self: center;
+        background: linear-gradient(to right, rgba(255, 204, 0, 0.05), rgba(255, 204, 0, 0.25), rgba(255, 204, 0, 0.05));
+        margin: 16px 0;
+        border-radius: 1px;
+      }
 
-  .menu a:hover svg {
-    transform: translateX(2px);
-  }
+      .menu svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 1.8;
+        transition: transform 0.2s ease;
+      }
 
-  .main-content {
-    flex: 1;
-    padding: 40px;
-    overflow-y: auto;
-  }
-</style>
+      .menu a:hover svg {
+        transform: translateX(2px);
+      }
+
+      .main-content {
+        flex: 1;
+        margin-left: 240px;
+        padding: 40px;
+        overflow-y: auto;
+        animation: fadeIn 0.8s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* CARDS E PAINÉIS */
+      .stat-card, .deck-card {
+        background: rgba(18, 18, 18, 0.85);
+        border: 1px solid rgba(255, 204, 0, 0.12);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.05);
+        transition: var(--transition);
+      }
+
+      .stat-card:hover, .deck-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 18px rgba(255, 204, 0, 0.15);
+      }
+
+      .stat-card h3 {
+        color: #ccc;
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .stat-card span {
+        color: var(--gold);
+        font-weight: 800;
+        font-size: 22px;
+      }
+
+      /* BOTÕES */
+      .filter-btn {
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 700;
+        color: #000;
+        cursor: pointer;
+        box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
+        transition: var(--transition);
+      }
+
+      .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+      }
+
+      /* LOGIN */
+      .login-bg {
+        background: radial-gradient(circle at top, #0a0a0a 0%, #000 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .login-box {
+        background: rgba(20, 20, 20, 0.9);
+        border: 1px solid rgba(255, 204, 0, 0.15);
+        border-radius: 12px;
+        padding: 50px 60px;
+        text-align: center;
+        box-shadow: 0 0 25px rgba(255, 204, 0, 0.08);
+        animation: fadeIn 0.8s ease;
+      }
+
+      /* SCROLLBAR */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-thumb {
+        background: var(--gold);
+        border-radius: 4px;
+      }
+    </style>
   </head>
 
   <body>
     <div class="tigerfy-app">
       <% if (!title.includes('Login')) { %>
       <aside class="sidebar">
-        <!-- LOGO -->
         <div class="sidebar-header">
-          <div class="logo-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-            </svg>
-          </div>
-          <span class="logo-text">TigerFy</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+          <span>TigerFy</span>
         </div>
 
-        <!-- MENU -->
         <nav class="menu">
           <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
