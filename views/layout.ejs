@@ -6,7 +6,6 @@
     <title><%= title %> | TigerFy</title>
 
     <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,9 +13,10 @@
     <style>
       :root {
         --gold: #ffcc00;
+        --gold-grad: linear-gradient(90deg, #ffd84d 0%, #b38600 100%);
         --sidebar-bg: #0b0b0b;
         --hover-bg: rgba(255, 204, 0, 0.08);
-        --active-bg: rgba(255, 204, 0, 0.15);
+        --active-bg: rgba(255, 204, 0, 0.25);
         --text-muted: #b4b4b4;
         --text-active: #fff;
         --divider: #1c1c1c;
@@ -43,12 +43,12 @@
         border-right: 1px solid var(--divider);
         display: flex;
         flex-direction: column;
-        padding: 25px 0;
+        padding: 24px 0;
       }
 
       /* LOGO */
       .sidebar-header {
-        padding: 0 28px;
+        padding-left: 32px;
         margin-bottom: 28px;
         display: flex;
         align-items: center;
@@ -72,7 +72,7 @@
       nav.menu {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 4px;
       }
 
       .menu a {
@@ -82,22 +82,23 @@
         text-decoration: none;
         color: var(--text-muted);
         font-weight: 500;
-        padding: 10px 28px;
+        padding: 10px 32px;
         border-radius: 8px;
         transition: all 0.2s ease;
       }
 
       .menu a:hover {
-        background: var(--hover-bg);
+        background: rgba(255, 204, 0, 0.1);
         color: var(--gold);
       }
 
       .menu a.active {
         background: var(--active-bg);
-        color: var(--text-active);
-        border-left: 3px solid var(--gold);
-        box-shadow: inset 0 0 4px rgba(255, 204, 0, 0.2);
-        font-weight: 600;
+        background-image: var(--gold-grad);
+        color: #000;
+        font-weight: 700;
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        border-radius: 10px;
       }
 
       .menu svg {
@@ -109,8 +110,9 @@
       /* LINHA DIVISÓRIA */
       .menu-divider {
         height: 1px;
-        background: linear-gradient(to right, #1a1a1a, #2a2a2a, #1a1a1a);
-        margin: 18px 24px;
+        background: linear-gradient(to right, #1c1c1c, #2d2d2d, #1c1c1c);
+        margin: 18px 28px;
+        border-radius: 1px;
       }
 
       .main-content {
