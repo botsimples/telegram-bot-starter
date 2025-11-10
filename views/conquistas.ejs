@@ -1,174 +1,26 @@
-<div class="tiger-dashboard fade-in conquistas-page">
-  <h1>🏆 Conquistas</h1>
-  <p class="subtitle">Acompanhe suas metas e marcos de faturamento dentro do TigerFy.</p>
+<%- include('layout', { title: 'Conquistas', active: 'conquistas', body: `
+  <canvas id="bgParticles"></canvas>
 
-  <div class="achievements-scroll">
-    <!-- 10 MIL -->
-    <div class="achievement-card unlocked">
-      <h2>R$ 10 mil em vendas</h2>
-      <p>Parabéns pelos R$10 mil faturados! Um resultado que reflete sua dedicação e foco. Você está apenas começando sua jornada de sucesso.</p>
-      <img src="/img/conquistas/10k.png" alt="10K Plaquinha" class="achievement-img">
-      <div class="progress">
-        <div class="progress-bar" style="width: 5%;"></div>
-      </div>
-      <span class="status">🔓 Desbloqueado</span>
-    </div>
+  <div class="tiger-dashboard fade-in conquistas-page">
+    <h1>🏆 Conquistas</h1>
+    <p class="subtitle">Acompanhe suas metas e marcos de faturamento dentro do TigerFy.</p>
 
-    <!-- 50 MIL -->
-    <div class="achievement-card locked">
-      <h2>R$ 50 mil em vendas</h2>
-      <p>Parabéns pelos R$50 mil faturados! Sua ousadia e visão te colocam entre os que buscam resultados grandiosos. Continue subindo!</p>
-      <img src="/img/conquistas/50k.png" alt="50K Plaquinha" class="achievement-img">
-      <div class="progress">
-        <div class="progress-bar" style="width: 0%;"></div>
-      </div>
-      <span class="status">🔒 Bloqueado</span>
-    </div>
-
-    <!-- 100 MIL -->
-    <div class="achievement-card locked">
-      <h2>R$ 100 mil em vendas</h2>
-      <p>Parabéns pelos R$100 mil faturados! Você está se tornando uma lenda nos negócios. Um marco que representa foco e consistência.</p>
-      <img src="/img/conquistas/100k.png" alt="100K Plaquinha" class="achievement-img">
-      <div class="progress">
-        <div class="progress-bar" style="width: 0%;"></div>
-      </div>
-      <span class="status">🔒 Bloqueado</span>
-    </div>
-
-    <!-- 250 MIL -->
-    <div class="achievement-card locked">
-      <h2>R$ 250 mil em vendas</h2>
-      <p>Parabéns pelos R$250 mil faturados! Essa conquista é fruto de estratégia, constância e liderança. Continue dominando o jogo.</p>
-      <img src="/img/conquistas/250k.png" alt="250K Plaquinha" class="achievement-img">
-      <div class="progress">
-        <div class="progress-bar" style="width: 0%;"></div>
-      </div>
-      <span class="status">🔒 Bloqueado</span>
-    </div>
-
-    <!-- 500 MIL -->
-    <div class="achievement-card locked">
-      <h2>R$ 500 mil em vendas</h2>
-      <p>Parabéns pelos R$500 mil faturados! Um resultado que mostra visão e coragem. Você está reescrevendo o seu próprio sucesso.</p>
-      <img src="/img/conquistas/500k.png" alt="500K Plaquinha" class="achievement-img">
-      <div class="progress">
-        <div class="progress-bar" style="width: 0%;"></div>
-      </div>
-      <span class="status">🔒 Bloqueado</span>
-    </div>
-
-    <!-- 1 MILHÃO -->
-    <div class="achievement-card locked">
-      <h2>R$ 1 milhão em vendas</h2>
-      <p>Parabéns pelo 1 milhão faturado! Esse é o ápice da maestria — prova de que sua jornada inspira e redefine o sucesso.</p>
-      <img src="/img/conquistas/1m.png" alt="1M Plaquinha" class="achievement-img">
-      <div class="progress">
-        <div class="progress-bar" style="width: 0%;"></div>
-      </div>
-      <span class="status">🔒 Bloqueado</span>
+    <div class="achievements-scroll">
+      <div class="achievement-card unlocked"><h2>R$ 10 mil em vendas</h2><p>Parabéns pelos R$10 mil faturados!</p></div>
+      <div class="achievement-card locked"><h2>R$ 50 mil em vendas</h2><p>Continue subindo!</p></div>
     </div>
   </div>
-</div>
 
-<style>
-  .conquistas-page {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .subtitle {
-    color: #aaa;
-    margin-bottom: 25px;
-  }
-
-  .achievements-scroll {
-    display: flex;
-    flex-direction: column;
-    gap: 60px;
-    overflow-y: auto;
-    max-height: calc(100vh - 180px);
-    padding-right: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: #ffcc00 #0d0d0d;
-  }
-
-  /* Cards */
-  .achievement-card {
-    background: radial-gradient(circle at top left, rgba(20,20,20,0.9), rgba(0,0,0,0.9));
-    border: 1px solid rgba(255, 204, 0, 0.15);
-    border-radius: 20px;
-    padding: 35px;
-    box-shadow: 0 0 25px rgba(255, 204, 0, 0.05);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .achievement-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 30px rgba(255, 204, 0, 0.15);
-  }
-
-  .achievement-card h2 {
-    font-size: 22px;
-    color: var(--gold);
-    margin-bottom: 10px;
-  }
-
-  .achievement-card p {
-    color: #ccc;
-    font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 25px;
-  }
-
-  .achievement-img {
-    width: 250px;
-    max-width: 80%;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.25);
-  }
-
-  .progress {
-    width: 80%;
-    height: 6px;
-    margin: 10px auto 15px;
-    border-radius: 5px;
-    background: rgba(255, 204, 0, 0.1);
-    overflow: hidden;
-  }
-
-  .progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #ffcc00, #b88a00);
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-  }
-
-  .status {
-    color: var(--gold);
-    font-weight: 600;
-    display: block;
-    margin-top: 5px;
-  }
-
-  .achievement-card.locked {
-    opacity: 0.6;
-    filter: grayscale(0.8);
-  }
-
-  .achievement-card.unlocked {
-    opacity: 1;
-  }
-
-  @keyframes subtle-glow {
-    0% { box-shadow: 0 0 15px rgba(255,204,0,0.05); }
-    50% { box-shadow: 0 0 30px rgba(255,204,0,0.15); }
-    100% { box-shadow: 0 0 15px rgba(255,204,0,0.05); }
-  }
-
-  .achievement-card.unlocked {
-    animation: subtle-glow 3s ease-in-out infinite;
-  }
-</style>
+  <script>
+    const c=document.getElementById('bgParticles');
+    const ctx=c.getContext('2d',{alpha:true});
+    let w,h,DPR=window.devicePixelRatio||1;
+    function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+    resize();addEventListener('resize',resize,{passive:true});
+    const p=[];for(let i=0;i<60;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
+    function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.25)';
+      for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}
+      requestAnimationFrame(draw);}
+    draw();
+  </script>
+` }) %>
