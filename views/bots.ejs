@@ -1,18 +1,36 @@
-<div class="deck-container fade-in">
-  <header class="deck-header">
-    <h1>🔥 <span>Ofertas Ativas</span></h1>
-    <p>Gerencie e monitore suas campanhas em tempo real.</p>
-    <button class="btn-gold">+ Nova Oferta</button>
+<div class="offers-container fade-in">
+  <header class="offers-header">
+    <div class="text-center">
+      <h1>🔥 Ofertas Ativas</h1>
+      <p>Gerencie e monitore suas campanhas em tempo real.</p>
+    </div>
+
+    <div class="offers-actions">
+      <button class="btn-gold-outline">Gerenciar Ofertas</button>
+      <button class="btn-gold">Criar Nova Oferta</button>
+    </div>
   </header>
 
   <section class="stats-grid">
-    <div class="stat-card"><h4>Total de Bots</h4><p>0</p></div>
-    <div class="stat-card"><h4>Ofertas Ativas</h4><p>0</p></div>
-    <div class="stat-card"><h4>Conversões Hoje</h4><p>0</p></div>
-    <div class="stat-card"><h4>Taxa de Conversão</h4><p>0%</p></div>
+    <div class="stat-card">
+      <h4>Total de Ofertas</h4>
+      <p>0</p>
+    </div>
+    <div class="stat-card">
+      <h4>Ofertas Ativas</h4>
+      <p>0</p>
+    </div>
+    <div class="stat-card">
+      <h4>Conversões Hoje</h4>
+      <p>0</p>
+    </div>
+    <div class="stat-card">
+      <h4>Taxa de Conversão</h4>
+      <p>0%</p>
+    </div>
   </section>
 
-  <section class="recent-payments">
+  <section class="offers-table">
     <h2>📋 Lista de Ofertas</h2>
     <table>
       <thead>
@@ -32,3 +50,150 @@
     </table>
   </section>
 </div>
+
+<style>
+  .offers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  .offers-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .offers-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffcc00;
+    letter-spacing: 0.5px;
+  }
+
+  .offers-header p {
+    color: #b4b4b4;
+    font-size: 0.95rem;
+  }
+
+  .offers-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  .btn-gold,
+  .btn-gold-outline {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+  }
+
+  .btn-gold {
+    background: linear-gradient(90deg, #ffcc00, #d3a900);
+    border: none;
+    color: #000;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+  }
+  .btn-gold:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 18px rgba(255, 204, 0, 0.45);
+  }
+
+  .btn-gold-outline {
+    border: 1px solid #ffcc00;
+    background: transparent;
+    color: #ffcc00;
+  }
+  .btn-gold-outline:hover {
+    background: rgba(255, 204, 0, 0.1);
+  }
+
+  /* === CARDS === */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .stat-card {
+    background: rgba(20, 20, 20, 0.75);
+    border: 1px solid rgba(255, 204, 0, 0.1);
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .stat-card:hover {
+    border-color: rgba(255, 204, 0, 0.25);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
+  }
+
+  .stat-card h4 {
+    margin-bottom: 10px;
+    color: #ffcc00;
+    font-weight: 600;
+  }
+
+  .stat-card p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* === TABELA === */
+  .offers-table {
+    margin-top: 20px;
+  }
+
+  .offers-table h2 {
+    color: #ffcc00;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(15, 15, 15, 0.75);
+  }
+
+  thead {
+    background: rgba(255, 204, 0, 0.07);
+  }
+
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+  }
+
+  th {
+    color: #ffcc00;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  td {
+    color: #b4b4b4;
+    font-size: 0.9rem;
+  }
+
+  tbody tr:hover {
+    background: rgba(255, 204, 0, 0.05);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
