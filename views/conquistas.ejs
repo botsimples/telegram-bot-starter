@@ -1,18 +1,173 @@
-<div class="tiger-dashboard fade-in">
+<div class="tiger-dashboard fade-in achievements-page">
   <h1>🏆 Conquistas</h1>
-  <p>Visualize seus marcos, metas e níveis de desempenho dentro do TigerFy.</p>
+  <p class="subtitle">Visualize seus marcos, metas e níveis de desempenho dentro do TigerFy.</p>
 
-  <div class="achievements-grid">
-    <div class="achievement-card">
-      <h3>Primeira Venda</h3>
-      <p>Realize sua primeira venda com sucesso!</p>
-      <span class="badge">🔓 Desbloqueado</span>
+  <div class="achievements-timeline">
+    <!-- Primeira Venda -->
+    <div class="achievement-card unlocked">
+      <div class="achievement-content">
+        <div class="badge-top">R$ 0,00</div>
+        <h3>Primeira Venda</h3>
+        <p>Realize sua primeira venda com sucesso!</p>
+        <span class="status-badge">🔓 Desbloqueado</span>
+      </div>
+      <div class="achievement-img">
+        <img src="/img/conquistas/primeira-venda.png" alt="Primeira Venda">
+      </div>
     </div>
 
+    <!-- Meta 10 Vendas -->
     <div class="achievement-card locked">
-      <h3>Meta de 10 Vendas</h3>
-      <p>Conclua 10 vendas e alcance o próximo nível.</p>
-      <span class="badge">🔒 Bloqueado</span>
+      <div class="achievement-content">
+        <div class="badge-top">R$ 10.000</div>
+        <h3>Meta de 10 Vendas</h3>
+        <p>Conclua 10 vendas e alcance o próximo nível.</p>
+        <span class="status-badge">🔒 Bloqueado</span>
+      </div>
+      <div class="achievement-img">
+        <img src="/img/conquistas/meta-10-vendas.png" alt="Meta 10 Vendas">
+      </div>
     </div>
+
+    <!-- Próximos Slots -->
+    <div class="achievement-card locked">
+      <div class="achievement-content">
+        <div class="badge-top">R$ 50.000</div>
+        <h3>Meta Coruja</h3>
+        <p>Sabedoria e visão aguçada, alcançando o primeiro marco importante.</p>
+        <span class="status-badge">🔒 Bloqueado</span>
+      </div>
+      <div class="achievement-img">
+        <img src="/img/conquistas/coruja.png" alt="Coruja">
+      </div>
+    </div>
+
   </div>
 </div>
+
+<style>
+  .achievements-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .subtitle {
+    color: #aaa;
+    margin-bottom: 40px;
+  }
+
+  /* Timeline dourada à esquerda */
+  .achievements-timeline {
+    position: relative;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .achievements-timeline::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #ffcc00, #a37b00);
+    border-radius: 3px;
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
+  }
+
+  /* Cards */
+  .achievement-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(15,15,15,0.95), rgba(30,30,30,0.8));
+    border: 1px solid rgba(255, 204, 0, 0.12);
+    border-radius: 14px;
+    padding: 25px 35px;
+    transition: 0.3s ease;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.05);
+  }
+
+  .achievement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.12);
+  }
+
+  /* Linha de conexão na timeline */
+  .achievement-card::before {
+    content: "";
+    position: absolute;
+    left: -30px;
+    width: 18px;
+    height: 18px;
+    background: #000;
+    border: 3px solid #ffcc00;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+  }
+
+  /* Conteúdo */
+  .achievement-content h3 {
+    margin: 0;
+    color: var(--gold);
+    font-size: 18px;
+  }
+
+  .achievement-content p {
+    color: #ccc;
+    margin: 6px 0 14px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .achievement-img img {
+    width: 120px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.25));
+    border-radius: 10px;
+  }
+
+  .badge-top {
+    background: linear-gradient(90deg, #ffcc00, #d4a600);
+    color: #000;
+    display: inline-block;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-bottom: 6px;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+  }
+
+  .status-badge {
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .achievement-card.locked {
+    opacity: 0.5;
+    filter: grayscale(0.7);
+  }
+
+  .achievement-card.unlocked {
+    opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .achievement-card {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .achievements-timeline::before {
+      left: 0;
+    }
+    .achievement-card::before {
+      left: -10px;
+    }
+  }
+</style>
