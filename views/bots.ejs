@@ -1,53 +1,61 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
   <!-- ===============================
-       ⚡ TIGERFY - MINHAS OFERTAS (v3)
+       ⚡ TIGERFY - MINHAS OFERTAS (DECK v4)
   =============================== -->
 
   <div class="offers-wrapper">
     <div class="offers-header">
       <h1>⚡ Minhas Ofertas</h1>
-      <p>Gerencie, crie e visualize fluxos das suas ofertas de forma prática e visual.</p>
+      <p>Gerencie, crie e visualize fluxos e métricas de suas ofertas de forma prática e visual.</p>
     </div>
 
     <div class="offers-grid">
       <!-- GERENCIAR -->
       <div class="offer-card" onclick="openManageModal()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z" />
-        </svg>
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z"/></svg>
         <h3>Gerenciar Ofertas</h3>
-        <p>Veja e edite todas as ofertas criadas dentro do painel TigerFy.</p>
+        <p>Veja e edite todas as ofertas criadas no painel TigerFy.</p>
         <button class="offer-btn">Acessar</button>
       </div>
 
       <!-- CRIAR NOVA -->
       <div class="offer-card" onclick="openCreateModal()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
         <h3>Criar Nova Oferta</h3>
         <p>Defina o nome, tipo e traqueamento da sua nova oferta.</p>
         <button class="offer-btn">Criar</button>
       </div>
 
-      <!-- CRIAR FUNIL -->
+      <!-- FUNIL -->
       <div class="offer-card" onclick="openFunilModal()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18l-7 9v7l-4 2v-9L3 4z" />
-        </svg>
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18l-7 9v7l-4 2v-9L3 4z"/></svg>
         <h3>Criar Funil Visual</h3>
-        <p>Monte visualmente o fluxo da oferta com etapas personalizadas.</p>
+        <p>Monte visualmente o fluxo de cada etapa da oferta.</p>
         <button class="offer-btn">Criar Funil</button>
       </div>
 
-      <!-- VER TUTORIAL -->
+      <!-- TUTORIAL -->
       <div class="offer-card" onclick="openTutorial()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8m-8 4h8m-8 4h4" />
-        </svg>
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8m-8 4h8m-8 4h4"/></svg>
         <h3>Ver Tutorial</h3>
-        <p>Aprenda a criar e configurar ofertas com rastreamento completo.</p>
+        <p>Aprenda passo a passo a dominar o painel TigerFy.</p>
         <button class="offer-btn">Assistir</button>
+      </div>
+
+      <!-- ROI -->
+      <div class="offer-card" onclick="openRoiModal()">
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M9 17l3-3 4 4 5-5"/></svg>
+        <h3>Calcular ROI</h3>
+        <p>Veja o ROI diário, mensal ou anual das suas ofertas.</p>
+        <button class="offer-btn">Calcular</button>
+      </div>
+
+      <!-- IA ILIMITADA -->
+      <div class="offer-card disabled">
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6.364 1.636l-.707.707M20 12h1M17.657 17.657l-.707-.707M12 19v1M6.343 17.657l.707-.707M4 12H3m2.636-6.364l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+        <h3>IA Ilimitada ⚡</h3>
+        <p>Automatize análises e decisões com inteligência artificial. <b>Em breve.</b></p>
+        <button class="offer-btn disabled-btn">Em Breve</button>
       </div>
     </div>
   </div>
@@ -55,79 +63,66 @@
   <!-- ===============================
        🧩 MODAIS
   =============================== -->
-  <div class="modal-bg" id="createModal">
+  <!-- ROI MODAL -->
+  <div class="modal-bg" id="roiModal">
     <div class="modal-content">
-      <h2>🚀 Criar Nova Oferta</h2>
-      <p>Preencha os dados iniciais. Você poderá editar tudo depois.</p>
-      <form>
-        <label>Nome da Oferta</label>
-        <input type="text" placeholder="Ex: Acesso VIP, HotPrime..." />
-        <label>Tipo de Oferta</label>
-        <select>
-          <option>Bot Padrão</option>
-          <option>Fluxo Visual (em breve)</option>
+      <h2>💹 Calcular ROI</h2>
+      <p>Selecione uma oferta e insira os dados abaixo:</p>
+      <form id="roiForm">
+        <label>Selecione a Oferta</label>
+        <select id="roiOffer">
+          <option>Oferta A</option>
+          <option>Oferta B</option>
+          <option>Oferta C</option>
         </select>
-        <label>Tipo de Traqueamento (opcional)</label>
-        <select>
-          <option>Usar seu Traqueamento Próprio</option>
-          <option>Utmify + Facebook (em breve)</option>
-        </select>
+        <label>Valor Investido (R$)</label>
+        <input type="number" id="invested" placeholder="Ex: 500" />
+        <label>Retorno Obtido (R$)</label>
+        <input type="number" id="returned" placeholder="Ex: 1250" />
         <div class="form-actions">
-          <button type="button" class="cancel" onclick="closeCreateModal()">Cancelar</button>
-          <button type="submit" class="confirm">Salvar</button>
+          <button type="button" class="cancel" onclick="closeRoiModal()">Fechar</button>
+          <button type="button" class="confirm" onclick="calcRoi()">Calcular</button>
         </div>
+        <div id="roiResult" class="roi-result"></div>
       </form>
-    </div>
-  </div>
-
-  <div class="modal-bg" id="manageModal">
-    <div class="modal-content">
-      <h2>📋 Suas Ofertas</h2>
-      <p>Gerencie e edite todas as ofertas criadas. (Em breve)</p>
-      <button class="confirm" onclick="closeManageModal()">Fechar</button>
-    </div>
-  </div>
-
-  <div class="modal-bg" id="funilModal">
-    <div class="modal-content video">
-      <h2>🧭 Criar Funil Visual</h2>
-      <p>Monte o funil de forma visual — ideal para planejar suas etapas.</p>
-      <iframe src="https://embed.figma.com/proto/Tq2vzq1?..." title="Funil Visual" frameborder="0"></iframe>
-      <button class="confirm" onclick="closeFunilModal()">Fechar</button>
     </div>
   </div>
 
   <div class="modal-bg" id="tutorialModal">
     <div class="modal-content video">
       <h2>🎬 Tutorial TigerFy</h2>
-      <p>Aprenda passo a passo com o vídeo oficial.</p>
-      <iframe src="https://www.youtube.com/embed/WNesCpWnclQ" title="Tutorial TigerFy" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/WNesCpWnclQ" allowfullscreen></iframe>
       <button class="confirm" onclick="closeTutorial()">Fechar</button>
     </div>
   </div>
 
   <script>
-    function openCreateModal(){document.getElementById('createModal').classList.add('show')}
-    function closeCreateModal(){document.getElementById('createModal').classList.remove('show')}
-    function openManageModal(){document.getElementById('manageModal').classList.add('show')}
-    function closeManageModal(){document.getElementById('manageModal').classList.remove('show')}
-    function openFunilModal(){document.getElementById('funilModal').classList.add('show')}
-    function closeFunilModal(){document.getElementById('funilModal').classList.remove('show')}
     function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
     function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
+    function openRoiModal(){document.getElementById('roiModal').classList.add('show')}
+    function closeRoiModal(){document.getElementById('roiModal').classList.remove('show')}
+    function calcRoi(){
+      const inv = parseFloat(document.getElementById('invested').value)
+      const ret = parseFloat(document.getElementById('returned').value)
+      if(!inv || !ret) return alert('Preencha todos os campos!')
+      const roi = ((ret - inv) / inv * 100).toFixed(2)
+      const res = document.getElementById('roiResult')
+      res.innerHTML = \`<hr><b>ROI:</b> \${roi}%<br><b>Investido:</b> R$\${inv.toFixed(2)}<br><b>Retorno:</b> R$\${ret.toFixed(2)}\`
+    }
   </script>
 
   <style>
     /* ===============================
-       🎨 CENTRALIZAÇÃO PREMIUM
+       🎯 CENTRALIZAÇÃO E LAYOUT
     =============================== */
     .offers-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: calc(100vh - 100px);
+      min-height: calc(100vh - 100px);
       text-align: center;
+      padding: 20px;
     }
 
     .offers-header h1 {
@@ -136,124 +131,82 @@
       margin-bottom: 10px;
     }
 
-    .offers-header p {
-      color: #b4b4b4;
-      font-size: 0.95rem;
-    }
+    .offers-header p { color: #b4b4b4; }
 
     .offers-grid {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 25px;
-      flex-wrap: wrap;
-      margin-top: 40px;
-      max-width: 1200px;
+      max-width: 1000px;
+      margin-top: 50px;
+      justify-items: center;
     }
 
     .offer-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 204, 0, 0.15);
-      border-radius: 14px;
-      padding: 30px 25px;
       width: 260px;
-      text-align: center;
-      transition: 0.3s;
+      height: 260px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,204,0,0.15);
+      border-radius: 14px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      transition: .3s;
       cursor: pointer;
     }
 
-    .offer-card:hover {
-      background: rgba(255, 204, 0, 0.08);
+    .offer-card:hover:not(.disabled) {
+      background: rgba(255,204,0,0.08);
+      box-shadow: 0 0 15px rgba(255,204,0,0.15);
       transform: translateY(-3px);
-      box-shadow: 0 0 14px rgba(255, 204, 0, 0.12);
     }
 
-    .offer-icon {
-      width: 32px;
-      height: 32px;
-      color: #ffcc00;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 0 4px rgba(255, 204, 0, 0.4));
-    }
+    .offer-icon { width: 36px; height: 36px; color: #ffcc00; }
+    .offer-card h3 { color: #fff; margin: 10px 0 5px; }
+    .offer-card p { color: #b4b4b4; font-size: .9rem; min-height: 45px; }
 
     .offer-btn {
-      background: linear-gradient(90deg, #ffcc00, #d4a100);
-      border: none;
-      border-radius: 8px;
-      color: #000;
-      font-weight: 600;
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: 0.25s;
+      background: linear-gradient(90deg,#ffcc00,#d4a100);
+      color: #000; border:none; border-radius:8px;
+      padding:8px 16px; font-weight:600; cursor:pointer;
     }
 
-    .offer-btn:hover { filter: brightness(1.15); }
+    .disabled { opacity: .5; pointer-events:none; }
+    .disabled-btn { background: #555; color: #aaa; cursor: not-allowed; }
 
     /* ===============================
-       🪩 MODAIS
+       MODAIS E ROI
     =============================== */
     .modal-bg {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+      display: none; align-items: center; justify-content: center; z-index: 1000;
     }
-
     .modal-bg.show { display: flex; }
 
     .modal-content {
-      background: rgba(15, 15, 15, 0.95);
-      border: 1px solid rgba(255, 204, 0, 0.25);
+      background: rgba(15,15,15,0.95);
+      border: 1px solid rgba(255,204,0,0.25);
       border-radius: 14px;
       padding: 30px;
       width: 480px;
       color: #fff;
-      animation: slideUp 0.4s ease;
+      text-align: left;
+      animation: slideUp .4s ease;
     }
 
-    .modal-content.video {
-      width: 640px;
-      text-align: center;
-    }
-
-    .modal-content iframe {
-      width: 100%;
-      height: 320px;
-      border-radius: 10px;
-      margin: 10px 0;
-    }
+    .modal-content.video { width: 640px; text-align: center; }
+    iframe { width: 100%; height: 320px; border-radius: 10px; }
 
     .confirm, .cancel {
-      border-radius: 8px;
-      font-weight: 600;
-      padding: 10px 18px;
-      cursor: pointer;
+      border-radius: 8px; font-weight: 600; padding: 10px 18px; cursor: pointer;
     }
+    .confirm { background: #ffcc00; color: #000; border: none; }
+    .cancel { background: transparent; border: 1px solid #ffcc00; color: #ffcc00; }
 
-    .confirm {
-      background: #ffcc00;
-      color: #000;
-      border: none;
-    }
+    #roiResult { margin-top: 15px; color: #ffcc00; line-height: 1.6; }
 
-    .cancel {
-      background: transparent;
-      border: 1px solid #ffcc00;
-      color: #ffcc00;
-    }
-
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+    @keyframes slideUp { from{transform:translateY(30px);opacity:0;} to{transform:translateY(0);opacity:1;} }
   </style>
 ` }) %>
