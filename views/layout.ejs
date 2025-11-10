@@ -47,20 +47,21 @@
     box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
   }
 
-/* LOGO ALINHADO PERFEITAMENTE À COLUNA DOS MENUS */
+/* LOGO 100% ALINHADO À COLUNA DOS MENUS (ESTILO HOTTRACK) */
 .sidebar-header {
-  padding-left: 28px; /* igual ao padding dos itens de menu */
+  padding-left: 28px; /* mantém o mesmo padding dos menus */
   margin-bottom: 26px;
   display: flex;
   align-items: center;
   gap: 8px;
+  transform: translateX(-2px); /* move tudo 2px pra esquerda */
 }
 
 .logo-icon svg {
   width: 20px;
   height: 20px;
   stroke: var(--gold);
-  transform: translateY(1px); /* mantém centralização vertical */
+  transform: translateY(1px);
 }
 
 .logo-text {
