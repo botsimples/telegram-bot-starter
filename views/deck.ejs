@@ -1,99 +1,38 @@
-<div class="tiger-dashboard">
-  <!-- HEADER -->
-  <div class="tiger-header">
-    <div>
-      <h1>Estatísticas Gerais</h1>
-      <p>Visão geral de toda a plataforma.</p>
-    </div>
-    <button class="filter-btn">Filtrar Ofertas</button>
-  </div>
+<%- include('layout', { title: 'Deck', active: 'deck', body: `
+  <canvas id="bgParticles"></canvas>
 
-  <!-- GRID DE MÉTRICAS -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>Total de Vendas</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Ano</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Mês</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Dia</h3>
-      <span>R$ 0,00</span>
-    </div>
-
-    <div class="stat-card">
-      <h3>Total Usuários</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Ano</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Mês</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Dia</h3>
-      <span>0</span>
-    </div>
-
-    <!-- novos 4 blocos -->
-    <div class="stat-card">
-      <h3>Conversões Ativas</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Taxa de Conversão</h3>
-      <span>0%</span>
-    </div>
-    <div class="stat-card">
-      <h3>Ticket Médio</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Lucro Estimado</h3>
-      <span>R$ 0,00</span>
-    </div>
-  </div>
-
-  <!-- BLOCO DE GRÁFICO -->
-  <div class="chart-block">
-    <div class="chart-head">
-      <h3>Usuários por Horário</h3>
-      <div class="tabs">
-        <button class="active">Hoje</button>
-        <button>Ontem</button>
-        <button>Essa Semana</button>
-        <button>Esse Mês</button>
-        <button>Personalizado</button>
+  <div class="tiger-dashboard fade-in">
+    <div class="tiger-header">
+      <div>
+        <h1>📊 Estatísticas Gerais</h1>
+        <p>Visão geral de toda a plataforma.</p>
       </div>
+      <button class="filter-btn">Filtrar Ofertas</button>
     </div>
-    <div class="chart-placeholder">[ gráfico em breve ]</div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><h3>Total de Vendas</h3><span>R$ 0,00</span></div>
+      <div class="stat-card"><h3>Vendas no Ano</h3><span>R$ 0,00</span></div>
+      <div class="stat-card"><h3>Taxa de Conversão</h3><span>0%</span></div>
+      <div class="stat-card"><h3>Ticket Médio</h3><span>R$ 0,00</span></div>
+    </div>
+
+    <div class="chart-block">
+      <h3>Usuários por Horário</h3>
+      <div class="chart-placeholder">[ gráfico em breve ]</div>
+    </div>
   </div>
 
-  <!-- TABELA -->
-  <div class="table-block">
-    <h3>Pagamentos Recentes</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Usuário</th>
-          <th>Valor</th>
-          <th>Status</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+  <script>
+    const c=document.getElementById('bgParticles');
+    const ctx=c.getContext('2d',{alpha:true});
+    let w,h,DPR=window.devicePixelRatio||1;
+    function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+    resize();addEventListener('resize',resize,{passive:true});
+    const p=[];for(let i=0;i<60;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
+    function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.25)';
+      for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}
+      requestAnimationFrame(draw);}
+    draw();
+  </script>
+` }) %>
