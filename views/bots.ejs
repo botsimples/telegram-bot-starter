@@ -1,76 +1,65 @@
 <div class="offers-container fade-in">
   <header class="offers-header">
     <div class="text-center">
-      <h1>🔥 Ofertas Ativas</h1>
-      <p>Gerencie e monitore suas campanhas em tempo real.</p>
+      <h1>⚡ Minhas Ofertas</h1>
+      <p>Gerencie e crie novas automações diretamente pelo painel TigerFy.</p>
     </div>
 
     <div class="offers-actions">
       <button class="btn-gold-outline">Gerenciar Ofertas</button>
-      <button class="btn-gold">Criar Nova Oferta</button>
+      <button id="btn-create-offer" class="btn-gold">Criar Nova Oferta</button>
     </div>
   </header>
+</div>
 
-  <section class="stats-grid">
-    <div class="stat-card">
-      <h4>Total de Ofertas</h4>
-      <p>0</p>
-    </div>
-    <div class="stat-card">
-      <h4>Ofertas Ativas</h4>
-      <p>0</p>
-    </div>
-    <div class="stat-card">
-      <h4>Conversões Hoje</h4>
-      <p>0</p>
-    </div>
-    <div class="stat-card">
-      <h4>Taxa de Conversão</h4>
-      <p>0%</p>
-    </div>
-  </section>
+<!-- FUTURO MODAL DE CRIAÇÃO DE OFERTA -->
+<div id="create-offer-modal" class="modal">
+  <div class="modal-content">
+    <h2>🧩 Criar Nova Oferta</h2>
+    <p class="modal-subtitle">Configure o bot e as opções de rastreamento.</p>
 
-  <section class="offers-table">
-    <h2>📋 Lista de Ofertas</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Status</th>
-          <th>Valor</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td colspan="5">Nenhuma oferta cadastrada ainda</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+    <form>
+      <div class="form-group">
+        <label for="telegramToken">Token do Bot do Telegram (BotFather)</label>
+        <input type="text" id="telegramToken" placeholder="Insira o token gerado pelo BotFather" />
+      </div>
+
+      <div class="form-group">
+        <label for="botName">Nome do Bot (opcional)</label>
+        <input type="text" id="botName" placeholder="Ex: caronavip_bot" />
+      </div>
+
+      <div class="form-group">
+        <label>Integrações de Rastreamento</label>
+        <div class="radio-options">
+          <label><input type="radio" name="tracking" value="utmify_pixel" checked /> Usar UTMify + Pixel do Facebook</label>
+          <label><input type="radio" name="tracking" value="utmify_only" /> Utilizar apenas UTMify</label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-gold-outline" id="cancel-offer">Cancelar</button>
+        <button type="submit" class="btn-gold">Salvar Oferta</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <style>
   .offers-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 40px;
+    padding: 40px 0;
     animation: fadeIn 0.6s ease forwards;
-  }
-
-  .offers-header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px 0;
   }
 
   .offers-header h1 {
     font-size: 2rem;
     font-weight: 700;
     color: #ffcc00;
+    margin-bottom: 8px;
     letter-spacing: 0.5px;
   }
 
@@ -82,8 +71,8 @@
   .offers-actions {
     display: flex;
     justify-content: center;
-    gap: 16px;
-    margin-top: 10px;
+    gap: 18px;
+    margin-top: 25px;
   }
 
   .btn-gold,
@@ -117,83 +106,104 @@
     background: rgba(255, 204, 0, 0.1);
   }
 
-  /* === CARDS === */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+  /* === MODAL === */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
   }
 
-  .stat-card {
-    background: rgba(20, 20, 20, 0.75);
-    border: 1px solid rgba(255, 204, 0, 0.1);
+  .modal-content {
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(255, 204, 0, 0.15);
     border-radius: 14px;
-    padding: 22px;
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-  .stat-card:hover {
-    border-color: rgba(255, 204, 0, 0.25);
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
-  }
-
-  .stat-card h4 {
-    margin-bottom: 10px;
-    color: #ffcc00;
-    font-weight: 600;
-  }
-
-  .stat-card p {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  /* === TABELA === */
-  .offers-table {
-    margin-top: 20px;
-  }
-
-  .offers-table h2 {
-    color: #ffcc00;
-    font-size: 1.3rem;
-    margin-bottom: 12px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px;
-    overflow: hidden;
-    background: rgba(15, 15, 15, 0.75);
-  }
-
-  thead {
-    background: rgba(255, 204, 0, 0.07);
-  }
-
-  th, td {
-    padding: 12px 16px;
+    width: 480px;
+    max-width: 90%;
+    padding: 35px;
     text-align: left;
+    animation: popIn 0.4s ease;
   }
 
-  th {
+  .modal-content h2 {
     color: #ffcc00;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
   }
 
-  td {
+  .modal-subtitle {
     color: #b4b4b4;
     font-size: 0.9rem;
+    margin-bottom: 20px;
   }
 
-  tbody tr:hover {
-    background: rgba(255, 204, 0, 0.05);
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    color: #ffcc00;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  input[type="text"] {
+    background: rgba(15, 15, 15, 0.85);
+    border: 1px solid rgba(255, 204, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: 0.2s;
+  }
+
+  input[type="text"]:focus {
+    border-color: rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.25);
+  }
+
+  .radio-options label {
+    display: block;
+    color: #d1d1d1;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
   }
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
 </style>
+
+<script>
+  // MODAL
+  const modal = document.getElementById("create-offer-modal");
+  const btnOpen = document.getElementById("btn-create-offer");
+  const btnCancel = document.getElementById("cancel-offer");
+
+  btnOpen.addEventListener("click", () => (modal.style.display = "flex"));
+  btnCancel.addEventListener("click", () => (modal.style.display = "none"));
+  window.addEventListener("click", e => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+</script>
