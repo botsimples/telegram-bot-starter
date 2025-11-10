@@ -47,20 +47,20 @@
     box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
   }
 
-/* LOGO ALINHADO PRECISAMENTE À COLUNA */
+/* LOGO ALINHADO COM A COLUNA DOS MENUS (PERFEITO) */
 .sidebar-header {
-  padding-left: 14px; /* antes era 18px, agora alinha com os ícones e textos */
+  padding-left: 8px; /* reduzido para alinhar com os ícones do menu */
   margin-bottom: 26px;
   display: flex;
   align-items: center;
-  gap: 6px; /* reduzido pra colar o raio no TigerFy */
+  gap: 5px; /* encaixe exato entre o raio e o texto */
 }
 
 .logo-icon svg {
   width: 20px;
   height: 20px;
   stroke: var(--gold);
-  transform: translateY(1px);
+  transform: translateY(1px) translateX(1px); /* ligeiro avanço pra compensar o menor padding */
 }
 
 .logo-text {
