@@ -1,72 +1,77 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
   <!-- ===============================
-       ⚡ TIGERFY - MINHAS OFERTAS
-       Versão refinada com 3 blocos centrais
+       ⚡ TIGERFY - MINHAS OFERTAS (v3)
   =============================== -->
 
-  <div class="offers-wrapper fade-in">
+  <div class="offers-wrapper">
     <div class="offers-header">
       <h1>⚡ Minhas Ofertas</h1>
-      <p>Gerencie e crie automações inteligentes de forma prática e visual.</p>
+      <p>Gerencie, crie e visualize fluxos das suas ofertas de forma prática e visual.</p>
     </div>
 
     <div class="offers-grid">
-      <!-- BLOCO 1 -->
-      <div class="offer-card">
-        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+      <!-- GERENCIAR -->
+      <div class="offer-card" onclick="openManageModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z" />
         </svg>
         <h3>Gerenciar Ofertas</h3>
-        <p>Veja e edite todas as suas ofertas existentes no painel TigerFy.</p>
-        <button class="offer-btn" onclick="window.location.href='/bots/manage'">Acessar</button>
+        <p>Veja e edite todas as ofertas criadas dentro do painel TigerFy.</p>
+        <button class="offer-btn">Acessar</button>
       </div>
 
-      <!-- BLOCO 2 -->
-      <div class="offer-card">
-        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+      <!-- CRIAR NOVA -->
+      <div class="offer-card" onclick="openCreateModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
         </svg>
         <h3>Criar Nova Oferta</h3>
         <p>Defina o nome, tipo e traqueamento da sua nova oferta.</p>
-        <button class="offer-btn" onclick="openCreateModal()">Criar</button>
+        <button class="offer-btn">Criar</button>
       </div>
 
-      <!-- BLOCO 3 -->
-      <div class="offer-card">
-        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+      <!-- CRIAR FUNIL -->
+      <div class="offer-card" onclick="openFunilModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18l-7 9v7l-4 2v-9L3 4z" />
+        </svg>
+        <h3>Criar Funil Visual</h3>
+        <p>Monte visualmente o fluxo da oferta com etapas personalizadas.</p>
+        <button class="offer-btn">Criar Funil</button>
+      </div>
+
+      <!-- VER TUTORIAL -->
+      <div class="offer-card" onclick="openTutorial()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="offer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8m-8 4h8m-8 4h4" />
         </svg>
         <h3>Ver Tutorial</h3>
         <p>Aprenda a criar e configurar ofertas com rastreamento completo.</p>
-        <button class="offer-btn" onclick="openTutorial()">Assistir</button>
+        <button class="offer-btn">Assistir</button>
       </div>
     </div>
   </div>
 
   <!-- ===============================
-       🧩 MODAL: CRIAR OFERTA
+       🧩 MODAIS
   =============================== -->
   <div class="modal-bg" id="createModal">
     <div class="modal-content">
       <h2>🚀 Criar Nova Oferta</h2>
-      <p>Você pode editar todos os detalhes depois.</p>
-
-      <form class="create-form">
+      <p>Preencha os dados iniciais. Você poderá editar tudo depois.</p>
+      <form>
         <label>Nome da Oferta</label>
         <input type="text" placeholder="Ex: Acesso VIP, HotPrime..." />
-
         <label>Tipo de Oferta</label>
         <select>
           <option>Bot Padrão</option>
           <option>Fluxo Visual (em breve)</option>
         </select>
-
         <label>Tipo de Traqueamento (opcional)</label>
         <select>
           <option>Usar seu Traqueamento Próprio</option>
-          <option>Utmify + Pixel Facebook (em breve)</option>
+          <option>Utmify + Facebook (em breve)</option>
         </select>
-
         <div class="form-actions">
           <button type="button" class="cancel" onclick="closeCreateModal()">Cancelar</button>
           <button type="submit" class="confirm">Salvar</button>
@@ -75,40 +80,54 @@
     </div>
   </div>
 
-  <!-- ===============================
-       🎥 MODAL: TUTORIAL
-  =============================== -->
+  <div class="modal-bg" id="manageModal">
+    <div class="modal-content">
+      <h2>📋 Suas Ofertas</h2>
+      <p>Gerencie e edite todas as ofertas criadas. (Em breve)</p>
+      <button class="confirm" onclick="closeManageModal()">Fechar</button>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="funilModal">
+    <div class="modal-content video">
+      <h2>🧭 Criar Funil Visual</h2>
+      <p>Monte o funil de forma visual — ideal para planejar suas etapas.</p>
+      <iframe src="https://embed.figma.com/proto/Tq2vzq1?..." title="Funil Visual" frameborder="0"></iframe>
+      <button class="confirm" onclick="closeFunilModal()">Fechar</button>
+    </div>
+  </div>
+
   <div class="modal-bg" id="tutorialModal">
     <div class="modal-content video">
       <h2>🎬 Tutorial TigerFy</h2>
-      <p>Veja como criar suas ofertas e conectar rastreamento completo.</p>
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Tutorial TigerFy" frameborder="0" allowfullscreen></iframe>
+      <p>Aprenda passo a passo com o vídeo oficial.</p>
+      <iframe src="https://www.youtube.com/embed/WNesCpWnclQ" title="Tutorial TigerFy" frameborder="0" allowfullscreen></iframe>
       <button class="confirm" onclick="closeTutorial()">Fechar</button>
     </div>
   </div>
 
   <script>
-    function openCreateModal() {
-      document.getElementById('createModal').classList.add('show');
-    }
-    function closeCreateModal() {
-      document.getElementById('createModal').classList.remove('show');
-    }
-    function openTutorial() {
-      document.getElementById('tutorialModal').classList.add('show');
-    }
-    function closeTutorial() {
-      document.getElementById('tutorialModal').classList.remove('show');
-    }
+    function openCreateModal(){document.getElementById('createModal').classList.add('show')}
+    function closeCreateModal(){document.getElementById('createModal').classList.remove('show')}
+    function openManageModal(){document.getElementById('manageModal').classList.add('show')}
+    function closeManageModal(){document.getElementById('manageModal').classList.remove('show')}
+    function openFunilModal(){document.getElementById('funilModal').classList.add('show')}
+    function closeFunilModal(){document.getElementById('funilModal').classList.remove('show')}
+    function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
+    function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
   </script>
 
   <style>
     /* ===============================
-       🌌 LAYOUT CENTRAL E ANIMAÇÃO
+       🎨 CENTRALIZAÇÃO PREMIUM
     =============================== */
     .offers-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 100px);
       text-align: center;
-      padding-top: 60px;
     }
 
     .offers-header h1 {
@@ -126,49 +145,35 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 35px;
-      margin-top: 60px;
+      gap: 25px;
       flex-wrap: wrap;
+      margin-top: 40px;
+      max-width: 1200px;
     }
 
-    /* ===============================
-       🟨 BLOCO DE OFERTA
-    =============================== */
     .offer-card {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 204, 0, 0.15);
       border-radius: 14px;
-      padding: 30px 28px;
-      width: 300px;
+      padding: 30px 25px;
+      width: 260px;
       text-align: center;
       transition: 0.3s;
+      cursor: pointer;
     }
 
     .offer-card:hover {
-      background: rgba(255, 204, 0, 0.06);
+      background: rgba(255, 204, 0, 0.08);
       transform: translateY(-3px);
-      box-shadow: 0 0 12px rgba(255, 204, 0, 0.12);
+      box-shadow: 0 0 14px rgba(255, 204, 0, 0.12);
     }
 
     .offer-icon {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       color: #ffcc00;
       margin-bottom: 10px;
-      opacity: 0.9;
-      filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.4));
-    }
-
-    .offer-card h3 {
-      color: #fff;
-      margin-bottom: 6px;
-      font-size: 1.1rem;
-    }
-
-    .offer-card p {
-      color: #b4b4b4;
-      font-size: 0.9rem;
-      margin-bottom: 16px;
+      filter: drop-shadow(0 0 4px rgba(255, 204, 0, 0.4));
     }
 
     .offer-btn {
@@ -177,17 +182,15 @@
       border-radius: 8px;
       color: #000;
       font-weight: 600;
-      padding: 10px 18px;
+      padding: 8px 16px;
       cursor: pointer;
       transition: 0.25s;
     }
 
-    .offer-btn:hover {
-      filter: brightness(1.15);
-    }
+    .offer-btn:hover { filter: brightness(1.15); }
 
     /* ===============================
-       🪩 MODAIS (CRIAR E TUTORIAL)
+       🪩 MODAIS
     =============================== */
     .modal-bg {
       position: fixed;
@@ -198,19 +201,17 @@
       justify-content: center;
       z-index: 1000;
     }
-    .modal-bg.show {
-      display: flex;
-    }
+
+    .modal-bg.show { display: flex; }
 
     .modal-content {
       background: rgba(15, 15, 15, 0.95);
-      border: 1px solid rgba(255, 204, 0, 0.2);
+      border: 1px solid rgba(255, 204, 0, 0.25);
       border-radius: 14px;
       padding: 30px;
       width: 480px;
-      text-align: left;
-      animation: slideUp 0.4s ease;
       color: #fff;
+      animation: slideUp 0.4s ease;
     }
 
     .modal-content.video {
@@ -222,70 +223,32 @@
       width: 100%;
       height: 320px;
       border-radius: 10px;
-      margin-top: 10px;
+      margin: 10px 0;
     }
 
-    .modal-content h2 {
-      color: #ffcc00;
-      margin-bottom: 10px;
-    }
-
-    .modal-content p {
-      color: #ccc;
-      margin-bottom: 20px;
-      font-size: 0.95rem;
-    }
-
-    .create-form label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-      color: #ffcc00;
-    }
-
-    .create-form input,
-    .create-form select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 204, 0, 0.15);
+    .confirm, .cancel {
       border-radius: 8px;
-      color: #fff;
-      font-size: 0.9rem;
-    }
-
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
+      font-weight: 600;
+      padding: 10px 18px;
+      cursor: pointer;
     }
 
     .confirm {
       background: #ffcc00;
       color: #000;
       border: none;
-      border-radius: 8px;
-      padding: 10px 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .confirm:hover {
-      filter: brightness(1.15);
     }
 
     .cancel {
       background: transparent;
       border: 1px solid #ffcc00;
       color: #ffcc00;
-      border-radius: 8px;
-      padding: 9px 16px;
-      cursor: pointer;
-      transition: 0.3s;
     }
-    .cancel:hover {
-      background: rgba(255, 204, 0, 0.1);
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
 
     @keyframes slideUp {
