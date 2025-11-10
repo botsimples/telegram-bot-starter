@@ -10,109 +10,123 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <style>
-      :root {
-        --gold: #ffcc00;
-        --sidebar-bg: #0b0b0b;
-        --hover-bg: rgba(255, 204, 0, 0.05);
-        --active-bg: #ffcc00;
-        --text-muted: #b4b4b4;
-        --divider: #1c1c1c;
-      }
+   <style>
+  :root {
+    --gold: #ffcc00;
+    --sidebar-bg: #0b0b0b;
+    --hover-bg: rgba(255, 204, 0, 0.08);
+    --active-bg: rgba(255, 204, 0, 0.18);
+    --text-muted: #b4b4b4;
+    --text-active: #fff;
+    --divider: #1c1c1c;
+  }
 
-      body {
-        margin: 0;
-        font-family: "Inter", sans-serif;
-        background: #000;
-        color: #fff;
-        display: flex;
-        min-height: 100vh;
-      }
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    background: radial-gradient(circle at top left, #111 0%, #000 100%);
+    color: #fff;
+    min-height: 100vh;
+  }
 
-      .tigerfy-app {
-        display: flex;
-        width: 100%;
-      }
+  .tigerfy-app {
+    display: flex;
+    width: 100%;
+  }
 
-      /* SIDEBAR */
-      .sidebar {
-        width: 250px;
-        background: var(--sidebar-bg);
-        border-right: 1px solid var(--divider);
-        display: flex;
-        flex-direction: column;
-        padding: 25px 0;
-      }
+  /* SIDEBAR */
+  .sidebar {
+    width: 250px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--divider);
+    display: flex;
+    flex-direction: column;
+    padding: 25px 0;
+  }
 
-      /* LOGO */
-      .sidebar-header {
-        padding: 0 25px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+  /* LOGO */
+  .sidebar-header {
+    padding: 0 28px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-      .logo-icon svg {
-        width: 20px;
-        height: 20px;
-        stroke: var(--gold);
-      }
+  .logo-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--gold);
+  }
 
-      .logo-text {
-        font-size: 20px;
-        font-weight: 800;
-        color: var(--gold);
-      }
+  .logo-text {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
 
-      /* MENU */
-      nav.menu {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
+  /* MENU */
+  nav.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
 
-      .menu a {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-        color: var(--text-muted);
-        font-weight: 500;
-        padding: 10px 25px;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-      }
+  .menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 10px 28px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
 
-      .menu a:hover {
-        background: var(--hover-bg);
-        color: var(--gold);
-      }
+  .menu a:hover {
+    background: var(--hover-bg);
+    color: var(--gold);
+  }
 
-      .menu a.active {
-        background: var(--active-bg);
-        color: #000;
-        font-weight: 600;
-      }
+  .menu a.active {
+    background: var(--active-bg);
+    border-left: 3px solid var(--gold);
+    color: var(--text-active);
+    font-weight: 600;
+  }
 
-      .menu svg {
-        width: 18px;
-        height: 18px;
-      }
+  .menu svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.8;
+  }
 
-      /* LINHA DIVISÓRIA */
-      .menu-divider {
-        height: 1px;
-        background: linear-gradient(to right, #1c1c1c, #2d2d2d, #1c1c1c);
-        margin: 16px 25px;
-      }
+  /* LINHA DIVISÓRIA */
+  .menu-divider {
+    height: 1px;
+    background: linear-gradient(to right, #1a1a1a, #2a2a2a, #1a1a1a);
+    margin: 18px 24px;
+  }
 
-      .main-content {
-        flex: 1;
-        padding: 40px;
-        overflow-y: auto;
-      }
-    </style>
+  /* ALINHAMENTO E RESPONSIVIDADE */
+  @media (max-height: 800px) {
+    .sidebar {
+      padding: 15px 0;
+    }
+    .sidebar-header {
+      margin-bottom: 20px;
+    }
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+  }
+</style>
   </head>
 
   <body>
