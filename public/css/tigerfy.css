@@ -1867,3 +1867,29 @@ body::after {
   max-width: 100% !important;
   overflow-x: hidden !important;
 }
+
+   /* LOGO ESTILO HOTTRACK + EMOJI IPHONE */
+.sidebar-header {
+  margin-bottom: 26px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transform: translateX(-10px); /* alinhado com colunas */
+}
+
+.logo-icon {
+  font-size: 22px;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px rgba(255, 204, 0, 0.6));
+  transform: translateY(1px);
+}
+
+.logo-text {
+  font-family: "Poppins", "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 21px;
+  color: #ffcc00;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
+  transform: translateY(1px);
+}
