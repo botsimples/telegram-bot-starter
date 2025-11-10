@@ -15,9 +15,11 @@
       :root {
         --gold: #ffcc00;
         --sidebar-bg: #0b0b0b;
-        --hover-bg: #161616;
+        --hover-bg: rgba(255, 204, 0, 0.08);
+        --active-bg: rgba(255, 204, 0, 0.15);
         --text-muted: #b4b4b4;
-        --text-active: #000;
+        --text-active: #fff;
+        --divider: #1c1c1c;
       }
 
       body {
@@ -38,7 +40,7 @@
       .sidebar {
         width: 250px;
         background: var(--sidebar-bg);
-        border-right: 1px solid #1c1c1c;
+        border-right: 1px solid var(--divider);
         display: flex;
         flex-direction: column;
         padding: 25px 0;
@@ -46,8 +48,8 @@
 
       /* LOGO */
       .sidebar-header {
-        padding: 0 24px;
-        margin-bottom: 30px;
+        padding: 0 28px;
+        margin-bottom: 28px;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -80,7 +82,7 @@
         text-decoration: none;
         color: var(--text-muted);
         font-weight: 500;
-        padding: 10px 24px;
+        padding: 10px 28px;
         border-radius: 8px;
         transition: all 0.2s ease;
       }
@@ -88,12 +90,13 @@
       .menu a:hover {
         background: var(--hover-bg);
         color: var(--gold);
-        box-shadow: 0 0 8px rgba(255, 204, 0, 0.15);
       }
 
       .menu a.active {
-        background: linear-gradient(90deg, var(--gold), #e6b800);
+        background: var(--active-bg);
         color: var(--text-active);
+        border-left: 3px solid var(--gold);
+        box-shadow: inset 0 0 4px rgba(255, 204, 0, 0.2);
         font-weight: 600;
       }
 
@@ -103,10 +106,10 @@
         stroke-width: 1.8;
       }
 
-      /* LINHA SEPARADORA */
+      /* LINHA DIVISÓRIA */
       .menu-divider {
         height: 1px;
-        background: #1c1c1c;
+        background: linear-gradient(to right, #1a1a1a, #2a2a2a, #1a1a1a);
         margin: 18px 24px;
       }
 
@@ -132,7 +135,7 @@
           <span class="logo-text">TigerFy</span>
         </div>
 
-        <!-- MENU PRINCIPAL -->
+        <!-- MENU -->
         <nav class="menu">
           <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
