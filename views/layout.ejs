@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %> | TigerFy</title>
 
-    <!-- CSS base -->
     <link rel="stylesheet" href="/css/tigerfy.css" />
     <link rel="stylesheet" href="/css/deck.theme.gold.css" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,7 +34,7 @@
         width: 100%;
       }
 
-      /* Sidebar estilo HotTrack */
+      /* SIDEBAR */
       .sidebar {
         width: 250px;
         background: var(--sidebar-bg);
@@ -47,7 +45,7 @@
         padding: 25px 0;
       }
 
-      /* Logo */
+      /* LOGO */
       .sidebar-header {
         padding: 0 24px;
         margin-bottom: 30px;
@@ -69,11 +67,12 @@
         letter-spacing: 0.5px;
       }
 
-      /* Menu */
+      /* MENU */
       nav.menu {
         display: flex;
         flex-direction: column;
         gap: 6px;
+        flex-grow: 1;
       }
 
       .menu a {
@@ -111,8 +110,10 @@
         margin: 15px 24px;
       }
 
+      /* FOOTER */
       .sidebar-footer {
-        padding: 0 24px;
+        padding: 15px 24px 0;
+        border-top: 1px solid #1c1c1c;
       }
 
       .logout-btn {
@@ -167,15 +168,17 @@
             </a>
 
             <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+              <!-- Checkout Icon -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m-4-8a9 9 0 110 18 9 9 0 010-18z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h12l2-9M10 21a1 1 0 11-2 0 1 1 0 012 0zm8 0a1 1 0 11-2 0 1 1 0 012 0z" />
               </svg>
               <span>Ofertas</span>
             </a>
 
             <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+              <!-- API PIX Icon -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l7-9 7 9-7 9-7-9z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16M12 4l8 8-8 8-8-8 8-8z" />
               </svg>
               <span>Adquirentes</span>
             </a>
@@ -183,8 +186,9 @@
             <div class="menu-divider"></div>
 
             <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
+              <!-- Trophy Icon -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m0-4c3.314 0 6-2.686 6-6V5H6v6c0 3.314 2.686 6 6 6zM4 5h16M5 5V3h2v2H5zm12 0V3h2v2h-2z" />
               </svg>
               <span>Conquistas</span>
             </a>
