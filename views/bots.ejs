@@ -1,4 +1,5 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
+  <!-- FUNDO ANIMADO DOURADO -->
   <canvas id="bgParticles"></canvas>
 
   <div class="offers-page">
@@ -9,7 +10,6 @@
       </div>
 
       <div class="offers-grid">
-        <!-- GERENCIAR -->
         <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z"/></svg>
           <h3>Gerenciar Ofertas</h3>
@@ -17,7 +17,6 @@
           <button class="offer-btn">Acessar</button>
         </div>
 
-        <!-- CRIAR -->
         <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
           <h3>Criar Nova Oferta</h3>
@@ -25,7 +24,6 @@
           <button class="offer-btn">Criar</button>
         </div>
 
-        <!-- FUNIL -->
         <div class="offer-card">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18l-7 9v7l-4 2v-9L3 4z"/></svg>
           <h3>Criar Funil Visual</h3>
@@ -33,7 +31,6 @@
           <button class="offer-btn">Criar Funil</button>
         </div>
 
-        <!-- TUTORIAL -->
         <div class="offer-card" onclick="openTutorial()">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8m-8 4h8m-8 4h4"/></svg>
           <h3>Ver Tutorial</h3>
@@ -41,7 +38,6 @@
           <button class="offer-btn">Assistir</button>
         </div>
 
-        <!-- ROI -->
         <div class="offer-card" onclick="openRoiModal()">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M9 17l3-3 4 4 5-5"/></svg>
           <h3>Calcular ROI</h3>
@@ -49,7 +45,6 @@
           <button class="offer-btn">Calcular</button>
         </div>
 
-        <!-- IA -->
         <div class="offer-card disabled">
           <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6.364 1.636l-.707.707M20 12h1M17.657 17.657l-.707-.707M12 19v1M6.343 17.657l.707-.707M4 12H3m2.636-6.364l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
           <h3>IA Ilimitada ⚡</h3>
@@ -60,7 +55,7 @@
     </div>
   </div>
 
-  <!-- TUTORIAL MODAL -->
+  <!-- MODAL TUTORIAL -->
   <div class="modal-bg" id="tutorialModal">
     <div class="modal-content video">
       <h2>🎬 Tutorial TigerFy</h2>
@@ -69,62 +64,60 @@
     </div>
   </div>
 
-  <!-- ROI MODAL -->
-  <div class="modal-bg" id="roiModal">
-    <div class="modal-content">
-      <h2>💹 Calcular ROI</h2>
-      <p>Selecione uma oferta e insira os dados abaixo:</p>
-      <form id="roiForm">
-        <label>Valor Investido (R$)</label>
-        <input type="number" id="invested" placeholder="Ex: 500" />
-        <label>Retorno Obtido (R$)</label>
-        <input type="number" id="returned" placeholder="Ex: 1250" />
-        <div class="form-actions">
-          <button type="button" class="cancel" onclick="closeRoiModal()">Fechar</button>
-          <button type="button" class="confirm" onclick="calcRoi()">Calcular</button>
-        </div>
-        <div id="roiResult" class="roi-result"></div>
-      </form>
-    </div>
-  </div>
-
   <script>
-    // ROI CALC
-    function openRoiModal(){document.getElementById('roiModal').classList.add('show')}
-    function closeRoiModal(){document.getElementById('roiModal').classList.remove('show')}
-    function calcRoi(){
-      const inv=parseFloat(document.getElementById('invested').value)
-      const ret=parseFloat(document.getElementById('returned').value)
-      if(!inv||!ret)return alert('Preencha todos os campos!')
-      const roi=((ret-inv)/inv*100).toFixed(2)
-      document.getElementById('roiResult').innerHTML=\`<hr><b>ROI:</b> \${roi}%<br><b>Investido:</b> R$\${inv.toFixed(2)}<br><b>Retorno:</b> R$\${ret.toFixed(2)}\`
-    }
-
-    // Tutorial
     function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
     function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
 
-    // Fundo dourado animado
-    const c=document.getElementById('bgParticles');const ctx=c.getContext('2d')
-    function resize(){c.width=window.innerWidth;c.height=window.innerHeight}
-    window.addEventListener('resize',resize);resize()
+    // Fundo Dourado
+    const c=document.getElementById('bgParticles');const ctx=c.getContext('2d');
+    function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
+    window.addEventListener('resize',resize);resize();
     const p=[];for(let i=0;i<120;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.6,dy:(Math.random()-0.5)*0.6})}
-    function draw(){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='rgba(255,204,0,0.65)'
-      p.forEach(o=>{ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill()
-        o.x+=o.dx;o.y+=o.dy
-        if(o.x<0||o.x>c.width)o.dx*=-1;if(o.y<0||o.y>c.height)o.dy*=-1})
-      requestAnimationFrame(draw)}
-    draw()
+    function draw(){
+      ctx.clearRect(0,0,c.width,c.height);
+      const grad=ctx.createRadialGradient(c.width/2,c.height/2,0,c.width/2,c.height/2,c.width/1.2);
+      grad.addColorStop(0,'rgba(255,204,0,0.1)');
+      grad.addColorStop(1,'rgba(0,0,0,0.9)');
+      ctx.fillStyle=grad;ctx.fillRect(0,0,c.width,c.height);
+      ctx.fillStyle='rgba(255,204,0,0.7)';
+      p.forEach(o=>{ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;
+        if(o.x<0||o.x>c.width)o.dx*=-1;if(o.y<0||o.y>c.height)o.dy*=-1});
+      requestAnimationFrame(draw);
+    } draw();
   </script>
 
   <style>
-    body,html{margin:0;padding:0;overflow:hidden;height:100%;}
-    #bgParticles{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at bottom right,#000,#0a0a0a);}
-    .offers-page{display:flex;align-items:center;justify-content:center;height:100vh;width:100vw;}
-    .offers-container{text-align:center;max-width:1100px;width:90%;}
+    #bgParticles{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      z-index:0;pointer-events:none;
+    }
 
-    .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
-    .offers-header p{color:#b4b4b4;margin-bottom:40px;}
+    .offers-page{
+      position:relative;
+      z-index:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      padding-left:250px; /* compensar sidebar */
+    }
+
+    .offers-container{
+      text-align:center;
+      max-width:1100px;
+      width:90%;
+    }
+
+    .offers-header h1{
+      color:#ffcc00;
+      font-size:2rem;
+      margin-bottom:10px;
+    }
+
+    .offers-header p{
+      color:#b4b4b4;
+      margin-bottom:40px;
+    }
 
     .offers-grid{
       display:grid;
@@ -134,15 +127,19 @@
     }
 
     .offer-card{
-      width:260px;height:260px;
+      width:260px;
+      height:260px;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,204,0,0.15);
       border-radius:14px;
       padding:25px;
-      display:flex;flex-direction:column;
-      justify-content:space-between;align-items:center;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center;
       transition:.3s;
     }
+
     .offer-card:hover:not(.disabled){
       background:rgba(255,204,0,0.1);
       box-shadow:0 0 20px rgba(255,204,0,0.25);
@@ -152,6 +149,7 @@
     .offer-icon{width:36px;height:36px;color:#ffcc00;}
     .offer-card h3{color:#fff;margin:10px 0 5px;}
     .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
+
     .offer-btn{
       background:linear-gradient(90deg,#ffcc00,#d4a100);
       color:#000;border:none;border-radius:8px;
@@ -162,15 +160,12 @@
     .disabled{opacity:.5;pointer-events:none;}
     .disabled-btn{background:#555;color:#aaa;cursor:not-allowed;}
 
+    /* Modal */
     .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.85);
       display:none;align-items:center;justify-content:center;z-index:1000;}
     .modal-bg.show{display:flex;}
-    .modal-content{background:rgba(15,15,15,0.95);border:1px solid rgba(255,204,0,0.25);border-radius:14px;padding:30px;width:480px;color:#fff;text-align:left;}
-    .modal-content.video{width:640px;text-align:center;}
+    .modal-content{background:rgba(15,15,15,0.95);border:1px solid rgba(255,204,0,0.25);border-radius:14px;padding:30px;width:640px;color:#fff;text-align:center;}
     iframe{width:100%;height:320px;border-radius:10px;}
-    .confirm,.cancel{border-radius:8px;font-weight:600;padding:10px 18px;cursor:pointer;}
-    .confirm{background:#ffcc00;color:#000;border:none;}
-    .cancel{background:transparent;border:1px solid #ffcc00;color:#ffcc00;}
-    #roiResult{margin-top:15px;color:#ffcc00;}
+    .confirm{background:#ffcc00;color:#000;border:none;border-radius:8px;font-weight:600;padding:10px 18px;cursor:pointer;margin-top:15px;}
   </style>
 ` }) %>
