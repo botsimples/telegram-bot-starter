@@ -16,7 +16,6 @@
     --gold: #ffcc00;
     --sidebar-bg: rgba(10, 10, 10, 0.85);
     --hover-bg: rgba(255, 204, 0, 0.07);
-    --active-bg: rgba(255, 204, 0, 0.15);
     --text-muted: #b4b4b4;
     --text-active: #fff;
     --divider: #1c1c1c;
@@ -51,21 +50,21 @@
   /* LOGO */
   .sidebar-header {
     padding: 0 28px;
-    margin-bottom: 32px;
+    margin-bottom: 25px;
     display: flex;
     align-items: center;
     gap: 12px;
+    height: 40px;
   }
 
   .logo-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     stroke: var(--gold);
-    filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.4));
   }
 
   .logo-text {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 800;
     color: var(--gold);
     letter-spacing: 0.5px;
@@ -98,14 +97,14 @@
     color: var(--gold);
   }
 
-  /* ITEM ATIVO COM GRADIENTE VERTICAL */
+  /* ITEM ATIVO */
   .menu a.active {
     background: linear-gradient(to bottom, rgba(255, 204, 0, 0.18), rgba(255, 204, 0, 0.05));
     color: var(--text-active);
     font-weight: 600;
   }
 
-  /* LINHA VERTICAL DOURADA ESTILO HOTTRACK */
+  /* LINHA DOURADA VERTICAL */
   .menu a.active::before {
     content: "";
     position: absolute;
@@ -114,7 +113,7 @@
     bottom: 6px;
     width: 3px;
     border-radius: 2px;
-    background: linear-gradient(to bottom, #ffdd55, #ffcc00, #cfa600);
+    background: linear-gradient(to bottom, #ffea70, #ffcc00, #d3a900);
     box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
   }
 
@@ -129,7 +128,7 @@
     transform: translateX(2px);
   }
 
-  /* LINHA DIVISÓRIA */
+  /* DIVISÓRIA */
   .menu-divider {
     height: 1px;
     background: linear-gradient(to right, #1a1a1a, #2a2a2a, #1a1a1a);
