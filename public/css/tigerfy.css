@@ -1893,3 +1893,12 @@ body::after {
   text-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
   transform: translateY(1px);
 }
+
+   /* Correção global para centralização do conteúdo */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #0a0a0a;
+  position: relative;
+}
