@@ -13,70 +13,74 @@
   </header>
 </div>
 
-<!-- MODAL DE CRIAÇÃO -->
+<!-- NOVO MODAL DE CRIAÇÃO -->
 <div id="create-offer-modal" class="modal">
-  <div class="modal-content">
-    <h2>⚙️ Criar Nova Oferta</h2>
-    <p class="modal-subtitle">Configure o bot e as opções de rastreamento.</p>
+  <div class="modal-content modal-step1">
+    <h2>🧠 Criar Nova Oferta</h2>
+    <p class="modal-subtitle">Defina o nome da oferta e selecione o tipo de operação.</p>
 
-    <form>
+    <form id="step1-form">
       <div class="form-group">
-        <label for="telegramToken">Token do Bot do Telegram (BotFather)</label>
-        <input type="text" id="telegramToken" placeholder="Insira o token gerado pelo BotFather" />
+        <label for="offerName">Nome da Oferta</label>
+        <input type="text" id="offerName" placeholder="Ex: Acesso VIP, HotPrime, Mundo Oculto..." required />
       </div>
 
-      <div class="form-group">
-        <label for="botName">Nome do Bot (opcional)</label>
-        <input type="text" id="botName" placeholder="Ex: nome_do_bot" />
-      </div>
+      <h3 class="section-title">🎯 Tipo de Traqueamento</h3>
+      <div class="option-grid">
+        <div class="option-card selected" data-value="utmify_pixel_utmify">
+          <h4>UTMify + Pixel UTMIFY</h4>
+          <p>Integração nativa com o painel UTMify para marcação automática de leads e vendas.</p>
+        </div>
 
-      <div class="form-section">
-        <h3>🎯 Traqueamento</h3>
-        <div class="radio-options">
-          <label><input type="radio" name="tracking" value="utmify_pixel_utmify" checked /> Usar UTMify + Pixel UTMIFY</label>
-          <label><input type="radio" name="tracking" value="utmify_pixel_fb" /> Usar UTMify + Pixel FACEBOOK</label>
-          <label><input type="radio" name="tracking" value="pixel_fb_only" /> Usar Facebook Pixel Apenas</label>
+        <div class="option-card" data-value="utmify_pixel_fb">
+          <h4>UTMify + Pixel Facebook</h4>
+          <p>Combine o poder do UTMify com o rastreamento avançado do Meta Pixel.</p>
+        </div>
+
+        <div class="option-card" data-value="pixel_fb_only">
+          <h4>Facebook Pixel Apenas</h4>
+          <p>Rastreamento direto via Meta Pixel, sem dependência de UTMify.</p>
         </div>
       </div>
 
-      <div class="form-section">
-        <h3>🤖 Opções do Bot</h3>
-        <div class="radio-options">
-          <label><input type="radio" name="botType" value="default" checked /> Bot Padrão</label>
-          <label><input type="radio" name="botType" value="flow" disabled /> Fluxo Bot (em breve)</label>
+      <h3 class="section-title">🤖 Tipo de Bot</h3>
+      <div class="option-grid">
+        <div class="option-card selected" data-bot="default">
+          <h4>Bot Padrão</h4>
+          <p>Funil completo com upsell, downsell, orderbump e remarketing automático.</p>
+        </div>
+
+        <div class="option-card disabled" data-bot="flow">
+          <h4>Fluxo Bot (em breve)</h4>
+          <p>Integração visual para fluxos customizados com lógica e automações inteligentes.</p>
         </div>
       </div>
 
       <div class="form-actions">
         <button type="button" class="btn-gold-outline" id="cancel-offer">Cancelar</button>
-        <button type="submit" class="btn-gold">Salvar Oferta</button>
+        <button type="submit" class="btn-gold">Avançar</button>
       </div>
     </form>
   </div>
 </div>
 
 <style>
-  /* ===== CONTAINER PRINCIPAL ===== */
   .offers-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 40px;
     padding: 50px 0;
-    animation: fadeIn 0.6s ease forwards;
   }
 
   .offers-header h1 {
     font-size: 2rem;
     font-weight: 700;
     color: #ffcc00;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
   }
 
   .offers-header p {
     color: #b4b4b4;
-    font-size: 0.95rem;
   }
 
   .offers-actions {
@@ -86,16 +90,11 @@
     margin-top: 25px;
   }
 
-  /* ===== BOTÕES ===== */
-  .btn-gold,
-  .btn-gold-outline,
-  .btn-dark {
+  .btn-gold, .btn-gold-outline, .btn-dark {
     padding: 12px 28px;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
-    font-family: "Inter", sans-serif;
-    font-size: 0.95rem;
     transition: all 0.25s ease;
   }
 
@@ -103,11 +102,6 @@
     background: linear-gradient(90deg, #ffcc00, #d3a900);
     border: none;
     color: #000;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-  }
-  .btn-gold:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 0 18px rgba(255, 204, 0, 0.45);
   }
 
   .btn-gold-outline {
@@ -115,18 +109,11 @@
     background: transparent;
     color: #ffcc00;
   }
-  .btn-gold-outline:hover {
-    background: rgba(255, 204, 0, 0.1);
-  }
 
   .btn-dark {
-    background: rgba(30, 30, 30, 0.8);
-    border: 1px solid rgba(255, 204, 0, 0.15);
+    background: rgba(30,30,30,0.8);
+    border: 1px solid rgba(255,204,0,0.1);
     color: #ffcc00;
-  }
-  .btn-dark:hover {
-    background: rgba(255, 204, 0, 0.05);
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.15);
   }
 
   /* ===== MODAL ===== */
@@ -134,7 +121,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0,0,0,0.8);
     backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
@@ -142,75 +129,93 @@
   }
 
   .modal-content {
-    background: rgba(20, 20, 20, 0.95);
-    border: 1px solid rgba(255, 204, 0, 0.15);
-    border-radius: 14px;
-    width: 480px;
+    background: rgba(15,15,15,0.95);
+    border: 1px solid rgba(255,204,0,0.1);
+    border-radius: 16px;
+    width: 650px;
     max-width: 90%;
     padding: 35px;
-    text-align: left;
     animation: popIn 0.4s ease;
   }
 
   .modal-content h2 {
     color: #ffcc00;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
 
   .modal-subtitle {
     color: #b4b4b4;
-    font-size: 0.9rem;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
 
   .form-group {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 30px;
   }
 
   label {
     color: #ffcc00;
     font-weight: 600;
-    margin-bottom: 6px;
   }
 
   input[type="text"] {
-    background: rgba(15, 15, 15, 0.85);
-    border: 1px solid rgba(255, 204, 0, 0.1);
+    width: 100%;
+    background: rgba(20,20,20,0.85);
+    border: 1px solid rgba(255,204,0,0.1);
     border-radius: 8px;
     padding: 10px 12px;
     color: #fff;
-    font-size: 0.9rem;
-    outline: none;
-    transition: 0.2s;
+    margin-top: 6px;
   }
 
-  input[type="text"]:focus {
-    border-color: rgba(255, 204, 0, 0.4);
-    box-shadow: 0 0 6px rgba(255, 204, 0, 0.25);
-  }
-
-  .form-section {
-    margin-top: 25px;
-  }
-
-  .form-section h3 {
+  .section-title {
+    margin: 20px 0 10px;
     color: #ffcc00;
-    font-size: 1rem;
-    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
   }
 
-  .radio-options label {
-    display: block;
-    color: #d1d1d1;
-    font-size: 0.9rem;
-    margin-bottom: 6px;
+  /* ===== CARDS ===== */
+  .option-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .option-card {
+    background: rgba(25,25,25,0.85);
+    border: 1px solid rgba(255,204,0,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
     cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .option-card h4 {
+    color: #ffcc00;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .option-card p {
+    color: #b4b4b4;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .option-card:hover {
+    border-color: rgba(255,204,0,0.4);
+    transform: translateY(-2px);
+  }
+
+  .option-card.selected {
+    border-color: #ffcc00;
+    box-shadow: 0 0 12px rgba(255,204,0,0.25);
+  }
+
+  .option-card.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
   .form-actions {
@@ -218,11 +223,6 @@
     justify-content: flex-end;
     gap: 10px;
     margin-top: 25px;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes popIn {
@@ -236,9 +236,16 @@
   const btnOpen = document.getElementById("btn-create-offer");
   const btnCancel = document.getElementById("cancel-offer");
 
-  btnOpen.addEventListener("click", () => (modal.style.display = "flex"));
-  btnCancel.addEventListener("click", () => (modal.style.display = "none"));
-  window.addEventListener("click", e => {
-    if (e.target === modal) modal.style.display = "none";
+  btnOpen.addEventListener("click", () => modal.style.display = "flex");
+  window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+
+  // Seleção de cards
+  document.querySelectorAll(".option-card").forEach(card => {
+    card.addEventListener("click", () => {
+      if (card.classList.contains("disabled")) return;
+      const group = card.dataset.value ? "[data-value]" : "[data-bot]";
+      document.querySelectorAll(group).forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+    });
   });
 </script>
