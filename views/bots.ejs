@@ -1,109 +1,62 @@
-<div class="offers-central fade-in">
-  <div class="animated-bg"></div>
+<%- include('layout', { title: 'Ofertas', active: 'bots' }) %>
 
-  <div class="offers-header">
-    <h1>⚡ Minhas Ofertas</h1>
-    <p>Gerencie e crie automações inteligentes de forma prática e visual.</p>
-  </div>
-
-  <div class="action-grid">
-    <div class="action-card" id="manage-offers">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-      <h3>Gerenciar Ofertas</h3>
-      <p>Veja e edite todas as suas ofertas existentes no painel TigerFy.</p>
-    </div>
-
-    <div class="action-card" id="create-offer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
-      </svg>
-      <h3>Criar Nova Oferta</h3>
-      <p>Configure um novo bot e escolha o tipo de traqueamento ideal.</p>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL -->
-<div id="create-offer-modal" class="modal">
-  <div class="modal-inner">
-    <h2>🚀 Criar Nova Oferta</h2>
-    <p class="subtitle">
-      Defina o nome e as opções iniciais do seu bot. <br />
-      <span class="tip">Você poderá editar tudo isso depois.</span>
-    </p>
-
-    <form>
-      <label>Nome da Oferta</label>
-      <input type="text" placeholder="Ex: Acesso VIP, HotPrime..." required />
-
-      <label>Tipo de Bot</label>
-      <select>
-        <option>Bot Padrão</option>
-        <option>Fluxo Estilo ManyChat</option>
-        <option disabled>Fluxo Bot (em breve)</option>
-      </select>
-
-      <label>Tipo de Traqueamento (opcional)</label>
-      <select>
-        <option>Usar seu Traqueamento Próprio</option>
-        <option>Facebook Pixel Apenas</option>
-        <option disabled>UTMify + Pixel Facebook (em breve)</option>
-        <option disabled>UTMify + Pixel UTMIFY (em breve)</option>
-      </select>
-
-      <div class="modal-actions">
-        <button type="button" class="btn-outline" id="tutorial-offer">📘 Ver Tutorial</button>
-        <div class="btn-group">
-          <button type="button" class="btn-outline" id="cancel-offer">Cancelar</button>
-          <button type="submit" class="btn-gold">Criar</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
+<!-- ===============================
+     🎨 FUNDO ANIMADO LUXO DIGITAL
+=============================== -->
 <style>
-  /* Fundo animado */
-  .animated-bg {
+  body {
+    background: radial-gradient(circle at center, #0a0a0a, #000);
+    overflow-x: hidden;
+    color: #fff;
+  }
+
+  body::before {
+    content: "";
     position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(255, 204, 0, 0.08) 0%, transparent 80%);
-    background-size: 200% 200%;
-    animation: glowMove 8s infinite linear;
-    z-index: -1;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 204, 0, 0.05), transparent 60%);
+    animation: rotate 40s linear infinite;
+    z-index: 0;
   }
 
-  @keyframes glowMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
-  .offers-central {
+  /* CONTEÚDO CENTRAL */
+  .offers-wrapper {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 80px);
+    min-height: 88vh;
     text-align: center;
-    gap: 60px;
+    animation: fadeIn 1s ease;
   }
 
-  .offers-header h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    font-size: 2rem;
     color: #ffcc00;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
-  .offers-header p {
-    color: #b4b4b4;
-    font-size: 1rem;
+  p.subtext {
+    color: #999;
+    margin-bottom: 40px;
   }
 
-  .action-grid {
+  .card-grid {
     display: flex;
     gap: 40px;
     flex-wrap: wrap;
@@ -111,148 +64,255 @@
   }
 
   .action-card {
-    background: rgba(15, 15, 15, 0.85);
-    border: 1px solid rgba(255, 204, 0, 0.08);
-    border-radius: 16px;
-    padding: 40px 50px;
-    width: 280px;
-    transition: all 0.3s ease;
+    background: rgba(18, 18, 18, 0.85);
+    border: 1px solid rgba(255, 204, 0, 0.15);
+    border-radius: 14px;
+    width: 270px;
+    padding: 35px 25px;
     cursor: pointer;
-    box-shadow: 0 0 0 1px rgba(255, 204, 0, 0.02);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 transparent;
   }
 
   .action-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 204, 0, 0.3);
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.15);
+    border-color: #ffcc00;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+    transform: translateY(-3px);
   }
 
   .action-card svg {
-    width: 40px;
-    height: 40px;
-    stroke: #ffcc00;
+    width: 36px;
+    height: 36px;
+    fill: #ffcc00;
     margin-bottom: 15px;
   }
 
   .action-card h3 {
     color: #fff;
     font-size: 1.1rem;
-    font-weight: 700;
     margin-bottom: 8px;
   }
 
   .action-card p {
-    color: #aaa;
     font-size: 0.9rem;
-  }
-
-  /* MODAL */
-  .modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(6px);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-
-  .modal-inner {
-    background: rgba(15, 15, 15, 0.95);
-    border: 1px solid rgba(255, 204, 0, 0.1);
-    border-radius: 14px;
-    padding: 40px 45px;
-    width: 430px;
-    animation: popIn 0.35s ease;
-  }
-
-  .modal-inner h2 {
-    color: #ffcc00;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-
-  .subtitle {
-    color: #b4b4b4;
-    margin-bottom: 25px;
+    color: #bbb;
     line-height: 1.4;
   }
 
-  .tip {
-    color: #ffcc00;
-    font-size: 0.85rem;
-  }
-
-  label {
-    display: block;
-    color: #ffcc00;
-    font-weight: 600;
-    margin: 14px 0 6px;
-    text-align: left;
-  }
-
-  input, select {
-    width: 100%;
-    background: rgba(20, 20, 20, 0.9);
-    border: 1px solid rgba(255, 204, 0, 0.1);
-    color: #fff;
-    border-radius: 8px;
-    padding: 10px 12px;
-  }
-
-  .modal-actions {
-    margin-top: 25px;
-    display: flex;
-    justify-content: space-between;
+  /* MODAL DE CRIAÇÃO */
+  .create-offer-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    z-index: 10;
     align-items: center;
+    justify-content: center;
   }
 
-  .btn-group {
+  .create-offer-modal.active {
     display: flex;
+  }
+
+  .modal-content {
+    background: rgba(18, 18, 18, 0.9);
+    border: 1px solid rgba(255, 204, 0, 0.2);
+    border-radius: 16px;
+    width: 460px;
+    max-width: 90%;
+    padding: 35px 30px;
+    text-align: left;
+    animation: scaleIn 0.4s ease;
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .modal-content h2 {
+    color: #ffcc00;
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+
+  .modal-content p {
+    color: #aaa;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+  }
+
+  .modal-content label {
+    display: block;
+    color: #fff;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+  }
+
+  .modal-content input,
+  .modal-content select {
+    width: 100%;
+    background: #0d0d0d;
+    border: 1px solid rgba(255, 204, 0, 0.15);
+    border-radius: 8px;
+    padding: 10px;
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+  }
+
+  .option-grid {
+    display: grid;
     gap: 10px;
   }
 
+  .option-card {
+    background: rgba(25,25,25,0.7);
+    border: 1px solid rgba(255,204,0,0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: 0.25s;
+  }
+
+  .option-card:hover {
+    border-color: #ffcc00;
+    background: rgba(30,30,30,0.9);
+  }
+
+  .option-card h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #fff;
+  }
+
+  .option-card p {
+    color: #aaa;
+    font-size: 0.8rem;
+    margin-top: 3px;
+  }
+
+  .offer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+  }
+
   .btn-gold {
-    background: linear-gradient(90deg, #ffcc00, #d3a900);
+    background: #ffcc00;
     color: #000;
     border: none;
-    font-weight: 700;
-    padding: 10px 22px;
     border-radius: 8px;
+    padding: 10px 22px;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
   }
 
-  .btn-outline {
+  .btn-gold:hover {
+    background: #ffdd33;
+  }
+
+  .btn-secondary {
     background: transparent;
-    border: 1px solid rgba(255, 204, 0, 0.3);
-    color: #ffcc00;
-    padding: 10px 22px;
+    color: #aaa;
+    border: 1px solid #444;
     border-radius: 8px;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: 0.3s;
   }
 
-  .btn-outline:hover {
-    background: rgba(255, 204, 0, 0.1);
+  .btn-secondary:hover {
+    color: #fff;
+    border-color: #777;
   }
 
-  @keyframes popIn {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  .tutorial-link {
+    font-size: 0.85rem;
+    color: #ffcc00;
+    text-decoration: none;
+  }
+
+  .tutorial-link:hover {
+    text-decoration: underline;
   }
 </style>
 
-<script>
-  const manageBtn = document.getElementById("manage-offers");
-  const createBtn = document.getElementById("create-offer");
-  const modal = document.getElementById("create-offer-modal");
-  const cancelBtn = document.getElementById("cancel-offer");
-  const tutorialBtn = document.getElementById("tutorial-offer");
+<!-- ===============================
+     ⚡ CONTEÚDO PRINCIPAL
+=============================== -->
+<div class="offers-wrapper fade-in">
+  <h1>⚡ Minhas Ofertas</h1>
+  <p class="subtext">Gerencie e crie automações inteligentes de forma prática e visual.</p>
 
-  manageBtn.addEventListener("click", () => window.location.href = "/bots/manage");
-  createBtn.addEventListener("click", () => modal.style.display = "flex");
-  cancelBtn.addEventListener("click", () => modal.style.display = "none");
-  tutorialBtn.addEventListener("click", () => window.open("https://t.me/tigerfy_tutorial", "_blank"));
-  window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+  <div class="card-grid">
+    <div class="action-card" id="manageOffers">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm4 0h14v-2H7v2zm0 6h14v-2H7v2zM3 7v2h2V7H3zm0 12h2v-2H3v2z"/></svg>
+      <h3>Gerenciar Ofertas</h3>
+      <p>Veja e edite todas as ofertas criadas no painel TigerFy.</p>
+    </div>
+
+    <div class="action-card" id="createOffer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"/></svg>
+      <h3>Criar Nova Oferta</h3>
+      <p>Crie novas ofertas e escolha o tipo de fluxo e traqueamento.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================
+     🧩 MODAL DE CRIAÇÃO DE OFERTA
+=============================== -->
+<div class="create-offer-modal" id="offerModal">
+  <div class="modal-content">
+    <h2>🚀 Criar Nova Oferta</h2>
+    <p>Defina o nome e as opções iniciais da sua oferta.<br><span style="color:#ffcc00;">Você poderá editar tudo isso depois.</span></p>
+
+    <form id="offerForm">
+      <label>Nome da Oferta</label>
+      <input type="text" placeholder="Ex: Acesso VIP, HotPrime..." required />
+
+      <label>Tipo de Oferta</label>
+      <div class="option-grid">
+        <div class="option-card">
+          <h4>Oferta Padrão</h4>
+          <p>Fluxo completo com presell, upsell e remarketing integrado.</p>
+        </div>
+        <div class="option-card soon">
+          <h4>Oferta ManyChat (em breve)</h4>
+          <p>Fluxo interativo estilo ManyChat, com respostas automáticas.</p>
+        </div>
+      </div>
+
+      <label>Tipo de Traqueamento <span style="color:#888;">(opcional)</span></label>
+      <div class="option-grid">
+        <div class="option-card">
+          <h4>Presell + Página de Obrigado (Facebook)</h4>
+          <p>Traqueamento ideal para campanhas Meta Ads.</p>
+        </div>
+        <div class="option-card">
+          <h4>Traqueamento Próprio</h4>
+          <p>Controle total usando seu pixel e redirecionadores.</p>
+        </div>
+      </div>
+
+      <div class="offer-actions">
+        <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+        <a href="#" class="tutorial-link">📘 Ver Tutorial</a>
+        <button type="submit" class="btn-gold">Criar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('offerModal');
+  document.getElementById('createOffer').addEventListener('click', () => {
+    modal.classList.add('active');
+  });
+  document.getElementById('cancelBtn').addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
 </script>
