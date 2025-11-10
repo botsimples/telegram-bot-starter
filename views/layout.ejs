@@ -47,28 +47,29 @@
     box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
   }
 
-  /* LOGO ALINHADO */
-  .sidebar-header {
-    padding-left: 22px;
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+/* LOGO ALINHADO PRECISO */
+.sidebar-header {
+  padding-left: 18px; /* antes estava 22px */
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* antes era 10px, agora o raio e o texto se encaixam */
+}
 
-  .logo-icon svg {
-    width: 20px;
-    height: 20px;
-    stroke: var(--gold);
-  }
+.logo-icon svg {
+  width: 21px;
+  height: 21px;
+  stroke: var(--gold);
+  transform: translateY(1px); /* centraliza o raio com o texto */
+}
 
-  .logo-text {
-    font-size: 19px;
-    font-weight: 800;
-    color: var(--gold);
-    letter-spacing: 0.5px;
-    transform: translateY(1px);
-  }
+.logo-text {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.4px;
+  transform: translateY(0.5px);
+}
 
   /* MENU */
   nav.menu {
