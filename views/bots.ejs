@@ -13,11 +13,11 @@
   </header>
 </div>
 
-<!-- NOVO MODAL DE CRIAÇÃO -->
+<!-- MODAL DE CRIAÇÃO DE OFERTA -->
 <div id="create-offer-modal" class="modal">
   <div class="modal-content modal-step1">
-    <h2>🧠 Criar Nova Oferta</h2>
-    <p class="modal-subtitle">Defina o nome da oferta e selecione o tipo de operação.</p>
+    <h2>⚙️ Criar Nova Oferta</h2>
+    <p class="modal-subtitle">Defina o nome da oferta e as opções do bot.</p>
 
     <form id="step1-form">
       <div class="form-group">
@@ -25,24 +25,7 @@
         <input type="text" id="offerName" placeholder="Ex: Acesso VIP, HotPrime, Mundo Oculto..." required />
       </div>
 
-      <h3 class="section-title">🎯 Tipo de Traqueamento</h3>
-      <div class="option-grid">
-        <div class="option-card selected" data-value="utmify_pixel_utmify">
-          <h4>UTMify + Pixel UTMIFY</h4>
-          <p>Integração nativa com o painel UTMify para marcação automática de leads e vendas.</p>
-        </div>
-
-        <div class="option-card" data-value="utmify_pixel_fb">
-          <h4>UTMify + Pixel Facebook</h4>
-          <p>Combine o poder do UTMify com o rastreamento avançado do Meta Pixel.</p>
-        </div>
-
-        <div class="option-card" data-value="pixel_fb_only">
-          <h4>Facebook Pixel Apenas</h4>
-          <p>Rastreamento direto via Meta Pixel, sem dependência de UTMify.</p>
-        </div>
-      </div>
-
+      <!-- TIPO DE BOT -->
       <h3 class="section-title">🤖 Tipo de Bot</h3>
       <div class="option-grid">
         <div class="option-card selected" data-bot="default">
@@ -50,9 +33,38 @@
           <p>Funil completo com upsell, downsell, orderbump e remarketing automático.</p>
         </div>
 
+        <div class="option-card" data-bot="manychat">
+          <h4>Fluxo Estilo ManyChat</h4>
+          <p>Fluxo interativo visual com automações e mensagens personalizadas.</p>
+        </div>
+
         <div class="option-card disabled" data-bot="flow">
           <h4>Fluxo Bot (em breve)</h4>
-          <p>Integração visual para fluxos customizados com lógica e automações inteligentes.</p>
+          <p>Crie lógicas avançadas e fluxos inteligentes com integração visual.</p>
+        </div>
+      </div>
+
+      <!-- TIPO DE TRAQUEAMENTO -->
+      <h3 class="section-title">🎯 Tipo de Traqueamento <span class="optional-text">(opcional)</span></h3>
+      <div class="option-grid">
+        <div class="option-card selected" data-value="presell_fb">
+          <h4>Presell + Página de Obrigado (FACEBOOK)</h4>
+          <p>Fluxo tradicional com eventos FB (PageView, Lead, Purchase) rastreados por pixel.</p>
+        </div>
+
+        <div class="option-card disabled" data-value="utmify_pixel_utmify">
+          <h4>UTMify + Pixel UTMIFY (em breve)</h4>
+          <p>Integração automática de UTMify para marcação completa de leads e vendas.</p>
+        </div>
+
+        <div class="option-card disabled" data-value="utmify_pixel_fb">
+          <h4>UTMify + Pixel FACEBOOK (em breve)</h4>
+          <p>Rastreie via Meta Pixel com dados cruzados da UTMify.</p>
+        </div>
+
+        <div class="option-card" data-value="pixel_fb_only">
+          <h4>Facebook Pixel Apenas</h4>
+          <p>Somente eventos nativos de rastreamento via pixel do Facebook.</p>
         </div>
       </div>
 
@@ -90,7 +102,9 @@
     margin-top: 25px;
   }
 
-  .btn-gold, .btn-gold-outline, .btn-dark {
+  .btn-gold,
+  .btn-gold-outline,
+  .btn-dark {
     padding: 12px 28px;
     border-radius: 10px;
     font-weight: 600;
@@ -111,17 +125,16 @@
   }
 
   .btn-dark {
-    background: rgba(30,30,30,0.8);
-    border: 1px solid rgba(255,204,0,0.1);
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid rgba(255, 204, 0, 0.1);
     color: #ffcc00;
   }
 
-  /* ===== MODAL ===== */
   .modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
@@ -129,11 +142,11 @@
   }
 
   .modal-content {
-    background: rgba(15,15,15,0.95);
-    border: 1px solid rgba(255,204,0,0.1);
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid rgba(255, 204, 0, 0.1);
     border-radius: 16px;
-    width: 650px;
-    max-width: 90%;
+    width: 680px;
+    max-width: 95%;
     padding: 35px;
     animation: popIn 0.4s ease;
   }
@@ -149,10 +162,6 @@
     margin-bottom: 25px;
   }
 
-  .form-group {
-    margin-bottom: 30px;
-  }
-
   label {
     color: #ffcc00;
     font-weight: 600;
@@ -160,8 +169,8 @@
 
   input[type="text"] {
     width: 100%;
-    background: rgba(20,20,20,0.85);
-    border: 1px solid rgba(255,204,0,0.1);
+    background: rgba(20, 20, 20, 0.85);
+    border: 1px solid rgba(255, 204, 0, 0.1);
     border-radius: 8px;
     padding: 10px 12px;
     color: #fff;
@@ -169,13 +178,18 @@
   }
 
   .section-title {
-    margin: 20px 0 10px;
+    margin: 25px 0 10px;
     color: #ffcc00;
     font-weight: 700;
     font-size: 1.05rem;
   }
 
-  /* ===== CARDS ===== */
+  .optional-text {
+    color: #777;
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+
   .option-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -183,10 +197,10 @@
   }
 
   .option-card {
-    background: rgba(25,25,25,0.85);
-    border: 1px solid rgba(255,204,0,0.08);
+    background: rgba(25, 25, 25, 0.85);
+    border: 1px solid rgba(255, 204, 0, 0.08);
     border-radius: 10px;
-    padding: 16px 20px;
+    padding: 18px 20px;
     cursor: pointer;
     transition: all 0.25s ease;
   }
@@ -200,21 +214,20 @@
   .option-card p {
     color: #b4b4b4;
     font-size: 0.85rem;
-    line-height: 1.4;
   }
 
   .option-card:hover {
-    border-color: rgba(255,204,0,0.4);
+    border-color: rgba(255, 204, 0, 0.4);
     transform: translateY(-2px);
   }
 
   .option-card.selected {
     border-color: #ffcc00;
-    box-shadow: 0 0 12px rgba(255,204,0,0.25);
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.25);
   }
 
   .option-card.disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
   }
 
@@ -222,7 +235,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 25px;
+    margin-top: 30px;
   }
 
   @keyframes popIn {
@@ -236,15 +249,21 @@
   const btnOpen = document.getElementById("btn-create-offer");
   const btnCancel = document.getElementById("cancel-offer");
 
-  btnOpen.addEventListener("click", () => modal.style.display = "flex");
-  window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
+  btnOpen.addEventListener("click", () => (modal.style.display = "flex"));
+  btnCancel.addEventListener("click", () => (modal.style.display = "none"));
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
 
   // Seleção de cards
-  document.querySelectorAll(".option-card").forEach(card => {
+  document.querySelectorAll(".option-card").forEach((card) => {
     card.addEventListener("click", () => {
       if (card.classList.contains("disabled")) return;
-      const group = card.dataset.value ? "[data-value]" : "[data-bot]";
-      document.querySelectorAll(group).forEach(c => c.classList.remove("selected"));
+
+      const isBot = card.dataset.bot !== undefined;
+      const group = isBot ? "[data-bot]" : "[data-value]";
+
+      document.querySelectorAll(group).forEach((c) => c.classList.remove("selected"));
       card.classList.add("selected");
     });
   });
