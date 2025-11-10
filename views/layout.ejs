@@ -11,135 +11,137 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <style>
-      :root {
-        --gold: #ffcc00;
-        --gold-glow: rgba(255, 204, 0, 0.15);
-        --sidebar-bg: rgba(10, 10, 10, 0.8);
-        --hover-bg: rgba(255, 204, 0, 0.07);
-        --active-bg: rgba(255, 204, 0, 0.15);
-        --text-muted: #b4b4b4;
-        --text-active: #fff;
-        --divider: #1c1c1c;
-      }
+<style>
+  :root {
+    --gold: #ffcc00;
+    --sidebar-bg: rgba(10, 10, 10, 0.85);
+    --hover-bg: rgba(255, 204, 0, 0.07);
+    --active-bg: rgba(255, 204, 0, 0.15);
+    --text-muted: #b4b4b4;
+    --text-active: #fff;
+    --divider: #1c1c1c;
+  }
 
-      body {
-        margin: 0;
-        font-family: "Inter", sans-serif;
-        display: flex;
-        background: radial-gradient(circle at top left, #111 0%, #000 100%);
-        color: #fff;
-        min-height: 100vh;
-      }
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    background: radial-gradient(circle at top left, #111 0%, #000 100%);
+    color: #fff;
+    min-height: 100vh;
+  }
 
-      .tigerfy-app {
-        display: flex;
-        width: 100%;
-      }
+  .tigerfy-app {
+    display: flex;
+    width: 100%;
+  }
 
-      /* SIDEBAR */
-      .sidebar {
-        width: 250px;
-        backdrop-filter: blur(8px);
-        background: var(--sidebar-bg);
-        border-right: 1px solid var(--divider);
-        display: flex;
-        flex-direction: column;
-        padding: 25px 0;
-        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
-      }
+  /* SIDEBAR */
+  .sidebar {
+    width: 250px;
+    backdrop-filter: blur(8px);
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--divider);
+    display: flex;
+    flex-direction: column;
+    padding: 25px 0;
+    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
+  }
 
-      /* LOGO */
-      .sidebar-header {
-        padding: 0 28px;
-        margin-bottom: 32px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+  /* LOGO */
+  .sidebar-header {
+    padding: 0 28px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 
-      .logo-icon svg {
-        width: 22px;
-        height: 22px;
-        stroke: var(--gold);
-        filter: drop-shadow(0 0 4px rgba(255, 204, 0, 0.3));
-      }
+  .logo-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--gold);
+    filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.4));
+  }
 
-      .logo-text {
-        font-size: 20px;
-        font-weight: 800;
-        color: var(--gold);
-        letter-spacing: 0.5px;
-      }
+  .logo-text {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    position: relative;
+    top: 1px;
+  }
 
-      /* MENU */
-      nav.menu {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
+  /* MENU */
+  nav.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
 
-      .menu a {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-        color: var(--text-muted);
-        font-weight: 500;
-        padding: 10px 28px;
-        border-radius: 8px;
-        transition: all 0.25s ease;
-        position: relative;
-      }
+  .menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 10px 28px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    position: relative;
+  }
 
-      .menu a:hover {
-        background: var(--hover-bg);
-        color: var(--gold);
-      }
+  .menu a:hover {
+    background: var(--hover-bg);
+    color: var(--gold);
+  }
 
-      .menu a.active {
-        background: var(--active-bg);
-        color: var(--text-active);
-        border-left: 3px solid var(--gold);
-        box-shadow: inset 0 0 10px var(--gold-glow);
-        font-weight: 600;
-      }
+  /* ITEM ATIVO COM GRADIENTE VERTICAL */
+  .menu a.active {
+    background: linear-gradient(to bottom, rgba(255, 204, 0, 0.18), rgba(255, 204, 0, 0.05));
+    color: var(--text-active);
+    font-weight: 600;
+  }
 
-      .menu a.active::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: -1px;
-        height: 100%;
-        width: 1px;
-        background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-        opacity: 0.6;
-      }
+  /* LINHA VERTICAL DOURADA ESTILO HOTTRACK */
+  .menu a.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #ffdd55, #ffcc00, #cfa600);
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
+  }
 
-      .menu svg {
-        width: 18px;
-        height: 18px;
-        stroke-width: 1.8;
-        transition: transform 0.2s ease;
-      }
+  .menu svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.8;
+    transition: transform 0.2s ease;
+  }
 
-      .menu a:hover svg {
-        transform: translateX(2px);
-      }
+  .menu a:hover svg {
+    transform: translateX(2px);
+  }
 
-      /* LINHA DIVISÓRIA */
-      .menu-divider {
-        height: 1px;
-        background: linear-gradient(to right, #1a1a1a, #2a2a2a, #1a1a1a);
-        margin: 20px 24px;
-      }
+  /* LINHA DIVISÓRIA */
+  .menu-divider {
+    height: 1px;
+    background: linear-gradient(to right, #1a1a1a, #2a2a2a, #1a1a1a);
+    margin: 20px 24px;
+  }
 
-      .main-content {
-        flex: 1;
-        padding: 40px;
-        overflow-y: auto;
-      }
-    </style>
+  .main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+  }
+</style>
   </head>
 
   <body>
