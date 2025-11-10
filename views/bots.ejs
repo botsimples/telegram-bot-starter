@@ -1,5 +1,4 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
-  <!-- FUNDO DOURADO + PONTILHADO -->
   <canvas id="bgParticles"></canvas>
 
   <div class="offers-page">
@@ -67,66 +66,36 @@
     function openTutorial(){document.getElementById('tutorialModal').classList.add('show')}
     function closeTutorial(){document.getElementById('tutorialModal').classList.remove('show')}
 
-    // Fundo dourado leve + pontilhado visível
+    // Fundo dourado suave + partículas integradas
     const c=document.getElementById('bgParticles'),ctx=c.getContext('2d');
     function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
     window.addEventListener('resize',resize);resize();
-
-    const particles=[];
-    for(let i=0;i<75;i++){
-      particles.push({
-        x:Math.random()*c.width,
-        y:Math.random()*c.height,
-        r:Math.random()*1.5+0.4,
-        dx:(Math.random()-0.5)*0.25,
-        dy:(Math.random()-0.5)*0.25
-      });
-    }
-
+    const particles=[];for(let i=0;i<60;i++){particles.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2+0.5,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3})}
     function draw(){
       ctx.clearRect(0,0,c.width,c.height);
-      // camada base escura (pontilhado ainda visível)
       const grad=ctx.createLinearGradient(0,0,0,c.height);
       grad.addColorStop(0,'rgba(10,10,10,0.9)');
       grad.addColorStop(1,'rgba(0,0,0,0.95)');
-      ctx.fillStyle=grad;
-      ctx.fillRect(0,0,c.width,c.height);
-
-      // partículas douradas sutis
+      ctx.fillStyle=grad;ctx.fillRect(0,0,c.width,c.height);
       ctx.fillStyle='rgba(255,204,0,0.35)';
-      particles.forEach(p=>{
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fill();
-        p.x+=p.dx;p.y+=p.dy;
-        if(p.x<0||p.x>c.width)p.dx*=-1;
-        if(p.y<0||p.y>c.height)p.dy*=-1;
-      });
+      particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>c.width)p.dx*=-1;if(p.y<0||p.y>c.height)p.dy*=-1});
       requestAnimationFrame(draw);
-    }
-    draw();
+    }draw();
   </script>
 
   <style>
     html,body{overflow:hidden;height:100%;}
-    #bgParticles{
-      position:fixed;
-      top:0;left:0;width:100%;height:100%;
-      z-index:-2;
-      pointer-events:none;
-      mix-blend-mode:screen; /* integra com o pontilhado */
-    }
+    #bgParticles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;mix-blend-mode:screen;}
 
     .offers-page{
       display:flex;
       justify-content:center;
       align-items:center;
-      min-height:100vh;
-      transform:translateX(-85px); /* centraliza em relação à sidebar */
-      margin-top:-30px; /* sobe o grid levemente */
+      height:100vh;
+      transform:translateX(-80px);
     }
 
-    .offers-container{text-align:center;max-width:1100px;width:90%;}
+    .offers-container{text-align:center;max-width:1080px;width:90%;}
     .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
     .offers-header p{color:#b4b4b4;margin-bottom:40px;}
 
@@ -138,33 +107,18 @@
     }
 
     .offer-card{
-      width:260px;height:260px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,204,0,0.12);
-      border-radius:14px;
-      padding:25px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
+      width:260px;height:260px;background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,204,0,0.12);border-radius:14px;
+      padding:25px;display:flex;flex-direction:column;
+      justify-content:space-between;align-items:center;
       transition:.3s;
     }
 
-    .offer-card:hover:not(.disabled){
-      background:rgba(255,204,0,0.07);
-      box-shadow:0 0 15px rgba(255,204,0,0.25);
-      transform:translateY(-3px);
-    }
-
+    .offer-card:hover:not(.disabled){background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);transform:translateY(-3px);}
     .offer-icon{width:36px;height:36px;color:#ffcc00;}
     .offer-card h3{color:#fff;margin:10px 0 5px;}
     .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
-    .offer-btn{
-      background:linear-gradient(90deg,#ffcc00,#d4a100);
-      color:#000;border:none;border-radius:8px;
-      padding:8px 16px;font-weight:600;cursor:pointer;
-      transition:background .3s;
-    }
+    .offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;transition:background .3s;}
     .offer-btn:hover{background:linear-gradient(90deg,#ffe066,#ffcc00);}
     .disabled{opacity:.45;pointer-events:none;}
     .disabled-btn{background:#444;color:#aaa;cursor:not-allowed;}
