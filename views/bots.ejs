@@ -1,34 +1,38 @@
-<div class="offers-wrapper fade-in">
+<div class="offers-central fade-in">
+  <div class="animated-bg"></div>
+
   <div class="offers-header">
     <h1>⚡ Minhas Ofertas</h1>
-    <p>Gerencie e crie novas automações de forma rápida e elegante.</p>
+    <p>Gerencie e crie automações inteligentes de forma prática e visual.</p>
   </div>
 
-  <div class="offers-list">
-    <div class="offer-card">
-      <h3>Acesso VIP 🔥</h3>
-      <span class="tag">Bot Padrão</span>
-      <p>Criada em 10/11/2025</p>
+  <div class="action-grid">
+    <div class="action-card" id="manage-offers">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <h3>Gerenciar Ofertas</h3>
+      <p>Veja e edite todas as suas ofertas existentes no painel TigerFy.</p>
     </div>
 
-    <div class="offer-card empty">
-      <p>Nenhuma oferta criada ainda</p>
+    <div class="action-card" id="create-offer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+      </svg>
+      <h3>Criar Nova Oferta</h3>
+      <p>Configure um novo bot e escolha o tipo de traqueamento ideal.</p>
     </div>
   </div>
-
-  <button id="new-offer-btn" class="floating-btn">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-    </svg>
-    Nova Oferta
-  </button>
 </div>
 
 <!-- MODAL -->
 <div id="create-offer-modal" class="modal">
   <div class="modal-inner">
-    <h2>Criar Nova Oferta</h2>
-    <p class="subtitle">Escolha as opções iniciais do seu bot.</p>
+    <h2>🚀 Criar Nova Oferta</h2>
+    <p class="subtitle">
+      Defina o nome e as opções iniciais do seu bot. <br />
+      <span class="tip">Você poderá editar tudo isso depois.</span>
+    </p>
 
     <form>
       <label>Nome da Oferta</label>
@@ -50,113 +54,96 @@
       </select>
 
       <div class="modal-actions">
-        <button type="button" class="btn-outline" id="cancel-offer">Cancelar</button>
-        <button type="submit" class="btn-gold">Criar</button>
+        <button type="button" class="btn-outline" id="tutorial-offer">📘 Ver Tutorial</button>
+        <div class="btn-group">
+          <button type="button" class="btn-outline" id="cancel-offer">Cancelar</button>
+          <button type="submit" class="btn-gold">Criar</button>
+        </div>
       </div>
     </form>
   </div>
 </div>
 
 <style>
-  .offers-wrapper {
+  /* Fundo animado */
+  .animated-bg {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255, 204, 0, 0.08) 0%, transparent 80%);
+    background-size: 200% 200%;
+    animation: glowMove 8s infinite linear;
+    z-index: -1;
+  }
+
+  @keyframes glowMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .offers-central {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: calc(100vh - 80px);
     text-align: center;
-    padding: 70px 20px;
-    gap: 40px;
+    gap: 60px;
   }
 
   .offers-header h1 {
-    font-size: 2.1rem;
+    font-size: 2.2rem;
     font-weight: 800;
     color: #ffcc00;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
 
   .offers-header p {
     color: #b4b4b4;
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
-  .offers-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    width: 100%;
-    max-width: 850px;
+  .action-grid {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .offer-card {
+  .action-card {
     background: rgba(15, 15, 15, 0.85);
     border: 1px solid rgba(255, 204, 0, 0.08);
-    border-radius: 12px;
-    padding: 24px;
+    border-radius: 16px;
+    padding: 40px 50px;
+    width: 280px;
     transition: all 0.3s ease;
-    box-shadow: inset 0 0 0 1px rgba(255, 204, 0, 0.03);
-  }
-
-  .offer-card:hover {
-    border-color: rgba(255, 204, 0, 0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.08);
-  }
-
-  .offer-card h3 {
-    color: #fff;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-
-  .offer-card p {
-    color: #aaa;
-    font-size: 0.85rem;
-  }
-
-  .tag {
-    display: inline-block;
-    background: rgba(255, 204, 0, 0.1);
-    color: #ffcc00;
-    font-size: 0.75rem;
-    border-radius: 6px;
-    padding: 3px 8px;
-    margin-bottom: 10px;
-  }
-
-  .empty {
-    opacity: 0.4;
-  }
-
-  /* FLOATING BUTTON */
-  .floating-btn {
-    position: fixed;
-    bottom: 50px;
-    right: 50%;
-    transform: translateX(50%);
-    background: linear-gradient(90deg, #ffcc00, #d3a900);
-    color: #000;
-    border: none;
-    border-radius: 50px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
-    font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
-    transition: all 0.25s ease;
+    box-shadow: 0 0 0 1px rgba(255, 204, 0, 0.02);
   }
 
-  .floating-btn:hover {
-    transform: translateX(50%) scale(1.05);
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+  .action-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 204, 0, 0.3);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.15);
   }
 
-  .floating-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: #000;
+  .action-card svg {
+    width: 40px;
+    height: 40px;
+    stroke: #ffcc00;
+    margin-bottom: 15px;
+  }
+
+  .action-card h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .action-card p {
+    color: #aaa;
+    font-size: 0.9rem;
   }
 
   /* MODAL */
@@ -165,7 +152,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
     z-index: 9999;
@@ -175,20 +162,26 @@
     background: rgba(15, 15, 15, 0.95);
     border: 1px solid rgba(255, 204, 0, 0.1);
     border-radius: 14px;
-    padding: 35px 45px;
-    width: 420px;
+    padding: 40px 45px;
+    width: 430px;
     animation: popIn 0.35s ease;
   }
 
   .modal-inner h2 {
     color: #ffcc00;
-    margin-bottom: 6px;
-    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
   }
 
-  .modal-inner .subtitle {
+  .subtitle {
     color: #b4b4b4;
     margin-bottom: 25px;
+    line-height: 1.4;
+  }
+
+  .tip {
+    color: #ffcc00;
+    font-size: 0.85rem;
   }
 
   label {
@@ -199,8 +192,7 @@
     text-align: left;
   }
 
-  input,
-  select {
+  input, select {
     width: 100%;
     background: rgba(20, 20, 20, 0.9);
     border: 1px solid rgba(255, 204, 0, 0.1);
@@ -212,7 +204,12 @@
   .modal-actions {
     margin-top: 25px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-group {
+    display: flex;
     gap: 10px;
   }
 
@@ -233,28 +230,29 @@
     padding: 10px 22px;
     border-radius: 8px;
     cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .btn-outline:hover {
+    background: rgba(255, 204, 0, 0.1);
   }
 
   @keyframes popIn {
-    from {
-      transform: scale(0.95);
-      opacity: 0;
-    }
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
 </style>
 
 <script>
-  const newOfferBtn = document.getElementById("new-offer-btn");
+  const manageBtn = document.getElementById("manage-offers");
+  const createBtn = document.getElementById("create-offer");
   const modal = document.getElementById("create-offer-modal");
   const cancelBtn = document.getElementById("cancel-offer");
+  const tutorialBtn = document.getElementById("tutorial-offer");
 
-  newOfferBtn.addEventListener("click", () => (modal.style.display = "flex"));
-  cancelBtn.addEventListener("click", () => (modal.style.display = "none"));
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) modal.style.display = "none";
-  });
+  manageBtn.addEventListener("click", () => window.location.href = "/bots/manage");
+  createBtn.addEventListener("click", () => modal.style.display = "flex");
+  cancelBtn.addEventListener("click", () => modal.style.display = "none");
+  tutorialBtn.addEventListener("click", () => window.open("https://t.me/tigerfy_tutorial", "_blank"));
+  window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
 </script>
