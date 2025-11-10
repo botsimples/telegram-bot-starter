@@ -1,7 +1,7 @@
 <%- include('layout', { title: 'Ofertas', active: 'bots', body: `
   <!-- ===============================
-       ⚡ MINHAS OFERTAS - TIGERFY
-       Painel elegante com opções centrais
+       ⚡ TIGERFY - MINHAS OFERTAS
+       Versão refinada com 3 blocos centrais
   =============================== -->
 
   <div class="offers-wrapper fade-in">
@@ -11,43 +11,89 @@
     </div>
 
     <div class="offers-grid">
+      <!-- BLOCO 1 -->
       <div class="offer-card">
-        <div class="offer-icon">📋</div>
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z" />
+        </svg>
         <h3>Gerenciar Ofertas</h3>
         <p>Veja e edite todas as suas ofertas existentes no painel TigerFy.</p>
         <button class="offer-btn" onclick="window.location.href='/bots/manage'">Acessar</button>
       </div>
 
+      <!-- BLOCO 2 -->
       <div class="offer-card">
-        <div class="offer-icon">➕</div>
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
         <h3>Criar Nova Oferta</h3>
-        <p>Configure uma nova oferta e escolha o tipo de traqueamento ideal.</p>
-        <div class="offer-actions">
-          <button class="offer-btn" onclick="window.location.href='/bots/create'">Criar</button>
-          <button class="offer-btn-secondary" onclick="openTutorial()">Ver Tutorial</button>
-        </div>
+        <p>Defina o nome, tipo e traqueamento da sua nova oferta.</p>
+        <button class="offer-btn" onclick="openCreateModal()">Criar</button>
+      </div>
+
+      <!-- BLOCO 3 -->
+      <div class="offer-card">
+        <svg class="offer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8m-8 4h8m-8 4h4" />
+        </svg>
+        <h3>Ver Tutorial</h3>
+        <p>Aprenda a criar e configurar ofertas com rastreamento completo.</p>
+        <button class="offer-btn" onclick="openTutorial()">Assistir</button>
       </div>
     </div>
   </div>
 
   <!-- ===============================
-       🎥 MODAL DE TUTORIAL
+       🧩 MODAL: CRIAR OFERTA
   =============================== -->
-  <div class="tutorial-modal" id="tutorialModal">
-    <div class="tutorial-content">
-      <h2>🎬 Tutorial de Criação</h2>
-      <p>Aprenda a criar suas ofertas com rastreamento e integrações em menos de 2 minutos.</p>
-      <iframe 
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-        title="Tutorial TigerFy" 
-        frameborder="0" 
-        allowfullscreen>
-      </iframe>
-      <button class="close-btn" onclick="closeTutorial()">Fechar</button>
+  <div class="modal-bg" id="createModal">
+    <div class="modal-content">
+      <h2>🚀 Criar Nova Oferta</h2>
+      <p>Você pode editar todos os detalhes depois.</p>
+
+      <form class="create-form">
+        <label>Nome da Oferta</label>
+        <input type="text" placeholder="Ex: Acesso VIP, HotPrime..." />
+
+        <label>Tipo de Oferta</label>
+        <select>
+          <option>Bot Padrão</option>
+          <option>Fluxo Visual (em breve)</option>
+        </select>
+
+        <label>Tipo de Traqueamento (opcional)</label>
+        <select>
+          <option>Usar seu Traqueamento Próprio</option>
+          <option>Utmify + Pixel Facebook (em breve)</option>
+        </select>
+
+        <div class="form-actions">
+          <button type="button" class="cancel" onclick="closeCreateModal()">Cancelar</button>
+          <button type="submit" class="confirm">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===============================
+       🎥 MODAL: TUTORIAL
+  =============================== -->
+  <div class="modal-bg" id="tutorialModal">
+    <div class="modal-content video">
+      <h2>🎬 Tutorial TigerFy</h2>
+      <p>Veja como criar suas ofertas e conectar rastreamento completo.</p>
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Tutorial TigerFy" frameborder="0" allowfullscreen></iframe>
+      <button class="confirm" onclick="closeTutorial()">Fechar</button>
     </div>
   </div>
 
   <script>
+    function openCreateModal() {
+      document.getElementById('createModal').classList.add('show');
+    }
+    function closeCreateModal() {
+      document.getElementById('createModal').classList.remove('show');
+    }
     function openTutorial() {
       document.getElementById('tutorialModal').classList.add('show');
     }
@@ -58,25 +104,17 @@
 
   <style>
     /* ===============================
-       🌌 ESTILO GERAL CENTRALIZADO
+       🌌 LAYOUT CENTRAL E ANIMAÇÃO
     =============================== */
     .offers-wrapper {
       text-align: center;
       padding-top: 60px;
-      position: relative;
-      animation: fadeIn 0.8s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .offers-header h1 {
-      font-size: 2rem;
       color: #ffcc00;
+      font-size: 2rem;
       margin-bottom: 10px;
-      text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
     }
 
     .offers-header p {
@@ -87,43 +125,49 @@
     .offers-grid {
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 35px;
       margin-top: 60px;
       flex-wrap: wrap;
     }
 
+    /* ===============================
+       🟨 BLOCO DE OFERTA
+    =============================== */
     .offer-card {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 204, 0, 0.15);
       border-radius: 14px;
       padding: 30px 28px;
-      width: 320px;
+      width: 300px;
       text-align: center;
-      transition: 0.3s ease;
-      box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.04);
+      transition: 0.3s;
     }
 
     .offer-card:hover {
       background: rgba(255, 204, 0, 0.06);
       transform: translateY(-3px);
-      box-shadow: 0 0 12px rgba(255, 204, 0, 0.15);
+      box-shadow: 0 0 12px rgba(255, 204, 0, 0.12);
     }
 
     .offer-icon {
-      font-size: 38px;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.6));
+      width: 36px;
+      height: 36px;
+      color: #ffcc00;
+      margin-bottom: 10px;
+      opacity: 0.9;
+      filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.4));
     }
 
     .offer-card h3 {
-      font-size: 1.1rem;
       color: #fff;
       margin-bottom: 6px;
+      font-size: 1.1rem;
     }
 
     .offer-card p {
-      font-size: 0.9rem;
       color: #b4b4b4;
+      font-size: 0.9rem;
       margin-bottom: 16px;
     }
 
@@ -142,75 +186,82 @@
       filter: brightness(1.15);
     }
 
-    .offer-btn-secondary {
-      background: transparent;
-      border: 1px solid #ffcc00;
-      border-radius: 8px;
-      color: #ffcc00;
-      font-weight: 500;
-      padding: 9px 16px;
-      margin-left: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .offer-btn-secondary:hover {
-      background: rgba(255, 204, 0, 0.1);
-    }
-
     /* ===============================
-       🎥 MODAL DE TUTORIAL
+       🪩 MODAIS (CRIAR E TUTORIAL)
     =============================== */
-    .tutorial-modal {
+    .modal-bg {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 999;
+      z-index: 1000;
     }
-
-    .tutorial-modal.show {
+    .modal-bg.show {
       display: flex;
     }
 
-    .tutorial-content {
+    .modal-content {
       background: rgba(15, 15, 15, 0.95);
       border: 1px solid rgba(255, 204, 0, 0.2);
       border-radius: 14px;
-      padding: 25px 30px;
-      width: 600px;
+      padding: 30px;
+      width: 480px;
+      text-align: left;
+      animation: slideUp 0.4s ease;
+      color: #fff;
+    }
+
+    .modal-content.video {
+      width: 640px;
       text-align: center;
-      animation: slideUp 0.5s ease;
-      box-shadow: 0 0 25px rgba(255, 204, 0, 0.1);
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .modal-content iframe {
+      width: 100%;
+      height: 320px;
+      border-radius: 10px;
+      margin-top: 10px;
     }
 
-    .tutorial-content h2 {
+    .modal-content h2 {
       color: #ffcc00;
       margin-bottom: 10px;
     }
 
-    .tutorial-content p {
+    .modal-content p {
       color: #ccc;
       margin-bottom: 20px;
       font-size: 0.95rem;
     }
 
-    .tutorial-content iframe {
-      width: 100%;
-      height: 315px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+    .create-form label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      color: #ffcc00;
     }
 
-    .close-btn {
+    .create-form input,
+    .create-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 204, 0, 0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .confirm {
       background: #ffcc00;
       color: #000;
       border: none;
@@ -220,9 +271,26 @@
       cursor: pointer;
       transition: 0.3s;
     }
-
-    .close-btn:hover {
+    .confirm:hover {
       filter: brightness(1.15);
+    }
+
+    .cancel {
+      background: transparent;
+      border: 1px solid #ffcc00;
+      color: #ffcc00;
+      border-radius: 8px;
+      padding: 9px 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .cancel:hover {
+      background: rgba(255, 204, 0, 0.1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 ` }) %>
