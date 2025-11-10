@@ -1,99 +1,128 @@
-<div class="tiger-dashboard">
-  <!-- HEADER -->
-  <div class="tiger-header">
-    <div>
-      <h1>Estatísticas Gerais</h1>
-      <p>Visão geral de toda a plataforma.</p>
-    </div>
-    <button class="filter-btn">Filtrar Ofertas</button>
-  </div>
+<div class="deck-container">
+  <h1>📊 Painel Geral</h1>
+  <p class="deck-subtitle">Resumo das suas operações no TigerFy</p>
 
-  <!-- GRID DE MÉTRICAS -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>Total de Vendas</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Ano</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Mês</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Vendas no Dia</h3>
-      <span>R$ 0,00</span>
-    </div>
-
-    <div class="stat-card">
-      <h3>Total Usuários</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Ano</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Mês</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Usuários no Dia</h3>
-      <span>0</span>
-    </div>
-
-    <!-- novos 4 blocos -->
-    <div class="stat-card">
-      <h3>Conversões Ativas</h3>
-      <span>0</span>
-    </div>
-    <div class="stat-card">
-      <h3>Taxa de Conversão</h3>
-      <span>0%</span>
-    </div>
-    <div class="stat-card">
-      <h3>Ticket Médio</h3>
-      <span>R$ 0,00</span>
-    </div>
-    <div class="stat-card">
-      <h3>Lucro Estimado</h3>
-      <span>R$ 0,00</span>
-    </div>
-  </div>
-
-  <!-- BLOCO DE GRÁFICO -->
-  <div class="chart-block">
-    <div class="chart-head">
-      <h3>Usuários por Horário</h3>
-      <div class="tabs">
-        <button class="active">Hoje</button>
-        <button>Ontem</button>
-        <button>Essa Semana</button>
-        <button>Esse Mês</button>
-        <button>Personalizado</button>
+  <div class="deck-grid">
+    <div class="deck-card">
+      <div class="card-icon">💰</div>
+      <div class="card-info">
+        <h3>Vendas Hoje</h3>
+        <p>R$ <span id="vendasHoje">3.270,00</span></p>
       </div>
     </div>
-    <div class="chart-placeholder">[ gráfico em breve ]</div>
+
+    <div class="deck-card">
+      <div class="card-icon">⚡</div>
+      <div class="card-info">
+        <h3>Conversões</h3>
+        <p><span id="conversoes">24</span> Leads Convertidos</p>
+      </div>
+    </div>
+
+    <div class="deck-card">
+      <div class="card-icon">👥</div>
+      <div class="card-info">
+        <h3>Novos Usuários</h3>
+        <p><span id="usuariosNovos">57</span> Hoje</p>
+      </div>
+    </div>
+
+    <div class="deck-card">
+      <div class="card-icon">💳</div>
+      <div class="card-info">
+        <h3>Taxa de Pagamento</h3>
+        <p><span id="taxaPagamento">82%</span></p>
+      </div>
+    </div>
   </div>
 
-  <!-- TABELA -->
-  <div class="table-block">
-    <h3>Pagamentos Recentes</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Usuário</th>
-          <th>Valor</th>
-          <th>Status</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr>
-      </tbody>
-    </table>
+  <div class="deck-section">
+    <h2>📈 Desempenho Recente</h2>
+    <p>Visualize os principais indicadores da semana.</p>
+    <div class="deck-chart">
+      <div class="chart-placeholder">📊 Gráfico em desenvolvimento</div>
+    </div>
   </div>
 </div>
+
+<style>
+  .deck-container {
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .deck-subtitle {
+    color: #aaa;
+    margin-bottom: 30px;
+  }
+
+  .deck-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .deck-card {
+    background: linear-gradient(145deg, #111 0%, #1a1a1a 100%);
+    border: 1px solid #222;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .deck-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.18);
+  }
+
+  .card-icon {
+    font-size: 32px;
+    color: #ffcc00;
+  }
+
+  .card-info h3 {
+    color: #ffcc00;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .card-info p {
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .deck-section {
+    margin-top: 40px;
+  }
+
+  .deck-section h2 {
+    color: #ffcc00;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .deck-chart {
+    background: #111;
+    border-radius: 14px;
+    border: 1px solid #222;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chart-placeholder {
+    color: #777;
+    font-size: 15px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
