@@ -1,55 +1,40 @@
-<div class="manage-offers fade-in">
-  <header class="manage-header">
-    <div>
-      <h1>📦 Gerenciar Ofertas</h1>
-      <p>Edite e personalize seus bots e rastreamentos diretamente pelo painel.</p>
-    </div>
-    <button class="btn-gold" id="btn-new-offer">+ Nova Oferta</button>
-  </header>
+<%- include('layout', { title: 'Ofertas', active: 'bots' }) %>
 
-  <section class="offers-list">
+<div class="offers-wrapper fade-in">
+  <div class="offers-header">
+    <h1>⚡ Minhas Ofertas</h1>
+    <p>Gerencie e crie novas automações de forma rápida e elegante.</p>
+  </div>
+
+  <div class="offers-list">
     <div class="offer-card">
-      <div class="offer-info">
-        <h3>Acesso VIP 🔥</h3>
-        <span class="tag">Bot Padrão</span>
-        <p>Criada em: 10/11/2025</p>
-      </div>
-
-      <div class="offer-actions">
-        <button class="btn-dark-sm" onclick="openSettings()">⚙️ Editar</button>
-        <button class="btn-dark-sm">➕ Adicionar Bot</button>
-        <button class="btn-outline-sm">🗑️ Excluir</button>
-      </div>
+      <h3>Acesso VIP 🔥</h3>
+      <span class="tag">Bot Padrão</span>
+      <p>Criada em 10/11/2025</p>
     </div>
 
     <div class="offer-card empty">
-      <p>Nenhuma oferta criada ainda.</p>
+      <p>Nenhuma oferta criada ainda</p>
     </div>
-  </section>
+  </div>
+
+  <button id="new-offer-btn" class="floating-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+    </svg>
+    Nova Oferta
+  </button>
 </div>
 
-<!-- SIDEBAR MODAL DE CONFIGURAÇÃO -->
-<div id="sidebar-settings" class="settings-sidebar">
-  <div class="sidebar-content">
-    <div class="sidebar-header">
-      <h2>⚙️ Configurações da Oferta</h2>
-      <button class="close-sidebar" onclick="closeSettings()">✕</button>
-    </div>
+<!-- MODAL -->
+<div id="create-offer-modal" class="modal">
+  <div class="modal-inner">
+    <h2>Criar Nova Oferta</h2>
+    <p class="subtitle">Escolha as opções iniciais do seu bot.</p>
 
     <form>
-      <label>Token do Bot (BotFather)</label>
-      <input type="text" placeholder="Insira o token gerado pelo BotFather" />
-
-      <label>Nome do Bot (opcional)</label>
-      <input type="text" placeholder="Ex: caronavip_bot" />
-
-      <label>Tipo de Traqueamento</label>
-      <select>
-        <option>Usar seu Traqueamento Próprio</option>
-        <option>Facebook Pixel Apenas</option>
-        <option disabled>UTMify + Pixel Facebook (em breve)</option>
-        <option disabled>UTMify + Pixel UTMIFY (em breve)</option>
-      </select>
+      <label>Nome da Oferta</label>
+      <input type="text" placeholder="Ex: Acesso VIP, HotPrime..." required />
 
       <label>Tipo de Bot</label>
       <select>
@@ -58,84 +43,211 @@
         <option disabled>Fluxo Bot (em breve)</option>
       </select>
 
-      <div class="sidebar-actions">
-        <button type="button" class="btn-gold">💾 Salvar Alterações</button>
+      <label>Tipo de Traqueamento (opcional)</label>
+      <select>
+        <option>Usar seu Traqueamento Próprio</option>
+        <option>Facebook Pixel Apenas</option>
+        <option disabled>UTMify + Pixel Facebook (em breve)</option>
+        <option disabled>UTMify + Pixel UTMIFY (em breve)</option>
+      </select>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" id="cancel-offer">Cancelar</button>
+        <button type="submit" class="btn-gold">Criar</button>
       </div>
     </form>
   </div>
 </div>
 
 <style>
-  .manage-offers { padding:40px; }
-  .manage-header { display:flex; justify-content:space-between; align-items:center; }
-  .manage-header h1 { color:#ffcc00; margin-bottom:4px; }
-  .manage-header p { color:#b4b4b4; }
+  .offers-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 70px 20px;
+    gap: 40px;
+  }
 
-  .offers-list { display:flex; flex-direction:column; gap:18px; margin-top:30px; }
+  .offers-header h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #ffcc00;
+    margin-bottom: 5px;
+  }
+
+  .offers-header p {
+    color: #b4b4b4;
+    font-size: 0.95rem;
+  }
+
+  .offers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 850px;
+  }
+
   .offer-card {
-    background:rgba(25,25,25,.85);
-    border:1px solid rgba(255,204,0,.08);
-    border-radius:10px;
-    padding:20px;
-    display:flex; justify-content:space-between; align-items:center;
+    background: rgba(15, 15, 15, 0.85);
+    border: 1px solid rgba(255, 204, 0, 0.08);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 0 1px rgba(255, 204, 0, 0.03);
   }
 
-  .offer-info h3 { color:#fff; margin:0; }
-  .offer-info .tag { background:rgba(255,204,0,.1); color:#ffcc00; font-size:.8rem; padding:2px 8px; border-radius:6px; margin-top:5px; display:inline-block; }
-
-  .offer-actions { display:flex; gap:10px; }
-  .btn-dark-sm, .btn-outline-sm {
-    background:rgba(30,30,30,.9);
-    border:1px solid rgba(255,204,0,.15);
-    color:#ffcc00; font-size:.85rem;
-    border-radius:8px; padding:8px 14px;
-    cursor:pointer; transition:all .25s ease;
-  }
-  .btn-dark-sm:hover { background:rgba(255,204,0,.1); }
-  .btn-outline-sm { color:#b4b4b4; border:1px solid rgba(255,255,255,.05); }
-  .btn-outline-sm:hover { color:#fff; }
-
-  .empty { text-align:center; color:#777; font-size:.9rem; padding:40px 0; }
-
-  /* SIDEBAR SETTINGS */
-  .settings-sidebar {
-    display:none;
-    position:fixed;
-    top:0; right:0;
-    width:400px; height:100vh;
-    background:rgba(10,10,10,.95);
-    border-left:1px solid rgba(255,204,0,.1);
-    box-shadow:-4px 0 15px rgba(0,0,0,.4);
-    z-index:9999;
-    animation:slideIn .4s ease;
+  .offer-card:hover {
+    border-color: rgba(255, 204, 0, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.08);
   }
 
-  .sidebar-content { padding:30px; overflow-y:auto; height:100%; }
-  .sidebar-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-  .sidebar-header h2 { color:#ffcc00; font-size:1.3rem; }
-  .close-sidebar { background:none; border:none; color:#fff; font-size:1.3rem; cursor:pointer; }
-
-  .sidebar-content label { color:#ffcc00; display:block; margin:16px 0 6px; font-weight:600; }
-  .sidebar-content input, select {
-    width:100%; padding:10px 12px;
-    background:rgba(25,25,25,.85);
-    border:1px solid rgba(255,204,0,.1);
-    border-radius:8px; color:#fff;
+  .offer-card h3 {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 6px;
   }
 
-  .sidebar-actions { margin-top:25px; text-align:right; }
+  .offer-card p {
+    color: #aaa;
+    font-size: 0.85rem;
+  }
 
-  @keyframes slideIn {
-    from { right:-420px; opacity:0; }
-    to { right:0; opacity:1; }
+  .tag {
+    display: inline-block;
+    background: rgba(255, 204, 0, 0.1);
+    color: #ffcc00;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    padding: 3px 8px;
+    margin-bottom: 10px;
+  }
+
+  .empty {
+    opacity: 0.4;
+  }
+
+  /* FLOATING BUTTON */
+  .floating-btn {
+    position: fixed;
+    bottom: 50px;
+    right: 50%;
+    transform: translateX(50%);
+    background: linear-gradient(90deg, #ffcc00, #d3a900);
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+    transition: all 0.25s ease;
+  }
+
+  .floating-btn:hover {
+    transform: translateX(50%) scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+  }
+
+  .floating-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: #000;
+  }
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .modal-inner {
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid rgba(255, 204, 0, 0.1);
+    border-radius: 14px;
+    padding: 35px 45px;
+    width: 420px;
+    animation: popIn 0.35s ease;
+  }
+
+  .modal-inner h2 {
+    color: #ffcc00;
+    margin-bottom: 6px;
+    font-size: 1.5rem;
+  }
+
+  .modal-inner .subtitle {
+    color: #b4b4b4;
+    margin-bottom: 25px;
+  }
+
+  label {
+    display: block;
+    color: #ffcc00;
+    font-weight: 600;
+    margin: 14px 0 6px;
+    text-align: left;
+  }
+
+  input, select {
+    width: 100%;
+    background: rgba(20, 20, 20, 0.9);
+    border: 1px solid rgba(255, 204, 0, 0.1);
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .modal-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .btn-gold {
+    background: linear-gradient(90deg, #ffcc00, #d3a900);
+    color: #000;
+    border: none;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 204, 0, 0.3);
+    color: #ffcc00;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
 </style>
 
 <script>
-  function openSettings() {
-    document.getElementById("sidebar-settings").style.display = "block";
-  }
-  function closeSettings() {
-    document.getElementById("sidebar-settings").style.display = "none";
-  }
+  const newOfferBtn = document.getElementById("new-offer-btn");
+  const modal = document.getElementById("create-offer-modal");
+  const cancelBtn = document.getElementById("cancel-offer");
+
+  newOfferBtn.addEventListener("click", () => modal.style.display = "flex");
+  cancelBtn.addEventListener("click", () => modal.style.display = "none");
+  window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
 </script>
