@@ -1,145 +1,141 @@
-<div class="offers-container fade-in">
-  <header class="offers-header">
-    <div class="text-center">
-      <h1>⚡ Minhas Ofertas</h1>
-      <p>Gerencie e crie novas automações diretamente pelo painel TigerFy.</p>
+<div class="manage-offers fade-in">
+  <header class="manage-header">
+    <div>
+      <h1>📦 Gerenciar Ofertas</h1>
+      <p>Edite e personalize seus bots e rastreamentos diretamente pelo painel.</p>
+    </div>
+    <button class="btn-gold" id="btn-new-offer">+ Nova Oferta</button>
+  </header>
+
+  <section class="offers-list">
+    <div class="offer-card">
+      <div class="offer-info">
+        <h3>Acesso VIP 🔥</h3>
+        <span class="tag">Bot Padrão</span>
+        <p>Criada em: 10/11/2025</p>
+      </div>
+
+      <div class="offer-actions">
+        <button class="btn-dark-sm" onclick="openSettings()">⚙️ Editar</button>
+        <button class="btn-dark-sm">➕ Adicionar Bot</button>
+        <button class="btn-outline-sm">🗑️ Excluir</button>
+      </div>
     </div>
 
-    <div class="offers-actions">
-      <button class="btn-gold-outline">Gerenciar Ofertas</button>
-      <button id="btn-create-offer" class="btn-gold">Criar Nova Oferta</button>
-      <button class="btn-dark">📘 Ver Tutorial</button>
+    <div class="offer-card empty">
+      <p>Nenhuma oferta criada ainda.</p>
     </div>
-  </header>
+  </section>
 </div>
 
-<!-- MODAL DE CRIAÇÃO DE OFERTA -->
-<div id="create-offer-modal" class="modal">
-  <div class="modal-content compact">
-    <h2>⚙️ Criar Nova Oferta</h2>
-    <p class="modal-subtitle">Defina o nome da oferta e as configurações iniciais.</p>
+<!-- SIDEBAR MODAL DE CONFIGURAÇÃO -->
+<div id="sidebar-settings" class="settings-sidebar">
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <h2>⚙️ Configurações da Oferta</h2>
+      <button class="close-sidebar" onclick="closeSettings()">✕</button>
+    </div>
 
-    <form id="step1-form">
-      <div class="form-group">
-        <label for="offerName">Nome da Oferta</label>
-        <input type="text" id="offerName" placeholder="Ex: Acesso VIP, HotPrime, Mundo Oculto..." required />
-      </div>
+    <form>
+      <label>Token do Bot (BotFather)</label>
+      <input type="text" placeholder="Insira o token gerado pelo BotFather" />
 
-      <!-- Tipo de Bot -->
-      <h3 class="section-title"><svg class="icon" viewBox="0 0 24 24"><path fill="#ffcc00" d="M12 2a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v4h1a2 2 0 0 1 0 4h-1v4a2 2 0 0 1-2 2h-4v1a2 2 0 0 1-4 0v-1H6a2 2 0 0 1-2-2v-4H3a2 2 0 0 1 0-4h1V7a2 2 0 0 1 2-2h4V4a2 2 0 0 1 2-2Z"/></svg> Tipo de Bot</h3>
+      <label>Nome do Bot (opcional)</label>
+      <input type="text" placeholder="Ex: caronavip_bot" />
 
-      <div class="option-grid compact">
-        <div class="option-card selected" data-bot="default">
-          <h4>Bot Padrão</h4>
-          <p>Funil completo com upsell, downsell e remarketing automático.</p>
-        </div>
+      <label>Tipo de Traqueamento</label>
+      <select>
+        <option>Usar seu Traqueamento Próprio</option>
+        <option>Facebook Pixel Apenas</option>
+        <option disabled>UTMify + Pixel Facebook (em breve)</option>
+        <option disabled>UTMify + Pixel UTMIFY (em breve)</option>
+      </select>
 
-        <div class="option-card" data-bot="manychat">
-          <h4>Fluxo Estilo ManyChat</h4>
-          <p>Fluxo interativo visual com automações personalizadas.</p>
-        </div>
+      <label>Tipo de Bot</label>
+      <select>
+        <option>Bot Padrão</option>
+        <option>Fluxo Estilo ManyChat</option>
+        <option disabled>Fluxo Bot (em breve)</option>
+      </select>
 
-        <div class="option-card disabled" data-bot="flow">
-          <h4>Fluxo Bot (em breve)</h4>
-          <p>Fluxos inteligentes com lógica visual.</p>
-        </div>
-      </div>
-
-      <!-- Tipo de Traqueamento -->
-      <h3 class="section-title"><svg class="icon" viewBox="0 0 24 24"><path fill="#ffcc00" d="M12 2a10 10 0 1 1-7.07 2.93A10 10 0 0 1 12 2Zm0 18a8 8 0 1 0-5.66-2.34A8 8 0 0 0 12 20Zm-1-13h2v6h-2V7Zm0 8h2v2h-2v-2Z"/></svg> Tipo de Traqueamento <span class="optional-text">(opcional)</span></h3>
-
-      <div class="option-grid compact">
-        <div class="option-card selected" data-value="custom_tracking">
-          <h4>Usar seu Traqueamento Próprio</h4>
-          <p>Configure páginas de Presell e Obrigado com seu próprio pixel e UTMs.</p>
-        </div>
-
-        <div class="option-card disabled" data-value="utmify_pixel_utmify">
-          <h4>UTMify + Pixel UTMIFY (em breve)</h4>
-          <p>Integração automática com rastreamento completo.</p>
-        </div>
-
-        <div class="option-card disabled" data-value="utmify_pixel_fb">
-          <h4>UTMify + Pixel Facebook (em breve)</h4>
-          <p>Combinação de Meta Pixel e dados UTMify.</p>
-        </div>
-
-        <div class="option-card" data-value="pixel_fb_only">
-          <h4>Facebook Pixel Apenas</h4>
-          <p>Rastreamento nativo via pixel do Facebook.</p>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button type="button" class="btn-gold-outline" id="cancel-offer">Cancelar</button>
-        <button type="submit" class="btn-gold">Avançar</button>
+      <div class="sidebar-actions">
+        <button type="button" class="btn-gold">💾 Salvar Alterações</button>
       </div>
     </form>
   </div>
 </div>
 
 <style>
-  .offers-container { display:flex; flex-direction:column; align-items:center; gap:40px; padding:50px 0; }
-  .offers-header h1 { font-size:2rem; font-weight:700; color:#ffcc00; }
-  .offers-header p { color:#b4b4b4; }
-  .offers-actions { display:flex; justify-content:center; gap:18px; margin-top:25px; }
+  .manage-offers { padding:40px; }
+  .manage-header { display:flex; justify-content:space-between; align-items:center; }
+  .manage-header h1 { color:#ffcc00; margin-bottom:4px; }
+  .manage-header p { color:#b4b4b4; }
 
-  .btn-gold,.btn-gold-outline,.btn-dark {
-    padding:12px 28px;border-radius:10px;font-weight:600;cursor:pointer;transition:all .25s ease;
-  }
-  .btn-gold {background:linear-gradient(90deg,#ffcc00,#d3a900);color:#000;border:none;}
-  .btn-gold-outline {border:1px solid #ffcc00;background:transparent;color:#ffcc00;}
-  .btn-dark {background:rgba(30,30,30,.8);border:1px solid rgba(255,204,0,.1);color:#ffcc00;}
-
-  .modal {display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);justify-content:center;align-items:center;z-index:9999;}
-  .modal-content {background:rgba(15,15,15,.95);border:1px solid rgba(255,204,0,.1);border-radius:14px;width:540px;max-width:90%;padding:35px;animation:popIn .4s ease;}
-  .compact {padding:30px;width:540px;}
-  .modal-content h2 {color:#ffcc00;font-size:1.5rem;margin-bottom:8px;}
-  .modal-subtitle {color:#b4b4b4;margin-bottom:25px;}
-
-  .form-group {margin-bottom:25px;}
-  label {color:#ffcc00;font-weight:600;}
-  input[type="text"] {width:100%;background:rgba(20,20,20,.85);border:1px solid rgba(255,204,0,.1);border-radius:8px;padding:10px 12px;color:#fff;margin-top:6px;}
-
-  .section-title {margin:25px 0 10px;color:#ffcc00;font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:8px;}
-  .optional-text {color:#777;font-size:.85rem;font-weight:500;}
-  .icon {width:20px;height:20px;}
-
-  .option-grid.compact {display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .option-card {
+  .offers-list { display:flex; flex-direction:column; gap:18px; margin-top:30px; }
+  .offer-card {
     background:rgba(25,25,25,.85);
     border:1px solid rgba(255,204,0,.08);
     border-radius:10px;
-    padding:14px 16px;
-    cursor:pointer;
-    transition:all .25s ease;
+    padding:20px;
+    display:flex; justify-content:space-between; align-items:center;
   }
-  .option-card h4 {color:#ffcc00;font-weight:700;margin-bottom:4px;}
-  .option-card p {color:#b4b4b4;font-size:.8rem;line-height:1.3;}
-  .option-card:hover {border-color:rgba(255,204,0,.4);}
-  .option-card.selected {border-color:#ffcc00;box-shadow:0 0 10px rgba(255,204,0,.25);}
-  .option-card.disabled {opacity:.35;cursor:not-allowed;}
 
-  .form-actions {display:flex;justify-content:flex-end;gap:10px;margin-top:25px;}
+  .offer-info h3 { color:#fff; margin:0; }
+  .offer-info .tag { background:rgba(255,204,0,.1); color:#ffcc00; font-size:.8rem; padding:2px 8px; border-radius:6px; margin-top:5px; display:inline-block; }
 
-  @keyframes popIn {from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
+  .offer-actions { display:flex; gap:10px; }
+  .btn-dark-sm, .btn-outline-sm {
+    background:rgba(30,30,30,.9);
+    border:1px solid rgba(255,204,0,.15);
+    color:#ffcc00; font-size:.85rem;
+    border-radius:8px; padding:8px 14px;
+    cursor:pointer; transition:all .25s ease;
+  }
+  .btn-dark-sm:hover { background:rgba(255,204,0,.1); }
+  .btn-outline-sm { color:#b4b4b4; border:1px solid rgba(255,255,255,.05); }
+  .btn-outline-sm:hover { color:#fff; }
+
+  .empty { text-align:center; color:#777; font-size:.9rem; padding:40px 0; }
+
+  /* SIDEBAR SETTINGS */
+  .settings-sidebar {
+    display:none;
+    position:fixed;
+    top:0; right:0;
+    width:400px; height:100vh;
+    background:rgba(10,10,10,.95);
+    border-left:1px solid rgba(255,204,0,.1);
+    box-shadow:-4px 0 15px rgba(0,0,0,.4);
+    z-index:9999;
+    animation:slideIn .4s ease;
+  }
+
+  .sidebar-content { padding:30px; overflow-y:auto; height:100%; }
+  .sidebar-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  .sidebar-header h2 { color:#ffcc00; font-size:1.3rem; }
+  .close-sidebar { background:none; border:none; color:#fff; font-size:1.3rem; cursor:pointer; }
+
+  .sidebar-content label { color:#ffcc00; display:block; margin:16px 0 6px; font-weight:600; }
+  .sidebar-content input, select {
+    width:100%; padding:10px 12px;
+    background:rgba(25,25,25,.85);
+    border:1px solid rgba(255,204,0,.1);
+    border-radius:8px; color:#fff;
+  }
+
+  .sidebar-actions { margin-top:25px; text-align:right; }
+
+  @keyframes slideIn {
+    from { right:-420px; opacity:0; }
+    to { right:0; opacity:1; }
+  }
 </style>
 
 <script>
-  const modal = document.getElementById("create-offer-modal");
-  const btnOpen = document.getElementById("btn-create-offer");
-  const btnCancel = document.getElementById("cancel-offer");
-
-  btnOpen.addEventListener("click", () => (modal.style.display = "flex"));
-  btnCancel.addEventListener("click", () => (modal.style.display = "none"));
-  window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
-
-  document.querySelectorAll(".option-card").forEach((card) => {
-    card.addEventListener("click", () => {
-      if (card.classList.contains("disabled")) return;
-      const group = card.dataset.bot ? "[data-bot]" : "[data-value]";
-      document.querySelectorAll(group).forEach(c => c.classList.remove("selected"));
-      card.classList.add("selected");
-    });
-  });
+  function openSettings() {
+    document.getElementById("sidebar-settings").style.display = "block";
+  }
+  function closeSettings() {
+    document.getElementById("sidebar-settings").style.display = "none";
+  }
 </script>
