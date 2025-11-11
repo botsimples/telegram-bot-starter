@@ -1,8 +1,7 @@
 /* ===========================
-   ⚡ TIGERFY UNIVERSAL THEME
+   ⚡ TIGERFY GOLD THEME FINAL
    =========================== */
 
-/* 🎨 VARIÁVEIS */
 :root {
   --bg-color: #0a0a0a;
   --text-color: #ffffff;
@@ -10,7 +9,7 @@
   --accent-color: #ffcc00;
   --card-bg: rgba(18, 18, 18, 0.85);
   --card-border: rgba(255, 204, 0, 0.12);
-  --sidebar-bg: linear-gradient(180deg, #0b0b0b 0%, #000 100%);
+  --sidebar-bg: #0b0b0b;
   --hover-bg: rgba(255, 204, 0, 0.08);
   --input-bg: #111;
 }
@@ -22,83 +21,62 @@
   --accent-color: #d4a100;
   --card-bg: #fff;
   --card-border: rgba(0, 0, 0, 0.08);
-  --sidebar-bg: linear-gradient(180deg, #fafafa 0%, #eaeaea 100%);
+  --sidebar-bg: #fafafa;
   --hover-bg: rgba(0, 0, 0, 0.05);
   --input-bg: #f2f2f2;
 }
 
-/* ===========================
-   BASE GLOBAL
-   =========================== */
+/* ===== BASE ===== */
 html, body {
   margin: 0;
   padding: 0;
   font-family: "Inter", sans-serif;
-  background: var(--bg-color) !important;
+  background: var(--bg-color);
   color: var(--text-color);
-  transition: background 0.35s ease, color 0.35s ease;
-  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s, color 0.3s;
   overflow-x: hidden;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse at bottom, #050505 0%, #000 100%);
-  z-index: -1;
-  opacity: 0.75;
-}
-
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-thumb {
-  background: var(--accent-color);
-  border-radius: 4px;
-}
-
-/* ===========================
-   SIDEBAR
-   =========================== */
+/* ===== SIDEBAR ===== */
 .sidebar {
   position: fixed;
-  top: 0; left: 0;
+  left: 0; top: 0;
   width: 240px;
   height: 100vh;
-  background: var(--sidebar-bg);
+  background: linear-gradient(180deg, #0b0b0b 0%, #000 100%);
   border-right: 1px solid rgba(255, 204, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 40px 0 20px;
   z-index: 10;
-  transition: background 0.35s ease;
+  padding: 40px 0 20px;
 }
 
+/* LOGO CENTRALIZADA */
 .sidebar-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   gap: 6px;
-  margin-bottom: 40px;
+  margin-bottom: 45px;
 }
 
-.logo-icon { display: none; }
 .logo-text {
   font-family: "Poppins", "Inter", sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: var(--accent-color);
+  color: #ffcc00;
   letter-spacing: 0.5px;
   text-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
-  text-align: center;
 }
 
+/* ===== MENU ===== */
 .menu {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-grow: 1;
 }
 
@@ -106,17 +84,33 @@ body::before {
   width: 80%;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
+  color: #bbb;
   font-size: 15px;
-  color: var(--muted-color);
-  padding: 10px 16px;
-  border-radius: 10px;
-  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 500;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
 }
 
+/* Linha dourada lateral (ativo) */
+.menu a.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: var(--accent-color);
+  border-radius: 0 3px 3px 0;
+}
+
+/* Hover e ativo */
 .menu a:hover {
-  background: var(--hover-bg);
+  background: rgba(255, 204, 0, 0.08);
   color: var(--accent-color);
 }
 
@@ -125,27 +119,12 @@ body::before {
   color: #000 !important;
   font-weight: 700;
   box-shadow: 0 0 12px rgba(255, 204, 0, 0.25);
-  position: relative;
-}
-.menu a.active::before {
-  content: "";
-  position: absolute;
-  left: 4px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 70%;
-  background: #ffcc00;
-  border-radius: 2px;
-  box-shadow: 0 0 12px rgba(255, 204, 0, 0.7);
 }
 
-/* ===========================
-   BOTÃO DE TEMA
-   =========================== */
+/* ===== BOTÃO DE TEMA ===== */
 .theme-toggle {
-  position: fixed;
-  bottom: 25px;
+  position: absolute;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -155,76 +134,38 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 204, 0, 0.2);
   border-radius: 50%;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
 }
-
 .toggle-label:hover {
-  background: var(--hover-bg);
-  box-shadow: 0 0 12px rgba(255, 204, 0, 0.2);
+  background: rgba(255, 204, 0, 0.08);
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.15);
 }
 
-#moon { display: none; }
-[data-theme="light"] #sun { display: none; }
-[data-theme="light"] #moon { display: block; }
-
-/* ===========================
-   MAIN CONTENT
-   =========================== */
+/* ===== CONTEÚDO ===== */
 .main-content {
   margin-left: 240px;
-  padding: 50px;
+  padding: 50px 70px; /* ajustado p/ 8 pontinhos */
+  background: transparent;
   min-height: 100vh;
-  background: var(--bg-color);
-  background-image: radial-gradient(var(--card-border) 1px, transparent 1px);
-  background-size: 30px 30px;
-  transition: background 0.35s ease;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* ===========================
-   ELEMENTOS INTERNOS
-   =========================== */
-.card, .dash-card, .table-block {
+/* ===== TABELAS E CARDS ===== */
+.card, .dash-card, .deck-card, .table-section {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 20px;
-  transition: background 0.35s ease, border 0.35s ease;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s;
 }
 
-.btn-primary {
-  background: linear-gradient(90deg, var(--accent-color), #b38f00);
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn-primary:hover { filter: brightness(1.1); }
-
-input, textarea, select {
-  background: var(--input-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-color);
-  border-radius: 8px;
-  padding: 10px;
-  transition: border 0.3s, background 0.3s;
-}
-input:focus, textarea:focus, select:focus {
-  border-color: var(--accent-color);
-  outline: none;
-}
-
-/* ===========================
-   RESPONSIVIDADE
-   =========================== */
+/* ===== RESPONSIVO ===== */
 @media (max-width: 1024px) {
   .sidebar { display: none; }
   .main-content { margin-left: 0; padding: 25px; }
