@@ -10,8 +10,11 @@
     <!-- BLOCO 1 -->
     <div class="offer-card">
       <div class="icon">
-        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3h26v6H3zM3 13h26v16H3zM7 8v5M25 8v5"/>
+        <!-- ÍCONE CRIAR OFERTA -->
+        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="30" height="20" rx="4"/>
+          <path d="M8 28h20M12 32h12"/>
+          <circle cx="18" cy="13" r="4"/>
         </svg>
       </div>
       <h3>Criar Oferta</h3>
@@ -22,9 +25,10 @@
     <!-- BLOCO 2 -->
     <div class="offer-card">
       <div class="icon">
-        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="6" width="26" height="18" rx="2"/>
-          <path d="M3 10h26M10 6v18"/>
+        <!-- ÍCONE GERENCIAR -->
+        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="30" height="28" rx="4"/>
+          <path d="M3 12h30M12 4v28M18 20h9M18 25h9"/>
         </svg>
       </div>
       <h3>Gerenciar Ofertas</h3>
@@ -35,25 +39,25 @@
     <!-- BLOCO 3 -->
     <div class="offer-card" id="visualFlowCard">
       <div class="icon">
-        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="6" cy="6" r="2"/>
-          <circle cx="26" cy="6" r="2"/>
-          <circle cx="6" cy="26" r="2"/>
-          <circle cx="26" cy="26" r="2"/>
-          <path d="M8 6h14M6 8v14M8 26h14M26 8v14"/>
+        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="12" height="8" rx="2"/>
+          <rect x="21" y="3" width="12" height="8" rx="2"/>
+          <rect x="3" y="17" width="12" height="8" rx="2"/>
+          <rect x="21" y="17" width="12" height="8" rx="2"/>
+          <path d="M9 11v6M27 11v6"/>
         </svg>
       </div>
       <h3>Criar Fluxo Visual</h3>
-      <p>Monte visualmente o funil do bot estilo Miro com blocos e conexões.</p>
+      <p>Monte visualmente o funil do bot com blocos e conexões interativas.</p>
       <button class="btn-primary" onclick="openFlow()">Criar Funil</button>
     </div>
 
     <!-- BLOCO 4 -->
     <div class="offer-card" id="tutorialCard">
       <div class="icon">
-        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="5" width="26" height="20" rx="3"/>
-          <polygon points="13,11 21,16 13,21" fill="#ffcc00"/>
+        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="30" height="22" rx="3"/>
+          <polygon points="15,12 24,18 15,24" fill="#ffcc00"/>
         </svg>
       </div>
       <h3>Ver Tutoriais</h3>
@@ -64,21 +68,22 @@
     <!-- BLOCO 5 -->
     <div class="offer-card" id="roiCard">
       <div class="icon">
-        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 20h24M8 16v8M16 12v12M24 8v16"/>
+        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 20h28M8 16v8M16 10v14M24 6v18"/>
         </svg>
       </div>
       <h3>Calcular ROI</h3>
-      <p>Visualize retorno das campanhas e calcule ROI de forma rápida.</p>
+      <p>Visualize o retorno das campanhas e calcule o ROI completo.</p>
       <button class="btn-primary" onclick="openRoi()">Calcular</button>
     </div>
 
     <!-- BLOCO 6 -->
     <div class="offer-card">
       <div class="icon">
-        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 2v8M16 22v8M2 16h8M22 16h8"/>
-          <circle cx="16" cy="16" r="6"/>
+        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="12" r="4"/>
+          <path d="M4 28c1-4 5-7 9-7h6c4 0 8 3 9 7"/>
+          <path d="M18 2v3M18 31v3M31 18h3M2 18h3"/>
         </svg>
       </div>
       <h3>IA Ilimitada — Tiger IA</h3>
@@ -92,7 +97,7 @@
 <div class="modal" id="tutorialModal">
   <div class="modal-content">
     <span class="close" onclick="closeTutorial()">&times;</span>
-    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" title="TigerFy Tutorial" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -100,11 +105,13 @@
 <div class="modal" id="roiModal">
   <div class="modal-content small">
     <span class="close" onclick="closeRoi()">&times;</span>
-    <h2>Calculadora de ROI</h2>
+    <h2>Calculadora de ROI Avançada</h2>
     <input type="number" id="investment" placeholder="Investimento (R$)">
-    <input type="number" id="revenue" placeholder="Retorno (R$)">
-    <button onclick="calcROI()">Calcular</button>
-    <p id="roiResult"></p>
+    <input type="number" id="revenue" placeholder="Receita Total (R$)">
+    <input type="number" id="costs" placeholder="Custos Fixos (R$)">
+    <input type="number" id="clients" placeholder="Total de Clientes">
+    <button onclick="calcROI()">Calcular ROI</button>
+    <div id="roiResult"></div>
   </div>
 </div>
 
@@ -113,52 +120,79 @@
   <div class="modal-content large">
     <span class="close" onclick="closeFlow()">&times;</span>
     <h2>Editor Visual — TigerFlow</h2>
-    <p class="sub">Arraste blocos e conecte ideias (demo low-code)</p>
+    <p class="sub">Arraste, renomeie e conecte blocos — estilo Miro low-code</p>
     <div id="canvasArea"></div>
-    <button class="add-node" onclick="addNode()">+ Adicionar Bloco</button>
+    <div class="flow-controls">
+      <button onclick="addNode()">+ Adicionar Bloco</button>
+      <button onclick="saveFlow()">💾 Salvar Fluxo</button>
+    </div>
   </div>
 </div>
 
 <script>
-  // ----- TUTORIAL MODAL -----
+  // ----- TUTORIAL -----
   function openTutorial(){document.getElementById('tutorialModal').style.display='flex';}
   function closeTutorial(){document.getElementById('tutorialModal').style.display='none';}
 
-  // ----- ROI MODAL -----
+  // ----- ROI -----
   function openRoi(){document.getElementById('roiModal').style.display='flex';}
   function closeRoi(){document.getElementById('roiModal').style.display='none';}
   function calcROI(){
-    const i = parseFloat(document.getElementById('investment').value);
-    const r = parseFloat(document.getElementById('revenue').value);
-    if(!i||!r){return alert('Preencha os dois campos!')}
-    const roi = ((r - i)/i)*100;
-    document.getElementById('roiResult').innerText = `ROI: ${roi.toFixed(2)}%`;
+    const i = parseFloat(investment.value);
+    const r = parseFloat(revenue.value);
+    const c = parseFloat(costs.value);
+    const cl = parseFloat(clients.value);
+    if(!i||!r){return alert('Preencha investimento e receita.')}
+    const roi = ((r - (i + c)) / (i + c)) * 100;
+    const ticket = cl ? (r / cl).toFixed(2) : '—';
+    roiResult.innerHTML = `
+      <p><b>ROI:</b> ${roi.toFixed(2)}%</p>
+      <p><b>Ticket Médio:</b> R$ ${ticket}</p>
+      <p><b>Lucro Total:</b> R$ ${(r - (i + c)).toFixed(2)}</p>
+    `;
   }
 
-  // ----- FLUXO VISUAL (Miro low-code) -----
+  // ----- FLUXO VISUAL -----
+  let nodes=[], connections=[];
+  const canvas=document.getElementById('canvasArea');
   function openFlow(){document.getElementById('flowModal').style.display='flex';}
   function closeFlow(){document.getElementById('flowModal').style.display='none';}
-
-  const canvas = document.getElementById('canvasArea');
-  let nodeCount = 0;
   function addNode(){
-    const node = document.createElement('div');
+    const node=document.createElement('div');
     node.className='node';
-    node.textContent='Bloco '+(++nodeCount);
-    node.style.left=Math.random()*400+'px';
-    node.style.top=Math.random()*200+'px';
-    node.draggable=true;
-    node.ondragstart=e=>{e.dataTransfer.setData('id',node.id)};
-    node.id='node'+nodeCount;
+    node.contentEditable=true;
+    node.innerText='Novo Bloco';
+    node.style.left=Math.random()*600+'px';
+    node.style.top=Math.random()*300+'px';
+    node.onclick=e=>connectNode(node);
     canvas.appendChild(node);
+    nodes.push(node);
   }
-  canvas.ondragover=e=>e.preventDefault();
-  canvas.ondrop=e=>{
-    e.preventDefault();
-    const id=e.dataTransfer.getData('id');
-    const el=document.getElementById(id);
-    el.style.left=e.offsetX-50+'px';
-    el.style.top=e.offsetY-20+'px';
+  let pendingNode=null;
+  function connectNode(node){
+    if(!pendingNode){pendingNode=node;node.classList.add('selected');}
+    else if(pendingNode!==node){
+      drawLine(pendingNode,node);
+      pendingNode.classList.remove('selected');
+      connections.push({from:pendingNode.innerText,to:node.innerText});
+      pendingNode=null;
+    }
+  }
+  function drawLine(a,b){
+    const line=document.createElement('div');
+    line.className='line';
+    const x1=a.offsetLeft+80,y1=a.offsetTop+20,x2=b.offsetLeft+80,y2=b.offsetTop+20;
+    const len=Math.hypot(x2-x1,y2-y1),angle=Math.atan2(y2-y1,x2-x1)*(180/Math.PI);
+    line.style.width=len+'px';
+    line.style.transform=`rotate(${angle}deg)`;
+    line.style.left=x1+'px';
+    line.style.top=y1+'px';
+    canvas.appendChild(line);
+  }
+  function saveFlow(){
+    const data=nodes.map(n=>({name:n.innerText,x:n.style.left,y:n.style.top}));
+    console.log('Fluxo salvo:',JSON.stringify({nodes:data,connections},null,2));
+    alert('Fluxo salvo no console!');
   }
 </script>
 
@@ -170,7 +204,7 @@
   .offers-header{text-align:center;margin-bottom:10px;}
   .offers-header h1{color:#ffcc00;font-size:2rem;margin:0;}
   .offers-header p{color:#b4b4b4;font-size:.95rem;margin-top:8px;}
-  .offers-grid{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:30px;margin-top:30px;}
+  .offers-grid{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:30px;margin-top:30px;}
   .offer-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:16px;padding:28px 22px;text-align:center;transition:.3s;position:relative;}
   .offer-card:hover{transform:translateY(-5px);box-shadow:0 0 20px rgba(255,204,0,0.25);}
   .icon{margin-bottom:15px;transition:filter .3s,transform .3s;}
@@ -182,16 +216,20 @@
   
   /* MODAIS */
   .modal{display:none;position:fixed;z-index:99;inset:0;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;}
-  .modal-content{background:#111;border:1px solid rgba(255,204,0,0.2);border-radius:14px;padding:25px;width:80%;max-width:800px;position:relative;}
-  .modal-content.small{max-width:400px;text-align:center;}
-  .modal-content.large{max-width:1000px;}
+  .modal-content{background:#111;border:1px solid rgba(255,204,0,0.2);border-radius:14px;padding:25px;width:80%;max-width:900px;position:relative;}
+  .modal-content.small{max-width:420px;text-align:center;}
+  .modal-content.large{max-width:1200px;}
   .close{position:absolute;top:10px;right:15px;font-size:1.8rem;cursor:pointer;color:#ffcc00;}
   .modal-content h2{color:#ffcc00;margin-top:0;}
   input{width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid rgba(255,204,0,0.3);background:rgba(255,255,255,0.05);color:#fff;}
-  #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;}
-  
-  /* VISUAL FLOW */
-  #canvasArea{background:#0d0d0d;border:1px dashed rgba(255,204,0,0.2);border-radius:10px;min-height:400px;position:relative;overflow:hidden;margin:10px 0;}
-  .node{position:absolute;background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);border-radius:8px;padding:8px 12px;cursor:grab;font-size:.9rem;}
-  .add-node{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;margin-top:10px;}
+  #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;margin-top:10px;}
+  #roiResult p{margin:6px 0;}
+
+  /* FLUXO VISUAL */
+  #canvasArea{background:#0d0d0d;border:1px dashed rgba(255,204,0,0.3);border-radius:10px;min-height:500px;position:relative;overflow:hidden;margin:10px 0;}
+  .node{position:absolute;background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.4);border-radius:8px;padding:10px 14px;cursor:grab;font-size:.9rem;min-width:120px;text-align:center;}
+  .node.selected{outline:2px solid #ffcc00;}
+  .line{position:absolute;height:2px;background:#ffcc00;transform-origin:left center;}
+  .flow-controls{text-align:center;margin-top:10px;}
+  .flow-controls button{margin:0 10px;padding:10px 18px;border:none;border-radius:8px;background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;font-weight:700;cursor:pointer;}
 </style>
