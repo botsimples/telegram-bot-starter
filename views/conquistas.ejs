@@ -1,27 +1,26 @@
-<%- include('layout', { title: 'Conquistas', active: 'conquistas', body: `
-  <%- include('partials/visual_hottrack') %>
+<% layout('layout', { title: 'Conquistas', active: 'conquistas' }) %>
+<%- include('partials/visual_hottrack') %>
 
-  <main class="offers-page">
-    <section class="offers-container">
-      <header class="offers-header">
-        <h1>Conquistas</h1>
-        <p>Acompanhe seus marcos e progressos dentro do TigerFy.</p>
-      </header>
+<main class="offers-page">
+  <section class="offers-container">
+    <header class="offers-header">
+      <h1>Conquistas</h1>
+      <p>Acompanhe seus marcos e progressos dentro do TigerFy.</p>
+    </header>
 
-      <div class="offers-grid">
-        <div class="offer-card">
-          <h3>Primeira Venda</h3><p>Complete sua primeira venda.</p>
-          <button class="offer-btn">Ver</button>
-        </div>
-        <div class="offer-card">
-          <h3>100 Leads</h3><p>Alcance 100 leads gerados.</p>
-          <button class="offer-btn">Detalhes</button>
-        </div>
-        <div class="offer-card">
-          <h3>R$ 10.000 Faturados</h3><p>Conquiste 10 mil reais em vendas.</p>
-          <button class="offer-btn">Ver Estatísticas</button>
-        </div>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <h3>Primeira Venda</h3><p>Complete sua primeira venda.</p>
+        <button class="offer-btn">Ver</button>
       </div>
-    </section>
-  </main>
-` }) %>
+      <div class="offer-card">
+        <h3>100 Leads</h3><p>Alcance 100 leads gerados.</p>
+        <button class="offer-btn">Detalhes</button>
+      </div>
+      <div class="offer-card">
+        <h3>R$ 10.000 Faturados</h3><p>Conquiste 10 mil reais em vendas.</p>
+        <button class="offer-btn">Ver Estatísticas</button>
+      </div>
+    </div>
+  </section>
+</main>
