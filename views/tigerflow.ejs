@@ -1,0 +1,63 @@
+<%- include('partials/visual_hottrack') %>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>TigerFlow — Editor Visual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="/css/tigerfy.css" rel="stylesheet">
+  <link href="/css/tigerflow.css" rel="stylesheet">
+  <style>
+    /* fallback caso não carregue o arquivo */
+  </style>
+</head>
+<body class="tf-body">
+  <div class="tf-topbar">
+    <div class="tf-left">
+      <span class="tf-logo">⚡ TigerFlow</span>
+      <input id="flowName" class="tf-name" value="Novo Fluxo" />
+      <span id="flowStatus" class="tf-status">● não salvo</span>
+    </div>
+    <div class="tf-right">
+      <button id="btnNew"   class="tf-btn">Novo</button>
+      <button id="btnSave"  class="tf-btn tf-primary">Salvar (⌘/Ctrl+S)</button>
+      <button id="btnExportJson" class="tf-btn">Exportar JSON</button>
+      <button id="btnExportPng"  class="tf-btn">Exportar PNG</button>
+      <div class="tf-sep"></div>
+      <button id="btnZoomOut" class="tf-btn">−</button>
+      <span id="zoomLabel" class="tf-zoom">100%</span>
+      <button id="btnZoomIn"  class="tf-btn">+</button>
+      <label class="tf-switch">
+        <input id="snapToggle" type="checkbox" checked>
+        <span>Snap</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="tf-palette">
+    <div class="tf-block" data-type="start">Start</div>
+    <div class="tf-block" data-type="message">Mensagem</div>
+    <div class="tf-block" data-type="delay">Delay</div>
+    <div class="tf-block" data-type="condition">Condição</div>
+    <div class="tf-block" data-type="action">Ação</div>
+  </div>
+
+  <div id="canvasWrap" class="tf-canvas-wrap">
+    <canvas id="edges" class="tf-edges"></canvas>
+    <div id="nodes" class="tf-nodes"></div>
+  </div>
+
+  <!-- painel lateral simples para editar dados -->
+  <div class="tf-side">
+    <h3>Propriedades</h3>
+    <div id="sideContent" class="tf-side-content">
+      <p>Selecione um bloco…</p>
+    </div>
+  </div>
+
+  <script>
+    window.__FLOW_ID__ = "<%= flowId %>";
+  </script>
+  <script src="/js/tigerflow.js"></script>
+</body>
+</html>
