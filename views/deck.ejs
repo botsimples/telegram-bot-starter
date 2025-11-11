@@ -1,155 +1,157 @@
-<%- include('layout', { title: 'Dashboard', active: 'dashboard', body: `
-  <div class="dashboard-bg"></div>
+<%- include('layout', { title: 'Dashboard', active: 'deck' }) %>
 
-  <main class="dashboard">
-    <section class="dashboard-container">
-      <header class="dashboard-header">
-        <h1>Estatísticas Gerais</h1>
-        <p>Visão geral de toda a plataforma TigerFy.</p>
-      </header>
+<main class="offers-page">
+  <section class="offers-container">
+    <header class="offers-header">
+      <h1>Estatísticas Gerais</h1>
+      <p>Visão geral de toda a plataforma TigerFy.</p>
+    </header>
 
-      <div class="dashboard-grid">
-        <div class="card">
-          <h3>Total de Vendas</h3>
-          <p>R$ 0,00</p>
-          <button>Ver Detalhes</button>
-        </div>
-
-        <div class="card">
-          <h3>Novos Leads</h3>
-          <p>0</p>
-          <button>Verificar</button>
-        </div>
-
-        <div class="card">
-          <h3>ROI Médio</h3>
-          <p>0%</p>
-          <button>Calcular</button>
-        </div>
-
-        <div class="card">
-          <h3>Campanhas Ativas</h3>
-          <p>0</p>
-          <button>Gerenciar</button>
-        </div>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <h3>Total de Vendas</h3>
+        <p>R$ 0,00</p>
+        <button class="offer-btn">Ver Detalhes</button>
       </div>
-    </section>
-  </main>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+      <div class="offer-card">
+        <h3>Novos Leads</h3>
+        <p>0</p>
+        <button class="offer-btn">Verificar</button>
+      </div>
+
+      <div class="offer-card">
+        <h3>ROI Médio</h3>
+        <p>0%</p>
+        <button class="offer-btn">Calcular</button>
+      </div>
+
+      <div class="offer-card">
+        <h3>Campanhas Ativas</h3>
+        <p>0</p>
+        <button class="offer-btn">Gerenciar</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: #0a0a0a;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Padrão TigerFy */
+  .offers-page {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 8vh 2rem 4rem;
+    margin-left: 240px; /* respeita sidebar */
+  }
+
+  .offers-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto; /* centralização real */
+    text-align: center;
+    transform: translateY(-2vh); /* sobe levemente */
+  }
+
+  .offers-header h1 {
+    color: #ffcc00;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .offers-header p {
+    color: #b4b4b4;
+    margin-bottom: 35px;
+  }
+
+  /* Grid fluido */
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    justify-items: center;
+  }
+
+  .offer-card {
+    width: 260px;
+    height: 260px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 204, 0, 0.12);
+    border-radius: 14px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.25s ease-out;
+  }
+
+  .offer-card:hover {
+    background: rgba(255, 204, 0, 0.07);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.25);
+    transform: translateY(-3px);
+  }
+
+  .offer-card h3 {
+    color: #fff;
+    margin: 10px 0 5px;
+  }
+
+  .offer-card p {
+    color: #b4b4b4;
+    font-size: 0.9rem;
+    min-height: 45px;
+  }
+
+  .offer-btn {
+    background: linear-gradient(90deg, #ffcc00, #d4a100);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+  }
+
+  .offer-btn:hover {
+    filter: brightness(1.15);
+  }
+
+  /* Pontilhado dourado sutil */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .offers-page {
+      margin-left: 0;
       width: 100%;
-      background: #0a0a0a;
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      padding-top: 10vh;
     }
-
-    /* Fundo discreto com partículas estáticas */
-    .dashboard-bg {
-      position: fixed;
-      top: 0;
-      left: 240px;
-      right: 0;
-      bottom: 0;
-      z-index: 0;
-      background-image: radial-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px);
-      background-size: 22px 22px;
-    }
-
-    main.dashboard {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      width: calc(100% - 240px);
-      margin-left: 240px;
-      padding-top: 8vh;
-      height: 100vh;
-    }
-
-    .dashboard-container {
-      width: 90%;
-      max-width: 1100px;
-      text-align: center;
-    }
-
-    .dashboard-header h1 {
-      color: #ffcc00;
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    .dashboard-header p {
-      color: #b4b4b4;
-      margin-bottom: 40px;
-      font-size: 0.95rem;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-      justify-items: center;
-    }
-
-    .card {
-      width: 260px;
-      height: 260px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 204, 0, 0.12);
-      border-radius: 14px;
-      padding: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.25s ease-out;
-    }
-
-    .card:hover {
-      background: rgba(255, 204, 0, 0.07);
-      box-shadow: 0 0 20px rgba(255, 204, 0, 0.25);
-      transform: translateY(-3px);
-    }
-
-    .card h3 {
-      color: #fff;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      color: #b4b4b4;
-      font-size: 0.9rem;
-      min-height: 45px;
-    }
-
-    .card button {
-      background: linear-gradient(90deg, #ffcc00, #d4a100);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: filter 0.3s ease;
-    }
-
-    .card button:hover {
-      filter: brightness(1.15);
-    }
-
-    @media (max-width: 1024px) {
-      main.dashboard {
-        margin-left: 0;
-        width: 100%;
-        padding-top: 10vh;
-      }
-      .dashboard-bg { left: 0; }
-    }
-  </style>
-` }) %>
+    body::before { left: 0; }
+  }
+</style>
