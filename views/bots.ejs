@@ -1,49 +1,48 @@
-<%- include('layout', { title: 'Ofertas', active: 'bots', body: `
-  <canvas id="bgParticles"></canvas>
+<%- include('partials/visual_hottrack') %>
 
-  <main class="offers-page">
-    <section class="offers-container">
-      <header class="offers-header">
-        <h1>Minhas Ofertas</h1>
-        <p>Gerencie, crie e visualize fluxos e métricas de suas ofertas.</p>
-      </header>
+<main class="offers-page">
+  <section class="offers-container">
+    <header class="offers-header">
+      <h1>Minhas Ofertas</h1>
+      <p>Gerencie, crie e visualize fluxos e métricas de suas ofertas.</p>
+    </header>
 
-      <div class="offers-grid">
-        <div class="offer-card"><h3>Gerenciar Ofertas</h3><p>Veja e edite todas as ofertas criadas.</p><button class="offer-btn">Acessar</button></div>
-        <div class="offer-card"><h3>Criar Nova Oferta</h3><p>Defina o nome, tipo e traqueamento.</p><button class="offer-btn">Criar</button></div>
-        <div class="offer-card"><h3>Criar Funil Visual</h3><p>Monte visualmente o fluxo da oferta.</p><button class="offer-btn">Criar Funil</button></div>
-        <div class="offer-card"><h3>Ver Tutorial</h3><p>Aprenda passo a passo a dominar o painel.</p><button class="offer-btn">Assistir</button></div>
-        <div class="offer-card"><h3>Calcular ROI</h3><p>Veja o ROI diário, mensal ou anual.</p><button class="offer-btn">Calcular</button></div>
-        <div class="offer-card disabled"><h3>IA Ilimitada</h3><p>Em breve.</p><button class="offer-btn disabled-btn">Em breve</button></div>
-      </div>
-    </section>
-  </main>
+    <div class="offers-grid">
+      <div class="offer-card"><h3>Gerenciar Ofertas</h3><p>Veja e edite todas as ofertas criadas.</p><button class="offer-btn">Acessar</button></div>
+      <div class="offer-card"><h3>Criar Nova Oferta</h3><p>Defina o nome, tipo e traqueamento.</p><button class="offer-btn">Criar</button></div>
+      <div class="offer-card"><h3>Criar Funil Visual</h3><p>Monte visualmente o fluxo da oferta.</p><button class="offer-btn">Criar Funil</button></div>
+      <div class="offer-card"><h3>Ver Tutorial</h3><p>Aprenda passo a passo a dominar o painel.</p><button class="offer-btn">Assistir</button></div>
+      <div class="offer-card"><h3>Calcular ROI</h3><p>Veja o ROI diário, mensal ou anual.</p><button class="offer-btn">Calcular</button></div>
+      <div class="offer-card disabled"><h3>IA Ilimitada</h3><p>Em breve.</p><button class="offer-btn disabled-btn">Em breve</button></div>
+    </div>
+  </section>
+</main>
 
-  <script>
-    const c=document.getElementById('bgParticles'),ctx=c.getContext('2d',{alpha:true});
-    let w,h,DPR=window.devicePixelRatio||1;
-    function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}resize();
-    addEventListener('resize',resize,{passive:true});
-    const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
-    function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
-  </script>
+<script>
+  const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
+  const ctx=c.getContext('2d',{alpha:true});
+  let w,h,DPR=window.devicePixelRatio||1;
+  function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+  resize();addEventListener('resize',resize,{passive:true});
+  const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
+  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
+</script>
 
-  <style>
-    html,body{margin:0;padding:0;height:100%;width:100%;overflow-x:hidden;overflow-y:auto;background:#0a0a0a;-webkit-font-smoothing:antialiased;}
-    *{box-sizing:border-box;transform:translateZ(0);will-change:transform;}::-webkit-scrollbar{display:none!important;}
-    #bgParticles{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;mix-blend-mode:screen;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;}
-    main.offers-page{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;align-items:center;padding-left:70px;}
-    .offers-container{text-align:center;width:90%;max-width:1100px;}
-    .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
-    .offers-header p{color:#b4b4b4;margin-bottom:40px;}
-    .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
-    .offer-card{width:260px;height:260px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;transition:.25s ease-out;}
-    .offer-card:hover{background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);transform:translateY(-3px);}
-    .offer-card h3{color:#fff;margin:10px 0 5px;}
-    .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
-    .offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;transition:filter .3s;}
-    .offer-btn:hover{filter:brightness(1.15);}
-    .disabled{opacity:.45;pointer-events:none;}
-    .disabled-btn{background:#444;color:#aaa;cursor:not-allowed;}
-  </style>
-` }) %>
+<style>
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow-x:hidden;overflow-y:auto;background:#0a0a0a;-webkit-font-smoothing:antialiased;}
+  *{box-sizing:border-box;transform:translateZ(0);will-change:transform;}::-webkit-scrollbar{display:none!important;}
+  #bgParticles{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;mix-blend-mode:screen;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;}
+  main.offers-page{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;align-items:center;padding-left:70px;}
+  .offers-container{text-align:center;width:90%;max-width:1100px;}
+  .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
+  .offers-header p{color:#b4b4b4;margin-bottom:40px;}
+  .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
+  .offer-card{width:260px;height:260px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;transition:.25s ease-out;}
+  .offer-card:hover{background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);transform:translateY(-3px);}
+  .offer-card h3{color:#fff;margin:10px 0 5px;}
+  .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
+  .offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;transition:filter .3s;}
+  .offer-btn:hover{filter:brightness(1.15);}
+  .disabled{opacity:.45;pointer-events:none;}
+  .disabled-btn{background:#444;color:#aaa;cursor:not-allowed;}
+</style>
