@@ -3,163 +3,111 @@
 <main class="offers-page">
   <section class="offers-container">
     <header class="offers-header">
-      <h1>Estatísticas Gerais</h1>
-      <p>Visão geral de toda a plataforma TigerFy.</p>
+      <h1>📊 Dashboard</h1>
+      <p>Resumo de métricas e desempenho geral do painel TigerFy.</p>
     </header>
 
+    <!-- Cards superiores -->
     <div class="offers-grid">
       <div class="offer-card">
-        <h3>Total de Vendas</h3>
-        <p>R$ 0,00</p>
-        <button class="offer-btn">Ver Detalhes</button>
-      </div>
-      <div class="offer-card">
-        <h3>Novos Leads</h3>
+        <h3>Cliques na Página</h3>
         <p>0</p>
-        <button class="offer-btn">Verificar</button>
       </div>
       <div class="offer-card">
-        <h3>ROI Médio</h3>
-        <p>0%</p>
-        <button class="offer-btn">Calcular</button>
-      </div>
-      <div class="offer-card">
-        <h3>Campanhas Ativas</h3>
+        <h3>PIX Gerados</h3>
         <p>0</p>
-        <button class="offer-btn">Gerenciar</button>
+      </div>
+      <div class="offer-card">
+        <h3>Faturamento Total</h3>
+        <p style="color:#00ff88">R$0,00</p>
+      </div>
+      <div class="offer-card">
+        <h3>PIX Pagos</h3>
+        <p style="color:#00ff88">0</p>
+      </div>
+    </div>
+
+    <!-- Gráfico -->
+    <section class="chart-section">
+      <h2>📈 Desempenho de Faturamento</h2>
+      <div class="chart-placeholder">(gráfico aqui futuramente)</div>
+    </section>
+
+    <!-- Tabelas -->
+    <div class="tables-grid">
+      <div class="table-panel">
+        <h3>👥 Usuários</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Username</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="table-panel">
+        <h3>💰 Pagamentos</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID Pagamento</th>
+              <th>Usuário</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
   </section>
 </main>
 
 <script>
-  const c = document.createElement('canvas');
-  c.id = 'bgParticles';
-  document.body.appendChild(c);
-  const ctx = c.getContext('2d', { alpha: true });
-  let w, h, DPR = window.devicePixelRatio || 1;
-
-  function resize() {
-    w = innerWidth;
-    h = innerHeight;
-    c.width = w * DPR;
-    c.height = h * DPR;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  }
-
-  resize();
-  addEventListener('resize', resize, { passive: true });
-
-  const p = [];
-  for (let i = 0; i < 25; i++) {
-    p.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 1.2 + 0.4,
-      dx: (Math.random() - 0.5) * 0.25,
-      dy: (Math.random() - 0.5) * 0.25
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = 'rgba(255,204,0,0.15)';
-    for (const o of p) {
-      ctx.beginPath();
-      ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
-      ctx.fill();
-      o.x += o.dx;
-      o.y += o.dy;
-      if (o.x < 0 || o.x > w) o.dx *= -1;
-      if (o.y < 0 || o.y > h) o.dy *= -1;
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
+  // Fundo dourado suave (efeito padrão TigerFy)
+  const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
+  const ctx=c.getContext('2d',{alpha:true});
+  let w,h,DPR=window.devicePixelRatio||1;
+  function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+  resize();addEventListener('resize',resize,{passive:true});
+  const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
+  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';
+    for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();
+      o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}
+    requestAnimationFrame(draw);}draw();
 </script>
 
 <style>
-  main.offers-page {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding-left: 70px;
-    padding-top: clamp(40px, 8vh, 90px);
-    padding-bottom: clamp(40px, 8vh, 90px);
-    transform: translateY(-90px); /* 👈 subido um pouco mais (ajuste final) */
-  }
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#0a0a0a;-webkit-font-smoothing:antialiased;}
+  *{box-sizing:border-box;transform:translateZ(0);}::-webkit-scrollbar{display:none!important;}
+  #bgParticles{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;mix-blend-mode:screen;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;}
 
-  .offers-container {
-    text-align: center;
-    width: min(90%, 1100px);
-    margin-top: -2vh;
-  }
+  main.offers-page{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding-left:70px;transform:translateY(-80px);}
+  .offers-container{text-align:center;width:90%;max-width:1200px;margin-top:40px;}
+  .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
+  .offers-header p{color:#b4b4b4;margin-bottom:40px;}
 
-  .offers-header h1 {
-    color: #ffcc00;
-    font-size: clamp(1.8rem, 2.5vw, 2.2rem);
-    margin-bottom: 10px;
-  }
+  .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;justify-items:center;margin-bottom:40px;}
+  .offer-card{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:25px;text-align:center;transition:.25s;}
+  .offer-card:hover{background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);}
+  .offer-card h3{color:#ffcc00;font-weight:600;margin-bottom:5px;}
+  .offer-card p{color:#fff;font-size:1.2rem;font-weight:500;}
 
-  .offers-header p {
-    color: #b4b4b4;
-    margin-bottom: clamp(30px, 5vh, 40px);
-  }
+  .chart-section{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:30px;margin-bottom:40px;text-align:left;}
+  .chart-section h2{color:#ffcc00;margin-bottom:15px;}
+  .chart-placeholder{height:250px;display:flex;align-items:center;justify-content:center;color:#aaa;font-style:italic;}
 
-  .offers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: clamp(20px, 3vw, 25px);
-    justify-items: center;
-  }
-
-  .offer-card {
-    width: 260px;
-    height: 260px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 204, 0, 0.12);
-    border-radius: 14px;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    transition: .25s ease-out;
-  }
-
-  .offer-card:hover {
-    background: rgba(255, 204, 0, 0.07);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
-    transform: translateY(-3px);
-  }
-
-  .offer-card h3 {
-    color: #fff;
-    margin: 10px 0 5px;
-  }
-
-  .offer-card p {
-    color: #b4b4b4;
-    font-size: .9rem;
-    min-height: 45px;
-  }
-
-  .offer-btn {
-    background: linear-gradient(90deg, #ffcc00, #d4a100);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: filter .3s;
-  }
-
-  .offer-btn:hover {
-    filter: brightness(1.15);
-  }
+  .tables-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:25px;margin-bottom:80px;}
+  .table-panel{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:20px;}
+  .table-panel h3{color:#ffcc00;margin-bottom:15px;text-align:left;}
+  table{width:100%;border-collapse:collapse;color:#fff;font-size:0.9rem;}
+  th,td{padding:8px 10px;text-align:left;}
+  thead tr{background:rgba(255,255,255,0.05);}
+  tbody tr:nth-child(even){background:rgba(255,255,255,0.02);}
 </style>
