@@ -348,3 +348,144 @@ body, html {
   background-color: var(--bg-color) !important;
   background-image: none !important;
 }
+
+/* ===========================
+   🧭 FIX GERAL — SIDEBAR, LOGO E HOVER
+   =========================== */
+
+/* Remove o azul e define fundo sólido */
+.sidebar {
+  background: linear-gradient(180deg, #0b0b0b 0%, #000 100%) !important;
+  border-right: 1px solid rgba(255, 204, 0, 0.1) !important;
+  box-shadow: inset -1px 0 0 rgba(255, 204, 0, 0.05);
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 40px 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+/* HEADER DO LOGO */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 45px;
+  transform: translateY(-6px);
+}
+
+/* substitui o raio por espaço reservado para logo */
+.logo-icon {
+  display: none; /* removido o raio feio */
+}
+
+/* logo centralizado e elegante */
+.logo-text {
+  font-family: "Poppins", "Inter", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffcc00;
+  letter-spacing: 0.5px;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
+}
+
+/* MENU LINKS */
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.menu a {
+  width: 80%;
+  text-align: left;
+  text-decoration: none;
+  color: #bbb;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* hover dourado com leve brilho */
+.menu a:hover {
+  background: rgba(255, 204, 0, 0.08);
+  color: #ffcc00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.05);
+}
+
+/* item ativo com glow dourado suave (sem ficar opaco) */
+.menu a.active {
+  background: linear-gradient(90deg, #ffcc00, #d4a100);
+  color: #000 !important;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.25);
+}
+
+/* AJUSTE DO BOTÃO DE TEMA */
+.theme-toggle {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toggle-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 204, 0, 0.2);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  transition: all 0.3s ease;
+}
+
+.toggle-label:hover {
+  background: rgba(255, 204, 0, 0.08);
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.15);
+}
+
+#moon { display: none; }
+[data-theme="light"] #sun { display: none; }
+[data-theme="light"] #moon { display: block; }
+
+/* animação suave quando muda o tema */
+html, body, .sidebar, .main-content {
+  transition: background-color 0.3s ease, color 0.3s ease, filter 0.3s ease;
+}
+
+/* cor do fundo global */
+body, html {
+  background-color: #0a0a0a !important;
+}
+
+/* remove azul residual de fundo e bordas */
+.main-content, .page-container, .deck-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ========= RESPONSIVO ========= */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 200px;
+  }
+  .menu a {
+    width: 85%;
+    font-size: 14px;
+  }
+}
