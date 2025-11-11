@@ -99,7 +99,6 @@
 <script>
   function openTutorial(){document.getElementById('tutorialModal').style.display='flex';}
   function closeTutorial(){document.getElementById('tutorialModal').style.display='none';}
-
   function openRoi(){document.getElementById('roiModal').style.display='flex';}
   function closeRoi(){document.getElementById('roiModal').style.display='none';}
   function calcROI(){
@@ -113,10 +112,24 @@
 </script>
 
 <style>
-  html,body{margin:0;padding:0;background:#0a0a0a;color:#fff;font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  html,body{
+    margin:0;padding:0;
+    background:#0a0a0a;color:#fff;
+    font-family:Inter,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
   *{box-sizing:border-box;}
   ::-webkit-scrollbar{display:none!important;}
-  .tiger-offers{padding:60px 80px 100px 130px;transform:scale(0.9) translateX(70px);transform-origin:top left;}
+
+  /* 🔹 OTIMIZAÇÃO DE CENTRALIZAÇÃO (mesmo sistema da dashboard) */
+  .tiger-offers{
+    padding:60px 80px 100px 130px;
+    transform:scale(0.9) translateY(0px);
+    transform-origin:top center; /* antes era top left */
+    margin:0 auto; /* centraliza horizontalmente */
+    max-width:calc(100vw - 120px);
+  }
+
   .offers-header{text-align:center;margin-bottom:10px;}
   .offers-header h1{color:#ffcc00;font-size:2rem;margin:0;}
   .offers-header p{color:#b4b4b4;font-size:.95rem;margin-top:8px;}
