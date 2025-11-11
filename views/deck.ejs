@@ -61,7 +61,6 @@
 </div>
 
 <script>
-  // Fundo dourado animado
   const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
   const ctx=c.getContext('2d',{alpha:true});
   let w,h,DPR=window.devicePixelRatio||1;
@@ -91,11 +90,12 @@
 
   .tiger-dashboard{
     position:relative;z-index:1;min-height:100vh;
-    padding:60px 60px 80px 110px;
+    padding:40px 60px 70px 90px;
     display:flex;flex-direction:column;gap:35px;
     justify-content:flex-start;
-    transform:translateY(-35px);
-    max-width:calc(100vw - 120px);
+    transform:scale(0.92) translateX(-60px) translateY(-35px);
+    transform-origin: top left;
+    max-width:calc(100vw - 90px);
   }
 
   .tiger-header{
@@ -111,7 +111,6 @@
   }
   .filter-btn:hover{filter:brightness(1.1);}
 
-  /* Grid fixo e centralizado */
   .stats-grid{
     display:grid;
     grid-template-columns:repeat(5, minmax(200px, 1fr));
@@ -131,17 +130,17 @@
     transition:.25s ease-out;
   }
   .stat-card:hover{
-    background:rgba(255,204,0,0.05);
-    box-shadow:0 0 15px rgba(255,204,0,0.25);
+    background:rgba(255,204,0,0.07);
+    box-shadow:0 0 18px rgba(255,204,0,0.35);
   }
   .stat-card h3{
     color:#fff;margin:0 0 10px;font-size:.95rem;font-weight:500;
   }
   .stat-card span{
-    color:#ffdd33;
+    color:#ffd400;
     font-weight:700;
-    font-size:1.3rem;
-    text-shadow:0 0 10px rgba(255,204,0,0.6);
+    font-size:1.35rem;
+    text-shadow:0 0 10px rgba(255,200,0,0.6);
   }
 
   .chart-block{
