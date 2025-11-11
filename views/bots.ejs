@@ -7,10 +7,8 @@
   </div>
 
   <div class="offers-grid">
-    <!-- BLOCO 1 -->
     <div class="offer-card">
       <div class="icon">
-        <!-- ÍCONE CRIAR OFERTA -->
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="30" height="20" rx="4"/>
           <path d="M8 28h20M12 32h12"/>
@@ -22,10 +20,8 @@
       <button class="btn-primary">Criar</button>
     </div>
 
-    <!-- BLOCO 2 -->
     <div class="offer-card">
       <div class="icon">
-        <!-- ÍCONE GERENCIAR -->
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="4" width="30" height="28" rx="4"/>
           <path d="M3 12h30M12 4v28M18 20h9M18 25h9"/>
@@ -36,8 +32,7 @@
       <button class="btn-primary">Acessar</button>
     </div>
 
-    <!-- BLOCO 3 -->
-    <div class="offer-card" id="visualFlowCard">
+    <div class="offer-card">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="12" height="8" rx="2"/>
@@ -49,11 +44,10 @@
       </div>
       <h3>Criar Fluxo Visual</h3>
       <p>Monte visualmente o funil do bot com blocos e conexões interativas.</p>
-      <button class="btn-primary" onclick="openFlow()">Criar Funil</button>
+      <button class="btn-primary" onclick="openFlow()">Abrir Editor</button>
     </div>
 
-    <!-- BLOCO 4 -->
-    <div class="offer-card" id="tutorialCard">
+    <div class="offer-card">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="5" width="30" height="22" rx="3"/>
@@ -64,136 +58,185 @@
       <p>Aprenda passo a passo com vídeos e estratégias avançadas.</p>
       <button class="btn-primary" onclick="openTutorial()">Assistir</button>
     </div>
-
-    <!-- BLOCO 5 -->
-    <div class="offer-card" id="roiCard">
-      <div class="icon">
-        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 20h28M8 16v8M16 10v14M24 6v18"/>
-        </svg>
-      </div>
-      <h3>Calcular ROI</h3>
-      <p>Visualize o retorno das campanhas e calcule o ROI completo.</p>
-      <button class="btn-primary" onclick="openRoi()">Calcular</button>
-    </div>
-
-    <!-- BLOCO 6 -->
-    <div class="offer-card">
-      <div class="icon">
-        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="18" cy="12" r="4"/>
-          <path d="M4 28c1-4 5-7 9-7h6c4 0 8 3 9 7"/>
-          <path d="M18 2v3M18 31v3M31 18h3M2 18h3"/>
-        </svg>
-      </div>
-      <h3>IA Ilimitada — Tiger IA</h3>
-      <p>Crie mensagens, automações e fluxos com inteligência TigerFy.</p>
-      <button class="btn-disabled">Em Breve</button>
-    </div>
   </div>
 </div>
 
-<!-- MODAL: TUTORIAL -->
-<div class="modal" id="tutorialModal">
-  <div class="modal-content">
-    <span class="close" onclick="closeTutorial()">&times;</span>
-    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  </div>
-</div>
-
-<!-- MODAL: ROI -->
-<div class="modal" id="roiModal">
-  <div class="modal-content small">
-    <span class="close" onclick="closeRoi()">&times;</span>
-    <h2>Calculadora de ROI Avançada</h2>
-    <input type="number" id="investment" placeholder="Investimento (R$)">
-    <input type="number" id="revenue" placeholder="Receita Total (R$)">
-    <input type="number" id="costs" placeholder="Custos Fixos (R$)">
-    <input type="number" id="clients" placeholder="Total de Clientes">
-    <button onclick="calcROI()">Calcular ROI</button>
-    <div id="roiResult"></div>
-  </div>
-</div>
-
-<!-- MODAL: FLUXO VISUAL -->
+<!-- MODAL: TIGERFLOW -->
 <div class="modal" id="flowModal">
-  <div class="modal-content large">
+  <div class="modal-content huge">
     <span class="close" onclick="closeFlow()">&times;</span>
-    <h2>Editor Visual — TigerFlow</h2>
-    <p class="sub">Arraste, renomeie e conecte blocos — estilo Miro low-code</p>
-    <div id="canvasArea"></div>
+    <h2>Editor Visual — TigerFlow 2.0</h2>
+    <p class="sub">Arraste blocos, conecte nós e salve seu funil.</p>
+
+    <div id="flowCanvas">
+      <svg id="connectionLayer"></svg>
+      <div id="nodesLayer"></div>
+    </div>
+
     <div class="flow-controls">
       <button onclick="addNode()">+ Adicionar Bloco</button>
-      <button onclick="saveFlow()">💾 Salvar Fluxo</button>
+      <button onclick="saveFlow()">💾 Salvar</button>
+      <button onclick="clearFlow()">🧹 Limpar</button>
     </div>
   </div>
 </div>
 
 <script>
-  // ----- TUTORIAL -----
-  function openTutorial(){document.getElementById('tutorialModal').style.display='flex';}
-  function closeTutorial(){document.getElementById('tutorialModal').style.display='none';}
+  // --- FLOW MODAL ---
+  const flowModal = document.getElementById("flowModal");
+  const canvas = document.getElementById("nodesLayer");
+  const svgLayer = document.getElementById("connectionLayer");
 
-  // ----- ROI -----
-  function openRoi(){document.getElementById('roiModal').style.display='flex';}
-  function closeRoi(){document.getElementById('roiModal').style.display='none';}
-  function calcROI(){
-    const i = parseFloat(investment.value);
-    const r = parseFloat(revenue.value);
-    const c = parseFloat(costs.value);
-    const cl = parseFloat(clients.value);
-    if(!i||!r){return alert('Preencha investimento e receita.')}
-    const roi = ((r - (i + c)) / (i + c)) * 100;
-    const ticket = cl ? (r / cl).toFixed(2) : '—';
-    roiResult.innerHTML = `
-      <p><b>ROI:</b> ${roi.toFixed(2)}%</p>
-      <p><b>Ticket Médio:</b> R$ ${ticket}</p>
-      <p><b>Lucro Total:</b> R$ ${(r - (i + c)).toFixed(2)}</p>
-    `;
+  let nodes = [];
+  let connections = [];
+  let connecting = null;
+
+  // Abrir e restaurar fluxo salvo
+  function openFlow() {
+    flowModal.style.display = "flex";
+    restoreFlow();
   }
 
-  // ----- FLUXO VISUAL -----
-  let nodes=[], connections=[];
-  const canvas=document.getElementById('canvasArea');
-  function openFlow(){document.getElementById('flowModal').style.display='flex';}
-  function closeFlow(){document.getElementById('flowModal').style.display='none';}
-  function addNode(){
-    const node=document.createElement('div');
-    node.className='node';
-    node.contentEditable=true;
-    node.innerText='Novo Bloco';
-    node.style.left=Math.random()*600+'px';
-    node.style.top=Math.random()*300+'px';
-    node.onclick=e=>connectNode(node);
+  function closeFlow() {
+    flowModal.style.display = "none";
+  }
+
+  // Adicionar bloco
+  function addNode() {
+    const node = document.createElement("div");
+    node.className = "node";
+    node.innerText = "Novo Bloco";
+    node.contentEditable = true;
+    node.style.left = 100 + Math.random() * 500 + "px";
+    node.style.top = 100 + Math.random() * 300 + "px";
+    node.draggable = false;
+
+    node.addEventListener("mousedown", e => startDrag(e, node));
+    node.addEventListener("dblclick", e => startConnection(node));
     canvas.appendChild(node);
     nodes.push(node);
   }
-  let pendingNode=null;
-  function connectNode(node){
-    if(!pendingNode){pendingNode=node;node.classList.add('selected');}
-    else if(pendingNode!==node){
-      drawLine(pendingNode,node);
-      pendingNode.classList.remove('selected');
-      connections.push({from:pendingNode.innerText,to:node.innerText});
-      pendingNode=null;
+
+  // Arrastar blocos
+  let offsetX, offsetY, draggingNode = null;
+  function startDrag(e, node) {
+    if (connecting) return;
+    draggingNode = node;
+    offsetX = e.clientX - node.offsetLeft;
+    offsetY = e.clientY - node.offsetTop;
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", stopDrag);
+  }
+
+  function drag(e) {
+    if (!draggingNode) return;
+    draggingNode.style.left = e.clientX - offsetX + "px";
+    draggingNode.style.top = e.clientY - offsetY + "px";
+    updateConnections();
+  }
+
+  function stopDrag() {
+    draggingNode = null;
+    document.removeEventListener("mousemove", drag);
+    document.removeEventListener("mouseup", stopDrag);
+    saveFlow();
+  }
+
+  // Conectar blocos
+  function startConnection(node) {
+    if (!connecting) {
+      connecting = node;
+      node.classList.add("selected");
+    } else if (connecting !== node) {
+      createConnection(connecting, node);
+      connecting.classList.remove("selected");
+      connecting = null;
+      updateConnections();
+      saveFlow();
     }
   }
-  function drawLine(a,b){
-    const line=document.createElement('div');
-    line.className='line';
-    const x1=a.offsetLeft+80,y1=a.offsetTop+20,x2=b.offsetLeft+80,y2=b.offsetTop+20;
-    const len=Math.hypot(x2-x1,y2-y1),angle=Math.atan2(y2-y1,x2-x1)*(180/Math.PI);
-    line.style.width=len+'px';
-    line.style.transform=`rotate(${angle}deg)`;
-    line.style.left=x1+'px';
-    line.style.top=y1+'px';
-    canvas.appendChild(line);
+
+  // Criar linha
+  function createConnection(a, b) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("stroke", "#ffcc00");
+    line.setAttribute("stroke-width", "2");
+    line.dataset.from = a.innerText;
+    line.dataset.to = b.innerText;
+    svgLayer.appendChild(line);
+    connections.push({ from: a.innerText, to: b.innerText, line });
   }
-  function saveFlow(){
-    const data=nodes.map(n=>({name:n.innerText,x:n.style.left,y:n.style.top}));
-    console.log('Fluxo salvo:',JSON.stringify({nodes:data,connections},null,2));
-    alert('Fluxo salvo no console!');
+
+  // Atualizar conexões
+  function updateConnections() {
+    connections.forEach(conn => {
+      const a = nodes.find(n => n.innerText === conn.from);
+      const b = nodes.find(n => n.innerText === conn.to);
+      if (!a || !b) return;
+      const x1 = a.offsetLeft + a.offsetWidth / 2;
+      const y1 = a.offsetTop + a.offsetHeight / 2;
+      const x2 = b.offsetLeft + b.offsetWidth / 2;
+      const y2 = b.offsetTop + b.offsetHeight / 2;
+      conn.line.setAttribute("x1", x1);
+      conn.line.setAttribute("y1", y1);
+      conn.line.setAttribute("x2", x2);
+      conn.line.setAttribute("y2", y2);
+    });
   }
+
+  // Salvar e restaurar fluxo
+  function saveFlow() {
+    const data = nodes.map(n => ({
+      text: n.innerText,
+      x: n.style.left,
+      y: n.style.top
+    }));
+    const conns = connections.map(c => ({ from: c.from, to: c.to }));
+    localStorage.setItem("tigerflow", JSON.stringify({ nodes: data, connections: conns }));
+  }
+
+  function restoreFlow() {
+    const saved = localStorage.getItem("tigerflow");
+    if (!saved) return;
+    const { nodes: savedNodes, connections: savedConns } = JSON.parse(saved);
+
+    canvas.innerHTML = "";
+    svgLayer.innerHTML = "";
+    nodes = [];
+    connections = [];
+
+    savedNodes.forEach(n => {
+      const node = document.createElement("div");
+      node.className = "node";
+      node.innerText = n.text;
+      node.style.left = n.x;
+      node.style.top = n.y;
+      node.addEventListener("mousedown", e => startDrag(e, node));
+      node.addEventListener("dblclick", e => startConnection(node));
+      canvas.appendChild(node);
+      nodes.push(node);
+    });
+
+    savedConns.forEach(c => {
+      const a = nodes.find(n => n.innerText === c.from);
+      const b = nodes.find(n => n.innerText === c.to);
+      if (a && b) createConnection(a, b);
+    });
+
+    updateConnections();
+  }
+
+  function clearFlow() {
+    if (confirm("Limpar todo o fluxo?")) {
+      localStorage.removeItem("tigerflow");
+      canvas.innerHTML = "";
+      svgLayer.innerHTML = "";
+      nodes = [];
+      connections = [];
+    }
+  }
+
+  window.addEventListener("resize", updateConnections);
 </script>
 
 <style>
@@ -205,31 +248,21 @@
   .offers-header h1{color:#ffcc00;font-size:2rem;margin:0;}
   .offers-header p{color:#b4b4b4;font-size:.95rem;margin-top:8px;}
   .offers-grid{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:30px;margin-top:30px;}
-  .offer-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:16px;padding:28px 22px;text-align:center;transition:.3s;position:relative;}
+  .offer-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:16px;padding:28px 22px;text-align:center;transition:.3s;}
   .offer-card:hover{transform:translateY(-5px);box-shadow:0 0 20px rgba(255,204,0,0.25);}
   .icon{margin-bottom:15px;transition:filter .3s,transform .3s;}
   .offer-card:hover .icon{filter:drop-shadow(0 0 8px rgba(255,204,0,0.6));transform:scale(1.1);}
-  .offer-card h3{font-size:1.1rem;margin:0 0 8px;}
-  .offer-card p{color:#b4b4b4;font-size:.9rem;margin:0 0 18px;}
-  .btn-primary{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;box-shadow:0 0 10px rgba(255,204,0,0.25);}
-  .btn-disabled{background:rgba(255,255,255,0.05);color:#777;border:none;padding:10px 20px;border-radius:8px;cursor:not-allowed;}
+  .btn-primary{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;}
   
-  /* MODAIS */
-  .modal{display:none;position:fixed;z-index:99;inset:0;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;}
-  .modal-content{background:#111;border:1px solid rgba(255,204,0,0.2);border-radius:14px;padding:25px;width:80%;max-width:900px;position:relative;}
-  .modal-content.small{max-width:420px;text-align:center;}
-  .modal-content.large{max-width:1200px;}
+  .modal{display:none;position:fixed;z-index:99;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;}
+  .modal-content.huge{width:90%;max-width:1600px;height:90vh;display:flex;flex-direction:column;gap:10px;background:#0a0a0a;border:1px solid rgba(255,204,0,0.25);border-radius:12px;padding:20px;position:relative;}
   .close{position:absolute;top:10px;right:15px;font-size:1.8rem;cursor:pointer;color:#ffcc00;}
-  .modal-content h2{color:#ffcc00;margin-top:0;}
-  input{width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid rgba(255,204,0,0.3);background:rgba(255,255,255,0.05);color:#fff;}
-  #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;margin-top:10px;}
-  #roiResult p{margin:6px 0;}
-
-  /* FLUXO VISUAL */
-  #canvasArea{background:#0d0d0d;border:1px dashed rgba(255,204,0,0.3);border-radius:10px;min-height:500px;position:relative;overflow:hidden;margin:10px 0;}
-  .node{position:absolute;background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.4);border-radius:8px;padding:10px 14px;cursor:grab;font-size:.9rem;min-width:120px;text-align:center;}
+  
+  #flowCanvas{flex:1;position:relative;overflow:hidden;border-radius:10px;background:radial-gradient(rgba(255,255,255,0.05) 1px,transparent 1px);background-size:25px 25px;}
+  #nodesLayer{position:absolute;inset:0;}
+  #connectionLayer{position:absolute;inset:0;width:100%;height:100%;}
+  .node{position:absolute;background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.4);border-radius:8px;padding:10px 14px;min-width:120px;text-align:center;cursor:grab;font-size:.9rem;}
   .node.selected{outline:2px solid #ffcc00;}
-  .line{position:absolute;height:2px;background:#ffcc00;transform-origin:left center;}
-  .flow-controls{text-align:center;margin-top:10px;}
+  .flow-controls{text-align:center;gap:10px;margin-top:8px;}
   .flow-controls button{margin:0 10px;padding:10px 18px;border:none;border-radius:8px;background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;font-weight:700;cursor:pointer;}
 </style>
