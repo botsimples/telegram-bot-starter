@@ -1902,3 +1902,22 @@ body {
   background-color: #0a0a0a;
   position: relative;
 }
+
+/* BLOCO BLOQUEADO (EM BREVE) */
+.offer-card.locked {
+  opacity: 0.6;
+  filter: grayscale(1);
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.offer-card.locked .icon {
+  opacity: 0.4;
+}
+
+.offer-card.locked button {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,204,0,0.15);
+  color: #999;
+  cursor: not-allowed;
+}
