@@ -1,62 +1,38 @@
-<%- include('layout', { title: 'Deck', active: 'deck', body: `
-  <%- include('partials/visual_hottrack') %>
-
-  <main class="hottrack-page">
-    <div class="tiger-dashboard">
-      <div class="tiger-header">
-        <div>
-          <h1>📊 Estatísticas Gerais</h1>
-          <p>Visão geral de toda a plataforma.</p>
-        </div>
-        <button class="filter-btn">Filtrar Ofertas</button>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card"><h3>Total de Vendas</h3><span>R$ 0,00</span></div>
-        <div class="stat-card"><h3>Vendas no Ano</h3><span>R$ 0,00</span></div>
-        <div class="stat-card"><h3>Vendas no Mês</h3><span>R$ 0,00</span></div>
-        <div class="stat-card"><h3>Vendas no Dia</h3><span>R$ 0,00</span></div>
-        <div class="stat-card"><h3>Total Usuários</h3><span>0</span></div>
-        <div class="stat-card"><h3>Usuários no Ano</h3><span>0</span></div>
-        <div class="stat-card"><h3>Usuários no Mês</h3><span>0</span></div>
-        <div class="stat-card"><h3>Usuários no Dia</h3><span>0</span></div>
-        <div class="stat-card"><h3>Conversões Ativas</h3><span>0</span></div>
-        <div class="stat-card"><h3>Taxa de Conversão</h3><span>0%</span></div>
-        <div class="stat-card"><h3>Ticket Médio</h3><span>R$ 0,00</span></div>
-        <div class="stat-card"><h3>Lucro Estimado</h3><span>R$ 0,00</span></div>
-      </div>
-
-      <div class="chart-block">
-        <div class="chart-head">
-          <h3>Usuários por Horário</h3>
-          <div class="tabs">
-            <button class="active">Hoje</button>
-            <button>Ontem</button>
-            <button>Essa Semana</button>
-            <button>Esse Mês</button>
-            <button>Personalizado</button>
+<%- include('layout', {
+  title: 'Deck',
+  active: 'deck',
+  body: (function(){/*
+    <%- include('partials/visual_hottrack') %>
+    <main class="hottrack-page">
+      <div class="tiger-dashboard">
+        <div class="tiger-header">
+          <div>
+            <h1>📊 Estatísticas Gerais</h1>
+            <p>Visão geral de toda a plataforma.</p>
           </div>
+          <button class="filter-btn">Filtrar Ofertas</button>
         </div>
-        <div class="chart-placeholder">[ gráfico em breve ]</div>
-      </div>
 
-      <div class="table-block">
-        <h3>Pagamentos Recentes</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Usuário</th>
-              <th>Valor</th>
-              <th>Status</th>
-              <th>Data</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr>
-          </tbody>
-        </table>
+        <div class="stats-grid">
+          <div class="stat-card"><h3>Total de Vendas</h3><span>R$ 0,00</span></div>
+          <div class="stat-card"><h3>Vendas no Ano</h3><span>R$ 0,00</span></div>
+          <div class="stat-card"><h3>Vendas no Mês</h3><span>R$ 0,00</span></div>
+          <div class="stat-card"><h3>Vendas no Dia</h3><span>R$ 0,00</span></div>
+        </div>
+
+        <div class="chart-block">
+          <h3>📈 Usuários por Horário</h3>
+          <div class="chart-placeholder">[ gráfico em breve ]</div>
+        </div>
+
+        <div class="table-block">
+          <h3>Pagamentos Recentes</h3>
+          <table>
+            <thead><tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+            <tbody><tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr></tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </main>
-` }) %>
+    </main>
+  */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+}) %>
