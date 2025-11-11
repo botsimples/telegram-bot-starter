@@ -115,62 +115,6 @@ app.get('/logout', (req, res) => {
 });
 
 // ===============================
-// 🧩 TIGERFLOW (Editor Visual)
-// ===============================
-const Flow = require('./models/Flow');
-
-// Página do editor visual
-app.get('/tigerflow', (req, res) => {
-  const flowId = req.query.id || '';
-  res.render('tigerflow', { title: 'TigerFlow', flowId, layout: false });
-});
-
-// API: listar fluxos
-app.get('/api/flows', async (req, res) => {
-  try {
-    const flows = await Flow.find().sort('-updatedAt').limit(50);
-    res.json(flows);
-  } catch (err) {
-    console.error('Erro ao listar fluxos:', err);
-    res.status(500).json({ error: 'Erro interno' });
-  }
-});
-
-// API: buscar fluxo por ID
-app.get('/api/flows/:id', async (req, res) => {
-  try {
-    const flow = await Flow.findById(req.params.id);
-    if (!flow) return res.status(404).json({ error: 'Fluxo não encontrado' });
-    res.json(flow);
-  } catch (err) {
-    console.error('Erro ao buscar fluxo:', err);
-    res.status(500).json({ error: 'Erro interno' });
-  }
-});
-
-// API: salvar ou atualizar fluxo
-app.post('/api/flows', async (req, res) => {
-  try {
-    const { id, name, nodes, edges, userId } = req.body;
-
-    if (id) {
-      const updated = await Flow.findByIdAndUpdate(
-        id,
-        { name, nodes, edges, userId },
-        { new: true }
-      );
-      return res.json(updated);
-    }
-
-    const created = await Flow.create({ name, nodes, edges, userId });
-    res.json(created);
-  } catch (err) {
-    console.error('Erro ao salvar fluxo:', err);
-    res.status(500).json({ error: 'Erro interno' });
-  }
-});
-
-// ===============================
 // 🚀 INICIAR SERVIDOR
 // ===============================
 const PORT = process.env.PORT || 10000;
