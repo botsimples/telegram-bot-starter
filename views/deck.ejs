@@ -1,38 +1,31 @@
-<%- include('layout', {
-  title: 'Deck',
-  active: 'deck',
-  body: (function(){/*
-    <%- include('partials/visual_hottrack') %>
-    <main class="hottrack-page">
-      <div class="tiger-dashboard">
-        <div class="tiger-header">
-          <div>
-            <h1>📊 Estatísticas Gerais</h1>
-            <p>Visão geral de toda a plataforma.</p>
-          </div>
-          <button class="filter-btn">Filtrar Ofertas</button>
-        </div>
+<%- include('layout', { title: 'Dashboard', active: 'deck', body: `
+  <%- include('partials/visual_hottrack') %>
 
-        <div class="stats-grid">
-          <div class="stat-card"><h3>Total de Vendas</h3><span>R$ 0,00</span></div>
-          <div class="stat-card"><h3>Vendas no Ano</h3><span>R$ 0,00</span></div>
-          <div class="stat-card"><h3>Vendas no Mês</h3><span>R$ 0,00</span></div>
-          <div class="stat-card"><h3>Vendas no Dia</h3><span>R$ 0,00</span></div>
-        </div>
+  <main class="offers-page">
+    <section class="offers-container">
+      <header class="offers-header">
+        <h1>Estatísticas Gerais</h1>
+        <p>Visão geral de toda a plataforma TigerFy.</p>
+      </header>
 
-        <div class="chart-block">
-          <h3>📈 Usuários por Horário</h3>
-          <div class="chart-placeholder">[ gráfico em breve ]</div>
+      <div class="offers-grid">
+        <div class="offer-card">
+          <h3>Total de Vendas</h3><p>R$ 0,00</p>
+          <button class="offer-btn">Ver Detalhes</button>
         </div>
-
-        <div class="table-block">
-          <h3>Pagamentos Recentes</h3>
-          <table>
-            <thead><tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
-            <tbody><tr><td colspan="5" style="text-align:center;color:#777;">Nenhum pagamento recente</td></tr></tbody>
-          </table>
+        <div class="offer-card">
+          <h3>Novos Leads</h3><p>0</p>
+          <button class="offer-btn">Verificar</button>
+        </div>
+        <div class="offer-card">
+          <h3>ROI Médio</h3><p>0%</p>
+          <button class="offer-btn">Calcular</button>
+        </div>
+        <div class="offer-card">
+          <h3>Campanhas Ativas</h3><p>0</p>
+          <button class="offer-btn">Gerenciar</button>
         </div>
       </div>
-    </main>
-  */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
-}) %>
+    </section>
+  </main>
+` }) %>
