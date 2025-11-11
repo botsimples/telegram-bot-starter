@@ -1,50 +1,3 @@
-<%- include('partials/visual_hottrack') %>
-
-<main class="offers-page">
-  <section class="offers-container">
-    <header class="offers-header">
-      <h1>Estatísticas Gerais</h1>
-      <p>Visão geral de toda a plataforma TigerFy.</p>
-    </header>
-
-    <div class="offers-grid">
-      <div class="offer-card">
-        <h3>Total de Vendas</h3>
-        <p>R$ 0,00</p>
-        <button class="offer-btn">Ver Detalhes</button>
-      </div>
-
-      <div class="offer-card">
-        <h3>Novos Leads</h3>
-        <p>0</p>
-        <button class="offer-btn">Verificar</button>
-      </div>
-
-      <div class="offer-card">
-        <h3>ROI Médio</h3>
-        <p>0%</p>
-        <button class="offer-btn">Calcular</button>
-      </div>
-
-      <div class="offer-card">
-        <h3>Campanhas Ativas</h3>
-        <p>0</p>
-        <button class="offer-btn">Gerenciar</button>
-      </div>
-    </div>
-  </section>
-</main>
-
-<script>
-  const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
-  const ctx=c.getContext('2d',{alpha:true});
-  let w,h,DPR=window.devicePixelRatio||1;
-  function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
-  resize();addEventListener('resize',resize,{passive:true});
-  const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
-</script>
-
 <style>
   html,body{
     margin:0;
@@ -84,14 +37,13 @@
     justify-content:center;
     align-items:flex-start;
     padding-left:70px;
-    padding-top:5vh;
+    padding-top:2vh; /* 🔼 subiu mais (antes era 5vh) */
   }
 
-  /* 🔥 O container simula o 80% do zoom */
   .offers-container{
     text-align:center;
-    width:80%; /* era 90% */
-    max-width:1000px; /* era 1100px */
+    width:80%;
+    max-width:1000px;
     transform:scale(0.95);
     transform-origin:center top;
   }
@@ -104,12 +56,12 @@
 
   .offers-header p{
     color:#b4b4b4;
-    margin-bottom:40px;
+    margin-bottom:35px;
   }
 
   .offers-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); /* 🔧 mais compacto */
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:30px;
     justify-items:center;
   }
