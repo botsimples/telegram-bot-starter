@@ -1,63 +1,205 @@
-<%- include('partials/visual_hottrack') %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="utf-8" />
-  <title>TigerFlow — Editor Visual</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="/css/tigerfy.css" rel="stylesheet">
-  <link href="/css/tigerflow.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TigerFlow ⚡</title>
+  <link rel="stylesheet" href="/css/tigerfy.css" />
   <style>
-    /* fallback caso não carregue o arquivo */
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #0a0a0a;
+      font-family: 'Inter', sans-serif;
+      user-select: none;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 22px 22px;
+      cursor: grab;
+    }
+
+    .flow-ui {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background: linear-gradient(90deg,#ffcc00,#d4a100);
+      border: none;
+      color: #000;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s;
+      box-shadow: 0 0 8px rgba(255,204,0,0.3);
+    }
+    button:hover { filter: brightness(1.15); }
+
+    .node {
+      position: absolute;
+      width: 180px;
+      min-height: 80px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,204,0,0.25);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255,204,0,0.15);
+      color: #fff;
+      padding: 10px;
+      cursor: move;
+      z-index: 2;
+    }
+
+    .node h4 {
+      margin: 0 0 6px;
+      color: #ffcc00;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: text;
+    }
+
+    .node p {
+      margin: 0;
+      font-size: .85rem;
+      color: #ccc;
+      cursor: text;
+    }
   </style>
 </head>
-<body class="tf-body">
-  <div class="tf-topbar">
-    <div class="tf-left">
-      <span class="tf-logo">⚡ TigerFlow</span>
-      <input id="flowName" class="tf-name" value="Novo Fluxo" />
-      <span id="flowStatus" class="tf-status">● não salvo</span>
-    </div>
-    <div class="tf-right">
-      <button id="btnNew"   class="tf-btn">Novo</button>
-      <button id="btnSave"  class="tf-btn tf-primary">Salvar (⌘/Ctrl+S)</button>
-      <button id="btnExportJson" class="tf-btn">Exportar JSON</button>
-      <button id="btnExportPng"  class="tf-btn">Exportar PNG</button>
-      <div class="tf-sep"></div>
-      <button id="btnZoomOut" class="tf-btn">−</button>
-      <span id="zoomLabel" class="tf-zoom">100%</span>
-      <button id="btnZoomIn"  class="tf-btn">+</button>
-      <label class="tf-switch">
-        <input id="snapToggle" type="checkbox" checked>
-        <span>Snap</span>
-      </label>
-    </div>
-  </div>
 
-  <div class="tf-palette">
-    <div class="tf-block" data-type="start">Start</div>
-    <div class="tf-block" data-type="message">Mensagem</div>
-    <div class="tf-block" data-type="delay">Delay</div>
-    <div class="tf-block" data-type="condition">Condição</div>
-    <div class="tf-block" data-type="action">Ação</div>
-  </div>
+<body>
+  <canvas id="flowCanvas"></canvas>
 
-  <div id="canvasWrap" class="tf-canvas-wrap">
-    <canvas id="edges" class="tf-edges"></canvas>
-    <div id="nodes" class="tf-nodes"></div>
-  </div>
-
-  <!-- painel lateral simples para editar dados -->
-  <div class="tf-side">
-    <h3>Propriedades</h3>
-    <div id="sideContent" class="tf-side-content">
-      <p>Selecione um bloco…</p>
-    </div>
+  <div class="flow-ui">
+    <button id="addNode">+ Bloco</button>
+    <button id="saveFlow">💾 Salvar</button>
+    <button id="exportPNG">🖼️ Exportar PNG</button>
   </div>
 
   <script>
-    window.__FLOW_ID__ = "<%= flowId %>";
+    const canvas = document.getElementById('flowCanvas');
+    const ctx = canvas.getContext('2d');
+    let w = window.innerWidth, h = window.innerHeight;
+    canvas.width = w; canvas.height = h;
+
+    let scale = 1, offsetX = 0, offsetY = 0, dragging = false;
+    let nodes = [], lines = [], selectedNode = null;
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight;
+      canvas.width = w; canvas.height = h;
+      draw();
+    }
+    window.addEventListener('resize', resize);
+
+    // desenhar linhas
+    function draw() {
+      ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
+      ctx.clearRect(-offsetX/scale, -offsetY/scale, w/scale, h/scale);
+      lines.forEach(l => {
+        ctx.beginPath();
+        ctx.moveTo(l.x1, l.y1);
+        ctx.lineTo(l.x2, l.y2);
+        ctx.strokeStyle = 'rgba(255,204,0,0.5)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+    }
+
+    // arrastar tela (pan)
+    let panStart = {x:0,y:0}, panMoving = false;
+    canvas.addEventListener('mousedown', e=>{
+      if (e.button === 2) { panStart={x:e.clientX-offsetX,y:e.clientY-offsetY}; panMoving=true; canvas.style.cursor='grabbing'; }
+    });
+    canvas.addEventListener('mousemove', e=>{
+      if (panMoving){ offsetX=e.clientX-panStart.x; offsetY=e.clientY-panStart.y; draw(); }
+    });
+    canvas.addEventListener('mouseup', ()=>{ panMoving=false; canvas.style.cursor='grab'; });
+    canvas.addEventListener('contextmenu', e=>e.preventDefault());
+    canvas.addEventListener('wheel', e=>{
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.9 : 1.1;
+      scale *= delta; draw();
+    });
+
+    // criar bloco
+    document.getElementById('addNode').onclick = ()=>{
+      const node = document.createElement('div');
+      node.className = 'node';
+      node.style.left = (200 + Math.random()*300)+'px';
+      node.style.top = (100 + Math.random()*200)+'px';
+      node.innerHTML = '<h4 contenteditable="true">Novo Bloco</h4><p contenteditable="true">Descrição...</p>';
+      document.body.appendChild(node);
+      makeDraggable(node);
+      nodes.push(node);
+      draw();
+    };
+
+    // arrastar blocos
+    function makeDraggable(el){
+      let drag = false, dx, dy;
+      el.addEventListener('mousedown', e=>{
+        if(e.button===0){ drag=true; dx=e.offsetX; dy=e.offsetY; selectedNode=el; }
+      });
+      window.addEventListener('mousemove', e=>{
+        if(drag){
+          el.style.left = (e.clientX - dx) + 'px';
+          el.style.top = (e.clientY - dy) + 'px';
+          draw();
+        }
+      });
+      window.addEventListener('mouseup', ()=> drag=false);
+    }
+
+    // conectar blocos (Shift + clique)
+    canvas.addEventListener('click', e=>{
+      if(!selectedNode) return;
+      if(e.shiftKey){
+        const x1 = parseInt(selectedNode.style.left)+90;
+        const y1 = parseInt(selectedNode.style.top)+40;
+        const x2 = e.clientX - offsetX;
+        const y2 = e.clientY - offsetY;
+        lines.push({x1,y1,x2,y2});
+        draw();
+      }
+    });
+
+    // salvar no backend
+    document.getElementById('saveFlow').onclick = async ()=>{
+      const flowData = {
+        name: 'TigerFlow Board',
+        nodes: nodes.map(n=>({
+          title: n.querySelector('h4').innerText,
+          desc: n.querySelector('p').innerText,
+          left: n.style.left, top: n.style.top
+        })),
+        edges: lines
+      };
+      await fetch('/api/flows', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(flowData)
+      });
+      alert('💾 Fluxo salvo com sucesso!');
+    };
+
+    // exportar PNG
+    document.getElementById('exportPNG').onclick = ()=>{
+      const dataURL = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = dataURL; a.download = 'tigerflow.png';
+      a.click();
+    };
+
+    draw();
   </script>
-  <script src="/js/tigerflow.js"></script>
 </body>
 </html>
