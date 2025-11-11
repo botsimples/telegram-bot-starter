@@ -278,3 +278,73 @@ body::after {
   .sidebar { display: none; }
   .main-content { margin-left: 0; padding: 25px; }
 }
+
+/* ===========================
+   🧭 FIX GERAL — SIDEBAR + LOGO
+   =========================== */
+
+/* Remove qualquer azul residual */
+.sidebar {
+  background: rgba(10, 10, 10, 0.95) !important;
+  border-right: 1px solid rgba(255, 204, 0, 0.1) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(6px);
+}
+
+/* Reposicionamento correto do header lateral */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-left: 10px;
+  width: 100%;
+  margin-bottom: 50px;
+  transform: translateY(-4px);
+}
+
+/* Ícone ⚡ dourado, centralizado e sem sombra exagerada */
+.logo-icon {
+  font-size: 22px;
+  color: var(--accent-color);
+  filter: drop-shadow(0 0 4px rgba(255, 204, 0, 0.4));
+  transform: translateY(1px);
+}
+
+/* Texto TIGERFY — alinhado e com brilho sutil */
+.logo-text {
+  font-family: "Poppins", "Inter", sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--accent-color);
+  text-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
+  letter-spacing: 0.4px;
+}
+
+/* Itens da sidebar */
+.menu a {
+  background: transparent;
+  color: var(--muted-color);
+  width: 80%;
+  border-radius: 8px;
+  padding: 10px 15px;
+  transition: 0.3s ease;
+}
+
+.menu a:hover {
+  background: var(--hover-bg);
+  color: var(--accent-color);
+}
+
+.menu a.active {
+  background: linear-gradient(90deg, var(--accent-color), #b38f00);
+  color: #000 !important;
+  font-weight: 700;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.25);
+}
+
+/* Remove gradientes azuis remanescentes */
+body, html {
+  background-color: var(--bg-color) !important;
+  background-image: none !important;
+}
