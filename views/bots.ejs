@@ -1,192 +1,197 @@
 <%- include('partials/visual_hottrack') %>
 
 <div class="tiger-offers">
-  <!-- HEADER -->
   <div class="offers-header">
     <h1>Minhas Ofertas</h1>
-    <p>Gerencie, crie e visualize fluxos, métricas e automações inteligentes dos seus bots Telegram.</p>
+    <p>Gerencie, crie e visualize fluxos inteligentes, automações e métricas dos seus bots Telegram.</p>
   </div>
 
-  <!-- GRID DE OPÇÕES -->
   <div class="offers-grid">
+    <!-- BLOCO 1 -->
     <div class="offer-card">
       <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v4M4.22 4.22l2.83 2.83M1 12h4M4.22 19.78l2.83-2.83M12 23v-4M19.78 19.78l-2.83-2.83M23 12h-4M19.78 4.22l-2.83 2.83M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3h26v6H3zM3 13h26v16H3zM7 8v5M25 8v5"/>
+        </svg>
       </div>
       <h3>Criar Oferta</h3>
       <p>Defina nome, valor e parâmetros de traqueamento para seu bot Telegram.</p>
       <button class="btn-primary">Criar</button>
     </div>
 
+    <!-- BLOCO 2 -->
     <div class="offer-card">
       <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18v16H3z"/><path d="M3 8h18M7 4v16"/></svg>
+        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="6" width="26" height="18" rx="2"/>
+          <path d="M3 10h26M10 6v18"/>
+        </svg>
       </div>
       <h3>Gerenciar Ofertas</h3>
       <p>Edite, duplique e acompanhe o desempenho das suas campanhas.</p>
       <button class="btn-primary">Acessar</button>
     </div>
 
-    <div class="offer-card">
+    <!-- BLOCO 3 -->
+    <div class="offer-card" id="visualFlowCard">
       <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l9 6 9-6-9-6-9 6z"/><path d="M3 6v12l9 6 9-6V6"/></svg>
+        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="6" r="2"/>
+          <circle cx="26" cy="6" r="2"/>
+          <circle cx="6" cy="26" r="2"/>
+          <circle cx="26" cy="26" r="2"/>
+          <path d="M8 6h14M6 8v14M8 26h14M26 8v14"/>
+        </svg>
       </div>
       <h3>Criar Fluxo Visual</h3>
-      <p>Monte visualmente o funil de mensagens e interações do seu bot.</p>
-      <button class="btn-primary">Criar Funil</button>
+      <p>Monte visualmente o funil do bot estilo Miro com blocos e conexões.</p>
+      <button class="btn-primary" onclick="openFlow()">Criar Funil</button>
     </div>
 
-    <div class="offer-card">
+    <!-- BLOCO 4 -->
+    <div class="offer-card" id="tutorialCard">
       <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M12 4h9"/><path d="M12 12h9"/><path d="M3 6h.01M3 18h.01M3 12h.01"/></svg>
+        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="26" height="20" rx="3"/>
+          <polygon points="13,11 21,16 13,21" fill="#ffcc00"/>
+        </svg>
       </div>
       <h3>Ver Tutoriais</h3>
-      <p>Aprenda passo a passo como dominar automações e bots TigerFy.</p>
-      <button class="btn-primary">Assistir</button>
+      <p>Aprenda passo a passo com vídeos e estratégias avançadas.</p>
+      <button class="btn-primary" onclick="openTutorial()">Assistir</button>
     </div>
 
-    <div class="offer-card">
+    <!-- BLOCO 5 -->
+    <div class="offer-card" id="roiCard">
       <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 10V3h-7"/></svg>
+        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 20h24M8 16v8M16 12v12M24 8v16"/>
+        </svg>
       </div>
       <h3>Calcular ROI</h3>
-      <p>Visualize retorno das campanhas e calcule ROI por oferta.</p>
-      <button class="btn-primary">Calcular</button>
+      <p>Visualize retorno das campanhas e calcule ROI de forma rápida.</p>
+      <button class="btn-primary" onclick="openRoi()">Calcular</button>
     </div>
 
+    <!-- BLOCO 6 -->
     <div class="offer-card">
       <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 2 5 5 5 9c0 3.54 3.64 7.36 6.35 10.1a1 1 0 001.3 0C15.36 16.36 19 12.54 19 9c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <svg width="32" height="32" stroke="#ffcc00" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 2v8M16 22v8M2 16h8M22 16h8"/>
+          <circle cx="16" cy="16" r="6"/>
+        </svg>
       </div>
       <h3>IA Ilimitada — Tiger IA</h3>
-      <p>Crie mensagens e fluxos com inteligência automatizada exclusiva.</p>
+      <p>Crie mensagens, automações e fluxos com inteligência TigerFy.</p>
       <button class="btn-disabled">Em Breve</button>
-    </div>
-
-    <div class="offer-card">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3zM3 9h18v12H3z"/><path d="M7 13h4v4H7zM15 13h4v4h-4z"/></svg>
-      </div>
-      <h3>Histórico de Vendas</h3>
-      <p>Veja todas as vendas e performance detalhada das suas ofertas.</p>
-      <button class="btn-primary">Ver Histórico</button>
-    </div>
-
-    <div class="offer-card">
-      <div class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="#ffcc00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15A7 7 0 0012 5a7 7 0 00-7.4 10M12 19v4"/></svg>
-      </div>
-      <h3>Integrações</h3>
-      <p>Conecte gateways, APIs e webhooks externos ao TigerFy.</p>
-      <button class="btn-primary">Gerenciar</button>
     </div>
   </div>
 </div>
 
-<style>
-  html,body{
-    margin:0;padding:0;height:100%;width:100%;
-    background:#0a0a0a;
-    overflow-x:hidden;overflow-y:auto;
-    -webkit-font-smoothing:antialiased;
+<!-- MODAL: TUTORIAL -->
+<div class="modal" id="tutorialModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeTutorial()">&times;</span>
+    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" title="TigerFy Tutorial" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- MODAL: ROI -->
+<div class="modal" id="roiModal">
+  <div class="modal-content small">
+    <span class="close" onclick="closeRoi()">&times;</span>
+    <h2>Calculadora de ROI</h2>
+    <input type="number" id="investment" placeholder="Investimento (R$)">
+    <input type="number" id="revenue" placeholder="Retorno (R$)">
+    <button onclick="calcROI()">Calcular</button>
+    <p id="roiResult"></p>
+  </div>
+</div>
+
+<!-- MODAL: FLUXO VISUAL -->
+<div class="modal" id="flowModal">
+  <div class="modal-content large">
+    <span class="close" onclick="closeFlow()">&times;</span>
+    <h2>Editor Visual — TigerFlow</h2>
+    <p class="sub">Arraste blocos e conecte ideias (demo low-code)</p>
+    <div id="canvasArea"></div>
+    <button class="add-node" onclick="addNode()">+ Adicionar Bloco</button>
+  </div>
+</div>
+
+<script>
+  // ----- TUTORIAL MODAL -----
+  function openTutorial(){document.getElementById('tutorialModal').style.display='flex';}
+  function closeTutorial(){document.getElementById('tutorialModal').style.display='none';}
+
+  // ----- ROI MODAL -----
+  function openRoi(){document.getElementById('roiModal').style.display='flex';}
+  function closeRoi(){document.getElementById('roiModal').style.display='none';}
+  function calcROI(){
+    const i = parseFloat(document.getElementById('investment').value);
+    const r = parseFloat(document.getElementById('revenue').value);
+    if(!i||!r){return alert('Preencha os dois campos!')}
+    const roi = ((r - i)/i)*100;
+    document.getElementById('roiResult').innerText = `ROI: ${roi.toFixed(2)}%`;
   }
+
+  // ----- FLUXO VISUAL (Miro low-code) -----
+  function openFlow(){document.getElementById('flowModal').style.display='flex';}
+  function closeFlow(){document.getElementById('flowModal').style.display='none';}
+
+  const canvas = document.getElementById('canvasArea');
+  let nodeCount = 0;
+  function addNode(){
+    const node = document.createElement('div');
+    node.className='node';
+    node.textContent='Bloco '+(++nodeCount);
+    node.style.left=Math.random()*400+'px';
+    node.style.top=Math.random()*200+'px';
+    node.draggable=true;
+    node.ondragstart=e=>{e.dataTransfer.setData('id',node.id)};
+    node.id='node'+nodeCount;
+    canvas.appendChild(node);
+  }
+  canvas.ondragover=e=>e.preventDefault();
+  canvas.ondrop=e=>{
+    e.preventDefault();
+    const id=e.dataTransfer.getData('id');
+    const el=document.getElementById(id);
+    el.style.left=e.offsetX-50+'px';
+    el.style.top=e.offsetY-20+'px';
+  }
+</script>
+
+<style>
+  html,body{margin:0;padding:0;background:#0a0a0a;color:#fff;font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
   *{box-sizing:border-box;}
   ::-webkit-scrollbar{display:none!important;}
-
-  .tiger-offers{
-    position:relative;
-    z-index:1;
-    min-height:100vh;
-    padding:60px 80px 100px 130px;
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-    transform:scale(0.9) translateX(70px);
-    transform-origin:top left;
-  }
-
-  .offers-header{
-    text-align:center;
-    margin-bottom:10px;
-  }
-  .offers-header h1{
-    color:#ffcc00;
-    font-size:2rem;
-    margin:0;
-  }
-  .offers-header p{
-    color:#b4b4b4;
-    margin-top:8px;
-    font-size:.95rem;
-  }
-
-  .offers-grid{
-    display:grid;
-    grid-template-columns:repeat(4, minmax(260px,1fr));
-    gap:28px;
-    justify-content:center;
-  }
-
-  .offer-card{
-    background:rgba(255,255,255,0.03);
-    border:1px solid rgba(255,204,0,0.12);
-    border-radius:16px;
-    padding:28px 22px;
-    text-align:center;
-    transition:all .3s ease-out;
-    position:relative;
-    overflow:hidden;
-  }
-
-  .offer-card:hover{
-    transform:translateY(-6px);
-    background:rgba(255,204,0,0.05);
-    box-shadow:0 0 25px rgba(255,204,0,0.25);
-  }
-
-  .icon{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-bottom:15px;
-    transition:transform .3s ease, filter .3s ease;
-  }
-  .offer-card:hover .icon{
-    transform:scale(1.1);
-    filter:drop-shadow(0 0 12px rgba(255,204,0,0.6));
-  }
-
-  .offer-card h3{
-    color:#fff;
-    font-size:1.1rem;
-    margin:0 0 8px;
-  }
-
-  .offer-card p{
-    color:#b4b4b4;
-    font-size:.9rem;
-    margin:0 0 18px;
-  }
-
-  .btn-primary{
-    background:linear-gradient(90deg,#ffcc00,#d4a100);
-    border:none;
-    padding:10px 20px;
-    border-radius:8px;
-    color:#000;
-    font-weight:700;
-    cursor:pointer;
-    transition:filter .25s;
-    box-shadow:0 0 10px rgba(255,204,0,0.25);
-  }
-  .btn-primary:hover{filter:brightness(1.1);}
-  .btn-disabled{
-    background:rgba(255,255,255,0.05);
-    border:none;
-    padding:10px 20px;
-    border-radius:8px;
-    color:#777;
-    font-weight:700;
-    cursor:not-allowed;
-  }
+  .tiger-offers{padding:60px 80px 100px 130px;transform:scale(0.9) translateX(70px);transform-origin:top left;}
+  .offers-header{text-align:center;margin-bottom:10px;}
+  .offers-header h1{color:#ffcc00;font-size:2rem;margin:0;}
+  .offers-header p{color:#b4b4b4;font-size:.95rem;margin-top:8px;}
+  .offers-grid{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:30px;margin-top:30px;}
+  .offer-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:16px;padding:28px 22px;text-align:center;transition:.3s;position:relative;}
+  .offer-card:hover{transform:translateY(-5px);box-shadow:0 0 20px rgba(255,204,0,0.25);}
+  .icon{margin-bottom:15px;transition:filter .3s,transform .3s;}
+  .offer-card:hover .icon{filter:drop-shadow(0 0 8px rgba(255,204,0,0.6));transform:scale(1.1);}
+  .offer-card h3{font-size:1.1rem;margin:0 0 8px;}
+  .offer-card p{color:#b4b4b4;font-size:.9rem;margin:0 0 18px;}
+  .btn-primary{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;box-shadow:0 0 10px rgba(255,204,0,0.25);}
+  .btn-disabled{background:rgba(255,255,255,0.05);color:#777;border:none;padding:10px 20px;border-radius:8px;cursor:not-allowed;}
+  
+  /* MODAIS */
+  .modal{display:none;position:fixed;z-index:99;inset:0;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;}
+  .modal-content{background:#111;border:1px solid rgba(255,204,0,0.2);border-radius:14px;padding:25px;width:80%;max-width:800px;position:relative;}
+  .modal-content.small{max-width:400px;text-align:center;}
+  .modal-content.large{max-width:1000px;}
+  .close{position:absolute;top:10px;right:15px;font-size:1.8rem;cursor:pointer;color:#ffcc00;}
+  .modal-content h2{color:#ffcc00;margin-top:0;}
+  input{width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid rgba(255,204,0,0.3);background:rgba(255,255,255,0.05);color:#fff;}
+  #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;}
+  
+  /* VISUAL FLOW */
+  #canvasArea{background:#0d0d0d;border:1px dashed rgba(255,204,0,0.2);border-radius:10px;min-height:400px;position:relative;overflow:hidden;margin:10px 0;}
+  .node{position:absolute;background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);border-radius:8px;padding:8px 12px;cursor:grab;font-size:.9rem;}
+  .add-node{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;margin-top:10px;}
 </style>
