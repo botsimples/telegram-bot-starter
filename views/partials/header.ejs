@@ -10,19 +10,17 @@
   <body>
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-icon">⚡</div>
-        <span class="logo-text">TigerFy</span>
+        <span class="logo-text">TIGERFY</span>
       </div>
 
       <nav class="menu">
-        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">📊 Deck</a>
+        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">📊 Dashboard</a>
         <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">⚡ Ofertas</a>
         <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">💳 Adquirentes</a>
         <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">👤 Perfil</a>
         <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">🏆 Conquistas</a>
       </nav>
 
-      <!-- 🌗 Botão de alternância de tema -->
       <div class="theme-toggle">
         <input type="checkbox" id="themeSwitch" hidden>
         <label for="themeSwitch" class="toggle-label">
@@ -40,47 +38,15 @@
     <main class="main-content"></main>
 
     <script>
-      /* ========= Alternância global de tema ========= */
       const toggle = document.getElementById('themeSwitch');
       const currentTheme = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', currentTheme);
-      if (toggle) toggle.checked = currentTheme === 'light';
-
-      toggle?.addEventListener('change', () => {
+      toggle.checked = currentTheme === 'light';
+      toggle.addEventListener('change', () => {
         const theme = toggle.checked ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
       });
     </script>
-
-    <style>
-      .theme-toggle {
-        position: absolute;
-        bottom: 25px;
-        left: 25px;
-      }
-
-      .toggle-label {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        border-radius: 50%;
-        width: 44px;
-        height: 44px;
-        transition: background 0.3s;
-        box-shadow: 0 0 10px rgba(255,204,0,0.1);
-      }
-
-      .toggle-label:hover {
-        background: var(--hover-bg);
-      }
-
-      #moon { display: none; }
-      [data-theme="light"] #sun { display: none; }
-      [data-theme="light"] #moon { display: block; }
-    </style>
   </body>
 </html>
