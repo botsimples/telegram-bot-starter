@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %> | TigerFy</title>
     <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
+    <link rel="stylesheet" href="/css/theme.gold.css" />
   </head>
   <body>
     <aside class="sidebar">
@@ -21,6 +21,66 @@
         <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">👤 Perfil</a>
         <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">🏆 Conquistas</a>
       </nav>
+
+      <!-- 🌗 Botão de alternância de tema -->
+      <div class="theme-toggle">
+        <input type="checkbox" id="themeSwitch" hidden>
+        <label for="themeSwitch" class="toggle-label">
+          <svg id="sun" width="20" height="20" fill="none" stroke="#ffcc00" stroke-width="2">
+            <circle cx="10" cy="10" r="4"/>
+            <path d="M10 1v2M10 17v2M3.22 3.22l1.42 1.42M15.36 15.36l1.42 1.42M1 10h2M17 10h2M3.22 16.78l1.42-1.42M15.36 4.64l1.42-1.42"/>
+          </svg>
+          <svg id="moon" width="20" height="20" fill="none" stroke="#ffcc00" stroke-width="2">
+            <path d="M21 12.79A9 9 0 0112.21 3 7 7 0 0012 21a9 9 0 009-8.21z"/>
+          </svg>
+        </label>
+      </div>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content"></main>
+
+    <script>
+      /* ========= Alternância global de tema ========= */
+      const toggle = document.getElementById('themeSwitch');
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      if (toggle) toggle.checked = currentTheme === 'light';
+
+      toggle?.addEventListener('change', () => {
+        const theme = toggle.checked ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+      });
+    </script>
+
+    <style>
+      .theme-toggle {
+        position: absolute;
+        bottom: 25px;
+        left: 25px;
+      }
+
+      .toggle-label {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        transition: background 0.3s;
+        box-shadow: 0 0 10px rgba(255,204,0,0.1);
+      }
+
+      .toggle-label:hover {
+        background: var(--hover-bg);
+      }
+
+      #moon { display: none; }
+      [data-theme="light"] #sun { display: none; }
+      [data-theme="light"] #moon { display: block; }
+    </style>
+  </body>
+</html>
