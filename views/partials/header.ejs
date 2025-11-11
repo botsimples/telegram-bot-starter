@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | TigerFy</title>
+    <link rel="stylesheet" href="/css/tigerfy.css" />
+    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">⚡</div>
+        <span class="logo-text">TigerFy</span>
+      </div>
+
+      <nav class="menu">
+        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">📊 Deck</a>
+        <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">⚡ Ofertas</a>
+        <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">💳 Adquirentes</a>
+        <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">👤 Perfil</a>
+        <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">🏆 Conquistas</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
