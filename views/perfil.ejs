@@ -1,26 +1,27 @@
-<% layout('layout', { title: 'Meu Perfil', active: 'perfil' }) %>
-<%- include('partials/visual_hottrack') %>
+<%- include('layout', { title: 'Meu Perfil', active: 'perfil', body: `
+  <%- include('partials/visual_hottrack') %>
 
-<main class="offers-page">
-  <section class="offers-container">
-    <header class="offers-header">
-      <h1>Meu Perfil</h1>
-      <p>Gerencie suas informações e preferências.</p>
-    </header>
+  <main class="offers-page">
+    <section class="offers-container">
+      <header class="offers-header">
+        <h1>Meu Perfil</h1>
+        <p>Gerencie suas informações e preferências.</p>
+      </header>
 
-    <div class="offers-grid">
-      <div class="offer-card">
-        <h3>Editar Informações</h3><p>Atualize seu nome, email e senha.</p>
-        <button class="offer-btn">Editar</button>
+      <div class="offers-grid">
+        <div class="offer-card">
+          <h3>Editar Informações</h3><p>Atualize seu nome, email e senha.</p>
+          <button class="offer-btn">Editar</button>
+        </div>
+        <div class="offer-card">
+          <h3>Segurança</h3><p>Gerencie autenticação e permissões.</p>
+          <button class="offer-btn">Configurar</button>
+        </div>
+        <div class="offer-card">
+          <h3>Preferências</h3><p>Personalize sua experiência na plataforma.</p>
+          <button class="offer-btn">Abrir</button>
+        </div>
       </div>
-      <div class="offer-card">
-        <h3>Segurança</h3><p>Gerencie autenticação e permissões.</p>
-        <button class="offer-btn">Configurar</button>
-      </div>
-      <div class="offer-card">
-        <h3>Preferências</h3><p>Personalize sua experiência na plataforma.</p>
-        <button class="offer-btn">Abrir</button>
-      </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
+` }) %>
