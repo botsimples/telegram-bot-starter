@@ -53,7 +53,7 @@
   main.journey {
     max-width:1200px;
     margin:0 auto;
-    padding:60px 20px 80px 20px; /* 🔹 Reduzido o padding superior */
+    padding:20px 20px 60px 20px; /* 🔹 Muito mais para cima */
     position:relative;
   }
 
@@ -61,12 +61,12 @@
     text-align:center;
     color:#ffcc00;
     font-size:2.2rem;
-    margin-bottom:6px;
+    margin-bottom:4px;
   }
   .journey-sub {
     text-align:center;
     color:#a0a0a0;
-    margin-bottom:50px; /* 🔹 Reduzido */
+    margin-bottom:35px; /* 🔹 Menos espaço abaixo */
   }
 
   .timeline {
@@ -91,9 +91,9 @@
     max-width:1000px;
     display:flex;
     justify-content:flex-start;
-    margin-bottom:90px;
+    margin-bottom:80px;
     opacity:0;
-    transform:translateY(60px);
+    transform:translateY(40px);
     transition:all 0.6s ease;
   }
 
@@ -104,12 +104,12 @@
     background:linear-gradient(90deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
     border:1px solid rgba(255,204,0,0.15);
     border-radius:12px;
-    padding:35px;
+    padding:30px 35px;
     display:flex;
     justify-content:space-between;
-    align-items:center;
+    align-items:center; /* 🔹 Centraliza verticalmente */
     box-shadow:0 0 20px rgba(255,204,0,0.05);
-    width:45%;
+    width:46%;
     z-index:1;
     transition:.3s;
   }
@@ -123,7 +123,7 @@
   .achievement.right .achievement-content { margin-left:auto; }
 
   .achievement-text {
-    max-width:60%;
+    max-width:58%;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -131,14 +131,14 @@
 
   .achievement-text h2 {
     color:#ffcc00;
-    font-size:1.4rem;
+    font-size:1.35rem;
     margin:0 0 6px 0;
   }
   .achievement-text p {
     color:#b5b5b5;
     font-size:.95rem;
     line-height:1.5;
-    margin:10px 0 20px 0;
+    margin:10px 0 15px 0;
   }
 
   .badge {
@@ -149,25 +149,27 @@
     border-radius:20px;
     padding:5px 14px;
     font-size:.9rem;
+    margin-bottom:4px;
   }
 
   .achievement-img {
-    width:230px; /* 🔹 Aumentado levemente */
+    width:220px;
     height:auto;
     border-radius:10px;
     object-fit:contain;
-    align-self:center; /* 🔹 Centraliza verticalmente */
+    align-self:center;
+    display:flex;
   }
 
   .progress-box {
-    margin-top:10px;
+    margin-top:8px;
   }
   .progress-info {
     display:flex;
     justify-content:space-between;
     font-size:0.85rem;
     color:#b5b5b5;
-    margin-bottom:5px;
+    margin-bottom:4px;
   }
   .progress-bar {
     width:100%;
@@ -186,15 +188,19 @@
     .achievement-content{
       width:100%!important;
       flex-direction:column;
-      align-items:flex-start;
-      gap:20px;
+      align-items:center; /* 🔹 Centraliza tudo no mobile */
+      gap:18px;
+      text-align:center;
     }
     .achievement-img{
       width:100%;
       max-width:250px;
-      align-self:center;
+      margin-top:10px;
     }
-    .achievement-text{max-width:100%;}
+    .achievement-text{
+      max-width:100%;
+      align-items:center;
+    }
   }
 </style>
 
