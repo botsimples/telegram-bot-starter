@@ -6,102 +6,125 @@
     <title><%= title %> | TigerFy</title>
 
     <!-- ESTILOS -->
+    <link rel="stylesheet" href="/css/theme.gold.css" />
     <link rel="stylesheet" href="/css/tigerfy.css" />
-    <link rel="stylesheet" href="/css/deck.theme.gold.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       :root {
         --gold: #ffcc00;
-        --sidebar-bg: rgba(10, 10, 10, 0.85);
-        --hover-bg: rgba(255, 204, 0, 0.07);
-        --divider: #1c1c1c;
+        --gold-deep: #d4a100;
+        --bg: #0a0a0a;
+        --muted: #b4b4b4;
+        --divider: rgba(255, 204, 0, 0.08);
+        --hover: rgba(255, 204, 0, 0.07);
       }
 
-      /* fundo pontilhado dourado universal */
       body {
         margin: 0;
         font-family: "Inter", sans-serif;
         display: flex;
+        background: var(--bg);
         color: #fff;
-        background: radial-gradient(circle at top left, #111 0%, #000 100%);
-        background-image:
-          radial-gradient(rgba(255,204,0,0.07) 1px, transparent 1px),
-          radial-gradient(rgba(255,204,0,0.04) 1px, transparent 1px);
-        background-size: 60px 60px, 120px 120px;
-        background-position: 0 0, 30px 30px;
         overflow-x: hidden;
-        transition: background-position 120s linear infinite;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* Sidebar */
+      /* ========================
+         ⚡ SIDEBAR PRINCIPAL
+      ========================= */
       .sidebar {
         width: 250px;
-        backdrop-filter: blur(8px);
-        background: var(--sidebar-bg);
+        background: rgba(10, 10, 10, 0.9);
         border-right: 1px solid var(--divider);
         display: flex;
         flex-direction: column;
-        padding: 25px 0;
-        position: fixed;
         height: 100vh;
+        position: fixed;
         left: 0;
         top: 0;
-        z-index: 5;
+        z-index: 10;
+        backdrop-filter: blur(10px);
         box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
       }
 
+      /* logo */
       .sidebar-header {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding-left: 24px;
-        margin-bottom: 30px;
+        justify-content: flex-start;
+        padding: 28px 24px 20px 24px;
+        gap: 10px;
       }
 
       .logo-icon {
-        font-size: 22px;
-        filter: drop-shadow(0 0 6px rgba(255, 204, 0, 0.6));
+        width: 18px;
+        height: 18px;
+        background: radial-gradient(circle at 50% 50%, #ffcc00, #d4a100);
+        border-radius: 3px;
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
       }
 
       .logo-text {
         font-family: "Poppins", sans-serif;
         font-weight: 700;
-        font-size: 21px;
+        font-size: 1.2rem;
         color: var(--gold);
-        text-shadow: 0 0 6px rgba(255, 204, 0, 0.3);
+        text-shadow: 0 0 8px rgba(255, 204, 0, 0.25);
       }
 
-      nav.menu {
+      /* menu */
+      .menu {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        padding: 10px 20px 0;
+        flex-grow: 1;
       }
 
       .menu a {
         display: flex;
         align-items: center;
         gap: 12px;
-        text-decoration: none;
-        color: #b4b4b4;
-        font-weight: 500;
-        padding: 10px 28px;
+        padding: 10px 18px;
         border-radius: 8px;
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 500;
         transition: all 0.25s ease;
         position: relative;
       }
 
+      .menu a svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--muted);
+        stroke-width: 1.8;
+        transition: stroke 0.25s ease;
+      }
+
       .menu a:hover {
-        background: var(--hover-bg);
+        background: var(--hover);
         color: var(--gold);
       }
 
+      .menu a:hover svg {
+        stroke: var(--gold);
+      }
+
       .menu a.active {
-        background: linear-gradient(to bottom, rgba(255, 204, 0, 0.18), rgba(255, 204, 0, 0.05));
+        background: linear-gradient(
+          90deg,
+          rgba(255, 204, 0, 0.12),
+          rgba(255, 204, 0, 0.05)
+        );
         color: #fff;
         font-weight: 600;
+        box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.15);
       }
 
       .menu a.active::before {
@@ -116,114 +139,181 @@
         box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
       }
 
+      .menu a.active svg {
+        stroke: var(--gold);
+      }
+
       .menu-divider {
         height: 1px;
-        width: calc(100% - 48px);
-        align-self: center;
-        background: linear-gradient(to right, rgba(255, 204, 0, 0.05), rgba(255, 204, 0, 0.25), rgba(255, 204, 0, 0.05));
-        margin: 16px 0;
+        width: calc(100% - 40px);
+        background: linear-gradient(
+          to right,
+          rgba(255, 204, 0, 0.05),
+          rgba(255, 204, 0, 0.25),
+          rgba(255, 204, 0, 0.05)
+        );
+        margin: 16px auto;
         border-radius: 1px;
       }
 
-      .menu svg {
-        width: 18px;
-        height: 18px;
-        stroke-width: 1.8;
-      }
-
-      /* Main content */
+      /* conteúdo */
       .main-content {
-        flex: 1;
         margin-left: 250px;
+        flex: 1;
         padding: 40px;
-        overflow-y: auto;
         min-height: 100vh;
         box-sizing: border-box;
         position: relative;
-        z-index: 1;
       }
 
-      /* 🔒 trava de scroll apenas na aba Ofertas */
-      body.ofertas-page {
-        overflow: hidden !important;
-      }
-      body.ofertas-page .main-content {
-        overflow: hidden !important;
-      }
-
-      /* animação de fundo pontilhado */
-      @keyframes moveDots {
-        0% { background-position: 0 0, 30px 30px; }
-        100% { background-position: 500px 500px, 530px 530px; }
-      }
-
-      body {
-        animation: moveDots 220s linear infinite;
+      /* rodapé da sidebar */
+      .menu-bottom {
+        margin-top: auto;
+        padding-bottom: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-left: 20px;
+        padding-right: 20px;
       }
     </style>
   </head>
 
-<body>
+  <body>
     <aside class="sidebar">
+      <!-- LOGO -->
       <div class="sidebar-header">
-        <div class="logo-icon">⚡</div>
-        <span class="logo-text">TigerFy</span>
+        <div class="logo-icon"></div>
+        <div class="logo-text">TigerFy</div>
       </div>
 
+      <!-- MENU PRINCIPAL -->
       <nav class="menu">
         <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 8h7v10h-7V11zM3 14h7v7H3v-7z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 8h7v10h-7V11zM3 14h7v7H3v-7z"
+            />
           </svg>
-          <span>Dashboard</span>
+          Dashboard
         </a>
 
         <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"
+            />
           </svg>
-          <span>Ofertas</span>
+          Ofertas
         </a>
 
         <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16 18l6-6-6-6M8 6l-6 6 6 6"
+            />
           </svg>
-          <span>Adquirentes</span>
+          Adquirentes
         </a>
 
         <div class="menu-divider"></div>
 
         <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"
+            />
           </svg>
-          <span>Meu Perfil</span>
+          Meu Perfil
         </a>
 
         <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m0-4c3.314 0 6-2.686 6-6V5H6v6c0 3.314 2.686 6 6 6zM4 5h16M9 3h6" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 21h8m-4-4v4m0-4c3.314 0 6-2.686 6-6V5H6v6c0 3.314 2.686 6 6 6zM4 5h16M9 3h6"
+            />
           </svg>
-          <span>Conquistas</span>
+          Conquistas
         </a>
 
-        <a href="https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy%20⚡" target="_blank">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5c4.694 0 8.5-3.806 8.5-8.5S16.694 3.5 12 3.5 3.5 7.306 3.5 12c0 1.293.293 2.517.818 3.607L3 21l5.548-1.414A8.468 8.468 0 0012 20.5z" />
+        <a
+          href="https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy%20⚡"
+          target="_blank"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 20.5c4.694 0 8.5-3.806 8.5-8.5S16.694 3.5 12 3.5 3.5 7.306 3.5 12c0 1.293.293 2.517.818 3.607L3 21l5.548-1.414A8.468 8.468 0 0012 20.5z"
+            />
           </svg>
-          <span>Suporte</span>
-        </a>
-
-        <a href="/logout">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H3m0 0l4-4m-4 4l4 4m8-8h5a2 2 0 012 2v6a2 2 0 01-2 2h-5" />
-          </svg>
-          <span>Sair</span>
+          Suporte
         </a>
       </nav>
+
+      <!-- MENU INFERIOR -->
+      <div class="menu-bottom">
+        <a href="/logout">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 12H3m0 0l4-4m-4 4l4 4m8-8h5a2 2 0 012 2v6a2 2 0 01-2 2h-5"
+            />
+          </svg>
+          Sair
+        </a>
+      </div>
     </aside>
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="main-content">
       <%- body %>
     </main>
