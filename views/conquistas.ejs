@@ -1,157 +1,206 @@
 <%- include('partials/visual_hottrack') %>
 
-<main class="achievements-page">
-  <section class="achievements-container">
-    <header class="achievements-header">
-      <h1>Conquistas</h1>
-      <p>Veja seu progresso, metas e desbloqueie recompensas do painel TigerFy.</p>
-    </header>
+<main class="journey">
+  <h1 class="journey-title">Jornada de Conquistas</h1>
+  <p class="journey-sub">Acompanhe seus marcos e veja até onde sua performance te leva.</p>
 
-    <div class="achievements-list">
-      <div class="achievement-row">
-        <div class="achievement-info">
-          <h3>Primeira Venda</h3>
-          <p>Parabéns pela primeira conversão!</p>
-        </div>
-        <button class="achievement-btn">Ver</button>
-      </div>
+  <div class="timeline">
+    <div class="line"></div>
 
-      <div class="achievement-row">
-        <div class="achievement-info">
-          <h3>10 Vendas</h3>
-          <p>Continue escalando suas campanhas.</p>
+    <div class="achievement" style="--delay:0s">
+      <div class="achievement-content">
+        <div class="achievement-text">
+          <h2>Rumo ao Sucesso — Pacote 10K</h2>
+          <span class="badge">R$ 10.000</span>
+          <p>Parabéns por alcançar R$ 10.000 em faturamento! Continue escalando suas campanhas rumo a novos patamares.</p>
         </div>
-        <button class="achievement-btn">Ver</button>
-      </div>
-
-      <div class="achievement-row">
-        <div class="achievement-info">
-          <h3>100 Leads</h3>
-          <p>Excelente tração! Você está crescendo.</p>
-        </div>
-        <button class="achievement-btn">Ver</button>
-      </div>
-
-      <div class="achievement-row">
-        <div class="achievement-info">
-          <h3>Top Afiliado</h3>
-          <p>Reconhecimento por alta performance.</p>
-        </div>
-        <button class="achievement-btn">Ver</button>
+        <img src="https://i.ibb.co/XVmHLvN/placa10k.png" alt="Placa 10k" class="achievement-img">
       </div>
     </div>
-  </section>
+
+    <div class="achievement" style="--delay:0.2s">
+      <div class="achievement-content">
+        <div class="achievement-text">
+          <h2>Visão Estratégica — Pacote 50K</h2>
+          <span class="badge">R$ 50.000</span>
+          <p>Você atingiu um marco importante com visão e consistência. Continue crescendo com estratégia.</p>
+        </div>
+        <img src="https://i.ibb.co/2Z1ZYjn/placa50k.png" alt="Placa 50k" class="achievement-img">
+      </div>
+    </div>
+
+    <div class="achievement" style="--delay:0.4s">
+      <div class="achievement-content">
+        <div class="achievement-text">
+          <h2>Força e Foco — Pacote 100K</h2>
+          <span class="badge">R$ 100.000</span>
+          <p>Com determinação e foco, você superou o desafio dos seis dígitos. Mantenha o ritmo.</p>
+        </div>
+        <img src="https://i.ibb.co/djS5w1y/placa100k.png" alt="Placa 100k" class="achievement-img">
+      </div>
+    </div>
+
+    <div class="achievement" style="--delay:0.6s">
+      <div class="achievement-content">
+        <div class="achievement-text">
+          <h2>Liderança — Pacote 250K</h2>
+          <span class="badge">R$ 250.000</span>
+          <p>Você se destacou com liderança e resultados sólidos. Um verdadeiro exemplo de alta performance.</p>
+        </div>
+        <img src="https://i.ibb.co/JF6ZKWh/placa250k.png" alt="Placa 250k" class="achievement-img">
+      </div>
+    </div>
+
+    <div class="achievement" style="--delay:0.8s">
+      <div class="achievement-content">
+        <div class="achievement-text">
+          <h2>Domínio — Pacote 500K</h2>
+          <span class="badge">R$ 500.000</span>
+          <p>Agora você domina o jogo. Suas campanhas atingem patamares de elite.</p>
+        </div>
+        <img src="https://i.ibb.co/XVbWqvJ/placa500k.png" alt="Placa 500k" class="achievement-img">
+      </div>
+    </div>
+
+    <div class="achievement" style="--delay:1s">
+      <div class="achievement-content">
+        <div class="achievement-text">
+          <h2>Lenda — Pacote 1 Milhão</h2>
+          <span class="badge">R$ 1.000.000</span>
+          <p>Um marco lendário. Você entrou para o topo da TigerFy, com resultados extraordinários.</p>
+        </div>
+        <img src="https://i.ibb.co/BtfsN7K/placa1m.png" alt="Placa 1M" class="achievement-img">
+      </div>
+    </div>
+  </div>
 </main>
 
 <script>
-  // Fundo discreto com partículas douradas leves
-  const c=document.createElement('canvas');
-  c.id='bgParticles';document.body.appendChild(c);
-  const ctx=c.getContext('2d',{alpha:true});
-  let w,h,DPR=window.devicePixelRatio||1;
-  function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
-  resize();addEventListener('resize',resize,{passive:true});
-  const p=[];for(let i=0;i<20;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1+0.3,dx:(Math.random()-.5)*.2,dy:(Math.random()-.5)*.2});
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.08)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
+  // Animação suave ao rolar
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('show');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.achievement').forEach(el => observer.observe(el));
 </script>
 
 <style>
-  html,body {
-    margin:0;padding:0;height:100%;width:100%;
+  html, body {
     background:#0a0a0a;
+    color:#fff;
     font-family:'Inter',sans-serif;
     -webkit-font-smoothing:antialiased;
-  }
-  *{box-sizing:border-box;}
-  ::-webkit-scrollbar{display:none!important;}
-
-  #bgParticles {
-    position:fixed;inset:0;width:100vw;height:100vh;
-    z-index:0;mix-blend-mode:screen;pointer-events:none;
-    background-image:radial-gradient(rgba(255,255,255,0.02) 1px,transparent 1px);
-    background-size:20px 20px;
+    margin:0;
+    padding:0;
   }
 
-  main.achievements-page {
-    position:relative;z-index:1;
-    display:flex;justify-content:center;align-items:flex-start;
-    padding:100px 60px 80px 60px;
-    min-height:100vh;
-  }
-
-  .achievements-container {
-    width:100%;
+  main.journey {
     max-width:1100px;
+    margin:0 auto;
+    padding:100px 20px;
+    position:relative;
   }
 
-  .achievements-header {
+  .journey-title {
     text-align:center;
-    margin-bottom:40px;
-  }
-  .achievements-header h1 {
-    font-size:2rem;
     color:#ffcc00;
+    font-size:2.2rem;
     margin-bottom:10px;
   }
-  .achievements-header p {
-    color:#b5b5b5;
+
+  .journey-sub {
+    text-align:center;
+    color:#a0a0a0;
+    margin-bottom:60px;
   }
 
-  .achievements-list {
-    display:flex;
-    flex-direction:column;
-    gap:20px;
+  .timeline {
+    position:relative;
+    padding-left:30px;
   }
 
-  .achievement-row {
-    background:rgba(255,255,255,0.03);
-    border:1px solid rgba(255,204,0,0.1);
+  .line {
+    position:absolute;
+    top:0;
+    left:14px;
+    width:3px;
+    height:100%;
+    background:linear-gradient(180deg,rgba(255,204,0,0.6),rgba(255,204,0,0.1));
+  }
+
+  .achievement {
+    opacity:0;
+    transform:translateY(50px);
+    transition:all 0.6s ease;
+    margin-bottom:50px;
+  }
+
+  .achievement.show {
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .achievement-content {
+    background:linear-gradient(90deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+    border:1px solid rgba(255,204,0,0.15);
     border-radius:12px;
-    padding:25px 30px;
+    padding:30px 35px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    transition:all .25s ease;
-  }
-  .achievement-row:hover {
-    background:rgba(255,204,0,0.07);
-    border-color:rgba(255,204,0,0.25);
+    box-shadow:0 0 20px rgba(255,204,0,0.05);
+    transition:0.3s;
   }
 
-  .achievement-info h3 {
-    font-size:1.1rem;
-    margin:0 0 6px 0;
-    color:#fff;
-  }
-  .achievement-info p {
-    color:#a0a0a0;
-    margin:0;
-    font-size:.95rem;
+  .achievement-content:hover {
+    border-color:rgba(255,204,0,0.4);
+    box-shadow:0 0 25px rgba(255,204,0,0.15);
   }
 
-  .achievement-btn {
-    background:#ffcc00;
-    color:#000;
-    border:none;
-    border-radius:8px;
+  .achievement-text {
+    max-width:70%;
+  }
+
+  .achievement-text h2 {
+    margin:0 0 8px 0;
+    font-size:1.3rem;
+    color:#ffcc00;
+  }
+
+  .achievement-text p {
+    margin:10px 0 0;
+    color:#b5b5b5;
+    line-height:1.5;
+  }
+
+  .badge {
+    display:inline-block;
+    background:rgba(255,204,0,0.15);
+    color:#ffcc00;
     font-weight:600;
-    padding:10px 40px;
-    cursor:pointer;
-    transition:all .25s ease;
-  }
-  .achievement-btn:hover {
-    background:#ffd633;
-    transform:translateY(-1px);
+    border-radius:20px;
+    padding:5px 15px;
+    font-size:0.9rem;
   }
 
-  @media(max-width:700px){
-    .achievement-row{
+  .achievement-img {
+    width:120px;
+    height:auto;
+    border-radius:8px;
+    object-fit:cover;
+  }
+
+  @media(max-width:800px){
+    .achievement-content{
       flex-direction:column;
       align-items:flex-start;
-      gap:15px;
+      gap:20px;
     }
-    .achievement-btn{
-      width:100%;
-    }
+    .achievement-text{max-width:100%;}
+    .achievement-img{width:100%;max-width:200px;align-self:center;}
   }
 </style>
