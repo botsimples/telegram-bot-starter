@@ -1,135 +1,171 @@
-/* ======= TigerFy Gold — Modo Claro e Escuro ======= */
+<canvas id="bgParticles"></canvas>
 
-:root {
-  --bg-color: #0a0a0a;
-  --text-color: #fff;
-  --muted-color: #b4b4b4;
-  --accent-color: #ffcc00;
-  --card-bg: rgba(18,18,18,0.85);
-  --card-border: rgba(255,204,0,0.12);
-  --input-bg: #111;
-  --hover-bg: rgba(255,204,0,0.08);
-}
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
 
-[data-theme="light"] {
-  --bg-color: #f8f8f8;
-  --text-color: #111;
-  --muted-color: #555;
-  --accent-color: #d4a100;
-  --card-bg: #fff;
-  --card-border: rgba(0,0,0,0.08);
-  --input-bg: #f2f2f2;
-  --hover-bg: rgba(0,0,0,0.04);
-}
+  * { box-sizing: border-box; }
+  ::-webkit-scrollbar { display: none; }
 
-/* ======= Base ======= */
-body {
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-family: "Inter", sans-serif;
-  transition: background 0.3s, color 0.3s;
-}
+  /* fundo dinâmico dourado */
+  #bgParticles {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
 
-/* ======= Títulos ======= */
-h1, h2, h3, h4 {
-  color: var(--accent-color);
-  font-weight: 700;
-}
+  main.offers-page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding-left: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
 
-/* ======= Cards e Boxes ======= */
-.card, .box, .stats-container {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 15px rgba(255,204,0,0.08);
-  transition: background 0.3s, border 0.3s;
-}
+  .offers-container {
+    width: 90%;
+    max-width: 1100px;
+    text-align: center;
+    padding-top: 70px;
+  }
 
-/* ======= Tabelas ======= */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--card-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: background 0.3s;
-}
+  .offers-header h1 {
+    color: var(--accent-color);
+    font-size: 2rem;
+    margin-bottom: 10px;
+    transition: color 0.3s;
+  }
 
-table th {
-  background: var(--hover-bg);
-  color: var(--accent-color);
-  font-weight: 600;
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid var(--card-border);
-}
+  .offers-header p {
+    color: var(--muted-color);
+    margin-bottom: 40px;
+    transition: color 0.3s;
+  }
 
-table td {
-  padding: 10px;
-  border-bottom: 1px solid var(--card-border);
-  color: var(--muted-color);
-}
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    justify-items: center;
+  }
 
-table tr:hover {
-  background: var(--hover-bg);
-}
+  .offer-card {
+    width: 260px;
+    height: 260px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: all .25s ease-out;
+    will-change: transform, box-shadow, background;
+  }
 
-/* ======= Botões ======= */
-button, .btn, input[type="submit"] {
-  background: linear-gradient(90deg, var(--accent-color), #b38f00);
-  border: none;
-  color: #000;
-  font-weight: 700;
-  padding: 10px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.25s;
-}
-button:hover, .btn:hover { filter: brightness(1.15); }
+  .offer-card:hover:not(.disabled) {
+    background: var(--hover-bg);
+    box-shadow: 0 0 15px rgba(255,204,0,0.25);
+    transform: translateY(-3px);
+  }
 
-/* ======= Inputs ======= */
-input, select, textarea {
-  background: var(--input-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-color);
-  border-radius: 6px;
-  padding: 8px 10px;
-  transition: background 0.3s, border 0.3s;
-}
+  .offer-icon { width: 36px; height: 36px; color: var(--accent-color); }
+  .offer-card h3 { color: var(--text-color); margin: 10px 0 5px; }
+  .offer-card p { color: var(--muted-color); font-size: .9rem; min-height: 45px; }
 
-input:focus, select:focus, textarea:focus {
-  border-color: var(--accent-color);
-  outline: none;
-}
+  .offer-btn {
+    background: linear-gradient(90deg, var(--accent-color), #b38f00);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter .3s;
+  }
 
-/* ======= Textos gerais ======= */
-label, small, span, p {
-  color: var(--muted-color);
-}
+  .offer-btn:hover { filter: brightness(1.15); }
 
-/* ======= Seções ======= */
-section { margin-bottom: 25px; }
+  .disabled { opacity: .45; pointer-events: none; }
+  .disabled-btn { background: #444; color: #aaa; cursor: not-allowed; }
+</style>
 
-/* ======= Placeholder de gráficos ======= */
-.chart-box {
-  border: 1px dashed var(--card-border);
-  border-radius: 10px;
-  padding: 30px;
-  text-align: center;
-  color: var(--muted-color);
-  background: var(--card-bg);
-}
+<!-- 🌗 Switch de tema fixo no canto -->
+<div class="theme-toggle">
+  <input type="checkbox" id="themeSwitch" hidden>
+  <label for="themeSwitch" class="toggle-label">
+    <svg id="sun" width="20" height="20" fill="none" stroke="#ffcc00" stroke-width="2"><circle cx="10" cy="10" r="4"/><path d="M10 1v2M10 17v2M3.22 3.22l1.42 1.42M15.36 15.36l1.42 1.42M1 10h2M17 10h2M3.22 16.78l1.42-1.42M15.36 4.64l1.42-1.42"/></svg>
+    <svg id="moon" width="20" height="20" fill="none" stroke="#ffcc00" stroke-width="2"><path d="M21 12.79A9 9 0 0112.21 3 7 7 0 0012 21a9 9 0 009-8.21z"/></svg>
+  </label>
+</div>
 
-/* ======= Scrollbar ======= */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-thumb {
-  background: var(--accent-color);
-  border-radius: 4px;
-}
+<script>
+  /* ======= partículas douradas animadas ======= */
+  const c = document.getElementById('bgParticles');
+  const ctx = c.getContext('2d', { alpha: true });
+  let w, h, DPR = window.devicePixelRatio || 1;
 
-/* ======= Responsivo ======= */
-@media (max-width: 1024px) {
-  table th, table td { font-size: 13px; }
-  button, .btn { padding: 8px 14px; font-size: 14px; }
-}
+  function resize() {
+    w = innerWidth; h = innerHeight;
+    c.width = w * DPR; c.height = h * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize();
+  addEventListener('resize', resize, { passive: true });
+
+  const p = [];
+  for (let i = 0; i < 60; i++) {
+    p.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.2 + 0.4,
+      dx: (Math.random() - .5) * .25,
+      dy: (Math.random() - .5) * .25
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(255,204,0,0.25)';
+    for (const o of p) {
+      ctx.beginPath();
+      ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+      ctx.fill();
+      o.x += o.dx;
+      o.y += o.dy;
+      if (o.x < 0 || o.x > w) o.dx *= -1;
+      if (o.y < 0 || o.y > h) o.dy *= -1;
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  /* ======= alternância modo claro/escuro ======= */
+  const toggle = document.getElementById('themeSwitch');
+  toggle?.addEventListener('change', () => {
+    const theme = toggle.checked ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  });
+  const saved = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  if (toggle) toggle.checked = saved === 'light';
+</script>
