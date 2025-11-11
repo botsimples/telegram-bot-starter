@@ -27,98 +27,14 @@
     mix-blend-mode: screen;
     background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
     background-size: 20px 20px;
-    animation: fadeIn 1s ease;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(1.02); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  /* estrutura principal */
-  main.offers-page {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 60px 40px 80px;
-  }
-
-  .offers-container {
-    width: 100%;
-    max-width: 1150px;
-    text-align: center;
-  }
-
-  .offers-header h1 {
-    color: var(--accent-color);
-    font-size: 2rem;
-    margin-bottom: 10px;
-    transition: color 0.3s;
-  }
-
-  .offers-header p {
-    color: var(--muted-color);
-    margin-bottom: 40px;
-    transition: color 0.3s;
-  }
-
-  .offers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-    justify-items: center;
-  }
-
-  .offer-card {
-    width: 260px;
-    height: 260px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 14px;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.25s ease-out;
-    will-change: transform, box-shadow, background;
-  }
-
-  .offer-card:hover:not(.disabled) {
-    background: var(--hover-bg);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
-    transform: translateY(-3px);
-  }
-
-  .offer-icon { width: 36px; height: 36px; color: var(--accent-color); }
-  .offer-card h3 { color: var(--text-color); margin: 10px 0 5px; }
-  .offer-card p { color: var(--muted-color); font-size: 0.9rem; min-height: 45px; }
-
-  .offer-btn {
-    background: linear-gradient(90deg, var(--accent-color), #b38f00);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: filter 0.3s;
-  }
-
-  .offer-btn:hover { filter: brightness(1.15); }
-
-  .disabled { opacity: 0.45; pointer-events: none; }
-  .disabled-btn { background: #444; color: #aaa; cursor: not-allowed; }
-
-  /* 🌗 Switch de tema */
+  /* 🔹 switch fixo no topo direito */
   .theme-toggle {
     position: fixed;
-    bottom: 35px;
-    right: 35px;
-    z-index: 20;
+    top: 22px;
+    right: 32px;
+    z-index: 100;
   }
 
   .toggle-label {
@@ -132,11 +48,12 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
   }
 
   .toggle-label:hover {
     background: rgba(255,204,0,0.08);
-    box-shadow: 0 0 8px rgba(255,204,0,0.2);
+    box-shadow: 0 0 10px rgba(255,204,0,0.3);
   }
 
   #moon { display: none; }
@@ -144,7 +61,7 @@
   [data-theme="light"] #moon { display: block; }
 </style>
 
-<!-- 🌗 alternância de tema -->
+<!-- 🌗 Alternância de tema (topo fixo) -->
 <div class="theme-toggle">
   <input type="checkbox" id="themeSwitch" hidden>
   <label for="themeSwitch" class="toggle-label">
@@ -159,7 +76,7 @@
 </div>
 
 <script>
-  /* ======= partículas dinâmicas douradas ======= */
+  /* ======= partículas douradas ======= */
   const canvas = document.getElementById('bgParticles');
   const ctx = canvas.getContext('2d', { alpha: true });
   let w, h, DPR = window.devicePixelRatio || 1;
@@ -202,13 +119,13 @@
   }
   draw();
 
-  /* ======= alternância tema sincronizada ======= */
+  /* ======= alternância de tema sincronizada ======= */
   const toggle = document.getElementById('themeSwitch');
-  const saved = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  if (toggle) toggle.checked = saved === 'light';
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  toggle.checked = savedTheme === 'light';
 
-  toggle?.addEventListener('change', () => {
+  toggle.addEventListener('change', () => {
     const theme = toggle.checked ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
