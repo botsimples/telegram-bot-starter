@@ -1,39 +1,154 @@
 <%- include('partials/visual_hottrack') %>
 
-<main class="offers-page">
-  <section class="offers-container">
-    <header class="offers-header">
+<main class="achievements-page">
+  <section class="achievements-container">
+    <header class="achievements-header">
       <h1>Conquistas</h1>
       <p>Veja seu progresso, metas e desbloqueie recompensas do painel TigerFy.</p>
     </header>
 
-    <div class="offers-grid">
-      <div class="offer-card"><h3>Primeira Venda</h3><p>Parabéns pela primeira conversão!</p><button class="offer-btn">Ver</button></div>
-      <div class="offer-card"><h3>10 Vendas</h3><p>Continue escalando suas campanhas.</p><button class="offer-btn">Ver</button></div>
-      <div class="offer-card"><h3>100 Leads</h3><p>Excelente tração! Você está crescendo.</p><button class="offer-btn">Ver</button></div>
-      <div class="offer-card"><h3>Top Afiliado</h3><p>Reconhecimento por alta performance.</p><button class="offer-btn">Ver</button></div>
+    <div class="achievements-grid">
+      <div class="achievement-card">
+        <div class="achievement-info">
+          <h3>Primeira Venda</h3>
+          <p>Parabéns pela primeira conversão!</p>
+        </div>
+        <button class="achievement-btn">Ver</button>
+      </div>
+
+      <div class="achievement-card">
+        <div class="achievement-info">
+          <h3>10 Vendas</h3>
+          <p>Continue escalando suas campanhas.</p>
+        </div>
+        <button class="achievement-btn">Ver</button>
+      </div>
+
+      <div class="achievement-card">
+        <div class="achievement-info">
+          <h3>100 Leads</h3>
+          <p>Excelente tração! Você está crescendo.</p>
+        </div>
+        <button class="achievement-btn">Ver</button>
+      </div>
+
+      <div class="achievement-card">
+        <div class="achievement-info">
+          <h3>Top Afiliado</h3>
+          <p>Reconhecimento por alta performance.</p>
+        </div>
+        <button class="achievement-btn">Ver</button>
+      </div>
     </div>
   </section>
 </main>
 
 <script>
-  const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
+  // Fundo de partículas douradas
+  const c=document.createElement('canvas');
+  c.id='bgParticles';document.body.appendChild(c);
   const ctx=c.getContext('2d',{alpha:true});
   let w,h,DPR=window.devicePixelRatio||1;
   function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
   resize();addEventListener('resize',resize,{passive:true});
   const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
+  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.1)';
+  for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
 </script>
 
 <style>
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow-x:hidden;overflow-y:auto;background:#0a0a0a;-webkit-font-smoothing:antialiased;}
-  *{box-sizing:border-box;transform:translateZ(0);will-change:transform;}::-webkit-scrollbar{display:none!important;}
-  #bgParticles{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;mix-blend-mode:screen;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;}
-  main.offers-page{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;align-items:center;padding-left:70px;transform:translateY(-90px);}
-  .offers-container{text-align:center;width:90%;max-width:1100px;}
-  .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
-  .offers-header p{color:#b4b4b4;margin-bottom:40px;}
-  .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
-  .offer-card{width:260px;height:260px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;transition:.25s ease-out;}
-  .offer-card:hover{background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25)
+  html,body {
+    margin:0;padding:0;height:100%;width:100%;
+    background:#0a0a0a;
+    font-family:'Inter',sans-serif;
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+  }
+  *{box-sizing:border-box;}
+  ::-webkit-scrollbar{display:none!important;}
+  #bgParticles {
+    position:fixed;inset:0;width:100vw;height:100vh;
+    z-index:0;mix-blend-mode:screen;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,0.02) 1px,transparent 1px);
+    background-size:20px 20px;
+  }
+
+  main.achievements-page {
+    position:relative;z-index:1;
+    display:flex;justify-content:center;align-items:flex-start;
+    padding:120px 70px 80px 70px;
+    min-height:100vh;
+  }
+
+  .achievements-container {
+    width:100%;
+    max-width:1200px;
+    text-align:center;
+  }
+
+  .achievements-header h1 {
+    font-size:2rem;
+    color:#ffcc00;
+    margin-bottom:10px;
+  }
+  .achievements-header p {
+    color:#a0a0a0;
+    margin-bottom:50px;
+  }
+
+  .achievements-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+  }
+
+  .achievement-card {
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,204,0,0.15);
+    border-radius:14px;
+    padding:30px 25px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    text-align:left;
+    transition:all .25s ease;
+    position:relative;
+  }
+
+  .achievement-card:hover {
+    background:rgba(255,204,0,0.07);
+    border-color:rgba(255,204,0,0.3);
+    transform:translateY(-4px);
+    box-shadow:0 0 18px rgba(255,204,0,0.15);
+  }
+
+  .achievement-info h3 {
+    font-size:1.2rem;
+    color:#fff;
+    margin-bottom:8px;
+  }
+
+  .achievement-info p {
+    color:#b4b4b4;
+    line-height:1.4;
+    font-size:.95rem;
+  }
+
+  .achievement-btn {
+    margin-top:25px;
+    background:#ffcc00;
+    color:#000;
+    border:none;
+    border-radius:8px;
+    font-weight:600;
+    padding:10px 0;
+    cursor:pointer;
+    width:100%;
+    transition:all .25s ease;
+  }
+
+  .achievement-btn:hover {
+    background:#ffd633;
+    transform:scale(1.03);
+  }
+</style>
