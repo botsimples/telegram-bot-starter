@@ -1,32 +1,27 @@
 <%- include('layout', { title: 'Adquirentes', active: 'api_pix', body: `
   <%- include('partials/visual_hottrack') %>
 
-  <main class="hottrack-page">
-    <div class="deck-container fade-in">
-      <header class="deck-header">
-        <h1>💳 Adquirentes (API PIX)</h1>
-        <p>Gerencie suas chaves e integrações de pagamento.</p>
-        <button class="btn-gold">+ Nova Chave PIX</button>
+  <main class="offers-page">
+    <section class="offers-container">
+      <header class="offers-header">
+        <h1>Adquirentes</h1>
+        <p>Gerencie suas chaves PIX e integrações de pagamento.</p>
       </header>
 
-      <section class="stats-grid">
-        <div class="stat-card"><h4>Chaves Ativas</h4><p>0</p></div>
-        <div class="stat-card"><h4>Pagamentos Hoje</h4><p>R$ 0,00</p></div>
-        <div class="stat-card"><h4>Total Transações</h4><p>0</p></div>
-        <div class="stat-card"><h4>Última Atualização</h4><p>--/--/----</p></div>
-      </section>
-
-      <section class="recent-payments">
-        <h2>💰 Transações Recentes</h2>
-        <table>
-          <thead>
-            <tr><th>ID</th><th>Valor</th><th>Status</th><th>Data</th></tr>
-          </thead>
-          <tbody>
-            <tr><td colspan="4">Nenhuma transação recente</td></tr>
-          </tbody>
-        </table>
-      </section>
-    </div>
+      <div class="offers-grid">
+        <div class="offer-card">
+          <h3>Nova Chave PIX</h3><p>Criar uma nova chave de recebimento.</p>
+          <button class="offer-btn">Criar</button>
+        </div>
+        <div class="offer-card">
+          <h3>Pagamentos</h3><p>Visualize transações e históricos.</p>
+          <button class="offer-btn">Abrir</button>
+        </div>
+        <div class="offer-card">
+          <h3>Relatórios</h3><p>Gere relatórios automáticos de performance.</p>
+          <button class="offer-btn">Gerar</button>
+        </div>
+      </div>
+    </section>
   </main>
 ` }) %>
