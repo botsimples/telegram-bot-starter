@@ -34,13 +34,17 @@
       <button class="btn-primary">Acessar</button>
     </div>
 
-<!-- BLOCO: CRIAR FLUXO VISUAL (EM BREVE) -->
-<div class="offer-card locked">
-  <div class="icon">⚙️</div>
-  <h3>Criar Fluxo Visual</h3>
-  <p>Monte visualmente o funil do bot com blocos e conexões interativas.</p>
-  <button disabled>Em Breve</button>
-</div>
+    <!-- BLOCO 3 -->
+    <div class="offer-card">
+      <div class="icon">
+        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 20h28M8 16v8M16 10v14M24 6v18"/>
+        </svg>
+      </div>
+      <h3>Calcular ROI</h3>
+      <p>Visualize o retorno das campanhas e calcule o ROI completo.</p>
+      <button class="btn-primary" onclick="openRoi()">Calcular</button>
+    </div>
 
     <!-- BLOCO 4 -->
     <div class="offer-card">
@@ -55,20 +59,8 @@
       <button class="btn-primary" onclick="openTutorial()">Assistir</button>
     </div>
 
-    <!-- BLOCO 5 -->
-    <div class="offer-card">
-      <div class="icon">
-        <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 20h28M8 16v8M16 10v14M24 6v18"/>
-        </svg>
-      </div>
-      <h3>Calcular ROI</h3>
-      <p>Visualize o retorno das campanhas e calcule o ROI completo.</p>
-      <button class="btn-primary" onclick="openRoi()">Calcular</button>
-    </div>
-
-    <!-- BLOCO 6 -->
-    <div class="offer-card">
+    <!-- BLOCO 5 (IA ILIMITADA) -->
+    <div class="offer-card locked">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="18" cy="12" r="4"/>
@@ -78,7 +70,7 @@
       </div>
       <h3>IA Ilimitada — Tiger IA</h3>
       <p>Crie mensagens, automações e fluxos com inteligência TigerFy.</p>
-      <button class="btn-disabled">Em Breve</button>
+      <button disabled>Em Breve</button>
     </div>
   </div>
 </div>
@@ -136,7 +128,16 @@
   .offer-card h3{font-size:1.1rem;margin:0 0 8px;}
   .offer-card p{color:#b4b4b4;font-size:.9rem;margin:0 0 18px;}
   .btn-primary{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;}
-  .btn-disabled{background:rgba(255,255,255,0.05);color:#777;border:none;padding:10px 20px;border-radius:8px;cursor:not-allowed;}
+  .btn-disabled,
+  .offer-card.locked button{
+    background:rgba(255,255,255,0.05);
+    color:#777;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:not-allowed;
+  }
+  .offer-card.locked{opacity:0.6;filter:grayscale(1);}
   .modal{display:none;position:fixed;z-index:99;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;}
   .modal-content{background:#111;border:1px solid rgba(255,204,0,0.2);border-radius:14px;padding:25px;width:80%;max-width:900px;position:relative;}
   .modal-content.small{max-width:420px;text-align:center;}
