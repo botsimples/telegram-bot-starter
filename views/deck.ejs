@@ -1,11 +1,11 @@
 <% title = "Dashboard - TigerFy"; %>
 
-<main class="p-8 w-[80%] mx-auto animate-fadeIn">
-  <h1 class="text-3xl font-semibold text-hot-primary mb-6">📊 Estatísticas Gerais</h1>
-  <p class="text-neutral-400 mb-8">Visão geral de toda a plataforma TigerFy.</p>
+<main style="width:80%;margin:0 auto;padding:60px 0;animation:fadeIn .6s ease;">
+  <h1 style="font-size:32px;font-weight:600;color:#FFD700;margin-bottom:6px;">📊 Estatísticas Gerais</h1>
+  <p style="color:#a5a5a5;margin-bottom:40px;">Visão geral de toda a plataforma TigerFy.</p>
 
-  <!-- GRID DE CARDS -->
-  <div class="grid grid-cols-5 gap-6 justify-center">
+  <!-- GRID DE MÉTRICAS -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:26px;justify-items:center;width:100%;">
     <% const stats = [
       { label: 'Total de Vendas', value: 'R$ 0,00' },
       { label: 'Vendas no Ano', value: 'R$ 0,00' },
@@ -20,87 +20,105 @@
     ]; %>
 
     <% stats.forEach(stat => { %>
-      <div class="panel text-center py-6 px-4 border border-neutral-800 bg-neutral-950/30 backdrop-blur-md rounded-xl shadow-[0_0_25px_rgba(255,204,0,0.1)] transition-all hover:shadow-[0_0_40px_rgba(255,204,0,0.35)]">
-        <h3 class="text-neutral-400 text-sm font-medium"><%= stat.label %></h3>
-        <p class="text-2xl font-bold mt-1 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.8)]"><%= stat.value %></p>
+      <div style="
+        text-align:center;
+        padding:24px 10px;
+        border:1px solid #202020;
+        background:rgba(15,15,15,0.65);
+        border-radius:14px;
+        box-shadow:0 0 22px rgba(255,215,0,0.08);
+        width:100%;
+        transition:all .25s ease;
+        backdrop-filter:blur(4px);
+      " 
+      onmouseover="this.style.boxShadow='0 0 38px rgba(255,215,0,0.25)'"
+      onmouseout="this.style.boxShadow='0 0 22px rgba(255,215,0,0.08)'">
+        <h3 style="color:#ccc;font-size:14px;font-weight:500;margin-bottom:5px;"><%= stat.label %></h3>
+        <p style="color:#FFD700;font-size:22px;font-weight:700;text-shadow:0 0 6px rgba(255,215,0,0.85);"><%= stat.value %></p>
       </div>
     <% }) %>
   </div>
 
-  <!-- GRÁFICO -->
-  <section class="mt-10 panel p-6 border border-neutral-800 rounded-xl bg-neutral-950/40 backdrop-blur-md">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="font-semibold text-lg text-hot-primary">📈 Usuários por Horário</h2>
-      <div class="space-x-2">
-        <button class="btn-yellow">Hoje</button>
+  <!-- BLOCO DE GRÁFICO -->
+  <section style="
+    margin-top:50px;
+    padding:28px;
+    border:1px solid #202020;
+    background:rgba(15,15,15,0.6);
+    border-radius:14px;
+    backdrop-filter:blur(4px);
+  ">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h2 style="font-weight:600;color:#FFD700;font-size:18px;">📈 Usuários por Horário</h2>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-gold">Hoje</button>
         <button class="btn-outline">Ontem</button>
         <button class="btn-outline">Essa Semana</button>
         <button class="btn-outline">Esse Mês</button>
         <button class="btn-outline">Personalizado</button>
       </div>
     </div>
-    <div class="h-64 flex items-center justify-center text-neutral-500 italic">[ gráfico em breve ]</div>
+    <div style="height:260px;display:flex;align-items:center;justify-content:center;color:#777;font-style:italic;">
+      [ gráfico em breve ]
+    </div>
   </section>
 
-  <!-- PAGAMENTOS -->
-  <section class="mt-10 panel p-6 border border-neutral-800 rounded-xl bg-neutral-950/40 backdrop-blur-md">
-    <h3 class="text-lg text-hot-primary mb-3">💰 Pagamentos Recentes</h3>
-    <table class="min-w-full text-sm">
+  <!-- BLOCO DE PAGAMENTOS -->
+  <section style="
+    margin-top:40px;
+    padding:28px;
+    border:1px solid #202020;
+    background:rgba(15,15,15,0.6);
+    border-radius:14px;
+    backdrop-filter:blur(4px);
+  ">
+    <h3 style="color:#FFD700;font-size:18px;font-weight:600;margin-bottom:14px;">💰 Pagamentos Recentes</h3>
+    <table style="width:100%;font-size:14px;border-collapse:collapse;">
       <thead>
-        <tr class="bg-neutral-900/70 text-left text-neutral-300">
-          <th class="p-2">ID</th>
-          <th class="p-2">Usuário</th>
-          <th class="p-2">Valor</th>
-          <th class="p-2">Status</th>
-          <th class="p-2">Data</th>
+        <tr style="background:rgba(25,25,25,0.9);color:#cfcfcf;text-align:left;">
+          <th style="padding:8px;">ID</th>
+          <th style="padding:8px;">Usuário</th>
+          <th style="padding:8px;">Valor</th>
+          <th style="padding:8px;">Status</th>
+          <th style="padding:8px;">Data</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td colspan="5" class="p-4 text-center text-neutral-500 italic">Nenhum pagamento recente</td></tr>
+        <tr><td colspan="5" style="padding:16px;text-align:center;color:#777;font-style:italic;">Nenhum pagamento recente</td></tr>
       </tbody>
     </table>
   </section>
 </main>
 
+<!-- ESTILO GLOBAL -->
 <style>
-  .btn-yellow {
-    background: #FFD700;
-    color: #000;
-    font-weight: 600;
-    border-radius: 6px;
-    padding: 5px 10px;
-    transition: 0.2s;
+  @keyframes fadeIn {
+    from {opacity:0;transform:translateY(10px);}
+    to {opacity:1;transform:translateY(0);}
   }
-  .btn-yellow:hover {
-    background: #ffcc00;
+  .btn-gold {
+    background:#FFD700;
+    color:#000;
+    font-weight:600;
+    border:none;
+    border-radius:6px;
+    padding:6px 12px;
+    cursor:pointer;
+    transition:0.2s;
   }
-
+  .btn-gold:hover { background:#ffcc00; }
   .btn-outline {
-    border: 1px solid #FFD700;
-    color: #FFD700;
-    border-radius: 6px;
-    padding: 5px 10px;
-    transition: 0.2s;
+    border:1px solid #FFD700;
+    color:#FFD700;
+    background:none;
+    border-radius:6px;
+    padding:6px 12px;
+    cursor:pointer;
+    transition:0.2s;
   }
-  .btn-outline:hover {
-    background: #FFD70020;
-  }
-
-  /* Responsividade sem quebrar layout */
-  @media (max-width: 1600px) {
-    main { width: 85%; }
-  }
-  @media (max-width: 1400px) {
-    main { width: 90%; }
-    .grid-cols-5 { grid-template-columns: repeat(4, 1fr); }
-  }
-  @media (max-width: 1100px) {
-    .grid-cols-5 { grid-template-columns: repeat(3, 1fr); }
-  }
-  @media (max-width: 800px) {
-    .grid-cols-5 { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 600px) {
-    .grid-cols-5 { grid-template-columns: 1fr; }
-  }
+  .btn-outline:hover { background:rgba(255,215,0,0.15); }
+  @media(max-width:1600px){ main{width:85%;} }
+  @media(max-width:1400px){ main{width:90%;grid-template-columns:repeat(4,1fr);} }
+  @media(max-width:1000px){ main{width:95%;grid-template-columns:repeat(3,1fr);} }
+  @media(max-width:700px){ main{width:100%;grid-template-columns:repeat(2,1fr);} }
 </style>
