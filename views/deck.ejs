@@ -1,31 +1,31 @@
-<%- include('layout', { title: 'Dashboard', active: 'deck', body: `
+<%- include('layout', { title: 'Dashboard', active: 'deck' }) %>
+
+<main class="offers-page">
   <%- include('partials/visual_hottrack') %>
 
-  <main class="offers-page">
-    <section class="offers-container">
-      <header class="offers-header">
-        <h1>Estatísticas Gerais</h1>
-        <p>Visão geral de toda a plataforma TigerFy.</p>
-      </header>
+  <section class="offers-container">
+    <header class="offers-header">
+      <h1>Estatísticas Gerais</h1>
+      <p>Visão geral de toda a plataforma TigerFy.</p>
+    </header>
 
-      <div class="offers-grid">
-        <div class="offer-card">
-          <h3>Total de Vendas</h3><p>R$ 0,00</p>
-          <button class="offer-btn">Ver Detalhes</button>
-        </div>
-        <div class="offer-card">
-          <h3>Novos Leads</h3><p>0</p>
-          <button class="offer-btn">Verificar</button>
-        </div>
-        <div class="offer-card">
-          <h3>ROI Médio</h3><p>0%</p>
-          <button class="offer-btn">Calcular</button>
-        </div>
-        <div class="offer-card">
-          <h3>Campanhas Ativas</h3><p>0</p>
-          <button class="offer-btn">Gerenciar</button>
-        </div>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <h3>Total de Vendas</h3><p>R$ 0,00</p>
+        <button class="offer-btn">Ver Detalhes</button>
       </div>
-    </section>
-  </main>
-` }) %>
+      <div class="offer-card">
+        <h3>Novos Leads</h3><p>0</p>
+        <button class="offer-btn">Verificar</button>
+      </div>
+      <div class="offer-card">
+        <h3>ROI Médio</h3><p>0%</p>
+        <button class="offer-btn">Calcular</button>
+      </div>
+      <div class="offer-card">
+        <h3>Campanhas Ativas</h3><p>0</p>
+        <button class="offer-btn">Gerenciar</button>
+      </div>
+    </div>
+  </section>
+</main>
