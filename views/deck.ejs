@@ -61,14 +61,14 @@
 </div>
 
 <script>
-  // Fundo dourado original TigerFy
+  // Fundo dourado animado
   const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
   const ctx=c.getContext('2d',{alpha:true});
   let w,h,DPR=window.devicePixelRatio||1;
   function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
   resize();addEventListener('resize',resize,{passive:true});
   const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';
+  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.12)';
     for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();
       o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}
     requestAnimationFrame(draw);}draw();
@@ -91,10 +91,11 @@
 
   .tiger-dashboard{
     position:relative;z-index:1;min-height:100vh;
-    padding:60px 60px 80px 130px;
+    padding:60px 60px 80px 110px;
     display:flex;flex-direction:column;gap:35px;
     justify-content:flex-start;
-    transform:translateY(-40px);
+    transform:translateY(-35px);
+    max-width:calc(100vw - 120px);
   }
 
   .tiger-header{
@@ -110,13 +111,12 @@
   }
   .filter-btn:hover{filter:brightness(1.1);}
 
-  /* Grid fixo 5x2 */
+  /* Grid fixo e centralizado */
   .stats-grid{
     display:grid;
-    grid-template-columns:repeat(5, 1fr);
-    grid-auto-rows:1fr;
+    grid-template-columns:repeat(5, minmax(200px, 1fr));
     gap:22px;
-    justify-items:center;
+    justify-content:center;
     align-items:stretch;
     margin-top:10px;
   }
@@ -138,10 +138,10 @@
     color:#fff;margin:0 0 10px;font-size:.95rem;font-weight:500;
   }
   .stat-card span{
-    color:#00ffd0;
+    color:#ffdd33;
     font-weight:700;
     font-size:1.3rem;
-    text-shadow:0 0 8px rgba(0,255,190,0.4);
+    text-shadow:0 0 10px rgba(255,204,0,0.6);
   }
 
   .chart-block{
