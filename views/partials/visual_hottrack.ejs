@@ -11,6 +11,7 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+
   * { box-sizing: border-box; }
   ::-webkit-scrollbar { display: none; }
 
@@ -31,17 +32,14 @@
     z-index: 1;
     min-height: 100vh;
     padding-left: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 </style>
 
 <script>
-  // Partículas douradas de fundo
   const c = document.getElementById('bgParticles');
   const ctx = c.getContext('2d', { alpha: true });
   let w, h, DPR = window.devicePixelRatio || 1;
+
   function resize() {
     w = innerWidth; h = innerHeight;
     c.width = w * DPR; c.height = h * DPR;
@@ -49,9 +47,18 @@
   }
   resize();
   addEventListener('resize', resize, { passive: true });
+
   const p = [];
-  for (let i = 0; i < 60; i++)
-    p.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + 0.4, dx: (Math.random() - .5) * .25, dy: (Math.random() - .5) * .25 });
+  for (let i = 0; i < 60; i++) {
+    p.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.2 + 0.4,
+      dx: (Math.random() - .5) * .25,
+      dy: (Math.random() - .5) * .25
+    });
+  }
+
   function draw() {
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = 'rgba(255,204,0,0.25)';
@@ -59,7 +66,8 @@
       ctx.beginPath();
       ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
       ctx.fill();
-      o.x += o.dx; o.y += o.dy;
+      o.x += o.dx;
+      o.y += o.dy;
       if (o.x < 0 || o.x > w) o.dx *= -1;
       if (o.y < 0 || o.y > h) o.dy *= -1;
     }
