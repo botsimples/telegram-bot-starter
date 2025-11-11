@@ -5,91 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %> | TigerFy</title>
 
-    <!-- estilos globais -->
     <link rel="stylesheet" href="/css/tigerfy.css" />
     <link rel="stylesheet" href="/css/theme.gold.css" />
   </head>
   <body>
     <aside class="sidebar">
-      <div class="sidebar-inner">
-        <div class="sidebar-header">
+      <!-- topo -->
+      <div class="sidebar-top">
+        <div class="sidebar-logo">
           <div class="logo-icon"></div>
           <span class="logo-text">TigerFy</span>
         </div>
-
-        <nav class="menu">
-          <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7" transform="translate(-3 14) rotate(-90)"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7" transform="translate(-3 25) rotate(-90)"/></svg>
-            Dashboard
-          </a>
-          <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4zM4 12h16v4H4z"/></svg>
-            Ofertas
-          </a>
-          <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/></svg>
-            Adquirentes
-          </a>
-        </nav>
-
-        <div class="bottom-links">
-          <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21c0-3.5 4-6 7-6s7 2.5 7 6"/></svg>
-            Meu Perfil
-          </a>
-          <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4zM6 8v12l6-3 6 3V8"/></svg>
-            Conquistas
-          </a>
-          <a href="/suporte" class="<%= active === 'suporte' ? 'active' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 016 0c0 2-3 2-3 4M12 17h0"/></svg>
-            Suporte
-          </a>
-          <a href="/logout">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17l5-5-5-5M15 12H3"/></svg>
-            Sair
-          </a>
-        </div>
       </div>
+
+      <!-- menu principal -->
+      <nav class="sidebar-menu">
+        <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7" transform="translate(-3 14) rotate(-90)"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7" transform="translate(-3 25) rotate(-90)"/></svg>
+          Dashboard
+        </a>
+
+        <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4zM4 12h16v4H4z"/></svg>
+          Ofertas
+        </a>
+
+        <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/></svg>
+          Adquirentes
+        </a>
+
+        <hr class="divider" />
+
+        <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21c0-3.5 4-6 7-6s7 2.5 7 6"/></svg>
+          Meu Perfil
+        </a>
+
+        <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4zM6 8v12l6-3 6 3V8"/></svg>
+          Conquistas
+        </a>
+
+        <a href="/suporte" class="<%= active === 'suporte' ? 'active' : '' %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 016 0c0 2-3 2-3 4M12 17h0"/></svg>
+          Suporte
+        </a>
+
+        <a href="/logout">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17l5-5-5-5M15 12H3"/></svg>
+          Sair
+        </a>
+      </nav>
     </aside>
 
     <main class="main-content">
 
 <style>
-  /* ===== SIDEBAR AJUSTADA ===== */
+  /* === SIDEBAR PREMIUM === */
   .sidebar {
     width: 210px;
     background: #0a0a0a;
     color: var(--text-color);
     position: fixed;
-    left: 0;
     top: 0;
     bottom: 0;
-    border-right: 1px solid rgba(255,204,0,0.1);
+    left: 0;
+    border-right: 1px solid rgba(255,204,0,0.08);
     display: flex;
     flex-direction: column;
-    z-index: 15;
+    z-index: 20;
   }
 
-  .sidebar-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    padding: 25px 0 20px;
+  .sidebar-top {
+    padding: 28px 0 10px;
+    text-align: center;
   }
 
-  .sidebar-header {
+  .sidebar-logo {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 30px;
   }
 
   .logo-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: radial-gradient(circle at 50% 50%, #ffcc00, #d4a100);
     border-radius: 50%;
     box-shadow: 0 0 10px rgba(255,204,0,0.6);
@@ -99,43 +101,49 @@
     font-weight: 800;
     font-size: 1.1rem;
     color: var(--accent-color);
-    letter-spacing: 0.3px;
-    text-transform: capitalize;
   }
 
-  .menu, .bottom-links {
+  .sidebar-menu {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 0 15px;
+    gap: 8px;
+    padding: 25px 15px 30px;
+    overflow-y: auto;
   }
 
-  .menu a, .bottom-links a {
+  .sidebar-menu a {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     padding: 10px 12px;
     border-radius: 8px;
-    text-decoration: none;
     color: var(--muted-color);
+    text-decoration: none;
     font-weight: 500;
     transition: all 0.25s ease;
   }
 
-  .menu a.active, .bottom-links a.active {
+  .sidebar-menu a svg {
+    min-width: 18px;
+    height: 18px;
+  }
+
+  .sidebar-menu a:hover {
+    background: rgba(255,204,0,0.05);
+    color: var(--accent-color);
+  }
+
+  .sidebar-menu a.active {
     background: rgba(255,204,0,0.07);
     color: #fff;
     border-left: 3px solid var(--accent-color);
-    box-shadow: 0 0 10px rgba(255,204,0,0.25) inset;
+    box-shadow: inset 0 0 12px rgba(255,204,0,0.25);
   }
 
-  .menu a:hover, .bottom-links a:hover {
-    color: var(--accent-color);
-    background: rgba(255,204,0,0.05);
-  }
-
-  svg {
-    min-width: 18px;
-    height: 18px;
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(255,204,0,0.08);
+    margin: 15px 0;
   }
 </style>
