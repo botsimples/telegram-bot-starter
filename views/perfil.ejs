@@ -1,19 +1,27 @@
-<%- include('layout', { title: 'Perfil', active: 'perfil', body: `
+<%- include('layout', { title: 'Meu Perfil', active: 'perfil', body: `
   <%- include('partials/visual_hottrack') %>
 
-  <main class="hottrack-page">
-    <div class="tiger-dashboard fade-in">
-      <h1>👤 Meu Perfil</h1>
-      <p>Gerencie suas informações pessoais e preferências.</p>
+  <main class="offers-page">
+    <section class="offers-container">
+      <header class="offers-header">
+        <h1>Meu Perfil</h1>
+        <p>Gerencie suas informações e preferências.</p>
+      </header>
 
-      <div class="profile-container">
-        <div class="profile-card">
-          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="avatar" class="profile-avatar">
-          <h2>Usuário TigerFy</h2>
-          <p>Email: usuario@tigerfy.com</p>
-          <button class="edit-btn">Editar Perfil</button>
+      <div class="offers-grid">
+        <div class="offer-card">
+          <h3>Editar Informações</h3><p>Atualize seu nome, email e senha.</p>
+          <button class="offer-btn">Editar</button>
+        </div>
+        <div class="offer-card">
+          <h3>Segurança</h3><p>Gerencie autenticação e permissões.</p>
+          <button class="offer-btn">Configurar</button>
+        </div>
+        <div class="offer-card">
+          <h3>Preferências</h3><p>Personalize sua experiência na plataforma.</p>
+          <button class="offer-btn">Abrir</button>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 ` }) %>
