@@ -1,27 +1,26 @@
-<%- include('layout', { title: 'Adquirentes', active: 'api_pix', body: `
-  <%- include('partials/visual_hottrack') %>
+<% layout('layout', { title: 'Adquirentes', active: 'api_pix' }) %>
+<%- include('partials/visual_hottrack') %>
 
-  <main class="offers-page">
-    <section class="offers-container">
-      <header class="offers-header">
-        <h1>Adquirentes</h1>
-        <p>Gerencie suas chaves PIX e integrações de pagamento.</p>
-      </header>
+<main class="offers-page">
+  <section class="offers-container">
+    <header class="offers-header">
+      <h1>Adquirentes</h1>
+      <p>Gerencie suas chaves PIX e integrações de pagamento.</p>
+    </header>
 
-      <div class="offers-grid">
-        <div class="offer-card">
-          <h3>Nova Chave PIX</h3><p>Criar uma nova chave de recebimento.</p>
-          <button class="offer-btn">Criar</button>
-        </div>
-        <div class="offer-card">
-          <h3>Pagamentos</h3><p>Visualize transações e históricos.</p>
-          <button class="offer-btn">Abrir</button>
-        </div>
-        <div class="offer-card">
-          <h3>Relatórios</h3><p>Gere relatórios automáticos de performance.</p>
-          <button class="offer-btn">Gerar</button>
-        </div>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <h3>Nova Chave PIX</h3><p>Criar uma nova chave de recebimento.</p>
+        <button class="offer-btn">Criar</button>
       </div>
-    </section>
-  </main>
-` }) %>
+      <div class="offer-card">
+        <h3>Pagamentos</h3><p>Visualize transações e históricos.</p>
+        <button class="offer-btn">Abrir</button>
+      </div>
+      <div class="offer-card">
+        <h3>Relatórios</h3><p>Gere relatórios automáticos de performance.</p>
+        <button class="offer-btn">Gerar</button>
+      </div>
+    </div>
+  </section>
+</main>
