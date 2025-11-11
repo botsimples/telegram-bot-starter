@@ -37,7 +37,7 @@
   </main>
 
   <script>
-    // Efeito dourado leve de fundo
+    // Efeito dourado leve no fundo
     const c=document.getElementById('bgParticles');
     const ctx=c.getContext('2d',{alpha:true});
     let w,h,DPR=window.devicePixelRatio||1;
@@ -84,8 +84,10 @@
 
     main.offers-page{
       position:relative;z-index:1;
-      height:100vh;display:flex;justify-content:center;align-items:flex-start;
-      padding-left:70px;padding-top:2.5vh; /* 🔼 ajuste fino vertical */
+      height:100vh;
+      display:flex;justify-content:flex-start;align-items:flex-start;
+      padding-left:45px; /* 🔧 traz o conteúdo mais pra esquerda */
+      padding-top:1vh;   /* 🔧 sobe o conteúdo */
     }
 
     .offers-container{text-align:center;width:90%;max-width:1100px;}
