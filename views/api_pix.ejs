@@ -405,19 +405,21 @@ window.addEventListener("load", () => {
   color: #ffcc00;
 }
 
-/* 🔥 animação de abertura geral */
-@keyframes pageFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 🔥 Fade rápido e fluido — sem blur, sem deslocamento */
+@keyframes pageFadeQuick {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
-body, main, .tiger-dashboard, .tiger-offers, .journey, .api-pix, .offers-page {
-  animation: pageFadeIn .4s ease-out;
+
+body,
+main,
+.tiger-dashboard,
+.tiger-offers,
+.journey,
+.api-pix,
+.offers-page {
+  animation: pageFadeQuick .25s ease-in forwards;
+  will-change: opacity;
 }
 
 </style>
