@@ -160,4 +160,20 @@
   input{width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid rgba(255,204,0,0.3);background:rgba(255,255,255,0.05);color:#fff;}
   #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;margin-top:10px;}
   #roiResult p{margin:6px 0;}
+
+/* 🔥 animação de abertura geral */
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+body, main, .tiger-dashboard, .tiger-offers, .journey, .api-pix, .offers-page {
+  animation: pageFadeIn .4s ease-out;
+}
+
 </style>
