@@ -6,11 +6,11 @@
 
   <section class="gateway-grid">
     <% const gateways = [
-      { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '1,89%', ativo: true, temToken: true, top: true },
-      { nome: 'ParadisePag', link: '#', taxa: '2,10%', ativo: false },
-      { nome: 'OasyFy', link: '#', taxa: '1,97%', ativo: false },
-      { nome: 'PushinPay', link: '#', taxa: '1,95%', ativo: false },
-      { nome: 'SyncPay', link: '#', taxa: '1,75%', ativo: false },
+      { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '4,99%', ativo: true, temToken: true, top: true },
+      { nome: 'ParadisePag', link: 'https://multi.paradisepags.com/', taxa: '1 Real', ativo: false },
+      { nome: 'OasyFy', link: 'https://oasyfy.com/', taxa: '2,90%', ativo: false },
+      { nome: 'PushinPay', link: 'https://pushinpay.com.br/', taxa: '0,35 Centavos', ativo: false },
+      { nome: 'SyncPay V2', link: 'https://syncpayments.com.br/', taxa: '0,35 Centavos', ativo: false },
       { nome: 'Hoopay', link: '#', taxa: '1,85%', ativo: false },
       { nome: 'ZeroOnePay', link: '#', taxa: '—', soon: true },
       { nome: 'HorsePay', link: '#', taxa: '—', soon: true }
@@ -22,7 +22,8 @@
           <div class="logo-box"></div>
           <div class="gateway-info">
             <div class="top-line">
-              <h3><%= g.nome %> <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %></h3>
+              <h3><%= g.nome %></h3>
+              <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %>
               <% if (g.ativo) { %><span class="status">● Ativo</span><% } %>
             </div>
             <div class="bottom-line">
@@ -68,7 +69,7 @@ function toggleGateway(el){
       const s = c.querySelector('.status');
       if(s) s.remove();
       const btn = c.querySelector('.btn.toggle');
-      if(btn) { btn.classList.remove('on'); btn.innerText = 'Ativar Gateway'; }
+      if(btn){ btn.classList.remove('on'); btn.innerText = 'Ativar Gateway'; }
     });
     card.classList.add('active');
     el.innerText = 'Desativar';
@@ -149,12 +150,14 @@ body {
 .top-line {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  min-height: 24px;
 }
 .bottom-line, .taxa-line {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 2px;
 }
 .method {
   font-size: 0.85rem;
@@ -169,14 +172,16 @@ body {
 .taxa:hover { color: #ffe680; }
 
 .status {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #ffcc00;
   background: rgba(255, 204, 0, 0.1);
   border: 1px solid rgba(255, 204, 0, 0.3);
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 6px;
   backdrop-filter: blur(10px);
   animation: glowPulse 3s infinite ease-in-out;
+  min-width: 70px;
+  text-align: center;
 }
 @keyframes glowPulse {
   0%,100% { box-shadow: 0 0 5px rgba(255,204,0,0.2); }
@@ -186,10 +191,12 @@ body {
 .badge {
   background: #ffcc00;
   color: #000;
-  padding: 2px 6px;
-  border-radius: 5px;
-  font-size: 0.7rem;
-  margin-left: 5px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 70px;
+  text-align: center;
 }
 
 .right {
@@ -204,17 +211,19 @@ body {
   background: rgba(255, 255, 255, 0.06);
   color: #ffcc00;
   border-radius: 10px;
-  padding: 8px 14px;
+  padding: 10px 20px;
   font-weight: 500;
   font-size: 0.85rem;
   cursor: pointer;
   backdrop-filter: blur(16px);
   transition: all .3s ease;
+  width: 160px; /* todos iguais */
+  text-align: center;
 }
 .btn.glass:hover {
   background: rgba(255, 204, 0, 0.08);
   box-shadow: 0 0 10px rgba(255,204,0,0.2);
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 .btn.glass.on {
   background: rgba(255, 204, 0, 0.12);
