@@ -171,3 +171,67 @@ hr {
   background: var(--card-border);
   margin: 25px 0;
 }
+
+/* ===============================
+   FIX: Fundo claro/escuro harmonizado
+   =============================== */
+[data-theme="light"] body {
+  background: #fafafa !important;
+  color: #111 !important;
+}
+
+[data-theme="light"] .card,
+[data-theme="light"] .box,
+[data-theme="light"] .stats-container,
+[data-theme="light"] table,
+[data-theme="light"] thead tr {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #111 !important;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3 {
+  color: #c29d00 !important;
+}
+
+[data-theme="light"] th,
+[data-theme="light"] td {
+  background: #fff !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  color: #333 !important;
+}
+
+[data-theme="light"] button,
+[data-theme="light"] .btn {
+  color: #000 !important;
+  background: linear-gradient(90deg, #ffd700, #b38f00) !important;
+}
+
+[data-theme="light"] .sidebar {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .menu a {
+  color: #444 !important;
+}
+
+[data-theme="light"] .menu a.active {
+  background: rgba(255, 204, 0, 0.12) !important;
+  color: #000 !important;
+  box-shadow: inset 0 0 8px rgba(255, 204, 0, 0.15);
+}
+
+[data-theme="light"] .menu a.active::before {
+  background: linear-gradient(to bottom, #ffcc00, #d4a100) !important;
+}
+
+[data-theme="light"] .stats-container,
+[data-theme="light"] .tabela-pagamentos,
+[data-theme="light"] .box {
+  background: #fff !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
