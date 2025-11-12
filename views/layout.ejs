@@ -21,6 +21,7 @@
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       display: flex;
@@ -132,6 +133,7 @@
       margin-top: auto;
       padding: 20px 25px 30px;
     }
+
     .menu-bottom a {
       display: flex;
       align-items: center;
@@ -141,9 +143,19 @@
       text-decoration: none;
       opacity: 0.8;
       transition: opacity 0.3s;
+      font-size: 0.9rem;
     }
+
+    .menu-bottom a svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--gold);
+      stroke-width: 2;
+    }
+
     .menu-bottom a:hover { opacity: 1; }
 
+    /* CONTEÚDO */
     .main-content {
       margin-left: 250px;
       flex: 1;
@@ -153,25 +165,30 @@
       position: relative;
     }
 
-    /* ⚡ Loader minimalista */
+    /* ⚡ LOADER MINIMALISTA */
     #tiger-loader {
       position: fixed;
-      top: 0; left: 0;
-      height: 3px;
-      width: 0%;
-      background: linear-gradient(90deg, #ffcc00, #ffea70, #d4a100);
-      box-shadow: 0 0 8px rgba(255,204,0,0.6);
-      transition: width 0.25s ease, opacity 0.4s ease;
-      z-index: 9999;
+      top: 14px;
+      right: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--gold);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      background: rgba(255, 204, 0, 0.05);
+      border: 1px solid rgba(255, 204, 0, 0.15);
+      border-radius: 6px;
+      padding: 6px 10px;
+      backdrop-filter: blur(4px);
     }
 
-    #tiger-loader.active { width: 80%; opacity: 1; }
-    #tiger-loader.done { width: 100%; opacity: 0; }
+    #tiger-loader.active { opacity: 1; }
   </style>
 </head>
 
 <body>
-  <div id="tiger-loader"></div>
+  <div id="tiger-loader">⚡ Aguarde, processando...</div>
 
   <aside class="sidebar">
     <div class="sidebar-header">
@@ -231,32 +248,27 @@
     <%- body %>
   </main>
 
-  <!-- ⚡ Suavização e Loader -->
   <script>
     const loader = document.getElementById('tiger-loader');
     document.addEventListener("DOMContentLoaded", () => {
-      loader.classList.add('active');
       requestAnimationFrame(() => document.body.style.opacity = "1");
-      setTimeout(() => loader.classList.add('done'), 400);
     });
 
-    const links = document.querySelectorAll('a[href]');
-    links.forEach(link => {
+    document.querySelectorAll('a[href]').forEach(link => {
       if (link.target === '_blank') return;
       link.addEventListener('click', e => {
         const href = link.getAttribute('href');
         if (href.startsWith('/') && !href.startsWith('//')) {
           e.preventDefault();
-          loader.classList.remove('done');
           loader.classList.add('active');
-          document.body.style.opacity = "0";
+          document.body.style.opacity = "0.7";
           setTimeout(() => { window.location.href = href; }, 200);
         }
       });
     });
   </script>
 
-  <!-- 🚀 Pré-carregamento instantâneo -->
+  <!-- 🚀 Pré-carregamento -->
   <script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script>
 </body>
 </html>
