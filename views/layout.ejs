@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %> | TigerFy</title>
 
+  <!-- Estilos -->
   <link rel="stylesheet" href="/css/theme.gold.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +14,6 @@
   <style>
     :root {
       --gold: #ffcc00;
-      --gold-deep: #d4a100;
       --bg: #000;
       --muted: #b4b4b4;
       --divider: rgba(255, 204, 0, 0.08);
@@ -47,7 +47,6 @@
       z-index: 10;
     }
 
-    /* LOGO */
     .sidebar-header {
       display: flex;
       justify-content: center;
@@ -64,7 +63,6 @@
 
     .logo-img:hover { transform: scale(1.05); }
 
-    /* MENU */
     .menu {
       display: flex;
       flex-direction: column;
@@ -119,8 +117,6 @@
       box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
     }
 
-    .menu a.active svg { stroke: var(--gold); }
-
     .menu-divider {
       height: 1px;
       width: calc(100% - 40px);
@@ -128,7 +124,6 @@
       margin: 18px auto;
     }
 
-    /* RODAPÉ */
     .menu-bottom {
       margin-top: auto;
       padding: 20px 25px 30px;
@@ -165,7 +160,7 @@
       position: relative;
     }
 
-    /* ⚡ LOADER CENTRAL */
+    /* ⚡ LOADER DOURADO */
     #tiger-loader {
       position: fixed;
       top: 22px;
@@ -175,26 +170,17 @@
       font-weight: 500;
       color: var(--gold);
       background: rgba(255, 204, 0, 0.05);
-      border: 1px solid rgba(255, 204, 0, 0.15);
+      border: 1px solid rgba(255, 204, 0, 0.2);
       border-radius: 8px;
       padding: 8px 14px;
       backdrop-filter: blur(4px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transition: opacity 0.4s ease;
       z-index: 9999;
     }
 
-    #tiger-loader.active {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    #tiger-loader.done {
-      color: #8aff8a;
-      border-color: rgba(138, 255, 138, 0.2);
-      background: rgba(0, 128, 0, 0.1);
-    }
+    #tiger-loader.active { opacity: 1; }
   </style>
 </head>
 
@@ -260,10 +246,14 @@
   </main>
 
   <!-- ⚙️ Scripts -->
-  <script>
+  <script defer>
     const loader = document.getElementById('tiger-loader');
+
     document.addEventListener("DOMContentLoaded", () => {
       requestAnimationFrame(() => document.body.style.opacity = "1");
+      loader.textContent = "Processamento concluído";
+      loader.classList.add('active');
+      setTimeout(() => loader.classList.remove('active'), 700);
     });
 
     document.querySelectorAll('a[href]').forEach(link => {
@@ -273,21 +263,15 @@
         if (href.startsWith('/') && !href.startsWith('//')) {
           e.preventDefault();
           loader.textContent = "Aguarde, processando...";
-          loader.classList.remove('done');
           loader.classList.add('active');
-          document.body.style.opacity = "0.8";
-          setTimeout(() => {
-            loader.textContent = "Processamento concluído";
-            loader.classList.add('done');
-            document.body.style.opacity = "1";
-          }, 500);
-          setTimeout(() => { window.location.href = href; }, 700);
+          document.body.style.opacity = "0.85";
+          setTimeout(() => { window.location.href = href; }, 180);
         }
-      });
+      }, { passive: true });
     });
   </script>
 
-  <!-- 🚀 Pré-carregamento -->
+  <!-- 🚀 Pré-carregamento instantâneo -->
   <script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script>
 </body>
 </html>
