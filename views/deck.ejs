@@ -108,20 +108,23 @@
     background-size:20px 20px;
   }
 
-  /* 🔹 AJUSTE FINAL — Centraliza dashboard em qualquer zoom */
+  /* ===============================
+     CENTRALIZAÇÃO VISUAL E ESCALA
+     =============================== */
   .tiger-dashboard{
     position:relative;z-index:1;min-height:100vh;
-    padding:50px 60px 80px 130px;
+    padding:50px 40px 80px calc(250px + 40px);
     display:flex;flex-direction:column;gap:35px;
     justify-content:flex-start;
-    transform:scale(0.85) translateY(-20px);
-    transform-origin:top center; /* 🔹 centraliza no zoom */
-    margin:0 auto; /* 🔹 mantém centralizado */
-    max-width:calc(100vw - 120px);
+    transform:scale(0.95);
+    transform-origin:top center;
+    margin:0 auto;
+    max-width:1300px;
   }
 
   .tiger-header{
     display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    margin:0 auto;max-width:1050px;
   }
   .tiger-header h1{color:#ffcc00;font-size:2rem;margin:0;}
   .tiger-header p{color:#b4b4b4;margin-top:6px;font-size:.95rem;}
@@ -140,6 +143,9 @@
     justify-content:center;
     align-items:stretch;
     margin-top:10px;
+    max-width:1050px;
+    margin-left:auto;
+    margin-right:auto;
   }
 
   .stat-card{
@@ -172,6 +178,9 @@
     border-radius:14px;
     padding:25px;
     margin-top:5px;
+    max-width:1050px;
+    margin-left:auto;
+    margin-right:auto;
   }
   .chart-head{
     display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;
@@ -199,10 +208,30 @@
     border-radius:14px;
     padding:25px;
     margin-top:5px;
+    max-width:1050px;
+    margin-left:auto;
+    margin-right:auto;
   }
   .table-block h3{color:#ffcc00;margin-bottom:15px;}
   table{width:100%;border-collapse:collapse;color:#fff;font-size:.9rem;}
   th,td{padding:10px;text-align:left;}
   thead tr{background:rgba(255,255,255,0.05);}
   tbody tr:nth-child(even){background:rgba(255,255,255,0.02);}
+
+  /* ===============================
+     RESPONSIVIDADE
+     =============================== */
+  @media (max-width:1200px){
+    .tiger-dashboard{padding-left:calc(200px + 30px);max-width:95%;}
+    .stats-grid{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (max-width:900px){
+    .tiger-dashboard{padding-left:20px;padding-right:20px;transform:scale(1);}
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:600px){
+    .stats-grid{grid-template-columns:1fr;}
+    .chart-block,.table-block{padding:18px;}
+    .filter-btn{width:100%;}
+  }
 </style>
