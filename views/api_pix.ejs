@@ -404,4 +404,20 @@ window.addEventListener("load", () => {
   border-color: rgba(255,204,0,0.4);
   color: #ffcc00;
 }
+
+/* 🔥 animação de abertura geral */
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+body, main, .tiger-dashboard, .tiger-offers, .journey, .api-pix, .offers-page {
+  animation: pageFadeIn .4s ease-out;
+}
+
 </style>
