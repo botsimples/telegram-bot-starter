@@ -196,18 +196,54 @@ function closeTokenModal(){
   justify-content: center;
   gap: 3px;
 }
+
+/* 🔥 TOP 1 com efeito */
 .badge {
   position: absolute;
-  top: -19px;
+  top: -24px;
   left: 0;
-  background: #ffcc00;
+  background: linear-gradient(90deg, #ffcc00, #ff9900);
   color: #000;
   padding: 3px 8px;
   border-radius: 6px;
   font-size: 0.7rem;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(255,204,0,0.2);
+  box-shadow: 0 2px 8px rgba(255, 204, 0, 0.25);
+  overflow: hidden;
 }
+.badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 204, 0, 0.5) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 204, 0, 0.5) 100%
+  );
+  animation: fireFlow 2.8s linear infinite;
+  filter: blur(3px);
+  opacity: 0.6;
+}
+@keyframes fireFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6),
+              0 0 20px rgba(255, 153, 0, 0.4);
+  animation: flicker 1.6s ease-in-out infinite alternate;
+  opacity: 0.7;
+}
+@keyframes flicker {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
 .top-line {
   display: flex;
   align-items: center;
