@@ -1,190 +1,210 @@
 <%- include('partials/visual_hottrack') %>
 
-<main class="gateways-page">
-  <section class="gateways-container">
-    <header class="gateways-header">
-      <h1>Adquirentes</h1>
-      <p>Selecione e conecte um gateway de pagamento para automatizar seus recebimentos no TigerFy.</p>
-    </header>
+<main class="integrations-page">
+  <header class="integrations-header">
+    <h1>Adquirentes</h1>
+    <p>Gerencie e conecte gateways de pagamento compatíveis com o TigerFy.</p>
+  </header>
 
-    <div class="gateways-grid">
-      <!-- GATEWAY 1 -->
-      <div class="gateway-card">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/VNDsN1T/wiinpay.png" alt="WiinPay" class="gateway-logo">
-          <span class="tag active">Recomendado</span>
-        </div>
-        <div class="gateway-body">
-          <h3>WiinPay</h3>
-          <p>Integração oficial com suporte automático de PIX e webhooks.</p>
-          <button class="btn-primary">Conectar</button>
-        </div>
+  <div class="integrations-grid">
+
+    <!-- WIINPAY -->
+    <div class="integration-card">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/VNDsN1T/wiinpay.png" alt="WiinPay" class="integration-logo">
+        <span class="tag highlight">Top 1 • Recomendado</span>
       </div>
-
-      <!-- GATEWAY 2 -->
-      <div class="gateway-card">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/TLvgdVJ/paradisepag.png" alt="ParadisePag" class="gateway-logo">
-        </div>
-        <div class="gateway-body">
-          <h3>ParadisePag</h3>
-          <p>Processador alternativo com alta taxa de aprovação e liberação rápida.</p>
-          <button class="btn-primary">Conectar</button>
-        </div>
-      </div>
-
-      <!-- GATEWAY 3 -->
-      <div class="gateway-card">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/MpZ3c8m/oasyfy.png" alt="OasyFy" class="gateway-logo">
-        </div>
-        <div class="gateway-body">
-          <h3>OasyFy</h3>
-          <p>Gateway moderno e estável com suporte nativo a QR Code dinâmico.</p>
-          <button class="btn-primary">Conectar</button>
-        </div>
-      </div>
-
-      <!-- GATEWAY 4 -->
-      <div class="gateway-card">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/gJ2vHtH/pushinpay.png" alt="PushinPay" class="gateway-logo">
-        </div>
-        <div class="gateway-body">
-          <h3>PushinPay</h3>
-          <p>API flexível para automação de cobranças e integração com bots.</p>
-          <button class="btn-primary">Conectar</button>
-        </div>
-      </div>
-
-      <!-- GATEWAY 5 -->
-      <div class="gateway-card">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/Wkmpmfn/syncpay.png" alt="SyncPay" class="gateway-logo">
-        </div>
-        <div class="gateway-body">
-          <h3>Sync Pay</h3>
-          <p>Integração simplificada e confiável para vendas instantâneas via PIX.</p>
-          <button class="btn-primary">Conectar</button>
-        </div>
-      </div>
-
-      <!-- GATEWAY 6 -->
-      <div class="gateway-card">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/jvYkkwm/hoopay.png" alt="Hoopay" class="gateway-logo">
-        </div>
-        <div class="gateway-body">
-          <h3>Hoopay</h3>
-          <p>Conexão direta com pagamentos inteligentes e relatórios em tempo real.</p>
-          <button class="btn-primary">Conectar</button>
-        </div>
-      </div>
-
-      <!-- GATEWAY 7 (Em breve) -->
-      <div class="gateway-card soon">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/xXW6yVy/zeroone.png" alt="ZeroOnePay" class="gateway-logo">
-          <span class="tag soon-tag">Em breve</span>
-        </div>
-        <div class="gateway-body">
-          <h3>ZeroOnePay</h3>
-          <p>Gateway avançado com controle total de rotas e automações.</p>
-          <button class="btn-disabled" disabled>Em breve</button>
-        </div>
-      </div>
-
-      <!-- GATEWAY 8 (Em breve) -->
-      <div class="gateway-card soon">
-        <div class="gateway-top">
-          <img src="https://i.ibb.co/x1bfG8L/horsepay.png" alt="HorsePay" class="gateway-logo">
-          <span class="tag soon-tag">Em breve</span>
-        </div>
-        <div class="gateway-body">
-          <h3>HorsePay</h3>
-          <p>Nova solução de pagamentos com foco em velocidade e estabilidade.</p>
-          <button class="btn-disabled" disabled>Em breve</button>
-        </div>
+      <div class="integration-body">
+        <h3>WiinPay</h3>
+        <p>Integração oficial com suporte total a PIX e automações.</p>
+        <button class="btn-primary">Acessar</button>
       </div>
     </div>
-  </section>
+
+    <!-- PARADISEPAG -->
+    <div class="integration-card">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/TLvgdVJ/paradisepag.png" alt="ParadisePag" class="integration-logo">
+      </div>
+      <div class="integration-body">
+        <h3>ParadisePag</h3>
+        <p>Gateway confiável e rápido, ideal para campanhas diretas.</p>
+        <button class="btn-primary">Acessar</button>
+      </div>
+    </div>
+
+    <!-- OASYFY -->
+    <div class="integration-card">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/MpZ3c8m/oasyfy.png" alt="OasyFy" class="integration-logo">
+      </div>
+      <div class="integration-body">
+        <h3>OasyFy</h3>
+        <p>Integração simples e estável com suporte a QR Code dinâmico.</p>
+        <button class="btn-primary">Acessar</button>
+      </div>
+    </div>
+
+    <!-- PUSHINPAY -->
+    <div class="integration-card">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/gJ2vHtH/pushinpay.png" alt="PushinPay" class="integration-logo">
+      </div>
+      <div class="integration-body">
+        <h3>PushinPay</h3>
+        <p>Provedor flexível para automação de cobranças e bots.</p>
+        <button class="btn-primary">Acessar</button>
+      </div>
+    </div>
+
+    <!-- SYNC PAY -->
+    <div class="integration-card">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/Wkmpmfn/syncpay.png" alt="Sync Pay" class="integration-logo">
+      </div>
+      <div class="integration-body">
+        <h3>Sync Pay</h3>
+        <p>Integração rápida para vendas automáticas via PIX.</p>
+        <button class="btn-primary">Acessar</button>
+      </div>
+    </div>
+
+    <!-- HOOPAY -->
+    <div class="integration-card">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/jvYkkwm/hoopay.png" alt="Hoopay" class="integration-logo">
+      </div>
+      <div class="integration-body">
+        <h3>Hoopay</h3>
+        <p>Pagamentos inteligentes com acompanhamento em tempo real.</p>
+        <button class="btn-primary">Acessar</button>
+      </div>
+    </div>
+
+    <!-- ZEROONEPAY (Em breve) -->
+    <div class="integration-card soon">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/xXW6yVy/zeroone.png" alt="ZeroOnePay" class="integration-logo">
+        <span class="tag soon-tag">Em breve</span>
+      </div>
+      <div class="integration-body">
+        <h3>ZeroOnePay</h3>
+        <p>Integração avançada para automações personalizadas.</p>
+        <button class="btn-disabled" disabled>Em breve</button>
+      </div>
+    </div>
+
+    <!-- HORSEPAY (Em breve) -->
+    <div class="integration-card soon">
+      <div class="integration-top">
+        <img src="https://i.ibb.co/x1bfG8L/horsepay.png" alt="HorsePay" class="integration-logo">
+        <span class="tag soon-tag">Em breve</span>
+      </div>
+      <div class="integration-body">
+        <h3>HorsePay</h3>
+        <p>Nova solução de pagamentos estável e de alta performance.</p>
+        <button class="btn-disabled" disabled>Em breve</button>
+      </div>
+    </div>
+
+  </div>
 </main>
 
 <style>
   html,body{
-    margin:0;padding:0;height:100%;width:100%;
-    background:#0a0a0a;color:#fff;font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+    margin:0;padding:0;background:#0a0a0a;color:#fff;
+    font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;
   }
   *{box-sizing:border-box;}::-webkit-scrollbar{display:none!important;}
 
-  .gateways-page{
-    position:relative;z-index:1;min-height:100vh;
-    display:flex;justify-content:center;
+  .integrations-page{
     padding:60px 40px 100px 40px;
-    transform:translateX(-38px); /* centraliza igual dashboard */
+    transform:translateX(-38px); /* mesma centralização da TigerFy */
   }
 
-  .gateways-container{text-align:left;width:100%;max-width:1150px;}
-  .gateways-header h1{color:#ffcc00;font-size:2rem;margin:0 0 8px 0;}
-  .gateways-header p{color:#b4b4b4;margin:0 0 40px 0;}
+  .integrations-header h1{
+    color:#ffcc00;font-size:2rem;margin:0 0 8px 0;
+  }
+  .integrations-header p{
+    color:#b4b4b4;margin:0 0 35px 0;
+  }
 
-  .gateways-grid{
+  .integrations-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:30px;
+    gap:25px;
   }
 
-  .gateway-card{
+  .integration-card{
     background:rgba(255,255,255,0.03);
-    border:1px solid rgba(255,204,0,0.12);
+    border:1px solid rgba(255,204,0,0.1);
     border-radius:14px;
     padding:25px;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    transition:.25s ease-out;
-    position:relative;
+    transition:.25s ease;
   }
-  .gateway-card:hover{
-    background:rgba(255,204,0,0.06);
-    box-shadow:0 0 18px rgba(255,204,0,0.25);
+
+  .integration-card:hover{
+    background:rgba(255,204,0,0.05);
+    box-shadow:0 0 15px rgba(255,204,0,0.25);
     transform:translateY(-3px);
   }
 
-  .gateway-top{
+  .integration-top{
     display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:18px;
+    margin-bottom:15px;
   }
-  .gateway-logo{
-    width:60px;height:60px;border-radius:12px;object-fit:contain;
-    background:#111;padding:6px;
+
+  .integration-logo{
+    width:50px;height:50px;border-radius:10px;
+    background:#111;padding:6px;object-fit:contain;
   }
-  .gateway-body h3{color:#fff;margin:0 0 5px;}
-  .gateway-body p{color:#b4b4b4;font-size:.9rem;margin:0 0 18px;}
-  
+
+  .integration-body h3{
+    color:#fff;font-size:1rem;margin:0 0 6px 0;
+  }
+
+  .integration-body p{
+    color:#b4b4b4;font-size:.9rem;margin:0 0 18px 0;
+  }
+
   .btn-primary{
     background:linear-gradient(90deg,#ffcc00,#d4a100);
-    border:none;color:#000;font-weight:600;border-radius:8px;
-    padding:8px 18px;cursor:pointer;transition:filter .3s;
+    border:none;padding:8px 18px;border-radius:8px;
+    color:#000;font-weight:600;cursor:pointer;
+    transition:filter .25s;
   }
+
   .btn-primary:hover{filter:brightness(1.1);}
+
   .btn-disabled{
-    background:rgba(255,255,255,0.08);
-    color:#777;border:none;padding:8px 18px;border-radius:8px;
-    cursor:not-allowed;
+    background:rgba(255,255,255,0.07);
+    color:#777;border:none;padding:8px 18px;
+    border-radius:8px;cursor:not-allowed;
   }
 
   .tag{
-    background:rgba(255,204,0,0.15);
-    color:#ffcc00;
     font-size:.75rem;
     padding:4px 10px;
     border-radius:8px;
     text-transform:uppercase;
     font-weight:600;
+    color:#ffcc00;
+    background:rgba(255,204,0,0.15);
   }
-  .tag.active{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;}
-  .soon .tag{background:rgba(255,255,255,0.08);color:#999;}
-  .soon .gateway-card:hover{transform:none;box-shadow:none;}
+
+  .highlight{
+    background:linear-gradient(90deg,#ffcc00,#d4a100);
+    color:#000;
+  }
+
+  .soon-tag{
+    background:rgba(255,255,255,0.08);
+    color:#999;
+  }
+
+  .soon{opacity:0.8;}
+  .soon:hover{transform:none;box-shadow:none;background:rgba(255,255,255,0.03);}
 </style>
