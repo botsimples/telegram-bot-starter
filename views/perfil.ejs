@@ -42,19 +42,21 @@
   .offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;transition:filter .3s;}
   .offer-btn:hover{filter:brightness(1.15);}
 
-/* 🔥 animação de abertura geral */
-@keyframes pageFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 🔥 Fade rápido e fluido — sem blur, sem deslocamento */
+@keyframes pageFadeQuick {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
-body, main, .tiger-dashboard, .tiger-offers, .journey, .api-pix, .offers-page {
-  animation: pageFadeIn .4s ease-out;
+
+body,
+main,
+.tiger-dashboard,
+.tiger-offers,
+.journey,
+.api-pix,
+.offers-page {
+  animation: pageFadeQuick .25s ease-in forwards;
+  will-change: opacity;
 }
 
 </style>
