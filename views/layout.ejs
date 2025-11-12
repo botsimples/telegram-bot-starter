@@ -5,15 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %> | TigerFy</title>
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="/css/theme.gold.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --gold: #ffcc00;
+      --gold1: #ffcc00;
+      --gold2: #d4a100;
       --bg: #000;
       --muted: #b4b4b4;
       --divider: rgba(255, 204, 0, 0.08);
@@ -29,13 +28,12 @@
       color: #fff;
       font-family: "Inter", sans-serif;
       -webkit-font-smoothing: antialiased;
-      opacity: 0;
-      transition: opacity 0.25s ease-in-out;
+      overflow-x: hidden;
     }
 
     /* SIDEBAR */
     .sidebar {
-      width: 250px;
+      width: 260px;
       background: #000;
       border-right: 1px solid var(--divider);
       display: flex;
@@ -44,28 +42,45 @@
       position: fixed;
       left: 0;
       top: 0;
-      z-index: 10;
+      padding-top: 24px;
     }
 
+    /* HEADER LOGO */
     .sidebar-header {
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 28px 0 24px;
+      gap: 14px;
+      padding: 0 24px 24px;
     }
 
-    .logo-img {
-      width: 140px;
-      height: auto;
-      object-fit: contain;
-      transition: transform 0.3s ease;
+    .logo-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: url('/img/tigerfy-icon.png') center/cover no-repeat;
+      flex-shrink: 0;
     }
 
-    .logo-img:hover { transform: scale(1.05); }
+    .logo-text {
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      background: linear-gradient(90deg, var(--gold1), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: goldshine 3s infinite linear;
+    }
 
+    @keyframes goldshine {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* MENU */
     .menu {
       display: flex;
       flex-direction: column;
+      gap: 8px;
       padding: 10px 20px 0;
       flex-grow: 1;
     }
@@ -81,6 +96,7 @@
       font-weight: 500;
       transition: all 0.25s ease;
       position: relative;
+      font-size: 0.95rem;
     }
 
     .menu a svg {
@@ -88,33 +104,24 @@
       height: 18px;
       stroke: var(--muted);
       stroke-width: 1.8;
-      transition: stroke 0.25s ease;
+      transition: stroke 0.25s ease, transform 0.2s ease;
     }
 
     .menu a:hover {
       background: var(--hover);
-      color: var(--gold);
+      color: var(--gold1);
     }
 
-    .menu a:hover svg { stroke: var(--gold); }
+    .menu a:hover svg {
+      stroke: var(--gold1);
+      transform: scale(1.1);
+    }
 
     .menu a.active {
-      background: linear-gradient(90deg, rgba(255, 204, 0, 0.12), rgba(255, 204, 0, 0.05));
-      color: #fff;
+      background: linear-gradient(90deg, rgba(255, 204, 0, 0.1), rgba(255, 204, 0, 0.05));
+      color: var(--gold1);
+      box-shadow: inset 0 0 8px rgba(255, 204, 0, 0.15);
       font-weight: 600;
-      box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.15);
-    }
-
-    .menu a.active::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 6px;
-      bottom: 6px;
-      width: 3px;
-      border-radius: 2px;
-      background: linear-gradient(to bottom, #ffea70, #ffcc00, #d3a900);
-      box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
     }
 
     .menu-divider {
@@ -124,6 +131,7 @@
       margin: 18px auto;
     }
 
+    /* LOGOUT */
     .menu-bottom {
       margin-top: auto;
       padding: 20px 25px 30px;
@@ -133,18 +141,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: var(--gold);
+      color: var(--gold1);
       font-weight: 500;
       text-decoration: none;
       opacity: 0.8;
       transition: opacity 0.3s;
-      font-size: 0.9rem;
     }
 
     .menu-bottom a svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--gold);
+      width: 18px;
+      height: 18px;
+      stroke: var(--gold1);
       stroke-width: 2;
     }
 
@@ -152,91 +159,86 @@
 
     /* CONTEÚDO */
     .main-content {
-      margin-left: 250px;
+      margin-left: 260px;
       flex: 1;
       padding: 40px;
       min-height: 100vh;
       box-sizing: border-box;
       position: relative;
     }
-
-    /* ⚡ LOADER DOURADO */
-    #tiger-loader {
-      position: fixed;
-      top: 22px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--gold);
-      background: rgba(255, 204, 0, 0.05);
-      border: 1px solid rgba(255, 204, 0, 0.2);
-      border-radius: 8px;
-      padding: 8px 14px;
-      backdrop-filter: blur(4px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 9999;
-    }
-
-    #tiger-loader.active { opacity: 1; }
   </style>
 </head>
 
 <body>
-  <div id="tiger-loader">Aguarde, processando...</div>
-
   <aside class="sidebar">
     <div class="sidebar-header">
-      <img src="/img/logo-tigerfy.png" alt="TigerFy" class="logo-img" />
+      <div class="logo-icon"></div>
+      <div>
+        <div class="logo-text">TigerFy</div>
+      </div>
     </div>
 
+    <!-- MENU -->
     <nav class="menu">
       <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
+        <!-- SVG Dashboard -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 8h7v10h-7V11zM3 14h7v7H3v-7z"/>
-        </svg> Dashboard
+        </svg>
+        Dashboard
       </a>
 
       <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
+        <!-- SVG Bots -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"/>
-        </svg> Ofertas
+        </svg>
+        Bots
       </a>
 
       <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
+        <!-- SVG Adquirentes -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
-        </svg> Adquirentes
+        </svg>
+        Adquirentes
       </a>
 
-      <div class="menu-divider"></div>
-
       <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
+        <!-- SVG Perfil -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/>
-        </svg> Meu Perfil
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/>
+        </svg>
+        Perfil
       </a>
 
       <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
+        <!-- SVG Conquistas -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m0-4c3.314 0 6-2.686 6-6V5H6v6c0 3.314 2.686 6 6 6zM4 5h16M9 3h6"/>
-        </svg> Conquistas
+        </svg>
+        Conquistas
       </a>
 
       <a href="https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy%20⚡" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <!-- SVG Suporte -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.5c4.694 0 8.5-3.806 8.5-8.5S16.694 3.5 12 3.5 3.5 7.306 3.5 12c0 1.293.293 2.517.818 3.607L3 21l5.548-1.414A8.468 8.468 0 0012 20.5z"/>
-        </svg> Suporte
+        </svg>
+        Suporte
       </a>
     </nav>
 
+    <div class="menu-divider"></div>
+
+    <!-- LOGOUT -->
     <div class="menu-bottom">
       <a href="/logout">
+        <!-- SVG Sair -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H3m0 0l4-4m-4 4l4 4m8-8h5a2 2 0 012 2v6a2 2 0 01-2 2h-5"/>
-        </svg> Sair
+        </svg>
+        Sair
       </a>
     </div>
   </aside>
@@ -244,34 +246,5 @@
   <main class="main-content">
     <%- body %>
   </main>
-
-  <!-- ⚙️ Scripts -->
-  <script defer>
-    const loader = document.getElementById('tiger-loader');
-
-    document.addEventListener("DOMContentLoaded", () => {
-      requestAnimationFrame(() => document.body.style.opacity = "1");
-      loader.textContent = "Processamento concluído";
-      loader.classList.add('active');
-      setTimeout(() => loader.classList.remove('active'), 700);
-    });
-
-    document.querySelectorAll('a[href]').forEach(link => {
-      if (link.target === '_blank') return;
-      link.addEventListener('click', e => {
-        const href = link.getAttribute('href');
-        if (href.startsWith('/') && !href.startsWith('//')) {
-          e.preventDefault();
-          loader.textContent = "Aguarde, processando...";
-          loader.classList.add('active');
-          document.body.style.opacity = "0.85";
-          setTimeout(() => { window.location.href = href; }, 180);
-        }
-      }, { passive: true });
-    });
-  </script>
-
-  <!-- 🚀 Pré-carregamento instantâneo -->
-  <script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script>
 </body>
 </html>
