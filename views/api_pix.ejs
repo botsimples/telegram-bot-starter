@@ -21,9 +21,9 @@
         <div class="left">
           <div class="logo-box"></div>
           <div class="gateway-info">
+            <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %>
             <div class="top-line">
               <h3><%= g.nome %></h3>
-              <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %>
               <% if (g.ativo) { %><span class="status">● Ativo</span><% } %>
             </div>
             <div class="bottom-line">
@@ -51,6 +51,20 @@
     <% }) %>
   </section>
 </main>
+
+<!-- Modal -->
+<div id="tokenModal" class="modal hidden">
+  <div class="modal-content">
+    <h2 id="modalTitle">Gerenciar Token</h2>
+    <form id="tokenForm">
+      <div id="tokenFields"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn glass cancel" onclick="closeTokenModal()">Cancelar</button>
+        <button type="submit" class="btn glass save">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script>
 function toggleGateway(el){
@@ -82,35 +96,58 @@ function toggleGateway(el){
   }
 }
 
-function openTokenModal(name){
-  alert(`Gerenciar Token do gateway: ${name}`);
+function openTokenModal(gateway){
+  const modal = document.getElementById('tokenModal');
+  const title = document.getElementById('modalTitle');
+  const fields = document.getElementById('tokenFields');
+  fields.innerHTML = ''; // limpa campos
+
+  title.textContent = `Integração - ${gateway}`;
+
+  const configs = {
+    'WiinPay': ['Token API'],
+    'ParadisePag': ['Chave de API', 'Código do Produto'],
+    'OasyFy': ['Public Key', 'Secret Key'],
+    'PushinPay': ['API Token (Bearer)'],
+    'SyncPay V2': ['Client ID (pública)', 'Client Secret (privada)'],
+    'Hoopay': ['Client ID', 'Client Secret']
+  };
+
+  const campos = configs[gateway] || ['Token'];
+  campos.forEach(campo => {
+    const inputDiv = document.createElement('div');
+    inputDiv.className = 'field';
+    inputDiv.innerHTML = `
+      <label>${campo}</label>
+      <input type="text" placeholder="Insira ${campo.toLowerCase()}..." />
+    `;
+    fields.appendChild(inputDiv);
+  });
+
+  modal.classList.remove('hidden');
+  setTimeout(()=>modal.classList.add('visible'), 10);
+}
+
+function closeTokenModal(){
+  const modal = document.getElementById('tokenModal');
+  modal.classList.remove('visible');
+  setTimeout(()=>modal.classList.add('hidden'), 300);
 }
 </script>
 
 <style>
+/* layout base */
 body {
   background: #0b0b0b;
   color: #fff;
   font-family: "Inter", sans-serif;
   margin: 0;
 }
+.api-pix header { width: 90%; margin: 40px auto 20px; }
+.api-pix h1 { color: #ffcc00; font-size: 1.8rem; margin-bottom: 6px; }
+.api-pix p { color: #b3b3b3; font-size: 1rem; margin: 0; }
 
-.api-pix header {
-  width: 90%;
-  margin: 40px auto 20px;
-}
-.api-pix h1 {
-  color: #ffcc00;
-  font-size: 1.8rem;
-  margin-bottom: 6px;
-}
-.api-pix p {
-  color: #b3b3b3;
-  font-size: 1rem;
-  margin: 0;
-}
-
-/* GRID */
+/* grid */
 .gateway-grid {
   width: 90%;
   margin: 20px auto 60px;
@@ -119,9 +156,8 @@ body {
   gap: 22px;
 }
 
-/* CARD */
+/* cards */
 .gateway-card {
-  position: relative;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
   border-radius: 16px;
@@ -141,95 +177,36 @@ body {
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* conteúdo esquerdo */
 .left { display: flex; align-items: center; gap: 18px; }
-
 .logo-box {
   width: 48px; height: 48px;
   background: rgba(255,255,255,0.08);
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.4);
 }
-.gateway-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  position: relative;
-}
-
-/* nova tag de destaque TOP */
+.gateway-info { position: relative; display: flex; flex-direction: column; gap: 2px; }
 .gateway-info .badge {
-  position: absolute;
-  top: -22px;
-  left: 0;
-  background: #ffcc00;
-  color: #000;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  font-weight: 600;
+  position: absolute; top: -22px; left: 0;
+  background: #ffcc00; color: #000;
+  padding: 3px 8px; border-radius: 6px;
+  font-size: 0.7rem; font-weight: 600;
   box-shadow: 0 2px 8px rgba(255,204,0,0.2);
 }
-
-/* nome + status lado a lado */
-.top-line {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 6px;
-}
-.top-line h3 {
-  margin: 0;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-}
-
-/* status menor e mais elegante */
+.top-line { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
 .status {
-  font-size: 0.7rem;
-  color: #ffcc00;
-  background: rgba(255, 204, 0, 0.08);
-  border: 1px solid rgba(255, 204, 0, 0.25);
-  padding: 2px 8px;
-  border-radius: 5px;
-  line-height: 1;
-  letter-spacing: 0.3px;
+  font-size: 0.7rem; color: #ffcc00;
+  background: rgba(255,204,0,0.08);
+  border: 1px solid rgba(255,204,0,0.25);
+  padding: 2px 8px; border-radius: 5px;
 }
+.method { font-size: 0.85rem; color: #aaa; }
+.taxa { color: #ffcc00; font-size: 0.85rem; text-decoration: none; }
 
-.bottom-line, .taxa-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 2px;
-}
-.method {
-  font-size: 0.85rem;
-  color: #aaa;
-}
-.taxa {
-  color: #ffcc00;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: all .3s ease;
-}
-.taxa:hover { color: #ffe680; }
-
-/* lado direito */
-.right {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-end;
-}
-
-/* botões uniformes */
+/* botões */
+.right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
 .btn.glass {
   border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.06);
   color: #ffcc00;
   border-radius: 10px;
   padding: 10px 20px;
@@ -239,20 +216,61 @@ body {
   backdrop-filter: blur(16px);
   transition: all .25s ease;
   width: 160px;
-  text-align: center;
 }
 .btn.glass:hover {
-  background: rgba(255, 204, 0, 0.08);
+  background: rgba(255,204,0,0.08);
   box-shadow: 0 0 10px rgba(255,204,0,0.2);
   transform: scale(1.03);
 }
 .btn.glass.on {
-  background: rgba(255, 204, 0, 0.12);
+  background: rgba(255,204,0,0.12);
   color: #fff;
-  border-color: rgba(255, 204, 0, 0.5);
+  border-color: rgba(255,204,0,0.5);
 }
-.btn.glass.disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+
+/* modal */
+.modal.hidden { display: none; opacity: 0; }
+.modal.visible { display: flex; opacity: 1; }
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  align-items: center; justify-content: center;
+  z-index: 999;
+  transition: opacity .3s ease;
 }
+.modal-content {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 28px;
+  width: 400px;
+  box-shadow: 0 0 25px rgba(255,204,0,0.15);
+  animation: fadeIn .3s ease;
+}
+@keyframes fadeIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.modal-content h2 {
+  margin-top: 0;
+  color: #ffcc00;
+  font-size: 1.2rem;
+  text-align: center;
+}
+.field { margin: 12px 0; display: flex; flex-direction: column; }
+.field label { font-size: 0.85rem; color: #ccc; margin-bottom: 4px; }
+.field input {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #fff;
+}
+.modal-actions {
+  margin-top: 16px;
+  display: flex; justify-content: space-between;
+}
+.btn.cancel { color: #bbb; }
+.btn.save { background: rgba(255,204,0,0.1); border-color: rgba(255,204,0,0.4); color: #ffcc00; }
 </style>
