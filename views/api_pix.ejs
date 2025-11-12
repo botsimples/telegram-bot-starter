@@ -8,36 +8,32 @@
 
   <section class="gateway-grid">
     <% const gateways = [
-      { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '4,99%', ativo: true, temToken: true, top: true, img: '/img/gateways/wiinpay.png' },
-      { nome: 'ParadisePag', link: 'https://multi.paradisepags.com/', taxa: '1 Real', ativo: false, img: '/img/gateways/paradisepag.png' },
-      { nome: 'OasyFy', link: 'https://oasyfy.com/', taxa: '2,90%', ativo: false, img: '/img/gateways/oasyfy.png' },
-      { nome: 'PushinPay', link: 'https://pushinpay.com.br/', taxa: '0,35 Centavos', ativo: false, img: '/img/gateways/pushinpay.png' },
-      { nome: 'SyncPay V2', link: 'https://syncpayments.com.br/', taxa: '0,35 Centavos', ativo: false, img: '/img/gateways/syncpayv2.png' },
-      { nome: 'Hoopay', link: '#', taxa: '1,85%', ativo: false, img: '/img/gateways/hoopay.png' },
-      { nome: 'ZeroOnePay', link: '#', taxa: '—', soon: true },
-      { nome: 'HorsePay', link: '#', taxa: '—', soon: true }
+      { nome: 'WiinPay', img: '/img/gateways/wiinpay.png', taxa: '4,99%', ativo: true, temToken: true, top: true },
+      { nome: 'ParadisePag', img: '/img/gateways/paradisepag.png', taxa: '1 Real', ativo: false },
+      { nome: 'OasyFy', img: '/img/gateways/oasyfy.png', taxa: '2,90%', ativo: false },
+      { nome: 'PushinPay', img: '/img/gateways/pushinpay.png', taxa: '0,35 Centavos', ativo: false },
+      { nome: 'SyncPay V2', img: '/img/gateways/syncpayv2.png', taxa: '0,35 Centavos', ativo: false },
+      { nome: 'Hoopay', img: '/img/gateways/hoopay.png', taxa: '1,85%', ativo: false },
+      { nome: 'ZeroOnePay', img: '', taxa: '—', soon: true },
+      { nome: 'HorsePay', img: '', taxa: '—', soon: true }
     ]; %>
 
     <% gateways.forEach(g => { %>
       <div class="gateway-card <%= g.soon ? 'soon' : '' %> <%= g.ativo ? 'active' : '' %>">
         <div class="left">
-          <div class="logo-box">
-            <% if (g.img) { %>
-              <img src="<%= g.img %>" alt="<%= g.nome %> Logo" />
-            <% } %>
-          </div>
+          <% if (g.img) { %>
+            <img src="<%= g.img %>" alt="<%= g.nome %>" class="gateway-logo" />
+          <% } else { %>
+            <div class="logo-placeholder"></div>
+          <% } %>
           <div class="gateway-info">
             <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %>
             <div class="top-line">
               <h3><%= g.nome %></h3>
               <% if (g.ativo) { %><span class="status">● Ativo</span><% } %>
             </div>
-            <div class="bottom-line">
-              <span class="method">MÉTODO: API PIX</span>
-            </div>
-            <div class="taxa-line">
-              <a href="<%= g.link %>" target="_blank" class="taxa">Taxa: <%= g.taxa %></a>
-            </div>
+            <span class="method">MÉTODO: API PIX</span>
+            <a href="#" target="_blank" class="taxa">Taxa: <%= g.taxa %></a>
           </div>
         </div>
 
@@ -58,7 +54,7 @@
   </section>
 </main>
 
-<!-- Modal -->
+<!-- Modal de Token -->
 <div id="tokenModal" class="modal hidden">
   <div class="modal-content">
     <h2 id="modalTitle">Gerenciar Token</h2>
@@ -76,7 +72,6 @@
 function toggleGateway(el){
   const card = el.closest('.gateway-card');
   const isActive = card.classList.contains('active');
-
   if(isActive){
     card.classList.remove('active');
     el.innerText = 'Ativar Gateway';
@@ -142,27 +137,13 @@ function closeTokenModal(){
 </script>
 
 <style>
-.api-pix {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  padding: 60px 80px 100px 120px;
-}
-.api-pix header h1 { color: #ffcc00; font-size: 1.8rem; margin-bottom: 6px; }
-.api-pix header p { color: #b3b3b3; margin: 0 0 20px; }
+.api-pix header { width: 90%; margin: 40px auto 20px; }
+.api-pix h1 { color: #ffcc00; font-size: 1.8rem; margin-bottom: 6px; }
+.api-pix p { color: #b3b3b3; font-size: 1rem; margin: 0; }
 
-/* fundo pontilhado */
-#bgParticles {
-  position: fixed; inset: 0; z-index: 0;
-  background: #0a0a0a;
-  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 20px 20px;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-/* grid */
 .gateway-grid {
+  width: 90%;
+  margin: 20px auto 60px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 22px;
@@ -180,47 +161,75 @@ function closeTokenModal(){
   border: 1px solid rgba(255, 255, 255, 0.08);
   height: 140px;
   transition: all .3s ease;
-  position: relative;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 }
 .gateway-card.active {
   border-color: rgba(255, 204, 0, 0.5);
+  outline: 2px solid rgba(255, 204, 0, 0.35);
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* logo */
-.logo-box {
-  width: 48px; height: 48px;
-  background: rgba(255,255,255,0.08);
+.left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.gateway-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
 }
-.logo-box img {
-  width: 36px; height: 36px; object-fit: contain;
-  filter: drop-shadow(0 0 6px rgba(255,204,0,0.3));
+.logo-placeholder {
+  width: 48px;
+  height: 48px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
 }
-
-/* texto e badge */
-.gateway-info { position: relative; display: flex; flex-direction: column; gap: 2px; }
-.gateway-info .badge {
-  position: absolute; top: -19px; left: 0;
-  background: #ffcc00; color: #000;
-  padding: 2px 6px; border-radius: 5px;
-  font-size: 0.7rem; font-weight: 600;
+.gateway-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+.badge {
+  position: absolute;
+  top: -19px;
+  left: 0;
+  background: #ffcc00;
+  color: #000;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
   box-shadow: 0 2px 8px rgba(255,204,0,0.2);
 }
-.top-line { display: flex; align-items: center; gap: 6px; }
+.top-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 .status {
-  font-size: 0.7rem; color: #ffcc00;
+  font-size: 0.7rem;
+  color: #ffcc00;
   background: rgba(255,204,0,0.08);
   border: 1px solid rgba(255,204,0,0.25);
-  padding: 1px 6px; border-radius: 4px;
+  padding: 1px 6px;
+  border-radius: 5px;
 }
 .method { font-size: 0.85rem; color: #aaa; }
 .taxa { color: #ffcc00; font-size: 0.85rem; text-decoration: none; }
 
-/* botões */
-.right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
 .btn.glass {
   border: 1px solid rgba(255,255,255,0.15);
   background: rgba(255,255,255,0.06);
@@ -230,12 +239,14 @@ function closeTokenModal(){
   font-weight: 500;
   font-size: 0.85rem;
   cursor: pointer;
-  width: 160px;
+  backdrop-filter: blur(16px);
   transition: all .25s ease;
+  width: 160px;
 }
 .btn.glass:hover {
   background: rgba(255,204,0,0.08);
   box-shadow: 0 0 10px rgba(255,204,0,0.2);
+  transform: scale(1.03);
 }
 .btn.glass.on {
   background: rgba(255,204,0,0.12);
@@ -247,10 +258,12 @@ function closeTokenModal(){
 .modal.hidden { display: none; opacity: 0; }
 .modal.visible { display: flex; opacity: 1; }
 .modal {
-  position: fixed; inset: 0;
+  position: fixed;
+  inset: 0;
   background: rgba(0,0,0,0.6);
   backdrop-filter: blur(10px);
-  align-items: center; justify-content: center;
+  align-items: center;
+  justify-content: center;
   z-index: 999;
   transition: opacity .3s ease;
 }
@@ -261,6 +274,7 @@ function closeTokenModal(){
   padding: 28px;
   width: 400px;
   box-shadow: 0 0 25px rgba(255,204,0,0.15);
+  animation: fadeIn .3s ease;
 }
 .modal-content h2 {
   margin-top: 0;
@@ -268,7 +282,11 @@ function closeTokenModal(){
   font-size: 1.2rem;
   text-align: center;
 }
-.field { margin: 12px 0; display: flex; flex-direction: column; }
+.field {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+}
 .field label { font-size: 0.85rem; color: #ccc; margin-bottom: 4px; }
 .field input {
   background: rgba(255,255,255,0.08);
@@ -277,7 +295,15 @@ function closeTokenModal(){
   padding: 8px 10px;
   color: #fff;
 }
-.modal-actions { margin-top: 16px; display: flex; justify-content: space-between; }
+.modal-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
 .btn.cancel { color: #bbb; }
-.btn.save { background: rgba(255,204,0,0.1); border-color: rgba(255,204,0,0.4); color: #ffcc00; }
+.btn.save {
+  background: rgba(255,204,0,0.1);
+  border-color: rgba(255,204,0,0.4);
+  color: #ffcc00;
+}
 </style>
