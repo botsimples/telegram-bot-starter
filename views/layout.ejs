@@ -44,29 +44,28 @@
       backdrop-filter: blur(8px);
     }
 
+    /* LOGO */
     .sidebar-header {
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 10px;
-      padding: 28px 24px;
+      padding: 28px 0 24px;
     }
 
-    .logo-icon {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      background: linear-gradient(145deg, var(--gold), var(--gold-deep));
-      box-shadow: 0 0 12px rgba(255, 204, 0, 0.6);
+    .logo-img {
+      width: 140px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(255,204,0,0.3));
+      transition: transform .3s ease, filter .3s ease;
     }
 
-    .logo-text {
-      font-family: "Poppins", sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--gold);
-      text-shadow: 0 0 8px rgba(255, 204, 0, 0.25);
+    .logo-img:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 14px rgba(255,204,0,0.5));
     }
 
+    /* MENU */
     .menu {
       display: flex;
       flex-direction: column;
@@ -171,6 +170,23 @@
       box-sizing: border-box;
       position: relative;
     }
+
+    /* Fade suave ao trocar de aba */
+    @keyframes pageFadeQuick {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    body,
+    main,
+    .tiger-dashboard,
+    .tiger-offers,
+    .journey,
+    .api-pix,
+    .offers-page {
+      animation: pageFadeQuick .25s ease-in forwards;
+      will-change: opacity;
+    }
   </style>
 </head>
 
@@ -178,8 +194,7 @@
   <aside class="sidebar">
     <!-- LOGO -->
     <div class="sidebar-header">
-      <div class="logo-icon"></div>
-      <div class="logo-text">TigerFy</div>
+      <img src="/img/logo-tigerfy.png" alt="TigerFy" class="logo-img" />
     </div>
 
     <!-- MENU -->
