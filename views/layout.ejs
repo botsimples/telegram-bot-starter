@@ -27,12 +27,14 @@
       color: #fff;
       font-family: "Inter", sans-serif;
       -webkit-font-smoothing: antialiased;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
 
     /* SIDEBAR */
     .sidebar {
       width: 250px;
-      background: #000; /* fundo preto total */
+      background: #000;
       border-right: 1px solid var(--divider);
       display: flex;
       flex-direction: column;
@@ -41,7 +43,6 @@
       left: 0;
       top: 0;
       z-index: 10;
-      backdrop-filter: none; /* remove blur */
     }
 
     /* LOGO */
@@ -52,18 +53,18 @@
       padding: 28px 0 24px;
     }
 
-.logo-img {
-  width: 140px;
-  height: auto;
-  object-fit: contain;
-  filter: none; /* remove brilho dourado */
-  transition: transform .3s ease;
-}
+    .logo-img {
+      width: 140px;
+      height: auto;
+      object-fit: contain;
+      filter: none;
+      transition: transform 0.3s ease;
+    }
 
-.logo-img:hover {
-  transform: scale(1.05);
-  filter: none; /* sem glow mesmo no hover */
-}
+    .logo-img:hover {
+      transform: scale(1.05);
+      filter: none;
+    }
 
     /* MENU */
     .menu {
@@ -170,23 +171,6 @@
       box-sizing: border-box;
       position: relative;
     }
-
-    /* Fade suave ao trocar de aba */
-    @keyframes pageFadeQuick {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    body,
-    main,
-    .tiger-dashboard,
-    .tiger-offers,
-    .journey,
-    .api-pix,
-    .offers-page {
-      animation: pageFadeQuick .25s ease-in forwards;
-      will-change: opacity;
-    }
   </style>
 </head>
 
@@ -258,5 +242,28 @@
   <main class="main-content">
     <%- body %>
   </main>
+
+  <!-- Otimização de navegação -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      requestAnimationFrame(() => {
+        document.body.style.opacity = "1";
+      });
+
+      const links = document.querySelectorAll("a[href]");
+      links.forEach(link => {
+        link.addEventListener("click", e => {
+          const href = link.getAttribute("href");
+          if (href.startsWith("/") && !href.startsWith("//")) {
+            e.preventDefault();
+            document.body.style.opacity = "0";
+            setTimeout(() => {
+              window.location.href = href;
+            }, 120);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
