@@ -1,110 +1,66 @@
 <%- include('partials/visual_hottrack') %>
 
-<main class="integrations-page">
-  <header class="integrations-header">
-    <h1>Adquirentes</h1>
-    <p>Gerencie e conecte gateways de pagamento compatíveis com o TigerFy.</p>
+<main class="api-pix-page">
+  <header class="api-header">
+    <h1>API PIX</h1>
+    <p>Integre gateways de pagamento ao TigerFy com facilidade.</p>
   </header>
 
-  <div class="integrations-grid">
+  <div class="api-grid">
 
     <!-- WIINPAY -->
-    <div class="integration-card">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/VNDsN1T/wiinpay.png" alt="WiinPay" class="integration-logo">
-        <span class="tag highlight">Top 1 • Recomendado</span>
+    <div class="api-card top1">
+      <div class="api-card-header">
+        <img src="https://i.ibb.co/VNDsN1T/wiinpay.png" alt="WiinPay" class="api-logo">
+        <div class="badge-top1">
+          <span class="fire">🔥</span> TOP 1 • RECOMENDADO
+        </div>
       </div>
-      <div class="integration-body">
-        <h3>WiinPay</h3>
-        <p>Integração oficial com suporte total a PIX e automações.</p>
-        <button class="btn-primary">Acessar</button>
-      </div>
+      <button class="btn-access">Acessar</button>
     </div>
 
     <!-- PARADISEPAG -->
-    <div class="integration-card">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/TLvgdVJ/paradisepag.png" alt="ParadisePag" class="integration-logo">
-      </div>
-      <div class="integration-body">
-        <h3>ParadisePag</h3>
-        <p>Gateway confiável e rápido, ideal para campanhas diretas.</p>
-        <button class="btn-primary">Acessar</button>
-      </div>
+    <div class="api-card">
+      <img src="https://i.ibb.co/TLvgdVJ/paradisepag.png" alt="ParadisePag" class="api-logo">
+      <button class="btn-access">Acessar</button>
     </div>
 
     <!-- OASYFY -->
-    <div class="integration-card">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/MpZ3c8m/oasyfy.png" alt="OasyFy" class="integration-logo">
-      </div>
-      <div class="integration-body">
-        <h3>OasyFy</h3>
-        <p>Integração simples e estável com suporte a QR Code dinâmico.</p>
-        <button class="btn-primary">Acessar</button>
-      </div>
+    <div class="api-card">
+      <img src="https://i.ibb.co/MpZ3c8m/oasyfy.png" alt="OasyFy" class="api-logo">
+      <button class="btn-access">Acessar</button>
     </div>
 
     <!-- PUSHINPAY -->
-    <div class="integration-card">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/gJ2vHtH/pushinpay.png" alt="PushinPay" class="integration-logo">
-      </div>
-      <div class="integration-body">
-        <h3>PushinPay</h3>
-        <p>Provedor flexível para automação de cobranças e bots.</p>
-        <button class="btn-primary">Acessar</button>
-      </div>
+    <div class="api-card">
+      <img src="https://i.ibb.co/gJ2vHtH/pushinpay.png" alt="PushinPay" class="api-logo">
+      <button class="btn-access">Acessar</button>
     </div>
 
     <!-- SYNC PAY -->
-    <div class="integration-card">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/Wkmpmfn/syncpay.png" alt="Sync Pay" class="integration-logo">
-      </div>
-      <div class="integration-body">
-        <h3>Sync Pay</h3>
-        <p>Integração rápida para vendas automáticas via PIX.</p>
-        <button class="btn-primary">Acessar</button>
-      </div>
+    <div class="api-card">
+      <img src="https://i.ibb.co/Wkmpmfn/syncpay.png" alt="Sync Pay" class="api-logo">
+      <button class="btn-access">Acessar</button>
     </div>
 
     <!-- HOOPAY -->
-    <div class="integration-card">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/jvYkkwm/hoopay.png" alt="Hoopay" class="integration-logo">
-      </div>
-      <div class="integration-body">
-        <h3>Hoopay</h3>
-        <p>Pagamentos inteligentes com acompanhamento em tempo real.</p>
-        <button class="btn-primary">Acessar</button>
-      </div>
+    <div class="api-card">
+      <img src="https://i.ibb.co/jvYkkwm/hoopay.png" alt="Hoopay" class="api-logo">
+      <button class="btn-access">Acessar</button>
     </div>
 
-    <!-- ZEROONEPAY (Em breve) -->
-    <div class="integration-card soon">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/xXW6yVy/zeroone.png" alt="ZeroOnePay" class="integration-logo">
-        <span class="tag soon-tag">Em breve</span>
-      </div>
-      <div class="integration-body">
-        <h3>ZeroOnePay</h3>
-        <p>Integração avançada para automações personalizadas.</p>
-        <button class="btn-disabled" disabled>Em breve</button>
-      </div>
+    <!-- ZEROONEPAY -->
+    <div class="api-card soon">
+      <img src="https://i.ibb.co/xXW6yVy/zeroone.png" alt="ZeroOnePay" class="api-logo">
+      <div class="soon-badge">EM BREVE</div>
+      <button class="btn-disabled" disabled>Em breve</button>
     </div>
 
-    <!-- HORSEPAY (Em breve) -->
-    <div class="integration-card soon">
-      <div class="integration-top">
-        <img src="https://i.ibb.co/x1bfG8L/horsepay.png" alt="HorsePay" class="integration-logo">
-        <span class="tag soon-tag">Em breve</span>
-      </div>
-      <div class="integration-body">
-        <h3>HorsePay</h3>
-        <p>Nova solução de pagamentos estável e de alta performance.</p>
-        <button class="btn-disabled" disabled>Em breve</button>
-      </div>
+    <!-- HORSEPAY -->
+    <div class="api-card soon">
+      <img src="https://i.ibb.co/x1bfG8L/horsepay.png" alt="HorsePay" class="api-logo">
+      <div class="soon-badge">EM BREVE</div>
+      <button class="btn-disabled" disabled>Em breve</button>
     </div>
 
   </div>
@@ -112,99 +68,126 @@
 
 <style>
   html,body{
-    margin:0;padding:0;background:#0a0a0a;color:#fff;
-    font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;
+    background:#0a0a0a;
+    color:#fff;
+    font-family:'Inter',sans-serif;
+    margin:0;padding:0;
+    -webkit-font-smoothing:antialiased;
   }
-  *{box-sizing:border-box;}::-webkit-scrollbar{display:none!important;}
+  *{box-sizing:border-box;}::-webkit-scrollbar{display:none;}
 
-  .integrations-page{
-    padding:60px 40px 100px 40px;
-    transform:translateX(-38px); /* mesma centralização da TigerFy */
-  }
-
-  .integrations-header h1{
-    color:#ffcc00;font-size:2rem;margin:0 0 8px 0;
-  }
-  .integrations-header p{
-    color:#b4b4b4;margin:0 0 35px 0;
+  .api-pix-page{
+    padding:60px 40px 120px 40px;
+    transform:translateX(-38px);
   }
 
-  .integrations-grid{
+  .api-header h1{
+    color:#ffcc00;
+    font-size:2rem;
+    margin:0 0 8px 0;
+  }
+
+  .api-header p{
+    color:#b4b4b4;
+    margin:0 0 35px 0;
+  }
+
+  .api-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:25px;
   }
 
-  .integration-card{
+  .api-card{
     background:rgba(255,255,255,0.03);
     border:1px solid rgba(255,204,0,0.1);
     border-radius:14px;
     padding:25px;
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
     transition:.25s ease;
+    position:relative;
   }
 
-  .integration-card:hover{
+  .api-card:hover{
     background:rgba(255,204,0,0.05);
     box-shadow:0 0 15px rgba(255,204,0,0.25);
     transform:translateY(-3px);
   }
 
-  .integration-top{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:15px;
+  .api-logo{
+    width:65px;
+    height:65px;
+    object-fit:contain;
+    margin-bottom:20px;
+    border-radius:10px;
+    background:#111;
+    padding:6px;
   }
 
-  .integration-logo{
-    width:50px;height:50px;border-radius:10px;
-    background:#111;padding:6px;object-fit:contain;
-  }
-
-  .integration-body h3{
-    color:#fff;font-size:1rem;margin:0 0 6px 0;
-  }
-
-  .integration-body p{
-    color:#b4b4b4;font-size:.9rem;margin:0 0 18px 0;
-  }
-
-  .btn-primary{
+  .btn-access{
     background:linear-gradient(90deg,#ffcc00,#d4a100);
-    border:none;padding:8px 18px;border-radius:8px;
-    color:#000;font-weight:600;cursor:pointer;
-    transition:filter .25s;
+    border:none;
+    border-radius:8px;
+    padding:8px 18px;
+    color:#000;
+    font-weight:600;
+    cursor:pointer;
+    transition:filter .3s;
   }
-
-  .btn-primary:hover{filter:brightness(1.1);}
+  .btn-access:hover{filter:brightness(1.1);}
 
   .btn-disabled{
     background:rgba(255,255,255,0.07);
-    color:#777;border:none;padding:8px 18px;
-    border-radius:8px;cursor:not-allowed;
-  }
-
-  .tag{
-    font-size:.75rem;
-    padding:4px 10px;
+    color:#777;
+    border:none;
     border-radius:8px;
-    text-transform:uppercase;
-    font-weight:600;
-    color:#ffcc00;
-    background:rgba(255,204,0,0.15);
+    padding:8px 18px;
+    cursor:not-allowed;
   }
 
-  .highlight{
-    background:linear-gradient(90deg,#ffcc00,#d4a100);
-    color:#000;
-  }
-
-  .soon-tag{
+  .soon-badge{
+    position:absolute;
+    top:10px;right:12px;
     background:rgba(255,255,255,0.08);
     color:#999;
+    font-size:.7rem;
+    padding:4px 10px;
+    border-radius:6px;
+    text-transform:uppercase;
   }
 
+  .badge-top1{
+    position:absolute;
+    top:10px;right:12px;
+    background:linear-gradient(90deg,#ffcc00,#d4a100);
+    color:#000;
+    font-weight:700;
+    font-size:.75rem;
+    border-radius:8px;
+    padding:5px 10px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    animation:pulse 2s infinite;
+  }
+
+  .fire{animation:flame 1s infinite alternate;}
+
+  @keyframes flame{
+    from{transform:scale(1);}
+    to{transform:scale(1.3) rotate(5deg);}
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 10px rgba(255,204,0,0.5);}
+    50%{box-shadow:0 0 20px rgba(255,204,0,0.9);}
+    100%{box-shadow:0 0 10px rgba(255,204,0,0.5);}
+  }
+
+  .top1{border:1px solid rgba(255,204,0,0.3);}
   .soon{opacity:0.8;}
   .soon:hover{transform:none;box-shadow:none;background:rgba(255,255,255,0.03);}
 </style>
