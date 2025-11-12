@@ -118,7 +118,9 @@ body {
   gap: 22px;
 }
 
+/* CARD */
 .gateway-card {
+  position: relative;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
   border-radius: 16px;
@@ -127,18 +129,32 @@ body {
   justify-content: space-between;
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: box-shadow .3s ease, border .3s ease;  /* sem translate aqui */
-  height: 130px; /* altura fixa p/ não variar quando ativa */
+  overflow: hidden;
+  height: 130px;
+  transition: border .3s ease, background .3s ease;
 }
+
+/* brilho interno fixo (sem empurrar nada) */
+.gateway-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: inset 0 0 25px rgba(255, 204, 0, 0.15), 0 0 20px rgba(255, 204, 0, 0.25);
+  transition: opacity 0.3s ease;
+}
+.gateway-card.active::before {
+  opacity: 1;
+}
+
 .gateway-card.active {
   border: 1px solid rgba(255, 204, 0, 0.6);
-  /* brilho sem deslocar */
-  box-shadow: inset 0 0 18px rgba(255, 204, 0, 0.15), 0 0 18px rgba(255, 204, 0, 0.25);
-  /* REMOVIDO: transform: translateY(-2px); */
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .left { display: flex; align-items: center; gap: 18px; }
-
 .logo-box {
   width: 48px; height: 48px;
   background: rgba(255,255,255,0.08);
@@ -148,7 +164,6 @@ body {
   font-size: 0.75rem;
   color: rgba(255,255,255,0.4);
 }
-
 .gateway-info { display: flex; flex-direction: column; gap: 4px; }
 
 .top-line {
@@ -163,7 +178,6 @@ body {
   gap: 10px;
   margin-top: 2px;
 }
-
 .method {
   font-size: 0.85rem;
   color: #aaa;
@@ -172,7 +186,7 @@ body {
   color: #ffcc00;
   font-size: 0.85rem;
   text-decoration: none;
-  transition: color .3s ease;
+  transition: all .3s ease;
 }
 .taxa:hover { color: #ffe680; }
 
@@ -221,8 +235,8 @@ body {
   font-size: 0.85rem;
   cursor: pointer;
   backdrop-filter: blur(16px);
-  transition: all .25s ease;
-  width: 160px; /* todos iguais */
+  transition: all .3s ease;
+  width: 160px;
   text-align: center;
 }
 .btn.glass:hover {
@@ -240,4 +254,3 @@ body {
   cursor: not-allowed;
 }
 </style>
-
