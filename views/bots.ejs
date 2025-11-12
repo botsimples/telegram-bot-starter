@@ -161,16 +161,10 @@
   #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;margin-top:10px;}
   #roiResult p{margin:6px 0;}
 
-/* 🔥 animação de abertura suave (sem deslocar layout) */
-@keyframes pageFadeInSoft {
-  0% {
-    opacity: 0;
-    filter: blur(8px);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(0);
-  }
+/* 🔥 Fade rápido e fluido — sem blur, sem deslocamento */
+@keyframes pageFadeQuick {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 body,
@@ -180,8 +174,8 @@ main,
 .journey,
 .api-pix,
 .offers-page {
-  animation: pageFadeInSoft .5s ease-out forwards;
-  will-change: opacity, filter;
+  animation: pageFadeQuick .25s ease-in forwards;
+  will-change: opacity;
 }
 
 </style>
