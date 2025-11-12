@@ -56,9 +56,9 @@
   <!-- 🔥 Gráfico de Status do PIX -->
   <section class="pix-status">
     <h2>
-      <svg xmlns="http://www.w3.org/2000/svg" class="chart-icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#ffcc00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="#ffcc00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chart-icon">
         <path d="M3 3v18h18"/>
-        <path class="chart-line" d="M5 14l4-4 4 3 6-6"/>
+        <path d="M5 14l4-4 4 3 6-6"/>
         <circle cx="5" cy="14" r="1.5" fill="#ffcc00">
           <animate attributeName="r" values="1.5;3;1.5" dur="1.6s" repeatCount="indefinite"/>
         </circle>
@@ -143,7 +143,7 @@ function openTokenModal(gateway){
     fields.appendChild(inputDiv);
   });
 
-  modal.style.display = "flex"; // força o render antes da animação
+  modal.style.display = "flex";
   requestAnimationFrame(() => modal.classList.add('visible'));
   modal.classList.remove('hidden');
 }
@@ -154,8 +154,8 @@ function closeTokenModal(){
   modal.style.pointerEvents = 'none';
   setTimeout(()=>{
     modal.style.display = "none";
-    modal.style.pointerEvents = 'auto';
     modal.classList.add('hidden');
+    modal.style.pointerEvents = 'auto';
   },300);
 }
 
@@ -184,10 +184,25 @@ window.addEventListener("load", () => {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          titleColor: '#ffcc00',
+          bodyColor: '#fff',
+          borderColor: 'rgba(255,204,0,0.2)',
+          borderWidth: 1
+        }
+      },
       scales: {
-        x: { ticks: { color: '#ccc', font: { size: 12 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
-        y: { ticks: { color: '#ccc', font: { size: 12 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        x: {
+          ticks: { color: '#ccc', font: { size: 12 } },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        },
+        y: {
+          ticks: { color: '#ccc', font: { size: 12 } },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        }
       }
     }
   });
@@ -199,12 +214,8 @@ window.addEventListener("load", () => {
 .api-pix h1 { color: #ffcc00; font-size: 1.8rem; margin-bottom: 6px; }
 .api-pix p { color: #b3b3b3; font-size: 1rem; margin: 0; }
 
-/* ícone animado */
 .chart-icon { vertical-align: middle; margin-right: 8px; }
-.chart-line { stroke-dasharray: 60; stroke-dashoffset: 60; animation: drawLine 2s ease forwards infinite alternate; }
-@keyframes drawLine { to { stroke-dashoffset: 0; } }
 
-/* modal fix */
 .modal.hidden { display: none; opacity: 0; }
 .modal.visible { display: flex; opacity: 1; transition: opacity .3s ease; }
 .modal {
@@ -215,14 +226,5 @@ window.addEventListener("load", () => {
   align-items: center;
   justify-content: center;
   z-index: 999;
-}
-.modal-content {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
-  padding: 28px;
-  width: 400px;
-  box-shadow: 0 0 25px rgba(255,204,0,0.15);
-  animation: fadeIn .3s ease;
 }
 </style>
