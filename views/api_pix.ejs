@@ -1,143 +1,79 @@
 <%- include('partials/visual_hottrack') %>
 
-<main class="api-pix-page">
-  <header class="api-header">
+<main class="api-pix">
+  <header>
     <h1>API PIX</h1>
-    <p>Integre gateways de pagamento ao TigerFy com facilidade e estilo.</p>
+    <p>Integre gateways de pagamento ao TigerFy com praticidade e estilo.</p>
   </header>
 
-  <div class="gateway-container">
+  <!-- Gateways Disponíveis -->
+  <section>
+    <h2 class="category-title">🟡 Gateways disponíveis</h2>
 
-    <!-- GATEWAY MODEL -->
-    <div class="gateway-card top1" data-gateway="WiinPay">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/VNDsN1T/wiinpay.png" alt="WiinPay" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>WiinPay <span class="badge">🔥 TOP 1</span></h3>
-          <p>Integração oficial com suporte total ao PIX e automações.</p>
+    <% const gateways = [
+      { nome: 'WiinPay', desc: 'Integração oficial com suporte total ao PIX e automações.', top: true },
+      { nome: 'ParadisePag', desc: 'Gateway confiável e rápido, ideal para campanhas diretas.' },
+      { nome: 'OasyFy', desc: 'Integração simples e estável com suporte a QR Code dinâmico.' },
+      { nome: 'PushinPay', desc: 'Provedor flexível para automação de cobranças e bots.' },
+      { nome: 'SyncPay', desc: 'Integração rápida para vendas automáticas via PIX.' },
+      { nome: 'Hoopay', desc: 'Pagamentos inteligentes com acompanhamento em tempo real.' },
+    ]; %>
+
+    <% gateways.forEach(g => { %>
+      <div class="gateway-card" data-name="<%= g.nome %>">
+        <div class="left">
+          <img src="https://i.ibb.co/vYp9K6L/logo-placeholder.png" alt="<%= g.nome %>">
+          <div class="info">
+            <h3>
+              <%= g.nome %> 
+              <% if (g.top) { %><span class="top-badge">🔥 TOP 1</span><% } %>
+            </h3>
+            <p><%= g.desc %></p>
+          </div>
+        </div>
+        <div class="right">
+          <button onclick="openModal('<%= g.nome %>')">Integrar</button>
+          <label class="switch">
+            <input type="checkbox" onchange="activateGateway(this)">
+            <span class="slider"></span>
+          </label>
         </div>
       </div>
-      <div class="gateway-right">
-        <button class="btn-integrar" onclick="openGatewayModal('WiinPay')">Integrar</button>
-        <label class="switch">
-          <input type="checkbox" onchange="activateGateway('WiinPay', this)">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
+    <% }) %>
+  </section>
 
-    <div class="gateway-card" data-gateway="ParadisePag">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/TLvgdVJ/paradisepag.png" alt="ParadisePag" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>ParadisePag</h3>
-          <p>Gateway confiável e rápido, ideal para campanhas diretas.</p>
+  <!-- Gateways em breve -->
+  <section>
+    <h2 class="category-title">⚫ Em breve</h2>
+    <div class="gateway-card soon">
+      <div class="left">
+        <img src="https://i.ibb.co/xXW6yVy/zeroone.png" alt="ZeroOnePay">
+        <div class="info">
+          <h3>ZeroOnePay</h3>
+          <p>Gateway em desenvolvimento com recursos premium.</p>
         </div>
       </div>
-      <div class="gateway-right">
-        <button class="btn-integrar" onclick="openGatewayModal('ParadisePag')">Integrar</button>
-        <label class="switch">
-          <input type="checkbox" onchange="activateGateway('ParadisePag', this)">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="gateway-card" data-gateway="OasyFy">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/MpZ3c8m/oasyfy.png" alt="OasyFy" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>OasyFy</h3>
-          <p>Integração simples e estável com suporte a QR Code dinâmico.</p>
-        </div>
-      </div>
-      <div class="gateway-right">
-        <button class="btn-integrar" onclick="openGatewayModal('OasyFy')">Integrar</button>
-        <label class="switch">
-          <input type="checkbox" onchange="activateGateway('OasyFy', this)">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="gateway-card" data-gateway="PushinPay">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/gJ2vHtH/pushinpay.png" alt="PushinPay" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>PushinPay</h3>
-          <p>Provedor flexível para automação de cobranças e bots.</p>
-        </div>
-      </div>
-      <div class="gateway-right">
-        <button class="btn-integrar" onclick="openGatewayModal('PushinPay')">Integrar</button>
-        <label class="switch">
-          <input type="checkbox" onchange="activateGateway('PushinPay', this)">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="gateway-card" data-gateway="SyncPay">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/Wkmpmfn/syncpay.png" alt="SyncPay" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>SyncPay</h3>
-          <p>Integração rápida para vendas automáticas via PIX.</p>
-        </div>
-      </div>
-      <div class="gateway-right">
-        <button class="btn-integrar" onclick="openGatewayModal('SyncPay')">Integrar</button>
-        <label class="switch">
-          <input type="checkbox" onchange="activateGateway('SyncPay', this)">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="gateway-card" data-gateway="Hoopay">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/jvYkkwm/hoopay.png" alt="Hoopay" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>Hoopay</h3>
-          <p>Pagamentos inteligentes com acompanhamento em tempo real.</p>
-        </div>
-      </div>
-      <div class="gateway-right">
-        <button class="btn-integrar" onclick="openGatewayModal('Hoopay')">Integrar</button>
-        <label class="switch">
-          <input type="checkbox" onchange="activateGateway('Hoopay', this)">
-          <span class="slider"></span>
-        </label>
-      </div>
+      <button class="disabled">Em breve</button>
     </div>
 
     <div class="gateway-card soon">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/xXW6yVy/zeroone.png" alt="ZeroOnePay" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>ZeroOnePay <span class="soon-tag">Em breve</span></h3>
+      <div class="left">
+        <img src="https://i.ibb.co/x1bfG8L/horsepay.png" alt="HorsePay">
+        <div class="info">
+          <h3>HorsePay</h3>
+          <p>Nova integração exclusiva com suporte avançado.</p>
         </div>
       </div>
-      <button class="btn-disabled">Em breve</button>
+      <button class="disabled">Em breve</button>
     </div>
-
-    <div class="gateway-card soon">
-      <div class="gateway-left">
-        <img src="https://i.ibb.co/x1bfG8L/horsepay.png" alt="HorsePay" class="gateway-logo">
-        <div class="gateway-info">
-          <h3>HorsePay <span class="soon-tag">Em breve</span></h3>
-        </div>
-      </div>
-      <button class="btn-disabled">Em breve</button>
-    </div>
-  </div>
+  </section>
 </main>
 
 <!-- MODAL -->
-<div id="gatewayModal" class="modal-overlay" style="display:none;">
-  <div class="modal-content">
-    <span class="close" onclick="closeGatewayModal()">&times;</span>
-    <h2 id="gatewayTitle">Integração</h2>
+<div id="integrationModal" class="modal-overlay" style="display:none;">
+  <div class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modalTitle">Integração</h2>
     <form>
       <label>Token API (obrigatório)</label>
       <input type="text" placeholder="Insira o Token API">
@@ -145,110 +81,163 @@
       <input type="text" placeholder="Insira o Client ID">
       <label>Client Secret (opcional)</label>
       <input type="text" placeholder="Insira o Client Secret">
-      <button class="btn-save">Salvar Integração</button>
+      <button type="button" class="save">Salvar Integração</button>
     </form>
   </div>
 </div>
 
 <script>
-function openGatewayModal(name){
-  document.getElementById('gatewayTitle').innerText="Integração • "+name;
-  document.getElementById('gatewayModal').style.display='flex';
+function activateGateway(el){
+  document.querySelectorAll('.switch input').forEach(i=>{ if(i!==el) i.checked=false; });
+  document.querySelectorAll('.gateway-card').forEach(c=>c.classList.remove('active'));
+  if(el.checked) el.closest('.gateway-card').classList.add('active');
 }
-function closeGatewayModal(){
-  document.getElementById('gatewayModal').style.display='none';
+function openModal(name){
+  document.getElementById('integrationModal').style.display='flex';
+  document.getElementById('modalTitle').innerText='Integração • '+name;
 }
-function activateGateway(gateway,checkbox){
-  document.querySelectorAll('.switch input').forEach(s=>{if(s!==checkbox)s.checked=false;});
-  document.querySelectorAll('.gateway-card').forEach(card=>{
-    card.classList.remove('active');
-    if(card.dataset.gateway===gateway && checkbox.checked)card.classList.add('active');
-  });
-}
+function closeModal(){ document.getElementById('integrationModal').style.display='none'; }
 </script>
 
 <style>
-html,body{
-  margin:0;padding:0;background:#0a0a0a;color:#fff;font-family:'Inter',sans-serif;
+body {
+  background: #0a0a0a;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
 }
-.api-header{width:85%;max-width:1200px;margin:40px auto 20px;}
-.api-header h1{color:#ffcc00;margin-bottom:8px;}
-.api-header p{color:#b4b4b4;}
-.gateway-container{
-  width:85%;max-width:1200px;margin:0 auto;
-  display:flex;flex-direction:column;gap:16px;
+.api-pix header {
+  width: 85%;
+  margin: 40px auto 20px;
 }
-.gateway-card{
-  display:flex;justify-content:space-between;align-items:center;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:12px;padding:16px 24px;
-  backdrop-filter:blur(12px);
-  transition:all .3s ease;
+.api-pix h1 {
+  color: #ffcc00;
+  margin-bottom: 6px;
 }
-.gateway-card:hover{
-  background:rgba(255,255,255,0.06);
-  transform:translateY(-2px);
+.api-pix p {
+  color: #b4b4b4;
+  margin: 0;
 }
-.gateway-card.active{
-  border:1px solid #ffcc00;
-  box-shadow:0 0 20px rgba(255,204,0,0.35);
-  animation:pulse 2s infinite ease-in-out;
+.category-title {
+  width: 85%;
+  margin: 40px auto 15px;
+  color: #ffcc00;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 12px rgba(255,204,0,0.25);}
-  50%{box-shadow:0 0 24px rgba(255,204,0,0.5);}
+.gateway-card {
+  width: 85%;
+  margin: 10px auto;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .3s;
 }
-.gateway-left{display:flex;align-items:center;gap:16px;}
-.gateway-logo{width:44px;height:44px;border-radius:8px;background:#111;padding:4px;}
-.gateway-info h3{margin:0;color:#fff;font-size:1rem;font-weight:600;}
-.gateway-info p{margin:4px 0 0;color:#b4b4b4;font-size:.88rem;}
-.badge{
-  background:linear-gradient(90deg,#ffcc00,#d4a100);
-  color:#000;font-size:.7rem;font-weight:700;padding:2px 6px;
-  border-radius:6px;margin-left:4px;
+.gateway-card.active {
+  box-shadow: 0 0 15px rgba(255,204,0,0.4);
+  border-color: #ffcc00;
+  animation: glow 2s infinite ease-in-out;
 }
-.gateway-right{display:flex;align-items:center;gap:12px;}
-.btn-integrar{
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.1);
-  color:#fff;border-radius:10px;padding:8px 18px;
-  cursor:pointer;font-weight:600;transition:all .3s;
+@keyframes glow {
+  0%,100% { box-shadow: 0 0 10px rgba(255,204,0,0.2); }
+  50% { box-shadow: 0 0 20px rgba(255,204,0,0.5); }
 }
-.btn-integrar:hover{background:rgba(255,255,255,0.12);}
-.btn-disabled{
-  background:rgba(255,255,255,0.04);color:#999;border:none;border-radius:8px;
-  padding:8px 18px;
+.gateway-card:hover { background: #161616; }
+.left { display: flex; align-items: center; gap: 16px; }
+.left img {
+  width: 42px; height: 42px; border-radius: 8px;
+  background: rgba(255,255,255,0.04);
 }
-.switch{position:relative;display:inline-block;width:38px;height:20px;}
-.switch input{opacity:0;width:0;height:0;}
-.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
-  background:rgba(255,255,255,0.1);transition:.4s;border-radius:34px;}
-.slider:before{position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;background-color:#999;transition:.4s;border-radius:50%;}
-input:checked + .slider{background:linear-gradient(90deg,#ffcc00,#d4a100);}
-input:checked + .slider:before{transform:translateX(18px);background:#000;}
-.modal-overlay{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(8px);z-index:1000;
+.info h3 {
+  margin: 0; font-size: 1rem; font-weight: 600;
 }
-.modal-content{
-  background:rgba(20,20,20,0.9);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:16px;padding:35px 40px;width:95%;max-width:460px;
+.info p {
+  margin: 4px 0 0; color: #aaa; font-size: 0.9rem;
 }
-.close{position:absolute;top:10px;right:18px;font-size:1.8rem;cursor:pointer;color:#ffcc00;}
-form label{display:block;color:#ffcc00;margin-top:10px;font-size:.9rem;}
-form input{
-  width:100%;padding:10px;margin-top:5px;border-radius:8px;
-  border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);
-  color:#fff;
+.top-badge {
+  background: linear-gradient(90deg,#ffcc00,#d4a100);
+  color: #000;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  margin-left: 6px;
 }
-.btn-save{
-  margin-top:20px;width:100%;
-  background:linear-gradient(90deg,#ffcc00,#d4a100);
-  color:#000;font-weight:700;border:none;border-radius:10px;
-  padding:12px;cursor:pointer;transition:filter .3s;
+.right {
+  display: flex; align-items: center; gap: 10px;
 }
-.btn-save:hover{filter:brightness(1.1);}
+button {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .3s;
+}
+button:hover { background: rgba(255,255,255,0.1); }
+button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.switch {
+  position: relative; display: inline-block; width: 36px; height: 20px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px;
+}
+.slider:before {
+  position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+  background: #999; transition: .4s; border-radius: 50%;
+}
+input:checked + .slider { background: linear-gradient(90deg,#ffcc00,#d4a100); }
+input:checked + .slider:before { transform: translateX(16px); background: #000; }
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+.modal {
+  background: #121212;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 30px;
+  width: 90%; max-width: 450px;
+  position: relative;
+}
+.close {
+  position: absolute; right: 16px; top: 10px;
+  font-size: 1.8rem; color: #ffcc00; cursor: pointer;
+}
+.modal h2 {
+  margin-bottom: 15px;
+  color: #ffcc00;
+}
+.modal label {
+  font-size: 0.9rem; margin-top: 10px;
+}
+.modal input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: #fff;
+  padding: 10px;
+  margin-top: 4px;
+}
+.save {
+  width: 100%;
+  background: linear-gradient(90deg,#ffcc00,#d4a100);
+  color: #000;
+  margin-top: 20px;
+  font-weight: 700;
+}
 </style>
