@@ -23,10 +23,12 @@
           <div class="gateway-info">
             <div class="top-line">
               <h3><%= g.nome %> <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %></h3>
-              <% if (g.ativo) { %><span class="status">🟢 Ativo</span><% } %>
+              <% if (g.ativo) { %><span class="status">● Ativo</span><% } %>
             </div>
             <div class="bottom-line">
               <span class="method">MÉTODO: API PIX</span>
+            </div>
+            <div class="taxa-line">
               <a href="<%= g.link %>" target="_blank" class="taxa">Taxa: <%= g.taxa %></a>
             </div>
           </div>
@@ -34,14 +36,14 @@
 
         <div class="right">
           <% if (!g.soon) { %>
-            <button class="btn token" onclick="openTokenModal('<%= g.nome %>')">
+            <button class="btn glass token" onclick="openTokenModal('<%= g.nome %>')">
               <%= g.temToken ? 'Alterar Token' : 'Adicionar Token' %>
             </button>
-            <button class="btn toggle <%= g.ativo ? 'on' : '' %>" onclick="toggleGateway(this)">
+            <button class="btn glass toggle <%= g.ativo ? 'on' : '' %>" onclick="toggleGateway(this)">
               <%= g.ativo ? 'Desativar' : 'Ativar Gateway' %>
             </button>
           <% } else { %>
-            <button class="btn disabled">Em breve</button>
+            <button class="btn glass disabled">Em breve</button>
           <% } %>
         </div>
       </div>
@@ -74,7 +76,7 @@ function toggleGateway(el){
     const topLine = card.querySelector('.top-line');
     const status = document.createElement('span');
     status.className = 'status';
-    status.textContent = '🟢 Ativo';
+    status.textContent = '● Ativo';
     topLine.appendChild(status);
   }
 }
@@ -116,44 +118,43 @@ body {
 }
 
 .gateway-card {
-  background: #121212;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 22px 26px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+  border-radius: 16px;
+  padding: 24px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all .3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 .gateway-card.active {
-  border-color: #ffcc00;
-  box-shadow: 0 0 20px rgba(255,204,0,0.3);
+  border: 1px solid rgba(255, 204, 0, 0.6);
+  box-shadow: 0 0 18px rgba(255, 204, 0, 0.3);
+  transform: translateY(-2px);
 }
-.left { display: flex; align-items: center; gap: 16px; }
+.left { display: flex; align-items: center; gap: 18px; }
 
 .logo-box {
-  width: 45px; height: 45px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
   display: flex; align-items: center; justify-content: center;
-}
-.logo-box::after {
-  content: "Logo";
-  color: rgba(255,255,255,0.3);
   font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
 }
+.gateway-info { display: flex; flex-direction: column; gap: 4px; }
 
-.gateway-info { display: flex; flex-direction: column; gap: 6px; }
 .top-line {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
-.bottom-line {
+.bottom-line, .taxa-line {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 .method {
   font-size: 0.85rem;
@@ -169,8 +170,17 @@ body {
 
 .status {
   font-size: 0.8rem;
-  color: #9fff6d;
-  font-weight: 600;
+  color: #ffcc00;
+  background: rgba(255, 204, 0, 0.1);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  animation: glowPulse 3s infinite ease-in-out;
+}
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 0 5px rgba(255,204,0,0.2); }
+  50% { box-shadow: 0 0 10px rgba(255,204,0,0.4); }
 }
 
 .badge {
@@ -189,32 +199,30 @@ body {
   align-items: flex-end;
 }
 
-.btn {
-  border: none;
-  outline: none;
-  font-weight: 600;
-  color: #000;
-  background: linear-gradient(90deg, #ffcc00, #b38a00);
-  border-radius: 6px;
-  padding: 7px 14px;
+.btn.glass {
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffcc00;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 500;
   font-size: 0.85rem;
   cursor: pointer;
+  backdrop-filter: blur(16px);
   transition: all .3s ease;
 }
-.btn:hover {
+.btn.glass:hover {
+  background: rgba(255, 204, 0, 0.08);
+  box-shadow: 0 0 10px rgba(255,204,0,0.2);
   transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(255,204,0,0.5);
 }
-.btn.on {
-  background: linear-gradient(90deg, #ffe066, #ffcc00);
-  color: #000;
+.btn.glass.on {
+  background: rgba(255, 204, 0, 0.12);
+  color: #fff;
+  border-color: rgba(255, 204, 0, 0.5);
 }
-.btn.token {
-  background: linear-gradient(90deg, #ffcc00, #ffae00);
-}
-.btn.disabled {
-  background: rgba(255,255,255,0.08);
-  color: #777;
+.btn.glass.disabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
 </style>
