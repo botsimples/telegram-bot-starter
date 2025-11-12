@@ -126,14 +126,17 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all .3s ease;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: box-shadow .3s ease, border .3s ease;  /* sem translate aqui */
+  height: 130px; /* altura fixa p/ não variar quando ativa */
 }
 .gateway-card.active {
   border: 1px solid rgba(255, 204, 0, 0.6);
-  box-shadow: 0 0 18px rgba(255, 204, 0, 0.3);
-  transform: translateY(-2px);
+  /* brilho sem deslocar */
+  box-shadow: inset 0 0 18px rgba(255, 204, 0, 0.15), 0 0 18px rgba(255, 204, 0, 0.25);
+  /* REMOVIDO: transform: translateY(-2px); */
 }
+
 .left { display: flex; align-items: center; gap: 18px; }
 
 .logo-box {
@@ -145,6 +148,7 @@ body {
   font-size: 0.75rem;
   color: rgba(255,255,255,0.4);
 }
+
 .gateway-info { display: flex; flex-direction: column; gap: 4px; }
 
 .top-line {
@@ -159,6 +163,7 @@ body {
   gap: 10px;
   margin-top: 2px;
 }
+
 .method {
   font-size: 0.85rem;
   color: #aaa;
@@ -167,7 +172,7 @@ body {
   color: #ffcc00;
   font-size: 0.85rem;
   text-decoration: none;
-  transition: all .3s ease;
+  transition: color .3s ease;
 }
 .taxa:hover { color: #ffe680; }
 
@@ -216,14 +221,14 @@ body {
   font-size: 0.85rem;
   cursor: pointer;
   backdrop-filter: blur(16px);
-  transition: all .3s ease;
+  transition: all .25s ease;
   width: 160px; /* todos iguais */
   text-align: center;
 }
 .btn.glass:hover {
   background: rgba(255, 204, 0, 0.08);
   box-shadow: 0 0 10px rgba(255,204,0,0.2);
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 .btn.glass.on {
   background: rgba(255, 204, 0, 0.12);
@@ -235,3 +240,4 @@ body {
   cursor: not-allowed;
 }
 </style>
+
