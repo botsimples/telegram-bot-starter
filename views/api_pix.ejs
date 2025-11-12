@@ -1,21 +1,19 @@
 <%- include('partials/visual_hottrack') %>
 
 <main class="api-pix">
-  <div class="tiger-header">
-    <div>
-      <h1>Integrações de Gateways</h1>
-      <p>Escolha, ative e gerencie seus gateways de pagamento via API PIX.</p>
-    </div>
-  </div>
+  <header>
+    <h1>Integrações de Gateways</h1>
+    <p>Escolha, ative e gerencie seus gateways de pagamento via API PIX.</p>
+  </header>
 
   <section class="gateway-grid">
     <% const gateways = [
-      { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '4,99%', ativo: true, temToken: true, top: true },
-      { nome: 'ParadisePag', link: 'https://multi.paradisepags.com/', taxa: '1 Real', ativo: false },
-      { nome: 'OasyFy', link: 'https://oasyfy.com/', taxa: '2,90%', ativo: false },
-      { nome: 'PushinPay', link: 'https://pushinpay.com.br/', taxa: '0,35 Centavos', ativo: false },
-      { nome: 'SyncPay V2', link: 'https://syncpayments.com.br/', taxa: '0,35 Centavos', ativo: false },
-      { nome: 'Hoopay', link: '#', taxa: '1,85%', ativo: false },
+      { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '4,99%', ativo: true, temToken: true, top: true, img: '/img/gateways/wiinpay.png' },
+      { nome: 'ParadisePag', link: 'https://multi.paradisepags.com/', taxa: '1 Real', ativo: false, img: '/img/gateways/paradisepag.png' },
+      { nome: 'OasyFy', link: 'https://oasyfy.com/', taxa: '2,90%', ativo: false, img: '/img/gateways/oasyfy.png' },
+      { nome: 'PushinPay', link: 'https://pushinpay.com.br/', taxa: '0,35 Centavos', ativo: false, img: '/img/gateways/pushinpay.png' },
+      { nome: 'SyncPay V2', link: 'https://syncpayments.com.br/', taxa: '0,35 Centavos', ativo: false, img: '/img/gateways/syncpayv2.png' },
+      { nome: 'Hoopay', link: '#', taxa: '1,85%', ativo: false, img: '/img/gateways/hoopay.png' },
       { nome: 'ZeroOnePay', link: '#', taxa: '—', soon: true },
       { nome: 'HorsePay', link: '#', taxa: '—', soon: true }
     ]; %>
@@ -23,7 +21,11 @@
     <% gateways.forEach(g => { %>
       <div class="gateway-card <%= g.soon ? 'soon' : '' %> <%= g.ativo ? 'active' : '' %>">
         <div class="left">
-          <div class="logo-box"></div>
+          <div class="logo-box">
+            <% if (g.img) { %>
+              <img src="<%= g.img %>" alt="<%= g.nome %> Logo" />
+            <% } %>
+          </div>
           <div class="gateway-info">
             <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %>
             <div class="top-line">
@@ -57,7 +59,7 @@
 </main>
 
 <!-- Modal -->
-<div id="tokenModal" class="modal">
+<div id="tokenModal" class="modal hidden">
   <div class="modal-content">
     <h2 id="modalTitle">Gerenciar Token</h2>
     <form id="tokenForm">
@@ -128,174 +130,154 @@ function openTokenModal(gateway){
     fields.appendChild(inputDiv);
   });
 
-  modal.classList.add('show');
-  document.body.classList.add('modal-open');
+  modal.classList.remove('hidden');
+  setTimeout(()=>modal.classList.add('visible'), 10);
 }
 
 function closeTokenModal(){
   const modal = document.getElementById('tokenModal');
-  modal.classList.remove('show');
-  document.body.classList.remove('modal-open');
+  modal.classList.remove('visible');
+  setTimeout(()=>modal.classList.add('hidden'), 300);
 }
 </script>
 
 <style>
-.tiger-header{
-  width:90%;
-  margin:40px auto 30px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
+.api-pix {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 60px 80px 100px 120px;
 }
-.tiger-header h1{color:#ffcc00;font-size:1.8rem;margin-bottom:5px;}
-.tiger-header p{color:#b3b3b3;margin:0;font-size:.95rem;}
+.api-pix header h1 { color: #ffcc00; font-size: 1.8rem; margin-bottom: 6px; }
+.api-pix header p { color: #b3b3b3; margin: 0 0 20px; }
 
-.gateway-grid{
-  width:90%;
-  margin:20px auto 60px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(420px,1fr));
-  gap:22px;
-}
-
-.gateway-card{
-  background:rgba(255,255,255,0.03);
-  backdrop-filter:blur(18px);
-  border-radius:16px;
-  padding:26px 28px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border:1px solid rgba(255,255,255,0.08);
-  height:140px;
-  transition:all .3s ease;
-  outline:2px solid transparent;
-  outline-offset:-2px;
-}
-.gateway-card.active{
-  border-color:rgba(255,204,0,0.5);
-  outline:2px solid rgba(255,204,0,0.35);
-  background:rgba(255,255,255,0.06);
-}
-.left{display:flex;align-items:center;gap:18px;}
-.logo-box{
-  width:48px;height:48px;
-  background:rgba(255,255,255,0.08);
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.15);
-}
-.gateway-info{position:relative;display:flex;flex-direction:column;gap:2px;}
-.gateway-info .badge{
-  position:absolute;
-  top:-23px; /* Ajustado: desceu 3px */
-  left:0;
-  background:#ffcc00;
-  color:#000;
-  padding:3px 8px;
-  border-radius:6px;
-  font-size:0.7rem;
-  font-weight:600;
-  box-shadow:0 2px 8px rgba(255,204,0,0.2);
-}
-.top-line{display:flex;align-items:center;gap:6px;margin-top:6px;}
-.status{
-  font-size:0.68rem;
-  color:#ffcc00;
-  background:rgba(255,204,0,0.08);
-  border:1px solid rgba(255,204,0,0.25);
-  padding:1px 6px 2px;
-  border-radius:4px;
-  line-height:1;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  transform:translateY(1px);
-}
-.method{font-size:0.85rem;color:#aaa;}
-.taxa{color:#ffcc00;font-size:0.85rem;text-decoration:none;}
-
-.right{display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
-.btn.glass{
-  border:1px solid rgba(255,255,255,0.15);
-  background:rgba(255,255,255,0.06);
-  color:#ffcc00;
-  border-radius:10px;
-  padding:10px 20px;
-  font-weight:500;
-  font-size:0.85rem;
-  cursor:pointer;
-  backdrop-filter:blur(16px);
-  transition:all .25s ease;
-  width:160px;
-}
-.btn.glass:hover{
-  background:rgba(255,204,0,0.08);
-  box-shadow:0 0 10px rgba(255,204,0,0.2);
-  transform:scale(1.03);
-}
-.btn.glass.on{
-  background:rgba(255,204,0,0.12);
-  color:#fff;
-  border-color:rgba(255,204,0,0.5);
+/* fundo pontilhado */
+#bgParticles {
+  position: fixed; inset: 0; z-index: 0;
+  background: #0a0a0a;
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
 
-/* ===== Modal ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(10px);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .25s ease;
-  z-index:999;
+/* grid */
+.gateway-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 22px;
 }
-.modal.show{
-  opacity:1;
-  pointer-events:all;
+
+/* cards */
+.gateway-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+  border-radius: 16px;
+  padding: 26px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 140px;
+  transition: all .3s ease;
+  position: relative;
 }
-.modal-content{
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:16px;
-  padding:28px;
-  width:400px;
-  box-shadow:0 0 25px rgba(255,204,0,0.15);
-  transform:scale(0.97);
-  animation:fadeIn .3s ease forwards;
+.gateway-card.active {
+  border-color: rgba(255, 204, 0, 0.5);
+  background: rgba(255, 255, 255, 0.06);
 }
-@keyframes fadeIn{
-  from{transform:scale(0.97);opacity:0;}
-  to{transform:scale(1);opacity:1;}
+
+/* logo */
+.logo-box {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
 }
-.modal-content h2{
-  margin-top:0;
-  color:#ffcc00;
-  font-size:1.2rem;
-  text-align:center;
+.logo-box img {
+  width: 36px; height: 36px; object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(255,204,0,0.3));
 }
-.field{margin:12px 0;display:flex;flex-direction:column;}
-.field label{font-size:0.85rem;color:#ccc;margin-bottom:4px;}
-.field input{
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.15);
-  border-radius:8px;
-  padding:8px 10px;
-  color:#fff;
+
+/* texto e badge */
+.gateway-info { position: relative; display: flex; flex-direction: column; gap: 2px; }
+.gateway-info .badge {
+  position: absolute; top: -19px; left: 0;
+  background: #ffcc00; color: #000;
+  padding: 2px 6px; border-radius: 5px;
+  font-size: 0.7rem; font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255,204,0,0.2);
 }
-.modal-actions{
-  margin-top:16px;
-  display:flex;justify-content:space-between;
+.top-line { display: flex; align-items: center; gap: 6px; }
+.status {
+  font-size: 0.7rem; color: #ffcc00;
+  background: rgba(255,204,0,0.08);
+  border: 1px solid rgba(255,204,0,0.25);
+  padding: 1px 6px; border-radius: 4px;
 }
-.btn.cancel{color:#bbb;}
-.btn.save{
-  background:rgba(255,204,0,0.1);
-  border-color:rgba(255,204,0,0.4);
-  color:#ffcc00;
+.method { font-size: 0.85rem; color: #aaa; }
+.taxa { color: #ffcc00; font-size: 0.85rem; text-decoration: none; }
+
+/* botões */
+.right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.btn.glass {
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: #ffcc00;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 160px;
+  transition: all .25s ease;
 }
-body.modal-open{overflow:hidden;}
+.btn.glass:hover {
+  background: rgba(255,204,0,0.08);
+  box-shadow: 0 0 10px rgba(255,204,0,0.2);
+}
+.btn.glass.on {
+  background: rgba(255,204,0,0.12);
+  color: #fff;
+  border-color: rgba(255,204,0,0.5);
+}
+
+/* modal */
+.modal.hidden { display: none; opacity: 0; }
+.modal.visible { display: flex; opacity: 1; }
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  align-items: center; justify-content: center;
+  z-index: 999;
+  transition: opacity .3s ease;
+}
+.modal-content {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 28px;
+  width: 400px;
+  box-shadow: 0 0 25px rgba(255,204,0,0.15);
+}
+.modal-content h2 {
+  margin-top: 0;
+  color: #ffcc00;
+  font-size: 1.2rem;
+  text-align: center;
+}
+.field { margin: 12px 0; display: flex; flex-direction: column; }
+.field label { font-size: 0.85rem; color: #ccc; margin-bottom: 4px; }
+.field input {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #fff;
+}
+.modal-actions { margin-top: 16px; display: flex; justify-content: space-between; }
+.btn.cancel { color: #bbb; }
+.btn.save { background: rgba(255,204,0,0.1); border-color: rgba(255,204,0,0.4); color: #ffcc00; }
 </style>
