@@ -56,7 +56,9 @@
   <!-- 🔥 Gráfico de Status do PIX -->
   <section class="pix-status">
     <h2>📊 Monitoramento de Status do Pix</h2>
-    <canvas id="pixIssuesChart"></canvas>
+    <div class="chart-wrapper">
+      <canvas id="pixIssuesChart"></canvas>
+    </div>
   </section>
 </main>
 
@@ -145,39 +147,50 @@ function closeTokenModal(){
 /* =============================
    Gráfico de status do PIX
 ============================= */
-const ctx = document.getElementById('pixIssuesChart').getContext('2d');
-const data = {
-  labels: ["04:00","07:00","10:00","13:00","16:00","19:00","22:00","01:00"],
-  datasets: [{
-    label: 'Problemas reportados',
-    data: [1,3,7,10,9,14,5,2],
-    fill: true,
-    backgroundColor: 'rgba(255, 204, 0, 0.25)',
-    borderColor: '#ffcc00',
-    borderWidth: 2,
-    tension: 0.4,
-    pointBackgroundColor: '#ffcc00'
-  }]
-};
-new Chart(ctx, {
-  type: 'line',
-  data: data,
-  options: {
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: true, backgroundColor: '#1c1c1c', titleColor: '#ffcc00', bodyColor: '#fff' }
-    },
-    scales: {
-      x: {
-        ticks: { color: '#ccc' },
-        grid: { color: 'rgba(255,255,255,0.05)' }
+window.addEventListener("load", () => {
+  const ctx = document.getElementById('pixIssuesChart').getContext('2d');
+  const data = {
+    labels: ["04:00","07:00","10:00","13:00","16:00","19:00","22:00","01:00"],
+    datasets: [{
+      label: 'Problemas reportados',
+      data: [1,3,7,10,9,14,5,2],
+      fill: true,
+      backgroundColor: 'rgba(255, 204, 0, 0.25)',
+      borderColor: '#ffcc00',
+      borderWidth: 2,
+      tension: 0.35,
+      pointBackgroundColor: '#ffcc00'
+    }]
+  };
+
+  new Chart(ctx, {
+    type: 'line',
+    data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          titleColor: '#ffcc00',
+          bodyColor: '#fff',
+          borderColor: 'rgba(255,204,0,0.2)',
+          borderWidth: 1
+        }
       },
-      y: {
-        ticks: { color: '#ccc' },
-        grid: { color: 'rgba(255,255,255,0.05)' }
+      scales: {
+        x: {
+          ticks: { color: '#ccc', font: { size: 12 } },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        },
+        y: {
+          ticks: { color: '#ccc', font: { size: 12 } },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        }
       }
     }
-  }
+  });
 });
 </script>
 
@@ -194,7 +207,6 @@ new Chart(ctx, {
   gap: 22px;
 }
 
-/* cards */
 .gateway-card {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
@@ -215,11 +227,7 @@ new Chart(ctx, {
   background: rgba(255, 255, 255, 0.06);
 }
 
-.left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
+.left { display: flex; align-items: center; gap: 18px; }
 .gateway-logo {
   width: 48px;
   height: 48px;
@@ -229,8 +237,7 @@ new Chart(ctx, {
   border: 1px solid rgba(255,255,255,0.1);
 }
 .logo-placeholder {
-  width: 48px;
-  height: 48px;
+  width: 48px; height: 48px;
   background: rgba(255,255,255,0.06);
   border-radius: 10px;
 }
@@ -242,7 +249,6 @@ new Chart(ctx, {
   gap: 3px;
 }
 
-/* 🔥 TOP 1 com efeito */
 .badge {
   position: absolute;
   top: -24px;
@@ -260,12 +266,7 @@ new Chart(ctx, {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 204, 0, 0.5) 0%,
-    rgba(255, 255, 255, 0.8) 50%,
-    rgba(255, 204, 0, 0.5) 100%
-  );
+  background: linear-gradient(120deg, rgba(255, 204, 0, 0.5) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 204, 0, 0.5) 100%);
   animation: fireFlow 2.8s linear infinite;
   filter: blur(3px);
   opacity: 0.6;
@@ -284,16 +285,9 @@ new Chart(ctx, {
   animation: flicker 1.6s ease-in-out infinite alternate;
   opacity: 0.7;
 }
-@keyframes flicker {
-  0% { opacity: 0.7; }
-  100% { opacity: 1; }
-}
+@keyframes flicker { 0% { opacity: 0.7; } 100% { opacity: 1; } }
 
-.top-line {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.top-line { display: flex; align-items: center; gap: 6px; }
 .status {
   font-size: 0.7rem;
   color: #ffcc00;
@@ -305,12 +299,7 @@ new Chart(ctx, {
 .method { font-size: 0.85rem; color: #aaa; }
 .taxa { color: #ffcc00; font-size: 0.85rem; text-decoration: none; }
 
-.right {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-end;
-}
+.right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
 .btn.glass {
   border: 1px solid rgba(255,255,255,0.15);
   background: rgba(255,255,255,0.06);
@@ -335,10 +324,11 @@ new Chart(ctx, {
   border-color: rgba(255,204,0,0.5);
 }
 
-/* gráfico */
+/* 🔥 gráfico */
 .pix-status {
-  width: 90%;
-  margin: 60px auto;
+  width: 100%;
+  max-width: 96%;
+  margin: 60px auto 80px;
   color: #ffcc00;
 }
 .pix-status h2 {
@@ -346,17 +336,17 @@ new Chart(ctx, {
   margin-bottom: 16px;
   text-shadow: 0 0 10px rgba(255,204,0,0.3);
 }
-#pixIssuesChart {
+.chart-wrapper {
   width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
+  height: 420px;
   background: rgba(255,255,255,0.03);
   border-radius: 14px;
-  padding: 20px;
+  padding: 20px 10px;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 0 20px rgba(255,204,0,0.08);
 }
+#pixIssuesChart { width: 100%; height: 100%; display: block; }
 
 /* modal */
 .modal.hidden { display: none; opacity: 0; }
@@ -386,11 +376,7 @@ new Chart(ctx, {
   font-size: 1.2rem;
   text-align: center;
 }
-.field {
-  margin: 12px 0;
-  display: flex;
-  flex-direction: column;
-}
+.field { margin: 12px 0; display: flex; flex-direction: column; }
 .field label { font-size: 0.85rem; color: #ccc; margin-bottom: 4px; }
 .field input {
   background: rgba(255,255,255,0.08);
@@ -399,11 +385,7 @@ new Chart(ctx, {
   padding: 8px 10px;
   color: #fff;
 }
-.modal-actions {
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
-}
+.modal-actions { margin-top: 16px; display: flex; justify-content: space-between; }
 .btn.cancel { color: #bbb; }
 .btn.save {
   background: rgba(255,204,0,0.1);
