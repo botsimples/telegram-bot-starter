@@ -8,30 +8,36 @@
 
   <section class="gateway-grid">
     <% const gateways = [
-      { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '1,89%', top: true },
-      { nome: 'ParadisePag', link: '#', taxa: '2,10%', top: false },
-      { nome: 'OasyFy', link: '#', taxa: '1,97%', top: false },
-      { nome: 'PushinPay', link: '#', taxa: '1,95%', top: false },
-      { nome: 'SyncPay', link: '#', taxa: '1,75%', top: false },
-      { nome: 'Hoopay', link: '#', taxa: '1,85%', top: false },
-      { nome: 'ZeroOnePay', link: '#', taxa: '—', top: false, soon: true },
-      { nome: 'HorsePay', link: '#', taxa: '—', top: false, soon: true }
+      { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '1,89%', ativo: true, temToken: true, top: true },
+      { nome: 'ParadisePag', link: '#', taxa: '2,10%', ativo: false },
+      { nome: 'OasyFy', link: '#', taxa: '1,97%', ativo: false },
+      { nome: 'PushinPay', link: '#', taxa: '1,95%', ativo: false },
+      { nome: 'SyncPay', link: '#', taxa: '1,75%', ativo: false },
+      { nome: 'Hoopay', link: '#', taxa: '1,85%', ativo: false },
+      { nome: 'ZeroOnePay', link: '#', taxa: '—', soon: true },
+      { nome: 'HorsePay', link: '#', taxa: '—', soon: true }
     ]; %>
 
     <% gateways.forEach(g => { %>
-      <div class="gateway-card <%= g.soon ? 'soon' : '' %>">
+      <div class="gateway-card <%= g.soon ? 'soon' : '' %> <%= g.ativo ? 'active' : '' %>">
         <div class="left">
           <div class="logo-box"></div>
           <div class="gateway-info">
             <h3><%= g.nome %> <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %></h3>
-            <p>método: API PIX</p>
+            <p>MÉTODO: API PIX</p>
             <a href="<%= g.link %>" target="_blank" class="taxa">Taxa: <%= g.taxa %></a>
           </div>
         </div>
 
         <div class="right">
           <% if (!g.soon) { %>
-            <div class="action-badge" onclick="activateGatewayCard(this)">Ativar Gateway</div>
+            <% if (g.ativo) { %>
+              <div class="action-badge active">Ativo ✅</div>
+            <% } else if (g.temToken) { %>
+              <div class="action-badge alterar" onclick="openModal('<%= g.nome %>')">Alterar Token</div>
+            <% } else { %>
+              <div class="action-badge" onclick="activateGatewayCard(this)">Ativar Gateway</div>
+            <% } %>
           <% } else { %>
             <div class="action-badge disabled">Em breve</div>
           <% } %>
@@ -43,8 +49,22 @@
 
 <script>
 function activateGatewayCard(el){
-  document.querySelectorAll('.gateway-card').forEach(c => c.classList.remove('active'));
-  el.closest('.gateway-card').classList.add('active');
+  const allCards = document.querySelectorAll('.gateway-card');
+  allCards.forEach(c => {
+    c.classList.remove('active');
+    const badge = c.querySelector('.action-badge');
+    if(badge && !badge.classList.contains('disabled')) badge.innerText = 'Ativar Gateway';
+    badge.classList.remove('active');
+  });
+
+  const card = el.closest('.gateway-card');
+  card.classList.add('active');
+  el.innerText = 'Ativo ✅';
+  el.classList.add('active');
+}
+
+function openModal(name){
+  alert(`Abrir modal de integração: ${name}`);
 }
 </script>
 
@@ -155,15 +175,28 @@ body {
   background: linear-gradient(90deg, #ffcc00, #b38a00);
   color: #000;
   font-weight: 600;
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: 6px;
+  padding: 6px 12px;
   cursor: pointer;
   transition: all .3s ease;
-  box-shadow: 0 0 8px rgba(255,204,0,0.2);
+  box-shadow: 0 0 6px rgba(255,204,0,0.2);
+  font-size: 0.85rem;
 }
 .action-badge:hover {
   box-shadow: 0 0 15px rgba(255,204,0,0.5);
   transform: scale(1.05);
+}
+.action-badge.active {
+  background: linear-gradient(90deg, #ffdb4d, #ffd633);
+  color: #000;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 8px rgba(255,204,0,0.3); }
+  50% { box-shadow: 0 0 15px rgba(255,204,0,0.6); }
+}
+.action-badge.alterar {
+  background: linear-gradient(90deg, #ffcc00, #ffae00);
 }
 .action-badge.disabled {
   background: rgba(255,255,255,0.08);
