@@ -15,14 +15,13 @@
       { nome: 'SyncPay', link: '#', top: false },
       { nome: 'Hoopay', link: '#', top: false },
       { nome: 'ZeroOnePay', link: '#', top: false, soon: true },
-      { nome: 'HorsePay', link: '#', top: false, soon: true },
-      { nome: 'FlexionPay', link: '#', top: false }
+      { nome: 'HorsePay', link: '#', top: false, soon: true }
     ]; %>
 
     <% gateways.forEach(g => { %>
       <div class="gateway-card <%= g.soon ? 'soon' : '' %>">
         <div class="left">
-          <div class="gateway-icon"></div>
+          <div class="logo-box"></div>
           <div class="gateway-info">
             <h3><%= g.nome %> <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %></h3>
             <p>Gateway de pagamentos e API PIX, simples e fácil.</p>
@@ -101,8 +100,8 @@ body {
   width: 90%;
   margin: 20px auto 60px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 20px;
 }
 
 .gateway-card {
@@ -129,11 +128,18 @@ body {
   50% { box-shadow: 0 0 20px rgba(255,204,0,0.5); }
 }
 
-.left { display: flex; align-items: center; gap: 14px; }
-.gateway-icon {
-  width: 44px; height: 44px;
-  background: linear-gradient(180deg,#ffcc00,#b38a00);
-  border-radius: 10px;
+.left { display: flex; align-items: center; gap: 16px; }
+.logo-box {
+  width: 45px; height: 45px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-box::after {
+  content: "Logo";
+  color: rgba(255,255,255,0.3);
+  font-size: 0.75rem;
 }
 .gateway-info h3 {
   margin: 0;
@@ -168,7 +174,7 @@ button {
   transition: all .3s ease;
 }
 .btn-integrar {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
   color: #ffcc00;
   padding: 8px 14px;
 }
@@ -176,10 +182,10 @@ button {
 
 .btn-site {
   background: rgba(255,255,255,0.08);
-  color: #ccc;
+  color: #fff;
   padding: 8px 14px;
 }
-.btn-site:hover { background: rgba(255,255,255,0.2); }
+.btn-site:hover { background: rgba(255,255,255,0.15); }
 
 .btn-soon {
   background: rgba(255,255,255,0.05);
