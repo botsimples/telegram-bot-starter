@@ -111,13 +111,14 @@
   /* 🔹 CENTRALIZAÇÃO AJUSTADA */
   .tiger-dashboard{
     position:relative;z-index:1;min-height:100vh;
-    padding:50px 60px 80px 110px; /* era 130px, agora ajustado */
+    padding:50px 60px 80px 110px;
     display:flex;flex-direction:column;gap:35px;
     justify-content:flex-start;
     transform:scale(0.85) translateY(-20px);
     transform-origin:top center;
     margin:0 auto;
-    max-width:calc(100vw - 100px); /* menos compressão */
+    max-width:calc(100vw - 100px);
+    left:15px; /* ajuste fino de centralização */
   }
 
   .tiger-header{
@@ -206,4 +207,3 @@
   thead tr{background:rgba(255,255,255,0.05);}
   tbody tr:nth-child(even){background:rgba(255,255,255,0.02);}
 </style>
-
