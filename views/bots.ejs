@@ -121,12 +121,13 @@
   *{box-sizing:border-box;}
   ::-webkit-scrollbar{display:none!important;}
 
-  /* 🔹 OTIMIZAÇÃO DE CENTRALIZAÇÃO (mesmo sistema da dashboard) */
+  /* 🔹 MESMA CENTRALIZAÇÃO DA DASHBOARD */
   .tiger-offers{
     padding:60px 80px 100px 130px;
-    transform:scale(0.9) translateY(0px);
-    transform-origin:top center; /* antes era top left */
-    margin:0 auto; /* centraliza horizontalmente */
+    transform:scale(0.9) translateY(0px) translateX(-38px);
+    /* ↑ mesmo deslocamento lateral da dashboard para centralização perfeita */
+    transform-origin:top center;
+    margin:0 auto;
     max-width:calc(100vw - 120px);
   }
 
