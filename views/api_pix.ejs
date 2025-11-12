@@ -4,6 +4,8 @@
     <p>Escolha, ative e gerencie seus gateways de pagamento via API PIX.</p>
   </header>
 
+  <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙</button>
+
   <section class="gateway-grid">
     <% const gateways = [
       { nome: 'WiinPay', link: 'https://v2.wiinpay.com.br', taxa: '4,99%', ativo: true, temToken: true, top: true },
@@ -133,19 +135,83 @@ function closeTokenModal(){
   modal.classList.remove('show');
   document.body.classList.remove('modal-open');
 }
+
+/* === MODO CLARO/ESCURO === */
+function toggleTheme() {
+  const current = document.body.getAttribute("data-theme") || "dark";
+  const next = current === "dark" ? "light" : "dark";
+  document.body.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
+}
+window.addEventListener("DOMContentLoaded", ()=>{
+  const saved = localStorage.getItem("theme") || "dark";
+  document.body.setAttribute("data-theme", saved);
+});
 </script>
 
 <style>
 /* ===== Base ===== */
 body {
-  background: #0b0b0b;
-  color: #fff;
+  background: var(--bg-dark);
+  color: var(--text-dark);
   font-family: "Inter", sans-serif;
   margin: 0;
+  transition: background .3s, color .3s;
 }
-.api-pix header { width: 90%; margin: 40px auto 20px; }
+.api-pix header { width: 90%; margin: 40px auto 20px; position: relative; z-index: 2; }
 .api-pix h1 { color: #ffcc00; font-size: 1.8rem; margin-bottom: 6px; }
 .api-pix p { color: #b3b3b3; font-size: 1rem; margin: 0; }
+
+/* ===== Fundo pontilhado ===== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,204,0,0.05), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(255,204,0,0.05), transparent 60%),
+    repeating-radial-gradient(circle at center, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px, transparent 2px);
+  background-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== Tema ===== */
+:root {
+  --bg-dark: #0b0b0b;
+  --text-dark: #ffffff;
+  --bg-light: #f6f6f6;
+  --text-light: #111111;
+}
+body[data-theme="dark"] {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+body[data-theme="light"] {
+  background: var(--bg-light);
+  color: var(--text-light);
+}
+
+/* ===== Botão tema ===== */
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #ffcc00;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.theme-toggle:hover {
+  background: rgba(255,204,0,0.1);
+  box-shadow: 0 0 8px rgba(255,204,0,0.25);
+}
 
 /* ===== Grid ===== */
 .gateway-grid {
@@ -286,7 +352,5 @@ body {
 }
 
 /* Evita pulo de layout */
-body.modal-open {
-  overflow: hidden;
-}
+body.modal-open { overflow: hidden; }
 </style>
