@@ -88,38 +88,137 @@
   <div class="modal-content small">
     <span class="close" onclick="closeRoi()">&times;</span>
     <h2>Calculadora de ROI</h2>
-    <input type="number" id="investment" placeholder="Investimento (R$)">
-    <input type="number" id="revenue" placeholder="Receita Total (R$)">
-    <input type="number" id="costs" placeholder="Custos Fixos (R$)">
+
+    <div class="input-group">
+      <input type="number" id="investment" placeholder="Investimento (R$)">
+      <input type="number" id="revenue" placeholder="Retorno (R$)">
+    </div>
+
     <button onclick="calcROI()">Calcular</button>
-    <div id="roiResult"></div>
+
+    <div id="roiResult" class="roi-result hidden">
+      <h3>📊 Resultado</h3>
+      <div class="roi-line"><span>Faturamento:</span><b id="fat">R$ 0,00</b></div>
+      <div class="roi-line"><span>Lucro:</span><b id="lucro">R$ 0,00</b></div>
+      <div class="roi-line"><span>Investido:</span><b id="inv">R$ 0,00</b></div>
+      <div class="roi-line highlight">
+        <span>ROI:</span>
+        <b id="roiValue" class="roi-green">0.00</b>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-  function openTutorial(){document.getElementById('tutorialModal').style.display='flex';}
-  function closeTutorial(){document.getElementById('tutorialModal').style.display='none';}
-  function openRoi(){document.getElementById('roiModal').style.display='flex';}
-  function closeRoi(){document.getElementById('roiModal').style.display='none';}
-  function calcROI(){
-    const i=parseFloat(investment.value);
-    const r=parseFloat(revenue.value);
-    const c=parseFloat(costs.value);
-    if(!i||!r){return alert('Preencha investimento e receita.')}
-    const roi=((r-(i+c))/(i+c))*100;
-    roiResult.innerHTML=`<p><b>ROI:</b> ${roi.toFixed(2)}%</p><p><b>Lucro Total:</b> R$ ${(r-(i+c)).toFixed(2)}</p>`;
-  }
+function openRoi(){ 
+  document.getElementById('roiModal').style.display='flex';
+}
+function closeRoi(){ 
+  document.getElementById('roiModal').style.display='none';
+}
+
+function calcROI(){
+  const i = parseFloat(document.getElementById('investment').value);
+  const r = parseFloat(document.getElementById('revenue').value);
+  if(!i || !r) return alert('Preencha o valor investido e o retorno.');
+
+  const lucro = r - i;
+  const roi = r / i;
+
+  // atualiza resultados
+  document.getElementById('fat').innerText = `R$ ${r.toFixed(2)}`;
+  document.getElementById('lucro').innerText = `R$ ${lucro.toFixed(2)}`;
+  document.getElementById('inv').innerText = `R$ ${i.toFixed(2)}`;
+  document.getElementById('roiValue').innerText = roi.toFixed(2);
+
+  const result = document.getElementById('roiResult');
+  result.classList.remove('hidden');
+  setTimeout(() => result.classList.add('show'), 20);
+}
 </script>
 
 <style>
-  html,body{
-    margin:0;padding:0;
-    background:#0a0a0a;color:#fff;
-    font-family:Inter,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  *{box-sizing:border-box;}
-  ::-webkit-scrollbar{display:none!important;}
+#roiModal .modal-content.small {
+  max-width: 420px;
+  text-align: center;
+  background: rgba(17,17,17,0.95);
+  border: 1px solid rgba(255,204,0,0.3);
+  box-shadow: 0 0 25px rgba(255,204,0,0.15);
+  transition: all .3s ease;
+}
+
+#roiModal input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,204,0,0.3);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: .95rem;
+  text-align: center;
+}
+#roiModal button {
+  width: 100%;
+  margin-top: 12px;
+  background: linear-gradient(90deg,#ffcc00,#d4a100);
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: filter .2s;
+}
+#roiModal button:hover { filter: brightness(1.1); }
+
+.roi-result {
+  margin-top: 25px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,204,0,0.15);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all .4s ease;
+}
+.roi-result.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.roi-result.hidden { display: block; }
+
+.roi-result h3 {
+  text-align: center;
+  color: #ffcc00;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+.roi-line {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #ddd;
+}
+.roi-line b {
+  color: #fff;
+}
+.roi-line.highlight {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.roi-green {
+  font-size: 1.6rem;
+  color: #00ff88;
+  text-shadow: 0 0 12px rgba(0,255,136,0.6), 0 0 24px rgba(0,255,136,0.4);
+  font-weight: 700;
+}
+</style>
 
   /* 🔹 MESMA CENTRALIZAÇÃO DA DASHBOARD */
   .tiger-offers{
