@@ -59,9 +59,9 @@
       width: 140px;
       height: auto;
       object-fit: contain;
-      filter: none;
       transition: transform 0.3s ease;
     }
+
     .logo-img:hover { transform: scale(1.05); }
 
     /* MENU */
@@ -165,30 +165,41 @@
       position: relative;
     }
 
-    /* ⚡ LOADER MINIMALISTA */
+    /* ⚡ LOADER CENTRAL */
     #tiger-loader {
       position: fixed;
-      top: 14px;
-      right: 20px;
-      font-size: 0.85rem;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
       font-weight: 500;
       color: var(--gold);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
       background: rgba(255, 204, 0, 0.05);
       border: 1px solid rgba(255, 204, 0, 0.15);
-      border-radius: 6px;
-      padding: 6px 10px;
+      border-radius: 8px;
+      padding: 8px 14px;
       backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 9999;
     }
 
-    #tiger-loader.active { opacity: 1; }
+    #tiger-loader.active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #tiger-loader.done {
+      color: #8aff8a;
+      border-color: rgba(138, 255, 138, 0.2);
+      background: rgba(0, 128, 0, 0.1);
+    }
   </style>
 </head>
 
 <body>
-  <div id="tiger-loader">⚡ Aguarde, processando...</div>
+  <div id="tiger-loader">Aguarde, processando...</div>
 
   <aside class="sidebar">
     <div class="sidebar-header">
@@ -248,6 +259,7 @@
     <%- body %>
   </main>
 
+  <!-- ⚙️ Scripts -->
   <script>
     const loader = document.getElementById('tiger-loader');
     document.addEventListener("DOMContentLoaded", () => {
@@ -260,9 +272,16 @@
         const href = link.getAttribute('href');
         if (href.startsWith('/') && !href.startsWith('//')) {
           e.preventDefault();
+          loader.textContent = "Aguarde, processando...";
+          loader.classList.remove('done');
           loader.classList.add('active');
-          document.body.style.opacity = "0.7";
-          setTimeout(() => { window.location.href = href; }, 200);
+          document.body.style.opacity = "0.8";
+          setTimeout(() => {
+            loader.textContent = "Processamento concluído";
+            loader.classList.add('done');
+            document.body.style.opacity = "1";
+          }, 500);
+          setTimeout(() => { window.location.href = href; }, 700);
         }
       });
     });
