@@ -7,6 +7,8 @@
   </header>
 
   <div class="api-grid" id="gatewayGrid">
+
+    <!-- WIINPAY -->
     <div class="api-card top1" data-gateway="WiinPay">
       <div class="badge-top1"><span class="fire">🔥</span> TOP 1 • RECOMENDADO</div>
       <img src="https://i.ibb.co/VNDsN1T/wiinpay.png" class="api-logo">
@@ -20,6 +22,7 @@
       </div>
     </div>
 
+    <!-- OUTROS GATEWAYS -->
     <div class="api-card" data-gateway="ParadisePag">
       <img src="https://i.ibb.co/TLvgdVJ/paradisepag.png" class="api-logo">
       <h3>ParadisePag</h3>
@@ -56,23 +59,53 @@
       </div>
     </div>
 
+    <div class="api-card" data-gateway="SyncPay">
+      <img src="https://i.ibb.co/Wkmpmfn/syncpay.png" class="api-logo">
+      <h3>SyncPay</h3>
+      <div class="action-row">
+        <button class="btn-glass" onclick="openGatewayModal('SyncPay')">Integrar</button>
+        <label class="switch">
+          <input type="checkbox" onchange="activateGateway('SyncPay', this)">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="api-card" data-gateway="Hoopay">
+      <img src="https://i.ibb.co/jvYkkwm/hoopay.png" class="api-logo">
+      <h3>Hoopay</h3>
+      <div class="action-row">
+        <button class="btn-glass" onclick="openGatewayModal('Hoopay')">Integrar</button>
+        <label class="switch">
+          <input type="checkbox" onchange="activateGateway('Hoopay', this)">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
     <div class="api-card soon" data-gateway="ZeroOnePay">
       <div class="soon-badge">EM BREVE</div>
       <img src="https://i.ibb.co/xXW6yVy/zeroone.png" class="api-logo">
       <h3>ZeroOnePay</h3>
-      <div class="action-row">
-        <button class="btn-disabled" disabled>Em breve</button>
-      </div>
+      <button class="btn-disabled" disabled>Em breve</button>
     </div>
+
+    <div class="api-card soon" data-gateway="HorsePay">
+      <div class="soon-badge">EM BREVE</div>
+      <img src="https://i.ibb.co/x1bfG8L/horsepay.png" class="api-logo">
+      <h3>HorsePay</h3>
+      <button class="btn-disabled" disabled>Em breve</button>
+    </div>
+
   </div>
 </main>
 
-<!-- Modal de Integração -->
+<!-- MODAL -->
 <div id="gatewayModal" class="modal-overlay" style="display:none;">
   <div class="modal-content">
     <span class="close" onclick="closeGatewayModal()">&times;</span>
     <h2 id="gatewayTitle">Integração</h2>
-    <p class="modal-sub">Preencha as credenciais do gateway abaixo:</p>
+    <p class="modal-sub">Preencha as credenciais do gateway selecionado.</p>
     <form id="gatewayForm">
       <label>Token API (obrigatório)</label>
       <input type="text" id="tokenApi" placeholder="Insira o token da API" required>
@@ -93,71 +126,120 @@ function openGatewayModal(name) {
 function closeGatewayModal() {
   document.getElementById('gatewayModal').style.display = 'none';
 }
-
-// Ativação única
 function activateGateway(gateway, checkbox) {
-  const allSwitches = document.querySelectorAll('.switch input');
-  allSwitches.forEach(s => {
+  document.querySelectorAll('.switch input').forEach(s => {
     if (s !== checkbox) s.checked = false;
   });
-
-  const cards = document.querySelectorAll('.api-card');
-  cards.forEach(card => {
-    if (card.dataset.gateway === gateway && checkbox.checked) {
-      card.classList.add('active');
-    } else {
-      card.classList.remove('active');
-    }
+  document.querySelectorAll('.api-card').forEach(card => {
+    card.classList.remove('active');
+    if (card.dataset.gateway === gateway && checkbox.checked) card.classList.add('active');
   });
-
   console.log(`Gateway ativo: ${checkbox.checked ? gateway : 'nenhum'}`);
 }
 </script>
 
 <style>
-html,body{background:#0a0a0a;color:#fff;font-family:'Inter',sans-serif;margin:0;padding:0;}
+html,body{
+  background:#0a0a0a;color:#fff;font-family:'Inter',sans-serif;
+  margin:0;padding:0;overflow-x:hidden;
+}
 *{box-sizing:border-box;}::-webkit-scrollbar{display:none;}
 
 .api-pix-page{padding:60px 0 120px 0;display:flex;flex-direction:column;align-items:center;}
 .api-header{width:85%;max-width:1300px;margin-bottom:30px;}
 .api-header h1{color:#ffcc00;font-size:2rem;margin:0 0 8px;}
 .api-header p{color:#b4b4b4;margin:0;}
-.api-grid{width:85%;max-width:1300px;display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:28px;}
+.api-grid{width:85%;max-width:1300px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px;justify-items:center;}
 
 .api-card{
-  position:relative;height:250px;background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,204,0,0.12);border-radius:14px;
+  position:relative;height:250px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;backdrop-filter:blur(15px);
   padding:42px 24px 25px;display:flex;flex-direction:column;
-  align-items:center;justify-content:space-between;text-align:center;
-  transition:.25s ease;
+  align-items:center;justify-content:space-between;
+  text-align:center;transition:all .3s ease;
 }
-.api-card:hover{background:rgba(255,255,255,0.05);}
-.api-card.active{box-shadow:0 0 25px rgba(255,204,0,0.4);border-color:#ffcc00;}
-.api-logo{width:66px;height:66px;object-fit:contain;border-radius:10px;background:#111;padding:6px;}
+.api-card:hover{background:rgba(255,255,255,0.06);transform:translateY(-2px);}
+.api-card.active{border:1px solid #ffcc00;box-shadow:0 0 18px rgba(255,204,0,0.4);}
+.api-logo{width:64px;height:64px;object-fit:contain;border-radius:10px;background:#111;padding:6px;}
 .api-card h3{margin:10px 0 0;font-size:1rem;color:#ffcc00;font-weight:600;}
 .badge-top1{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;font-weight:800;
-  font-size:.75rem;border-radius:10px;padding:6px 12px;display:flex;align-items:center;gap:6px;}
-.fire{animation:flame .9s infinite alternate ease-in-out}
+  background:linear-gradient(90deg,#ffcc00,#d4a100);
+  color:#000;font-weight:700;font-size:.75rem;border-radius:10px;
+  padding:6px 12px;display:flex;align-items:center;gap:6px;}
+.fire{animation:flame 1s infinite alternate ease-in-out}
 @keyframes flame{from{transform:translateY(0)}to{transform:translateY(-2px) scale(1.05)}}
 
 .action-row{display:flex;align-items:center;gap:12px;justify-content:center;}
 .btn-glass{
-  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
-  backdrop-filter:blur(10px);border-radius:12px;color:#ffcc00;
-  font-weight:600;padding:10px 20px;cursor:pointer;transition:all .3s ease;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  border-radius:12px;color:#fff;
+  font-weight:600;padding:10px 22px;
+  cursor:pointer;transition:all .3s ease;
 }
-.btn-glass:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,204,0,0.4);}
-.switch{position:relative;display:inline-block;width:40px;height:20px;}
+.btn-glass:hover{
+  background:rgba(255,255,255,0.12);
+  box-shadow:0 0 12px rgba(255,255,255,0.1);
+  transform:translateY(-1px);
+}
+.btn-disabled{
+  background:rgba(255,255,255,0.04);
+  color:#999;border:none;border-radius:10px;
+  padding:10px 20px;cursor:not-allowed;
+}
+.soon-badge{
+  position:absolute;top:10px;right:12px;
+  background:rgba(255,255,255,0.08);
+  color:#bbb;font-size:.72rem;padding:4px 10px;border-radius:8px;
+  text-transform:uppercase;
+}
+
+/* Switch moderno */
+.switch{position:relative;display:inline-block;width:40px;height:22px;}
 .switch input{opacity:0;width:0;height:0;}
 .slider{
   position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
-  background-color:rgba(255,255,255,0.1);transition:.4s;border-radius:34px;
+  background:rgba(255,255,255,0.1);transition:.4s;border-radius:34px;
 }
 .slider:before{
-  position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;
-  background-color:#ffcc00;transition:.4s;border-radius:50%;
+  position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;
+  background-color:#999;transition:.4s;border-radius:50%;
 }
-input:checked + .slider{background-color:#ffcc00;}
-input:checked + .slider:before{transform:translateX(20px);background:#000;}
+input:checked + .slider{background:linear-gradient(90deg,#ffcc00,#d4a100);}
+input:checked + .slider:before{transform:translateX(18px);background:#000;}
+
+/* Modal */
+.modal-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;z-index:1000;
+}
+.modal-content{
+  background:rgba(20,20,20,0.85);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:35px 40px;width:95%;max-width:460px;
+  box-shadow:0 0 25px rgba(255,204,0,0.1);
+  position:relative;
+}
+.close{position:absolute;top:10px;right:18px;font-size:1.8rem;cursor:pointer;color:#ffcc00;}
+.modal-content h2{color:#ffcc00;margin:0 0 8px;}
+.modal-sub{color:#b4b4b4;margin-bottom:20px;font-size:.9rem;}
+form label{display:block;color:#ffcc00;margin-top:10px;font-size:.9rem;}
+form input{
+  width:100%;padding:10px;margin-top:5px;border-radius:8px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.04);
+  color:#fff;font-size:.9rem;
+}
+.btn-save{
+  margin-top:22px;width:100%;
+  background:linear-gradient(90deg,#ffcc00,#d4a100);
+  color:#000;font-weight:700;border:none;border-radius:10px;
+  padding:12px;cursor:pointer;transition:filter .3s;
+}
+.btn-save:hover{filter:brightness(1.1);}
 </style>
