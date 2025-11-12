@@ -108,18 +108,30 @@
     background-size:20px 20px;
   }
 
-  /* 🔹 CENTRALIZAÇÃO PERFEITA */
+  /* 🔹 CENTRALIZAÇÃO AUTOMÁTICA */
   .tiger-dashboard{
-    position:relative;z-index:1;min-height:100vh;
+    position:relative;
+    z-index:1;
+    min-height:100vh;
     padding:50px 60px 80px 110px;
-    display:flex;flex-direction:column;gap:35px;
+    display:flex;
+    flex-direction:column;
+    gap:35px;
     justify-content:flex-start;
-    transform:scale(0.85) translateY(-20px) translateX(-38px);
-    /* ↑ Move 38px para a esquerda — centralização exata com base no print */
+    transform:scale(0.85) translateY(-20px);
     transform-origin:top center;
     margin:0 auto;
+
+    /* cálculo dinâmico: centraliza conforme a sidebar */
     max-width:calc(100vw - 100px);
+    left:calc((100vw - (100vw - 230px)) / -2 + 12px);
   }
+
+  /* explicação:
+     (100vw - (100vw - 230px)) → largura da sidebar (~230px)
+     / -2 → move metade para esquerda
+     + 12px → ajuste fino visual
+  */
 
   .tiger-header{
     display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
