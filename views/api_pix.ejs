@@ -1,44 +1,190 @@
 <%- include('partials/visual_hottrack') %>
 
-<main class="offers-page">
-  <section class="offers-container">
-    <header class="offers-header">
+<main class="gateways-page">
+  <section class="gateways-container">
+    <header class="gateways-header">
       <h1>Adquirentes</h1>
-      <p>Gerencie as integrações e chaves PIX conectadas ao seu painel.</p>
+      <p>Selecione e conecte um gateway de pagamento para automatizar seus recebimentos no TigerFy.</p>
     </header>
 
-    <div class="offers-grid">
-      <div class="offer-card"><h3>Adicionar Gateway</h3><p>Integre novos provedores de pagamento.</p><button class="offer-btn">Adicionar</button></div>
-      <div class="offer-card"><h3>Gerenciar Chaves</h3><p>Visualize e edite suas chaves PIX.</p><button class="offer-btn">Gerenciar</button></div>
-      <div class="offer-card"><h3>Logs de Transações</h3><p>Veja o histórico de todas as transações realizadas.</p><button class="offer-btn">Ver Logs</button></div>
-      <div class="offer-card"><h3>Testar API</h3><p>Envie requisições de teste para validar o gateway.</p><button class="offer-btn">Testar</button></div>
+    <div class="gateways-grid">
+      <!-- GATEWAY 1 -->
+      <div class="gateway-card">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/VNDsN1T/wiinpay.png" alt="WiinPay" class="gateway-logo">
+          <span class="tag active">Recomendado</span>
+        </div>
+        <div class="gateway-body">
+          <h3>WiinPay</h3>
+          <p>Integração oficial com suporte automático de PIX e webhooks.</p>
+          <button class="btn-primary">Conectar</button>
+        </div>
+      </div>
+
+      <!-- GATEWAY 2 -->
+      <div class="gateway-card">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/TLvgdVJ/paradisepag.png" alt="ParadisePag" class="gateway-logo">
+        </div>
+        <div class="gateway-body">
+          <h3>ParadisePag</h3>
+          <p>Processador alternativo com alta taxa de aprovação e liberação rápida.</p>
+          <button class="btn-primary">Conectar</button>
+        </div>
+      </div>
+
+      <!-- GATEWAY 3 -->
+      <div class="gateway-card">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/MpZ3c8m/oasyfy.png" alt="OasyFy" class="gateway-logo">
+        </div>
+        <div class="gateway-body">
+          <h3>OasyFy</h3>
+          <p>Gateway moderno e estável com suporte nativo a QR Code dinâmico.</p>
+          <button class="btn-primary">Conectar</button>
+        </div>
+      </div>
+
+      <!-- GATEWAY 4 -->
+      <div class="gateway-card">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/gJ2vHtH/pushinpay.png" alt="PushinPay" class="gateway-logo">
+        </div>
+        <div class="gateway-body">
+          <h3>PushinPay</h3>
+          <p>API flexível para automação de cobranças e integração com bots.</p>
+          <button class="btn-primary">Conectar</button>
+        </div>
+      </div>
+
+      <!-- GATEWAY 5 -->
+      <div class="gateway-card">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/Wkmpmfn/syncpay.png" alt="SyncPay" class="gateway-logo">
+        </div>
+        <div class="gateway-body">
+          <h3>Sync Pay</h3>
+          <p>Integração simplificada e confiável para vendas instantâneas via PIX.</p>
+          <button class="btn-primary">Conectar</button>
+        </div>
+      </div>
+
+      <!-- GATEWAY 6 -->
+      <div class="gateway-card">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/jvYkkwm/hoopay.png" alt="Hoopay" class="gateway-logo">
+        </div>
+        <div class="gateway-body">
+          <h3>Hoopay</h3>
+          <p>Conexão direta com pagamentos inteligentes e relatórios em tempo real.</p>
+          <button class="btn-primary">Conectar</button>
+        </div>
+      </div>
+
+      <!-- GATEWAY 7 (Em breve) -->
+      <div class="gateway-card soon">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/xXW6yVy/zeroone.png" alt="ZeroOnePay" class="gateway-logo">
+          <span class="tag soon-tag">Em breve</span>
+        </div>
+        <div class="gateway-body">
+          <h3>ZeroOnePay</h3>
+          <p>Gateway avançado com controle total de rotas e automações.</p>
+          <button class="btn-disabled" disabled>Em breve</button>
+        </div>
+      </div>
+
+      <!-- GATEWAY 8 (Em breve) -->
+      <div class="gateway-card soon">
+        <div class="gateway-top">
+          <img src="https://i.ibb.co/x1bfG8L/horsepay.png" alt="HorsePay" class="gateway-logo">
+          <span class="tag soon-tag">Em breve</span>
+        </div>
+        <div class="gateway-body">
+          <h3>HorsePay</h3>
+          <p>Nova solução de pagamentos com foco em velocidade e estabilidade.</p>
+          <button class="btn-disabled" disabled>Em breve</button>
+        </div>
+      </div>
     </div>
   </section>
 </main>
 
-<script>
-  const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
-  const ctx=c.getContext('2d',{alpha:true});
-  let w,h,DPR=window.devicePixelRatio||1;
-  function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
-  resize();addEventListener('resize',resize,{passive:true});
-  const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
-</script>
-
 <style>
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow-x:hidden;overflow-y:auto;background:#0a0a0a;-webkit-font-smoothing:antialiased;}
-  *{box-sizing:border-box;transform:translateZ(0);will-change:transform;}::-webkit-scrollbar{display:none!important;}
-  #bgParticles{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;mix-blend-mode:screen;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;}
-  main.offers-page{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;align-items:center;padding-left:70px;transform:translateY(-90px);}
-  .offers-container{text-align:center;width:90%;max-width:1100px;}
-  .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
-  .offers-header p{color:#b4b4b4;margin-bottom:40px;}
-  .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
-  .offer-card{width:260px;height:260px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;transition:.25s ease-out;}
-  .offer-card:hover{background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);transform:translateY(-3px);}
-  .offer-card h3{color:#fff;margin:10px 0 5px;}
-  .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
-  .offer-btn{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;border:none;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;transition:filter .3s;}
-  .offer-btn:hover{filter:brightness(1.15);}
+  html,body{
+    margin:0;padding:0;height:100%;width:100%;
+    background:#0a0a0a;color:#fff;font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  *{box-sizing:border-box;}::-webkit-scrollbar{display:none!important;}
+
+  .gateways-page{
+    position:relative;z-index:1;min-height:100vh;
+    display:flex;justify-content:center;
+    padding:60px 40px 100px 40px;
+    transform:translateX(-38px); /* centraliza igual dashboard */
+  }
+
+  .gateways-container{text-align:left;width:100%;max-width:1150px;}
+  .gateways-header h1{color:#ffcc00;font-size:2rem;margin:0 0 8px 0;}
+  .gateways-header p{color:#b4b4b4;margin:0 0 40px 0;}
+
+  .gateways-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+  }
+
+  .gateway-card{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,204,0,0.12);
+    border-radius:14px;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:.25s ease-out;
+    position:relative;
+  }
+  .gateway-card:hover{
+    background:rgba(255,204,0,0.06);
+    box-shadow:0 0 18px rgba(255,204,0,0.25);
+    transform:translateY(-3px);
+  }
+
+  .gateway-top{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:18px;
+  }
+  .gateway-logo{
+    width:60px;height:60px;border-radius:12px;object-fit:contain;
+    background:#111;padding:6px;
+  }
+  .gateway-body h3{color:#fff;margin:0 0 5px;}
+  .gateway-body p{color:#b4b4b4;font-size:.9rem;margin:0 0 18px;}
+  
+  .btn-primary{
+    background:linear-gradient(90deg,#ffcc00,#d4a100);
+    border:none;color:#000;font-weight:600;border-radius:8px;
+    padding:8px 18px;cursor:pointer;transition:filter .3s;
+  }
+  .btn-primary:hover{filter:brightness(1.1);}
+  .btn-disabled{
+    background:rgba(255,255,255,0.08);
+    color:#777;border:none;padding:8px 18px;border-radius:8px;
+    cursor:not-allowed;
+  }
+
+  .tag{
+    background:rgba(255,204,0,0.15);
+    color:#ffcc00;
+    font-size:.75rem;
+    padding:4px 10px;
+    border-radius:8px;
+    text-transform:uppercase;
+    font-weight:600;
+  }
+  .tag.active{background:linear-gradient(90deg,#ffcc00,#d4a100);color:#000;}
+  .soon .tag{background:rgba(255,255,255,0.08);color:#999;}
+  .soon .gateway-card:hover{transform:none;box-shadow:none;}
 </style>
