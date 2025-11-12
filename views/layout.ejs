@@ -52,18 +52,18 @@
       padding: 28px 0 24px;
     }
 
-    .logo-img {
-      width: 140px;
-      height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(255,204,0,0.3));
-      transition: transform .3s ease, filter .3s ease;
-    }
+.logo-img {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  filter: none; /* remove brilho dourado */
+  transition: transform .3s ease;
+}
 
-    .logo-img:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 14px rgba(255,204,0,0.5));
-    }
+.logo-img:hover {
+  transform: scale(1.05);
+  filter: none; /* sem glow mesmo no hover */
+}
 
     /* MENU */
     .menu {
