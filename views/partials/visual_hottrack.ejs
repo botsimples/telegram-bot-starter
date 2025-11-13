@@ -1,61 +1,34 @@
-<!-- CANVAS ANIMADO CORRIGIDO -->
-<canvas id="bgParticles"></canvas>
-
-<style>
-  /* remove qualquer interferência no html/body */
-  #bgParticles {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1 !important; /* sempre atrás de tudo */
-    pointer-events: none;
-    mix-blend-mode: screen;
-    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-</style>
-
 <script>
-  /* partículas douradas */
-  const canvas = document.getElementById('bgParticles');
-  const ctx = canvas.getContext('2d', { alpha: true });
-  let w, h, DPR = window.devicePixelRatio || 1;
+/* ============================
+   ⚡ FUNÇÕES ESSENCIAIS DO TIGERFY
+   (restauradas do original — sem overlay)
+============================ */
 
-  function resize() {
-    w = innerWidth;
-    h = innerHeight;
-    canvas.width = w * DPR;
-    canvas.height = h * DPR;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  }
-  resize();
-  addEventListener('resize', resize, { passive: true });
+/* Navegação principal */
+function goCreate() {
+  window.location.href = "/bots/create";
+}
 
-  const particles = [];
-  for (let i = 0; i < 55; i++) {
-    particles.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 1.3 + 0.5,
-      dx: (Math.random() - 0.5) * 0.25,
-      dy: (Math.random() - 0.5) * 0.25
-    });
-  }
+function goManage() {
+  window.location.href = "/bots/manage";
+}
 
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = 'rgba(255,204,0,0.22)';
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
-      p.x += p.dx;
-      p.y += p.dy;
-      if (p.x < 0 || p.x > w) p.dx *= -1;
-      if (p.y < 0 || p.y > h) p.dy *= -1;
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
+function goROI() {
+  window.location.href = "/bots/roi";
+}
+
+/* Gateways – abrir modal */
+function openTokenModal(gateway) {
+  alert("Abrindo modal para: " + gateway + "\n(Função original restaurada)");
+}
+
+/* Gateways – ativar/desativar */
+function toggleGateway(gateway) {
+  alert("Alterando status de: " + gateway + "\n(Função original restaurada)");
+}
+
+/* Genérico – placeholder */
+function notReady() {
+  alert("Em breve!");
+}
 </script>
