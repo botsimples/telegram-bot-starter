@@ -1,124 +1,219 @@
-<% const ofertasCount = 7; %>
-
 <%- include('partials/visual_hottrack') %>
 
-<main class="offers-page">
-  <section class="offers-container">
-    <header class="offers-header">
-      <h1>Meu Perfil</h1>
-      <p>Gerencie suas informações pessoais e preferências de conta.</p>
-    </header>
+<main class="perfil-page">
 
-    <div class="offers-grid">
+  <!-- HEADER PREMIUM -->
+  <section class="perfil-header">
+    
+    <!-- Avatar -->
+    <div class="perfil-avatar">
+      <img src="https://i.imgur.com/5iL8Llx.png" alt="TigerFy Avatar">
+    </div>
 
-      <!-- TOTAL DE OFERTAS -->
-      <div class="offer-card">
-        <h3>Ofertas</h3>
-        <p>Total de ofertas cadastradas.</p>
-        <div class="perfil-counter"><%= ofertasCount %></div>
-      </div>
+    <!-- Nome + Info -->
+    <h1 class="perfil-nome">Meu Perfil</h1>
+    <p class="perfil-desc">Gerencie suas informações pessoais e preferências da sua conta.</p>
 
-      <!-- Instagram -->
-      <div class="offer-card">
-        <h3>Instagram</h3>
-        <p>Siga nosso Instagram oficial.</p>
-        <a href="https://instagram.com/tigerfyoficial" target="_blank">
-          <button class="offer-btn">Acessar</button>
-        </a>
-      </div>
+    <!-- TAXA FIXA -->
+    <div class="perfil-taxa-card">
+      <h3>Taxa Fixa por Venda</h3>
+      <span>R$ 1,00</span>
+    </div>
 
-      <!-- Discord -->
-      <div class="offer-card">
-        <h3>Discord</h3>
-        <p>Entre no servidor da comunidade.</p>
-        <a href="https://discord.gg/" target="_blank">
-          <button class="offer-btn">Entrar</button>
-        </a>
-      </div>
+    <!-- BOTÕES SOCIAIS -->
+    <div class="perfil-social-row">
 
-      <!-- WhatsApp -->
-      <div class="offer-card">
-        <h3>WhatsApp</h3>
-        <p>Fale diretamente com nosso suporte.</p>
-        <a href="https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy⚡" target="_blank">
-          <button class="offer-btn">Chamar</button>
-        </a>
-      </div>
+      <a href="https://instagram.com/tigerfy_br" target="_blank" class="perfil-social-btn">
+        <svg width="22" height="22" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4.5" stroke-width="2"/>
+          <circle cx="17" cy="7" r="1.5" fill="currentColor"/>
+        </svg>
+        Instagram
+      </a>
 
-      <!-- Editar Dados -->
-      <div class="offer-card">
-        <h3>Editar Dados</h3>
-        <p>Atualize nome, e-mail e senha.</p>
-        <button class="offer-btn">Editar</button>
-      </div>
+      <a href="https://discord.gg/tigerfy" target="_blank" class="perfil-social-btn">
+        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M20 4.5a19.8 19.8 0 00-4.73-1.48.07.07 0 00-.08.04c-.2.35-.43.81-.59 1.17a18.3 18.3 0 00-5.21 0c-.16-.39-.39-.85-.6-1.17a.07.07 0 00-.08-.04A19.6 19.6 0 003 4.5a.06.06 0 00-.03.02C1.4 7.06 1 9.55 1.07 12c0 .02.01.04.03.05A19.9 19.9 0 007 17.5a.07.07 0 00.08-.02c.6-.82 1.13-1.7 1.59-2.62a.07.07 0 00-.04-.1 13 13 0 01-2.06-.98.07.07 0 01-.01-.11c.14-.1.28-.2.41-.3a.06.06 0 01.06-.01 13.1 13.1 0 0012.18 0 .06.06 0 01.06.01c.13.1.27.2.41.3a.07.07 0 010 .11c-.66.39-1.35.72-2.06.98a.07.07 0 00-.04.1c.46.92.99 1.8 1.59 2.62a.07.07 0 00.08.02 19.9 19.9 0 005.9-5.45A.07.07 0 0023 12c.08-2.45-.33-4.94-1.97-7.48a.06.06 0 00-.03-.02z"/>
+        </svg>
+        Discord
+      </a>
 
-      <!-- Configurações -->
-      <div class="offer-card">
-        <h3>Configurações</h3>
-        <p>Personalize notificações e aparência.</p>
-        <button class="offer-btn">Configurar</button>
-      </div>
-
-      <!-- Planos -->
-      <div class="offer-card">
-        <h3>Planos</h3>
-        <p>Veja e altere seu plano atual.</p>
-        <button class="offer-btn">Gerenciar</button>
-      </div>
-
-      <!-- Excluir Conta -->
-      <div class="offer-card">
-        <h3>Excluir Conta</h3>
-        <p>Remova permanentemente seu acesso.</p>
-        <button class="offer-btn">Excluir</button>
-      </div>
+      <a href="https://wa.me/5543999562213" target="_blank" class="perfil-social-btn">
+        <svg width="22" height="22" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+          <path d="M20 11.5a8.5 8.5 0 11-15.54 4.76L3 21l4.03-1.41A8.5 8.5 0 1120 11.5z" stroke-width="2" stroke-linecap="round" />
+          <path d="M9 9.5c.2 1.8 1.8 3.4 3.6 3.6l1-.8c.2-.2.6-.2.8.1l1 1c.2.3.2.7-.1.9-.8.7-1.7 1.2-2.8 1.2A6 6 0 018 9.5c0-1.1.4-2 1.1-2.8.2-.3.6-.3.9-.1l1 1c.3.3.3.7.1.9l-.9 1z" fill="currentColor"/>
+        </svg>
+        WhatsApp
+      </a>
 
     </div>
   </section>
+
+  <!-- CARDS SECUNDÁRIOS -->
+  <section class="perfil-grid">
+
+    <div class="perfil-card">
+      <h3>Editar Dados</h3>
+      <p>Atualize nome, e-mail e senha.</p>
+      <button>Editar</button>
+    </div>
+
+    <div class="perfil-card">
+      <h3>Configurações</h3>
+      <p>Ajuste preferências de aparência e alertas.</p>
+      <button>Configurar</button>
+    </div>
+
+    <div class="perfil-card">
+      <h3>Planos</h3>
+      <p>Gerencie seu plano atual e benefícios.</p>
+      <button>Gerenciar</button>
+    </div>
+
+    <div class="perfil-card">
+      <h3>Excluir Conta</h3>
+      <p>Remova permanentemente seu acesso.</p>
+      <button class="danger">Excluir</button>
+    </div>
+
+  </section>
+
 </main>
 
-<script>
-  const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
-  const ctx=c.getContext('2d',{alpha:true});
-  let w,h,DPR=window.devicePixelRatio||1;
-  function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
-  resize();addEventListener('resize',resize,{passive:true});
-  const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
-</script>
-
 <style>
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow-x:hidden;overflow-y:auto;background:#0a0a0a;-webkit-font-smoothing:antialiased;}
-  *{box-sizing:border-box;transform:translateZ(0);will-change:transform;}::-webkit-scrollbar{display:none!important;}
-  #bgParticles{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;mix-blend-mode:screen;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;}
+/* ======================================
+   BASE
+====================================== */
+html, body {
+  background: #050505;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+}
 
-  main.offers-page{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;align-items:center;padding-left:70px;transform:translateY(-90px);}
-  .offers-container{text-align:center;width:90%;max-width:1100px;}
+/* ======================================
+   HEADER — AVATAR + TAXA + SOCIAL
+====================================== */
+.perfil-page {
+  width: 100%;
+  padding-left: 250px;
+  padding-top: 40px;
+}
 
-  .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
-  .offers-header p{color:#b4b4b4;margin-bottom:40px;}
+.perfil-header {
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
 
-  .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
+.perfil-avatar img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 18px rgba(255, 204, 0, 0.35));
+}
 
-  .offer-card{width:260px;height:260px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;transition:.25s ease-out;}
-  .offer-card:hover{background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);transform:translateY(-3px);}
-  .offer-card h3{color:#fff;margin:10px 0 5px;}
-  .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
+.perfil-nome {
+  margin-top: 18px;
+  font-size: 2.1rem;
+  background: linear-gradient(90deg, #ffcc00, #d4a100);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  .perfil-counter{
-    font-size:2rem;
-    font-weight:700;
-    color:#ffcc00;
-    margin-top:15px;
-  }
+.perfil-desc {
+  color: #b4b4b4;
+  margin-top: 6px;
+}
 
-  .offer-btn{
-    background:linear-gradient(90deg,#ffcc00,#d4a100);
-    color:#000;border:none;border-radius:8px;padding:8px 16px;
-    font-weight:600;cursor:pointer;transition:filter .3s;
-  }
-  .offer-btn:hover{filter:brightness(1.15);}
+/* TAXA FIXA CARD */
+.perfil-taxa-card {
+  margin: 25px auto;
+  width: 260px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,204,0,0.18);
+  box-shadow: 0 0 18px rgba(255,204,0,0.15);
+}
 
-  @keyframes pageFadeQuick {0%{opacity:0;}100%{opacity:1;}}
-  body,main,.offers-page{animation:pageFadeQuick .25s ease-in forwards;}
+.perfil-taxa-card h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.perfil-taxa-card span {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffcc00;
+}
+
+/* SOCIAL BUTTONS */
+.perfil-social-row {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.perfil-social-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  padding: 10px 18px;
+  border-radius: 10px;
+  color: #ffcc00;
+  font-weight: 600;
+  border: 1px solid rgba(255,204,0,0.25);
+  transition: 0.25s;
+}
+
+.perfil-social-btn:hover {
+  background: rgba(255,204,0,0.13);
+  transform: translateY(-3px);
+}
+
+/* ======================================
+   GRID DE CARDS SECUNDÁRIOS
+====================================== */
+.perfil-grid {
+  display: grid;
+  margin: 0 auto;
+  max-width: 950px;
+  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.perfil-card {
+  background: rgba(255,255,255,0.03);
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,204,0,0.15);
+  text-align: center;
+  transition: 0.25s ease;
+}
+
+.perfil-card:hover {
+  background: rgba(255,204,0,0.07);
+  box-shadow: 0 0 15px rgba(255,204,0,0.25);
+  transform: translateY(-3px);
+}
+
+.perfil-card button {
+  margin-top: 15px;
+  background: linear-gradient(90deg, #ffcc00, #d4a100);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.perfil-card button.danger {
+  background: linear-gradient(90deg, #ff5d5d, #ff3838);
+}
 </style>
