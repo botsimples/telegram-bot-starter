@@ -354,5 +354,21 @@
     <%- body %>
   </main>
 
+<script>
+  // Pré-carrega todas as páginas internas
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll('a[href^="/"]');
+
+    links.forEach(link => {
+      const url = link.getAttribute("href");
+      if (url !== window.location.pathname) {
+        fetch(url, { method: "GET" })
+          .then(() => console.log("Pré-carregado:", url))
+          .catch(() => {});
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
