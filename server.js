@@ -12,6 +12,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
+const Offer = require('./models/Offer');
 
 dotenv.config();
 const app = express();
