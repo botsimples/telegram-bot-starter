@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-
     /* ============================
        FUNDO PREMIUM PONTILHADO
     ============================ */
@@ -26,7 +25,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* REMOVE QUALQUER MODO CLARO */
+    /* mata qualquer modo claro que tenha sobrado */
     [data-theme="light"] {
       background: #0d0d0d !important;
       color: #fff !important;
@@ -56,7 +55,7 @@
       gap: 6px;
     }
 
-    /* LOGO ÚNICA */
+    /* LOGO ÚNICA (PNG redondo) */
     .logo-round {
       width: 58px;
       height: 58px;
@@ -65,15 +64,6 @@
       background: #111;
       padding: 6px;
       box-shadow: 0 0 12px rgba(255, 204, 0, 0.25);
-    }
-
-    .brand-name {
-      font-family: "Poppins", sans-serif;
-      font-size: 1.28rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, #ffcc00, #d4a100);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     /* ============================
@@ -144,7 +134,9 @@
       background: linear-gradient(to right, transparent, rgba(255, 204, 0, 0.25), transparent);
     }
 
-    /* LOGOUT */
+    /* ============================
+       LOGOUT
+    ============================ */
     .menu-bottom {
       margin-top: auto;
       padding: 20px 25px 30px;
@@ -164,6 +156,14 @@
       opacity: 1;
     }
 
+    .menu-bottom svg {
+      width: 22px;
+      height: 22px;
+      stroke: #ffcc00;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
     /* ============================
        MAIN CONTENT
     ============================ */
@@ -180,30 +180,32 @@
     }
 
     /* ============================
-       LOADER
+       LOADER CENTRALIZADO
     ============================ */
     #loaderBox {
       position: fixed;
-      top: 18px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      padding: 9px 22px;
-      background: rgba(0, 0, 0, 0.72);
-      border: 1px solid rgba(255, 204, 0, 0.28);
-      border-radius: 10px;
-      font-size: 0.92rem;
+      transform: translate(-50%, -50%);
+      padding: 10px 24px;
+      background: rgba(0, 0, 0, 0.78);
+      border: 1px solid rgba(255, 204, 0, 0.35);
+      border-radius: 12px;
+      font-size: 0.95rem;
       font-weight: 600;
       color: #ffcc00;
       backdrop-filter: blur(6px);
       display: none;
       z-index: 9999;
       opacity: 1;
+      text-align: center;
       animation: fadeIn .3s ease;
+      min-width: 180px;
     }
 
     #loaderBox.success {
       color: #ffe46a;
-      border-color: rgba(255, 215, 0, 0.45);
+      border-color: rgba(255, 215, 0, 0.55);
     }
   </style>
 </head>
@@ -217,26 +219,23 @@
     document.addEventListener("DOMContentLoaded", () => {
       const loader = document.getElementById("loaderBox");
 
+      // mostra loader assim que a página começa a renderizar
       loader.style.display = "block";
 
-      // 1° Fase — Processando
+      // 1ª fase: processando
       setTimeout(() => {
-
-        // 2° Fase — Concluído
+        // 2ª fase: concluído
         loader.innerText = "Concluído!";
         loader.classList.add("success");
 
         setTimeout(() => {
           loader.style.opacity = "0";
 
-          // Remove só depois que anima sair
           setTimeout(() => {
             loader.style.display = "none";
             loader.style.opacity = "1";
           }, 300);
-
         }, 900);
-
       }, 450);
     });
   </script>
@@ -245,8 +244,8 @@
   <aside class="sidebar">
 
     <div class="sidebar-header">
-      <img src="/img/logo-tigerfy.png" class="logo-round" />
-      <div class="brand-name">TigerFy</div>
+      <!-- AGORA SÓ 1 LOGO: O PNG REDONDO -->
+      <img src="/img/logo-tigerfy.png" class="logo-round" alt="TigerFy" />
     </div>
 
     <nav class="menu">
