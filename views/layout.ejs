@@ -7,12 +7,13 @@
 
   <link rel="stylesheet" href="/css/theme.gold.css" />
 
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* FUNDO PONTILHADO */
+    /* FUNDO PONTILHADO PREMIUM */
     body {
       background: radial-gradient(circle, rgba(255,215,0,0.06) 1px, transparent 1px),
                   radial-gradient(circle, rgba(255,215,0,0.03) 1px, transparent 1px),
@@ -22,10 +23,10 @@
       font-family: "Inter", sans-serif;
     }
 
-    /* DESATIVAR MODO CLARO TOTALMENTE */
-    [data-theme="light"] { 
-      background: #0d0d0d !important; 
-      color: #fff !important; 
+    /* REMOVE MODO CLARO TOTAL */
+    [data-theme="light"] {
+      background: #0d0d0d !important;
+      color: #fff !important;
     }
 
     /* SIDEBAR */
@@ -41,10 +42,16 @@
       top: 0;
     }
 
-    /* LOGO — versão TigerFy estilizada */
+    /* LOGO TEXTO + SVG */
     .sidebar-header {
-      padding: 28px 0 22px;
+      padding: 26px 0 20px;
       text-align: center;
+    }
+
+    .tiger-logo {
+      width: 40px;
+      margin-bottom: 6px;
+      opacity: 0.95;
     }
 
     .brand-name {
@@ -54,13 +61,6 @@
       background: linear-gradient(90deg, #ffcc00, #d4a100);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
-    }
-
-    .tiger-icon {
-      width: 44px;
-      margin-bottom: 8px;
-      opacity: 0.95;
     }
 
     /* MENU */
@@ -88,11 +88,6 @@
       stroke: #b4b4b4;
     }
 
-    .menu a:hover {
-      background: rgba(255, 204, 0, 0.08);
-      color: #ffcc00;
-    }
-
     .menu a.active {
       background: rgba(255, 204, 0, 0.14);
       color: #fff;
@@ -101,36 +96,39 @@
       position: relative;
     }
 
-    .menu a.active::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 6px;
-      bottom: 6px;
-      width: 3px;
-      background: linear-gradient(#ffea70, #ffcc00, #d4a100);
-      border-radius: 2px;
+    .menu a.active svg {
+      stroke: #ffcc00;
     }
 
-    /* SAIR */
-    .menu-bottom {
-      margin-top: auto;
-      padding: 20px 25px 30px;
+    .menu-divider {
+      height: 1px;
+      width: 100%;
+      margin: 18px 0;
+      background: linear-gradient(to right, transparent, rgba(255, 204, 0, 0.25), transparent);
     }
 
-    .menu-bottom svg {
-      width: 20px !important;
-      height: 20px !important;
-      stroke-width: 2.2;
-      flex-shrink: 0;
+    /* SVG Estilo iOS para Conquistas */
+    .trophy-icon {
+      width: 21px;
+      height: 21px;
+      stroke: #b4b4b4;
+      stroke-width: 1.8;
     }
 
-    /* CONTEÚDO */
+    /* SVG Sair alinhado */
+    .logout-icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.3;
+      margin-bottom: -1px; /* alinhar vertical */
+    }
+
+    /* CONTEÚDO PRINCIPAL */
     .main-content {
       margin-left: 250px;
       padding: 40px;
       min-height: 100vh;
-      animation: fadeIn .28s ease-out;
+      animation: fadeIn .25s ease-out;
     }
 
     @keyframes fadeIn {
@@ -138,7 +136,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* LOADER NO CANTO SUPERIOR DIREITO */
+    /* LOADER CANTO DIREITO */
     #loaderBox {
       position: fixed;
       top: 24px;
@@ -147,23 +145,11 @@
       background: rgba(0,0,0,0.75);
       border: 1px solid rgba(255, 204, 0, 0.35);
       border-radius: 10px;
-      font-size: 0.88rem;
+      font-size: .88rem;
       font-weight: 600;
       color: #ffcc00;
-      backdrop-filter: blur(6px);
       display: none;
       z-index: 9999;
-      animation: fadeLoader .3s ease;
-    }
-
-    @keyframes fadeLoader {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    #loaderBox.success {
-      color: #ffe46a;
-      border-color: rgba(255, 215, 0, 0.55);
     }
   </style>
 </head>
@@ -198,7 +184,12 @@
   <aside class="sidebar">
 
     <div class="sidebar-header">
-      <img src="/img/tiger-icon.svg" class="tiger-icon" alt="TigerFy">
+      <!-- Novo SVG do logo TigerFy -->
+      <svg class="tiger-logo" viewBox="0 0 24 24" fill="none" stroke="#ffcc00" stroke-width="1.6">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M8 15c1.5-1 3.5-1 5 0M9 10h.01M15 10h.01"></path>
+      </svg>
+
       <div class="brand-name">TigerFy</div>
     </div>
 
@@ -206,7 +197,7 @@
 
       <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 8h7v10h-7V11zM3 14h7v7H3v-7z" stroke-linecap="round"/>
+          <path d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 8h7v10h-7V11zM3 14h7v7H3v-7z"/>
         </svg>
         Dashboard
       </a>
@@ -229,21 +220,21 @@
 
       <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/>
+          <path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-4.4 0-8 1.8-8 4v2h16v-2c0-2.2-3.6-4-8-4z"/>
         </svg>
         Perfil
       </a>
 
       <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M8 21h8m-4-4v4m0-4c3.314 0 6-2.686 6-6V5H6v6c0 3.314-2.686 6-6 6zM4 5h16M9 3h6"/>
+        <svg class="trophy-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M8 21h8m-4-4v4m0-4c3.3 0 6-2.7 6-6V5H6v6c0 3.3 2.7 6 6 6zM4 5h16M9 3h6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Conquistas
       </a>
 
       <a href="https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy⚡" target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M12 20.5c4.694 0 8.5-3.806 8.5-8.5S16.694 3.5 12 3.5 3.5 7.306 3.5 12c0 1.293.293 2.517.818 3.607L3 21l5.548-1.414A8.468 8.468 0 0012 20.5z"/>
+          <path d="M12 20.5c4.7 0 8.5-3.8 8.5-8.5S16.7 3.5 12 3.5 3.5 7.3 3.5 12c0 1.3.3 2.5.8 3.6L3 21l5.5-1.4A8.4 8.4 0 0012 20.5z"/>
         </svg>
         Suporte
       </a>
@@ -252,7 +243,7 @@
 
     <div class="menu-bottom">
       <a href="/logout">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path d="M15 12H3m0 0l4-4m-4 4l4 4m8-8h5a2 2 0 012 2v6a2 2 0 01-2 2h-5"/>
         </svg>
         Sair
@@ -260,6 +251,7 @@
     </div>
 
   </aside>
+
 
   <main class="main-content">
     <%- body %>
