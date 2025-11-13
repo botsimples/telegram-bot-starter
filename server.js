@@ -26,9 +26,10 @@ app.use(
   })
 );
 
-// EVITA ERRO "active undefined"
+// 🔥 CORREÇÃO: deixar userId e active disponíveis para TODAS as views
 app.use((req, res, next) => {
-  res.locals.active = "";
+  res.locals.userId = req.session.userId || null;  // <--- ESSENCIAL
+  res.locals.active = "";                          // evita erro no layout
   next();
 });
 
@@ -50,11 +51,9 @@ mongoose
 // Rotas
 app.use("/", require("./routes/auth"));
 app.use("/", require("./routes/dashboard"));
-app.use("/", require("./routes/offers"));   // 👈 AGORA ESSA É A ROTA DE BOTS/OFERTAS
+app.use("/", require("./routes/offers"));
+app.use("/", require("./routes/bots"));
 app.use("/", require("./routes/api_pix"));
-
-// (REMOVIDO) ❌ NÃO EXISTE MAIS
-// app.use("/", require("./routes/bots"));
 
 // 404
 app.use((req, res) => {
