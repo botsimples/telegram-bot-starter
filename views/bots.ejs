@@ -7,7 +7,6 @@
   </div>
 
   <div class="offers-grid">
-
     <!-- BLOCO 1 -->
     <div class="offer-card">
       <div class="icon">
@@ -60,7 +59,7 @@
       <button class="btn-primary" onclick="openTutorial()">Assistir</button>
     </div>
 
-    <!-- BLOCO 5 -->
+    <!-- BLOCO 5 (IA ILIMITADA) -->
     <div class="offer-card locked">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -73,7 +72,6 @@
       <p>Crie mensagens, automações e fluxos com inteligência TigerFy.</p>
       <button disabled>Em Breve</button>
     </div>
-
   </div>
 </div>
 
@@ -81,7 +79,7 @@
 <div class="modal" id="tutorialModal">
   <div class="modal-content">
     <span class="close" onclick="closeTutorial()">&times;</span>
-    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" frameborder="0"></iframe>
+    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -102,11 +100,11 @@
   function goCreate(){ window.location.href = "/bots/create"; }
   function goManage(){ window.location.href = "/bots/manage"; }
 
-  function openTutorial(){ document.getElementById('tutorialModal').style.display='flex'; }
-  function closeTutorial(){ document.getElementById('tutorialModal').style.display='none'; }
+  function openTutorial(){document.getElementById('tutorialModal').style.display='flex';}
+  function closeTutorial(){document.getElementById('tutorialModal').style.display='none';}
 
-  function openRoi(){ document.getElementById('roiModal').style.display='flex'; }
-  function closeRoi(){ document.getElementById('roiModal').style.display='none'; }
+  function openRoi(){document.getElementById('roiModal').style.display='flex';}
+  function closeRoi(){document.getElementById('roiModal').style.display='none';}
 
   function calcROI(){
     const i=parseFloat(investment.value);
@@ -117,3 +115,54 @@
     roiResult.innerHTML=`<p><b>ROI:</b> ${roi.toFixed(2)}%</p><p><b>Lucro Total:</b> R$ ${(r-(i+c)).toFixed(2)}</p>`;
   }
 </script>
+
+<style>
+  html,body{
+    margin:0;padding:0;
+    background:#0a0a0a;color:#fff;
+    font-family:Inter,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  *{box-sizing:border-box;}
+  ::-webkit-scrollbar{display:none!important;}
+
+  /* 🔹 MESMA CENTRALIZAÇÃO DA DASHBOARD */
+  .tiger-offers{
+    padding:60px 80px 100px 130px;
+    transform:scale(0.9) translateY(0px) translateX(-38px);
+    transform-origin:top center;
+    margin:0 auto;
+    max-width:calc(100vw - 120px);
+  }
+
+  .offers-header{text-align:center;margin-bottom:10px;}
+  .offers-header h1{color:#ffcc00;font-size:2rem;margin:0;}
+  .offers-header p{color:#b4b4b4;font-size:.95rem;margin-top:8px;}
+  .offers-grid{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:30px;margin-top:30px;}
+  .offer-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:16px;padding:28px 22px;text-align:center;transition:.3s;}
+  .offer-card:hover{transform:translateY(-5px);box-shadow:0 0 20px rgba(255,204,0,0.25);}
+  .icon{margin-bottom:15px;transition:filter .3s,transform .3s;}
+  .offer-card:hover .icon{filter:drop-shadow(0 0 8px rgba(255,204,0,0.6));transform:scale(1.1);}
+  .offer-card h3{font-size:1.1rem;margin:0 0 8px;}
+  .offer-card p{color:#b4b4b4;font-size:.9rem;margin:0 0 18px;}
+  .btn-primary{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;}
+  .btn-disabled,
+  .offer-card.locked button{
+    background:rgba(255,255,255,0.05);
+    color:#777;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:not-allowed;
+  }
+  .offer-card.locked{opacity:0.6;filter:grayscale(1);}
+  .modal{display:none;position:fixed;z-index:99;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;}
+  .modal-content{background:#111;border:1px solid rgba(255,204,0,0.2);border-radius:14px;padding:25px;width:80%;max-width:900px;position:relative;}
+  .modal-content.small{max-width:420px;text-align:center;}
+  .close{position:absolute;top:10px;right:15px;font-size:1.8rem;cursor:pointer;color:#ffcc00;}
+  .modal-content h2{color:#ffcc00;margin-top:0;}
+  input{width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid rgba(255,204,0,0.3);background:rgba(255,255,255,0.05);color:#fff;}
+  #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;margin-top:10px;}
+  #roiResult p{margin:6px 0;}
+
+</style>
