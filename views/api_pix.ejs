@@ -1,13 +1,14 @@
 <%- include('partials/visual_hottrack') %>
 
 <main class="api-pix tigerfy-optimized">
-  <header class="pix-header">
+
+  <header>
     <h1>Integrações de Gateways</h1>
     <p>Escolha, ative e gerencie seus gateways de pagamento via API PIX.</p>
   </header>
 
-  <!-- GRID DE GATEWAYS -->
   <section class="gateway-grid">
+
     <% const gateways = [
       { nome: 'WiinPay', img: '/img/gateways/wiinpay.png', taxa: '4,99%', ativo: true, temToken: true, top: true },
       { nome: 'ParadisePag', img: '/img/gateways/paradisepag.png', taxa: '1 Real', ativo: false },
@@ -37,7 +38,7 @@
             </div>
 
             <span class="method">MÉTODO: API PIX</span>
-            <a href="#" class="taxa">Taxa: <%= g.taxa %></a>
+            <a href="#" target="_blank" class="taxa">Taxa: <%= g.taxa %></a>
           </div>
         </div>
 
@@ -46,36 +47,34 @@
             <button class="btn glass token" onclick="openTokenModal('<%= g.nome %>')">
               <%= g.temToken ? 'Alterar Token' : 'Adicionar Token' %>
             </button>
-
             <button class="btn glass toggle <%= g.ativo ? 'on' : '' %>" onclick="toggleGateway(this)">
               <%= g.ativo ? 'Desativar' : 'Ativar Gateway' %>
             </button>
-
           <% } else { %>
             <button class="btn glass disabled">Em breve</button>
           <% } %>
         </div>
       </div>
     <% }) %>
+
   </section>
 
-  <!-- GRÁFICO PIX -->
+  <!-- 🔥 Gráfico Status PIX -->
   <section class="pix-status">
     <h2>Monitoramento de Status do Pix</h2>
     <div class="chart-wrapper">
       <canvas id="pixIssuesChart"></canvas>
     </div>
   </section>
+
 </main>
 
-
-<!-- MODAL -->
+<!-- Modal -->
 <div id="tokenModal" class="modal hidden">
   <div class="modal-content">
     <h2 id="modalTitle">Gerenciar Token</h2>
     <form id="tokenForm">
       <div id="tokenFields"></div>
-
       <div class="modal-actions">
         <button type="button" class="btn glass cancel" onclick="closeTokenModal()">Cancelar</button>
         <button type="submit" class="btn glass save">Salvar</button>
@@ -84,12 +83,16 @@
   </div>
 </div>
 
+
+<!-- ============================
+       SCRIPTS
+============================ -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-/* ------------------------------------------------------
-   BOTÃO ATIVAR/DESATIVAR (mesmo do seu código original)
------------------------------------------------------- */
+/* =============================
+       Ativar / Desativar Gateway
+============================= */
 function toggleGateway(el){
   const card = el.closest('.gateway-card');
   const isActive = card.classList.contains('active');
@@ -101,6 +104,7 @@ function toggleGateway(el){
     const status = card.querySelector('.status');
     if(status) status.remove();
   } else {
+
     document.querySelectorAll('.gateway-card').forEach(c => {
       c.classList.remove('active');
       const s = c.querySelector('.status');
@@ -121,9 +125,9 @@ function toggleGateway(el){
   }
 }
 
-/* ------------------------------------------------------
-   MODAL TOKEN (seu original + fix flicker)
------------------------------------------------------- */
+/* =============================
+       Modal
+============================= */
 function openTokenModal(gateway){
   const modal = document.getElementById('tokenModal');
   const title = document.getElementById('modalTitle');
@@ -137,11 +141,12 @@ function openTokenModal(gateway){
     'ParadisePag': ['Chave de API', 'Código do Produto'],
     'OasyFy': ['Public Key', 'Secret Key'],
     'PushinPay': ['API Token (Bearer)'],
-    'SyncPay V2': ['Client ID', 'Client Secret'],
+    'SyncPay V2': ['Client ID (pública)', 'Client Secret (privada)'],
     'Hoopay': ['Client ID', 'Client Secret']
   };
 
   const campos = configs[gateway] || ['Token'];
+
   campos.forEach(campo => {
     const inputDiv = document.createElement('div');
     inputDiv.className = 'field';
@@ -158,6 +163,7 @@ function openTokenModal(gateway){
 
 function closeTokenModal(){
   const modal = document.getElementById('tokenModal');
+  modal.style.transition = "opacity 0.3s ease";
   modal.style.opacity = "0";
   setTimeout(() => {
     modal.classList.add('hidden');
@@ -166,9 +172,9 @@ function closeTokenModal(){
   }, 300);
 }
 
-/* ------------------------------------------------------
-   GRÁFICO
------------------------------------------------------- */
+/* =============================
+       Gráfico PIX
+============================= */
 window.addEventListener("load", () => {
   const ctx = document.getElementById('pixIssuesChart').getContext('2d');
 
@@ -180,7 +186,7 @@ window.addEventListener("load", () => {
         label: 'Problemas reportados',
         data: [1,3,7,10,9,14,5,2],
         fill: true,
-        backgroundColor: 'rgba(255,204,0,0.22)',
+        backgroundColor: 'rgba(255, 204, 0, 0.25)',
         borderColor: '#ffcc00',
         borderWidth: 2,
         tension: 0.35,
@@ -190,10 +196,23 @@ window.addEventListener("load", () => {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false }},
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          titleColor: '#ffcc00',
+          bodyColor: '#fff'
+        }
+      },
       scales: {
-        x: { ticks: { color: '#ccc' }, grid: { color: 'rgba(255,255,255,0.05)' }},
-        y: { ticks: { color: '#ccc' }, grid: { color: 'rgba(255,255,255,0.05)' }}
+        x: {
+          ticks: { color: '#ccc' },
+          grid: { color: 'rgba(255,255,255,0.06)' }
+        },
+        y: {
+          ticks: { color: '#ccc' },
+          grid: { color: 'rgba(255,255,255,0.06)' }
+        }
       }
     }
   });
@@ -201,108 +220,118 @@ window.addEventListener("load", () => {
 </script>
 
 
-<style>
-/* ---------------------------------------------------------------------------------
-   🔥 OTIMIZAÇÃO PREMIUM 80%=100% | Mesma estética da dashboard nova
-   Tudo SEM quebrar nada do que você já tem no layout geral!
----------------------------------------------------------------------------------- */
 
+<!-- ============================
+       CSS COMPLETO OTIMIZADO
+============================ -->
+<style>
+
+/* 🔥 Aplicar zoom 80%=100% igual dashboard */
 .api-pix.tigerfy-optimized {
   transform: scale(0.85) translateX(-38px);
   transform-origin: top center;
-  padding: 40px 0 60px 0;
   width: 100%;
-  max-width: 1500px;
+  max-width: 1600px;
   margin: 0 auto;
+  padding: 40px 0 90px 0;
 }
 
-.pix-header {
-  margin-bottom: 40px;
-  text-align: left;
-  padding-left: 55px;
+/* Títulos */
+.api-pix header {
+  width: 92%;
+  margin: 0 auto 30px;
 }
-
-.pix-header h1 {
+.api-pix h1 {
   color: #ffcc00;
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 6px;
 }
-
-.pix-header p {
-  color: #b4b4b4;
+.api-pix p {
+  color: #b3b3b3;
   margin: 0;
 }
 
-
-/* ⭐ GRID CENTRALIZADO */
+/* 🔥 GRID 3×3 FIXO — NÃO QUEBRA */
 .gateway-grid {
   width: 92%;
   margin: 0 auto 60px;
+
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  justify-items: center;
 }
 
-
-/* ⭐ CARTÕES ESTILO HOTTRACK */
+/* 🔥 Cada card ajustado p/ caber no zoom */
 .gateway-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,204,0,0.16);
-  box-shadow: inset 0 0 14px rgba(255,204,0,0.08);
-  backdrop-filter: blur(18px);
+  width: 100%;
+  max-width: 420px;
+  min-width: 380px;
+  height: 150px;
+
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 16px;
   padding: 26px 28px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 140px;
-  transition: all .25s ease;
+
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: .3s;
 }
 
+/* Ativar = borda dourada */
 .gateway-card.active {
-  border-color: rgba(255,204,0,0.45);
-  box-shadow: inset 0 0 22px rgba(255,204,0,0.25);
+  outline: 2px solid rgba(255, 204, 0, 0.4);
+  background: rgba(255, 204, 0, 0.06);
 }
 
+/* left side */
 .left { display: flex; align-items: center; gap: 18px; }
 
 .gateway-logo {
-  width: 50px; height: 50px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   border-radius: 10px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
 }
 
 .logo-placeholder {
-  width: 50px; height: 50px;
+  width: 48px; height: 48px;
   background: rgba(255,255,255,0.06);
   border-radius: 10px;
 }
 
-.gateway-info { position: relative; display: flex; flex-direction: column; gap: 3px; }
+.gateway-info {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
 
 .badge {
   position: absolute;
-  top: -22px;
+  top: -24px;
   left: 0;
-  padding: 3px 8px;
-  font-size: 0.7rem;
+  background: linear-gradient(90deg, #ffcc00, #ff9900);
   color: #000;
-  background: linear-gradient(90deg,#ffcc00,#ff9900);
+  padding: 3px 7px;
   border-radius: 6px;
-  font-weight: 700;
-  box-shadow: 0 3px 10px rgba(255,204,0,0.25);
+  font-size: 0.7rem;
+  font-weight: 600;
 }
 
-.top-line { display: flex; align-items: center; gap: 6px; }
+.top-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
 .status {
-  font-size: 0.7rem;
-  padding: 2px 6px;
-  border-radius: 5px;
-  background: rgba(255,204,0,0.12);
-  border: 1px solid rgba(255,204,0,0.3);
+  font-size: 0.75rem;
   color: #ffcc00;
 }
 
@@ -314,56 +343,55 @@ window.addEventListener("load", () => {
 .taxa {
   color: #ffcc00;
   font-size: 0.85rem;
-  text-decoration: none;
 }
 
-.right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+/* right side */
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
 
 .btn.glass {
-  padding: 10px 20px;
-  background: rgba(255,255,255,0.06);
-  color: #ffcc00;
   border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
   backdrop-filter: blur(16px);
+  border-radius: 10px;
+  color: #ffcc00;
+  padding: 10px 20px;
+  width: 160px;
   cursor: pointer;
   transition: .25s;
 }
-
-.btn.glass.on {
-  background: rgba(255,204,0,0.15);
-  color: #fff;
-  border-color: rgba(255,204,0,0.5);
+.btn.glass:hover {
+  background: rgba(255,204,0,0.1);
 }
 
-
-/* ⭐ GRÁFICO */
+/* gráfico */
 .pix-status {
   width: 92%;
-  margin: 40px auto 80px;
+  margin: 0 auto;
 }
-
 .pix-status h2 {
   color: #ffcc00;
-  font-size: 1.5rem;
-  margin-bottom: 16px;
-  padding-left: 8px;
+  font-size: 1.4rem;
+  margin-bottom: 14px;
 }
 
 .chart-wrapper {
-  width: 100%;
   height: 420px;
   background: rgba(255,255,255,0.03);
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: inset 0 0 18px rgba(255,204,0,0.12);
-  padding: 20px 10px;
+  padding: 20px;
 }
 
-/* ⭐ MODAL */
+/* modal */
 .modal.hidden { display: none; }
-.modal.visible { display: flex; opacity: 1; }
-
+.modal.visible {
+  display: flex;
+  opacity: 1;
+}
 .modal {
   position: fixed;
   inset: 0;
@@ -373,27 +401,30 @@ window.addEventListener("load", () => {
   justify-content: center;
   z-index: 999;
   opacity: 0;
-  transition: .3s ease;
 }
-
 .modal-content {
   width: 400px;
-  padding: 26px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
+  padding: 28px;
   background: rgba(255,255,255,0.05);
-  box-shadow: 0 0 25px rgba(255,204,0,0.15);
+  border-radius: 16px;
 }
 
-.field label { color: #ccc; }
-
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
 .field input {
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
-  padding: 8px 10px;
-  color: #fff;
   border-radius: 8px;
+  padding: 8px 10px;
+  color: white;
 }
 
-.modal-actions { display: flex; justify-content: space-between; margin-top: 16px; }
+.btn.save {
+  background: rgba(255,204,0,0.1);
+  border-color: rgba(255,204,0,0.4);
+}
+
 </style>
