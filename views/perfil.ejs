@@ -1,196 +1,124 @@
+<% const ofertasCount = 7; %>
+
 <%- include('partials/visual_hottrack') %>
 
-<main class="perfil-page">
+<main class="offers-page">
+  <section class="offers-container">
+    <header class="offers-header">
+      <h1>Meu Perfil</h1>
+      <p>Gerencie suas informações pessoais e preferências de conta.</p>
+    </header>
 
-  <!-- HEADER -->
-  <section class="perfil-header">
-    <h1>Meu Perfil</h1>
-    <p>Gerencie suas informações pessoais, plano e acessos.</p>
-  </section>
+    <div class="offers-grid">
 
-  <!-- GRID PRINCIPAL -->
-  <section class="perfil-grid">
+      <!-- TOTAL DE OFERTAS -->
+      <div class="offer-card">
+        <h3>Ofertas</h3>
+        <p>Total de ofertas cadastradas.</p>
+        <div class="perfil-counter"><%= ofertasCount %></div>
+      </div>
 
-    <!-- Editar Dados -->
-    <div class="perfil-card">
-      <h3>Editar Dados</h3>
-      <p>Atualize nome, e-mail e senha.</p>
-      <button class="perfil-btn">Editar</button>
+      <!-- Instagram -->
+      <div class="offer-card">
+        <h3>Instagram</h3>
+        <p>Siga nosso Instagram oficial.</p>
+        <a href="https://instagram.com/tigerfyoficial" target="_blank">
+          <button class="offer-btn">Acessar</button>
+        </a>
+      </div>
+
+      <!-- Discord -->
+      <div class="offer-card">
+        <h3>Discord</h3>
+        <p>Entre no servidor da comunidade.</p>
+        <a href="https://discord.gg/" target="_blank">
+          <button class="offer-btn">Entrar</button>
+        </a>
+      </div>
+
+      <!-- WhatsApp -->
+      <div class="offer-card">
+        <h3>WhatsApp</h3>
+        <p>Fale diretamente com nosso suporte.</p>
+        <a href="https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy⚡" target="_blank">
+          <button class="offer-btn">Chamar</button>
+        </a>
+      </div>
+
+      <!-- Editar Dados -->
+      <div class="offer-card">
+        <h3>Editar Dados</h3>
+        <p>Atualize nome, e-mail e senha.</p>
+        <button class="offer-btn">Editar</button>
+      </div>
+
+      <!-- Configurações -->
+      <div class="offer-card">
+        <h3>Configurações</h3>
+        <p>Personalize notificações e aparência.</p>
+        <button class="offer-btn">Configurar</button>
+      </div>
+
+      <!-- Planos -->
+      <div class="offer-card">
+        <h3>Planos</h3>
+        <p>Veja e altere seu plano atual.</p>
+        <button class="offer-btn">Gerenciar</button>
+      </div>
+
+      <!-- Excluir Conta -->
+      <div class="offer-card">
+        <h3>Excluir Conta</h3>
+        <p>Remova permanentemente seu acesso.</p>
+        <button class="offer-btn">Excluir</button>
+      </div>
+
     </div>
-
-    <!-- Configurações -->
-    <div class="perfil-card">
-      <h3>Configurações</h3>
-      <p>Personalize notificações e preferências da conta.</p>
-      <button class="perfil-btn">Configurar</button>
-    </div>
-
-    <!-- Planos -->
-    <div class="perfil-card">
-      <h3>Planos</h3>
-      <p>Veja e altere seu plano atual.</p>
-      <button class="perfil-btn">Gerenciar</button>
-    </div>
-
-    <!-- Ofertas cadastradas -->
-    <div class="perfil-card">
-      <h3>Ofertas</h3>
-      <p>Total de ofertas cadastradas.</p>
-      <div class="perfil-counter"><%= ofertasCount || 0 %></div>
-    </div>
-
-    <!-- Instagram -->
-    <div class="perfil-card">
-      <h3>Instagram</h3>
-      <p>Siga a TigerFy e acompanhe as novidades.</p>
-      <a href="https://instagram.com/TigerFyApp" target="_blank" class="perfil-btn">Acessar</a>
-    </div>
-
-    <!-- Discord -->
-    <div class="perfil-card">
-      <h3>Discord</h3>
-      <p>Entre no servidor oficial da TigerFy.</p>
-      <a href="https://discord.gg/tigerfy" target="_blank" class="perfil-btn">Entrar</a>
-    </div>
-
-    <!-- WhatsApp -->
-    <div class="perfil-card">
-      <h3>WhatsApp</h3>
-      <p>Fale conosco rapidamente pelo WhatsApp.</p>
-      <a href="https://wa.me/5543999562213" target="_blank" class="perfil-btn">Abrir</a>
-    </div>
-
-    <!-- Excluir Conta -->
-    <div class="perfil-card delete">
-      <h3>Excluir Conta</h3>
-      <p>Remova permanentemente seu acesso.</p>
-      <button class="perfil-btn delete-btn">Excluir</button>
-    </div>
-
   </section>
 </main>
 
+<script>
+  const c=document.createElement('canvas');c.id='bgParticles';document.body.appendChild(c);
+  const ctx=c.getContext('2d',{alpha:true});
+  let w,h,DPR=window.devicePixelRatio||1;
+  function resize(){w=innerWidth;h=innerHeight;c.width=w*DPR;c.height=h*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+  resize();addEventListener('resize',resize,{passive:true});
+  const p=[];for(let i=0;i<25;i++)p.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.4,dx:(Math.random()-.5)*.25,dy:(Math.random()-.5)*.25});
+  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,204,0,0.15)';for(const o of p){ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();o.x+=o.dx;o.y+=o.dy;if(o.x<0||o.x>w)o.dx*=-1;if(o.y<0||o.y>h)o.dy*=-1;}requestAnimationFrame(draw);}draw();
+</script>
+
 <style>
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow-x:hidden;overflow-y:auto;background:#0a0a0a;-webkit-font-smoothing:antialiased;}
+  *{box-sizing:border-box;transform:translateZ(0);will-change:transform;}::-webkit-scrollbar{display:none!important;}
+  #bgParticles{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;mix-blend-mode:screen;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;}
 
-html,body {
-  margin:0;
-  padding:0;
-  overflow-x:hidden;
-  -webkit-font-smoothing: antialiased;
-  background:#000;
-}
+  main.offers-page{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;align-items:center;padding-left:70px;transform:translateY(-90px);}
+  .offers-container{text-align:center;width:90%;max-width:1100px;}
 
-.perfil-page {
-  min-height:100vh;
-  width:100%;
-  position:relative;
-  z-index:1;
-  padding-left:70px;
-  padding-top:60px;
-  text-align:center;
-}
+  .offers-header h1{color:#ffcc00;font-size:2rem;margin-bottom:10px;}
+  .offers-header p{color:#b4b4b4;margin-bottom:40px;}
 
-.perfil-header h1 {
-  color:#ffcc00;
-  font-size:2.2rem;
-  margin-bottom:8px;
-}
+  .offers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px;justify-items:center;}
 
-.perfil-header p {
-  color:#b4b4b4;
-  margin-bottom:40px;
-}
+  .offer-card{width:260px;height:260px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:14px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;transition:.25s ease-out;}
+  .offer-card:hover{background:rgba(255,204,0,0.07);box-shadow:0 0 15px rgba(255,204,0,0.25);transform:translateY(-3px);}
+  .offer-card h3{color:#fff;margin:10px 0 5px;}
+  .offer-card p{color:#b4b4b4;font-size:.9rem;min-height:45px;}
 
-/* GRID */
-.perfil-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap:28px;
-  width:90%;
-  max-width:1100px;
-  margin:0 auto;
-}
+  .perfil-counter{
+    font-size:2rem;
+    font-weight:700;
+    color:#ffcc00;
+    margin-top:15px;
+  }
 
-/* CARDS */
-.perfil-card {
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,204,0,0.12);
-  border-radius:14px;
-  padding:28px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  align-items:center;
-  height:260px;
-  transition:.25s cubic-bezier(.25,.1,.25,1);
-}
+  .offer-btn{
+    background:linear-gradient(90deg,#ffcc00,#d4a100);
+    color:#000;border:none;border-radius:8px;padding:8px 16px;
+    font-weight:600;cursor:pointer;transition:filter .3s;
+  }
+  .offer-btn:hover{filter:brightness(1.15);}
 
-.perfil-card:hover {
-  background:rgba(255,204,0,0.07);
-  transform:translateY(-3px);
-  box-shadow:0 0 16px rgba(255,204,0,0.25);
-}
-
-.perfil-card h3 {
-  color:#fff;
-  margin:10px 0 5px;
-}
-
-.perfil-card p {
-  color:#b4b4b4;
-  font-size:.9rem;
-  min-height:40px;
-}
-
-/* BOTÃO */
-.perfil-btn {
-  background:linear-gradient(90deg,#ffcc00,#d4a100);
-  color:#000;
-  border:none;
-  padding:10px 18px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:700;
-  transition:filter .25s;
-  text-decoration:none;
-  display:inline-block;
-}
-
-.perfil-btn:hover {
-  filter:brightness(1.15);
-}
-
-/* COUNTER */
-.perfil-counter {
-  font-size:2.2rem;
-  font-weight:700;
-  color:#ffcc00;
-  margin-top:10px;
-}
-
-/* DELETE */
-.delete {
-  border:1px solid rgba(255,80,80,0.25);
-}
-
-.delete-btn {
-  background:#ff4444;
-  color:#fff;
-}
-
-.delete-btn:hover {
-  filter:brightness(1.15);
-}
-
-/* Fade rápido */
-@keyframes pageFadeQuick {
-  0% { opacity:0; }
-  100% { opacity:1; }
-}
-
-.perfil-page {
-  animation: pageFadeQuick .25s ease-out forwards;
-}
-
+  @keyframes pageFadeQuick {0%{opacity:0;}100%{opacity:1;}}
+  body,main,.offers-page{animation:pageFadeQuick .25s ease-in forwards;}
 </style>
-
