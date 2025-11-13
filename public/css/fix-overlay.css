@@ -1,0 +1,19 @@
+/* === CORREÇÃO DEFINITIVA DO BUG DOS CLIQUES === */
+
+/* fundo animado SEMPRE atrás */
+#bgParticles {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: -9999 !important;
+  pointer-events: none !important;
+}
+
+/* garante que o conteúdo esteja SEMPRE na frente */
+.main-content,
+.sidebar,
+.tiger-dashboard,
+.api-pix,
+body * {
+  position: relative;
+  z-index: 10;
+}
