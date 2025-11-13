@@ -26,7 +26,7 @@ app.use(
   })
 );
 
-// 👇 EVITA O ERRO DO ACTIVE UNDEFINED EM QUALQUER TELA
+// EVITA ERRO "active undefined"
 app.use((req, res, next) => {
   res.locals.active = "";
   next();
@@ -50,9 +50,11 @@ mongoose
 // Rotas
 app.use("/", require("./routes/auth"));
 app.use("/", require("./routes/dashboard"));
-app.use("/", require("./routes/offers"));
-app.use("/", require("./routes/bots"));
+app.use("/", require("./routes/offers"));   // 👈 AGORA ESSA É A ROTA DE BOTS/OFERTAS
 app.use("/", require("./routes/api_pix"));
+
+// (REMOVIDO) ❌ NÃO EXISTE MAIS
+// app.use("/", require("./routes/bots"));
 
 // 404
 app.use((req, res) => {
