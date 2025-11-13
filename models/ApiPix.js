@@ -4,7 +4,7 @@ const ApiPixSchema = new mongoose.Schema(
   {
     provider: { type: String, required: true },
     key: { type: String, required: true },
-    secret: { type: String, required: true },
+    secret: { type: String, required: true }
   },
   { timestamps: true }
 );
