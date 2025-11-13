@@ -387,5 +387,13 @@
   });
 </script>
 
+<script>
+document.addEventListener("click", (e) => {
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  console.log("Elemento por cima bloqueando:", el);
+});
+</script>
+
+
 </body>
 </html>
