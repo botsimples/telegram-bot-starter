@@ -10,14 +10,14 @@ require("dotenv").config();
 
 const app = express();
 
-// Middlewares
+// --- MIDDLEWARES BÁSICOS ---
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(compression());
 app.use(helmet());
 app.use(morgan("tiny"));
 
-// Sessão
+// --- SESSÃO ---
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "tigerfy_secret",
@@ -26,42 +26,44 @@ app.use(
   })
 );
 
-// 🔥 CORREÇÃO: deixar userId e active disponíveis para TODAS as views
+// --- VARIÁVEIS GLOBAIS PARA AS VIEWS ---
+// aqui garantimos que NUNCA vai dar "active is not defined" ou "userId is not defined"
 app.use((req, res, next) => {
-  res.locals.userId = req.session.userId || null;  // <--- ESSENCIAL
-  res.locals.active = "";                          // evita erro no layout
+  res.locals.active = "";                    // usado no menu lateral
+  res.locals.userId = req.session.userId || null; // usado no layout.ejs para saber se mostra a sidebar
   next();
 });
 
-// EJS + Layout
+// --- EJS + LAYOUT ---
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.set("layout", "layout");
 app.use(expressLayouts);
 
-// Public
+// --- ARQUIVOS ESTÁTICOS ---
 app.use(express.static(path.join(__dirname, "public")));
 
-// Mongo
+// --- MONGO ---
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB conectado!"))
   .catch((err) => console.error("Erro MongoDB:", err));
 
-// Rotas
-app.use("/", require("./routes/auth"));
-app.use("/", require("./routes/dashboard"));
-app.use("/", require("./routes/offers"));
-app.use("/", require("./routes/bots"));
-app.use("/", require("./routes/api_pix"));
+// --- ROTAS ---
+app.use("/", require("./routes/auth"));        // login, register, logout
+app.use("/", require("./routes/dashboard"));   // /deck
+app.use("/", require("./routes/offers"));      // /bots, /bots/create etc
+app.use("/", require("./routes/api_pix"));     // /api_pix
 
-// 404
+// (⚠️ IMPORTANTE: repare que NÃO TEM mais require("./routes/bots"))
+
+// --- 404 ---
 app.use((req, res) => {
   res.status(404).render("404", { title: "404 - TigerFy" });
 });
 
-// Start
+// --- START ---
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () =>
-  console.log(`🚀 TigerFy rodando! Porta ${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`🚀 TigerFy rodando! Porta ${PORT}`);
+});
