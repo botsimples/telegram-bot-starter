@@ -8,7 +8,7 @@
 
   <div class="offers-grid">
 
-    <!-- BLOCO 1 - CRIAR OFERTA -->
+    <!-- BLOCO 1 -->
     <div class="offer-card">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -18,11 +18,11 @@
         </svg>
       </div>
       <h3>Criar Oferta</h3>
-      <p>Crie fluxos inteligentes e automatize bots Telegram.</p>
-      <a href="/bots/create" class="btn-primary">Criar</a>
+      <p>Defina nome, valor e parâmetros de traqueamento para seu bot Telegram.</p>
+      <button class="btn-primary" onclick="goCreate()">Criar</button>
     </div>
 
-    <!-- BLOCO 2 - GERENCIAR -->
+    <!-- BLOCO 2 -->
     <div class="offer-card">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -31,8 +31,8 @@
         </svg>
       </div>
       <h3>Gerenciar Ofertas</h3>
-      <p>Edite e acompanhe o desempenho das suas automações.</p>
-      <a href="/bots/manage" class="btn-primary">Acessar</a>
+      <p>Edite, duplique e acompanhe o desempenho das suas campanhas.</p>
+      <button class="btn-primary" onclick="goManage()">Acessar</button>
     </div>
 
     <!-- BLOCO 3 -->
@@ -43,7 +43,7 @@
         </svg>
       </div>
       <h3>Calcular ROI</h3>
-      <p>Visualize o retorno das campanhas.</p>
+      <p>Visualize o retorno das campanhas e calcule o ROI completo.</p>
       <button class="btn-primary" onclick="openRoi()">Calcular</button>
     </div>
 
@@ -56,7 +56,7 @@
         </svg>
       </div>
       <h3>Ver Tutoriais</h3>
-      <p>Aprenda com vídeos e estratégias avançadas.</p>
+      <p>Aprenda passo a passo com vídeos e estratégias avançadas.</p>
       <button class="btn-primary" onclick="openTutorial()">Assistir</button>
     </div>
 
@@ -70,20 +70,22 @@
         </svg>
       </div>
       <h3>IA Ilimitada — Tiger IA</h3>
-      <p>Crie mensagens e fluxos automáticos.</p>
+      <p>Crie mensagens, automações e fluxos com inteligência TigerFy.</p>
       <button disabled>Em Breve</button>
     </div>
+
   </div>
 </div>
 
-<!-- MODALS -->
+<!-- MODAL TUTORIAL -->
 <div class="modal" id="tutorialModal">
   <div class="modal-content">
     <span class="close" onclick="closeTutorial()">&times;</span>
-    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1"></iframe>
+    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" frameborder="0"></iframe>
   </div>
 </div>
 
+<!-- MODAL ROI -->
 <div class="modal" id="roiModal">
   <div class="modal-content small">
     <span class="close" onclick="closeRoi()">&times;</span>
@@ -97,10 +99,15 @@
 </div>
 
 <script>
-  function openTutorial(){document.getElementById('tutorialModal').style.display='flex';}
-  function closeTutorial(){document.getElementById('tutorialModal').style.display='none';}
-  function openRoi(){document.getElementById('roiModal').style.display='flex';}
-  function closeRoi(){document.getElementById('roiModal').style.display='none';}
+  function goCreate(){ window.location.href = "/bots/create"; }
+  function goManage(){ window.location.href = "/bots/manage"; }
+
+  function openTutorial(){ document.getElementById('tutorialModal').style.display='flex'; }
+  function closeTutorial(){ document.getElementById('tutorialModal').style.display='none'; }
+
+  function openRoi(){ document.getElementById('roiModal').style.display='flex'; }
+  function closeRoi(){ document.getElementById('roiModal').style.display='none'; }
+
   function calcROI(){
     const i=parseFloat(investment.value);
     const r=parseFloat(revenue.value);
