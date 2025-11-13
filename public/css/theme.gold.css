@@ -138,6 +138,8 @@ thead tr {
    =============================== */
 .sidebar {
   width: 250px;
+  max-width: 250px !important;
+  min-width: 250px !important;
   background: #050505;
   border-right: 1px solid rgba(255, 204, 0, 0.08);
   display: flex;
@@ -146,7 +148,16 @@ thead tr {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 10;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+  z-index: 10 !important;
+
+  /* FIX: impede overlay invisível */
+  clip-path: inset(0 0 0 0);
+}
+
+.sidebar * {
+  max-width: 100% !important;
 }
 
 .sidebar-header {
@@ -156,6 +167,7 @@ thead tr {
   gap: 12px;
 }
 
+/* LOGO */
 .logo-mark svg {
   width: 42px;
   height: 42px;
@@ -263,4 +275,3 @@ thead tr {
   box-sizing: border-box;
   animation: fadeIn 0.25s ease-out;
 }
-
