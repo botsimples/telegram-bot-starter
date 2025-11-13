@@ -7,7 +7,8 @@
   </div>
 
   <div class="offers-grid">
-    <!-- BLOCO 1 -->
+
+    <!-- BLOCO 1 - CRIAR OFERTA -->
     <div class="offer-card">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -17,11 +18,11 @@
         </svg>
       </div>
       <h3>Criar Oferta</h3>
-      <p>Defina nome, valor e parâmetros de traqueamento para seu bot Telegram.</p>
-      <button class="btn-primary">Criar</button>
+      <p>Crie fluxos inteligentes e automatize bots Telegram.</p>
+      <a href="/bots/create" class="btn-primary">Criar</a>
     </div>
 
-    <!-- BLOCO 2 -->
+    <!-- BLOCO 2 - GERENCIAR -->
     <div class="offer-card">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -30,8 +31,8 @@
         </svg>
       </div>
       <h3>Gerenciar Ofertas</h3>
-      <p>Edite, duplique e acompanhe o desempenho das suas campanhas.</p>
-      <button class="btn-primary">Acessar</button>
+      <p>Edite e acompanhe o desempenho das suas automações.</p>
+      <a href="/bots/manage" class="btn-primary">Acessar</a>
     </div>
 
     <!-- BLOCO 3 -->
@@ -42,7 +43,7 @@
         </svg>
       </div>
       <h3>Calcular ROI</h3>
-      <p>Visualize o retorno das campanhas e calcule o ROI completo.</p>
+      <p>Visualize o retorno das campanhas.</p>
       <button class="btn-primary" onclick="openRoi()">Calcular</button>
     </div>
 
@@ -55,11 +56,11 @@
         </svg>
       </div>
       <h3>Ver Tutoriais</h3>
-      <p>Aprenda passo a passo com vídeos e estratégias avançadas.</p>
+      <p>Aprenda com vídeos e estratégias avançadas.</p>
       <button class="btn-primary" onclick="openTutorial()">Assistir</button>
     </div>
 
-    <!-- BLOCO 5 (IA ILIMITADA) -->
+    <!-- BLOCO 5 -->
     <div class="offer-card locked">
       <div class="icon">
         <svg width="36" height="36" stroke="#ffcc00" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -69,21 +70,20 @@
         </svg>
       </div>
       <h3>IA Ilimitada — Tiger IA</h3>
-      <p>Crie mensagens, automações e fluxos com inteligência TigerFy.</p>
+      <p>Crie mensagens e fluxos automáticos.</p>
       <button disabled>Em Breve</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL TUTORIAL -->
+<!-- MODALS -->
 <div class="modal" id="tutorialModal">
   <div class="modal-content">
     <span class="close" onclick="closeTutorial()">&times;</span>
-    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <iframe width="100%" height="450" src="https://www.youtube.com/embed/WNesCpWnclQ?autoplay=1&mute=1"></iframe>
   </div>
 </div>
 
-<!-- MODAL ROI -->
 <div class="modal" id="roiModal">
   <div class="modal-content small">
     <span class="close" onclick="closeRoi()">&times;</span>
@@ -110,55 +110,3 @@
     roiResult.innerHTML=`<p><b>ROI:</b> ${roi.toFixed(2)}%</p><p><b>Lucro Total:</b> R$ ${(r-(i+c)).toFixed(2)}</p>`;
   }
 </script>
-
-<style>
-  html,body{
-    margin:0;padding:0;
-    background:#0a0a0a;color:#fff;
-    font-family:Inter,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  *{box-sizing:border-box;}
-  ::-webkit-scrollbar{display:none!important;}
-
-  /* 🔹 MESMA CENTRALIZAÇÃO DA DASHBOARD */
-  .tiger-offers{
-    padding:60px 80px 100px 130px;
-    transform:scale(0.9) translateY(0px) translateX(-38px);
-    /* ↑ mesmo deslocamento lateral da dashboard para centralização perfeita */
-    transform-origin:top center;
-    margin:0 auto;
-    max-width:calc(100vw - 120px);
-  }
-
-  .offers-header{text-align:center;margin-bottom:10px;}
-  .offers-header h1{color:#ffcc00;font-size:2rem;margin:0;}
-  .offers-header p{color:#b4b4b4;font-size:.95rem;margin-top:8px;}
-  .offers-grid{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:30px;margin-top:30px;}
-  .offer-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,204,0,0.12);border-radius:16px;padding:28px 22px;text-align:center;transition:.3s;}
-  .offer-card:hover{transform:translateY(-5px);box-shadow:0 0 20px rgba(255,204,0,0.25);}
-  .icon{margin-bottom:15px;transition:filter .3s,transform .3s;}
-  .offer-card:hover .icon{filter:drop-shadow(0 0 8px rgba(255,204,0,0.6));transform:scale(1.1);}
-  .offer-card h3{font-size:1.1rem;margin:0 0 8px;}
-  .offer-card p{color:#b4b4b4;font-size:.9rem;margin:0 0 18px;}
-  .btn-primary{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;color:#000;font-weight:700;cursor:pointer;}
-  .btn-disabled,
-  .offer-card.locked button{
-    background:rgba(255,255,255,0.05);
-    color:#777;
-    border:none;
-    padding:10px 20px;
-    border-radius:8px;
-    cursor:not-allowed;
-  }
-  .offer-card.locked{opacity:0.6;filter:grayscale(1);}
-  .modal{display:none;position:fixed;z-index:99;inset:0;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;}
-  .modal-content{background:#111;border:1px solid rgba(255,204,0,0.2);border-radius:14px;padding:25px;width:80%;max-width:900px;position:relative;}
-  .modal-content.small{max-width:420px;text-align:center;}
-  .close{position:absolute;top:10px;right:15px;font-size:1.8rem;cursor:pointer;color:#ffcc00;}
-  .modal-content h2{color:#ffcc00;margin-top:0;}
-  input{width:100%;margin:10px 0;padding:10px;border-radius:8px;border:1px solid rgba(255,204,0,0.3);background:rgba(255,255,255,0.05);color:#fff;}
-  #roiModal button{background:linear-gradient(90deg,#ffcc00,#d4a100);border:none;padding:10px 20px;border-radius:8px;cursor:pointer;color:#000;font-weight:700;margin-top:10px;}
-  #roiResult p{margin:6px 0;}
-
-</style>
