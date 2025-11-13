@@ -1,5 +1,5 @@
 // ===============================
-// ⚡ TIGERFY SERVER (versão otimizada)
+// ⚡ TIGERFY SERVER (versão com login)
 // ===============================
 
 const express = require('express');
@@ -13,29 +13,24 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 
-// MODELS
+const Admin = require('./models/admin');
 const Offer = require('./models/Offer');
 
 dotenv.config();
 const app = express();
 
 // ===============================
-// ⚙️ CONFIGURAÇÕES GERAIS
+// ⚙️ CONFIG GERAL
 // ===============================
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layout');
 
-// Segurança e otimização
 app.use(compression());
-app.use(helmet({
-  contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false
-}));
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(morgan('tiny'));
 
-// Static cache
 app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: '30d',
   etag: true
@@ -44,19 +39,24 @@ app.use(express.static(path.join(__dirname, 'public'), {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Sessão
 app.use(session({
   secret: 'tigerfy_secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 2, 
+    maxAge: 1000 * 60 * 60 * 2,
     sameSite: 'strict'
   }
 }));
 
+// middleware pra ter user disponível nas views, se quiser
+app.use((req, res, next) => {
+  res.locals.currentUserId = req.session.userId || null;
+  next();
+});
+
 // ===============================
-// 🛡️ Middleware de autenticação
+// 🛡️ Middleware de auth
 // ===============================
 function ensureAuth(req, res, next) {
   if (req.session && req.session.userId) return next();
@@ -64,140 +64,168 @@ function ensureAuth(req, res, next) {
 }
 
 // ===============================
-// 💾 MONGODB
+// 💾 MONGO
 // ===============================
 mongoose.set('strictQuery', false);
+
 mongoose.connect(process.env.MONGO_URI, {
   serverSelectionTimeoutMS: 10000,
 })
   .then(() => console.log('✅ MongoDB conectado!'))
   .catch((err) => console.error('❌ Erro MongoDB:', err.message));
 
-
 // ===============================
-// 🌐 ROTAS PRINCIPAIS (Login/Views)
+// 🌐 ROTAS DE AUTH
 // ===============================
-app.get('/', (_, res) => res.redirect('/login'));
-
-app.get('/login', (_, res) => res.render('login', { title: 'Login', active: '', layout: false }));
-app.get('/register', (_, res) => res.render('register', { title: 'Registro', active: '', layout: false }));
-
-app.post('/register', (req, res) => {
-  const { username, email } = req.body;
-  console.log('🆕 Novo cadastro:', { username, email });
-  res.render('register_success', {
-    title: 'Cadastro Enviado',
-    layout: false,
-    whatsapp: 'https://wa.me/5543999562213?text=Opa%20Gustavo%2C%20fiz%20meu%20cadastro%20na%20TigerFy%20⚡'
-  });
+app.get('/', (req, res) => {
+  if (req.session.userId) return res.redirect('/deck');
+  return res.redirect('/login');
 });
 
-// Fake login apenas para continuar
-app.post('/deck', (req, res) => {
-  req.session.userId = req.body.user || "123456";
-  res.redirect('/deck');
+app.get('/login', (req, res) => {
+  if (req.session.userId) return res.redirect('/deck');
+  res.render('login', { title: 'Login', active: '', layout: false, error: null });
 });
 
-app.get('/deck', ensureAuth, (_, res) => res.render('deck', { title: 'Dashboard', active: 'deck' }));
-app.get('/perfil', ensureAuth, (_, res) => res.render('perfil', { title: 'Meu Perfil', active: 'perfil' }));
-app.get('/conquistas', ensureAuth, (_, res) => res.render('conquistas', { title: 'Conquistas', active: 'conquistas' }));
-app.get('/api_pix', ensureAuth, (_, res) => res.render('api_pix', { title: 'Adquirentes', active: 'api_pix' }));
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await Admin.findOne({ email });
+    if (!user) {
+      return res.render('login', {
+        title: 'Login',
+        active: '',
+        layout: false,
+        error: 'E-mail ou senha inválidos.'
+      });
+    }
+
+    const ok = await user.comparePassword(password);
+    if (!ok) {
+      return res.render('login', {
+        title: 'Login',
+        active: '',
+        layout: false,
+        error: 'E-mail ou senha inválidos.'
+      });
+    }
+
+    req.session.userId = user._id.toString();
+    return res.redirect('/deck');
+
+  } catch (err) {
+    console.error(err);
+    return res.render('login', {
+      title: 'Login',
+      active: '',
+      layout: false,
+      error: 'Erro interno ao tentar logar.'
+    });
+  }
+});
+
+app.get('/register', (req, res) => {
+  if (req.session.userId) return res.redirect('/deck');
+  res.render('register', { title: 'Registro', active: '', layout: false, error: null });
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const exists = await Admin.findOne({ email });
+    if (exists) {
+      return res.render('register', {
+        title: 'Registro',
+        active: '',
+        layout: false,
+        error: 'Já existe uma conta com esse e-mail.'
+      });
+    }
+
+    const user = new Admin({ name, email, password });
+    await user.save();
+
+    req.session.userId = user._id.toString();
+    return res.redirect('/deck');
+
+  } catch (err) {
+    console.error(err);
+    return res.render('register', {
+      title: 'Registro',
+      active: '',
+      layout: false,
+      error: 'Erro ao criar conta.'
+    });
+  }
+});
 
 app.get('/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/login'));
 });
 
-
 // ===============================
-// ⚡ ROTAS DE OFERTAS / BOTS
+// 📊 ROTAS INTERNAS (protegidAS)
 // ===============================
+app.get('/deck', ensureAuth, (_, res) =>
+  res.render('deck', { title: 'Dashboard', active: 'deck' })
+);
 
-// HUB de ofertas
-app.get('/bots', ensureAuth, (_, res) => {
-  res.render('bots', { title: 'Ofertas', active: 'bots' });
-});
+app.get('/bots', ensureAuth, (_, res) =>
+  res.render('bots', { title: 'Ofertas', active: 'bots' })
+);
 
-// Criar oferta (view)
-app.get('/bots/create', ensureAuth, (_, res) => {
-  res.render('bots_create', {
-    title: 'Criar Oferta',
-    active: 'bots'
-  });
-});
+app.get('/bots/create', ensureAuth, (_, res) =>
+  res.render('bots_create', { title: 'Criar Oferta', active: 'bots' })
+);
 
-// Criar oferta (POST)
 app.post('/bots/create', ensureAuth, async (req, res) => {
   try {
-    const ownerId = req.session.userId;
-    const { name, botType, trackingType } = req.body;
+    const { name, botType, tracking } = req.body;
 
-    const offer = await Offer.create({
-      owner: ownerId,
+    await Offer.create({
       name,
       botType,
-      trackingType,
-      status: 'incompleto'
+      tracking,
+      owner: req.session.userId
     });
 
-    res.redirect(`/bots/manage?id=${offer._id}`);
+    return res.redirect('/bots/manage');
   } catch (err) {
     console.error(err);
-    res.send('Erro ao criar oferta.');
+    return res.send('Erro ao criar oferta.');
   }
 });
 
-// Gerenciar oferta (listagem + detalhe)
 app.get('/bots/manage', ensureAuth, async (req, res) => {
   try {
-    const ownerId = req.session.userId;
-
-    const offers = await Offer.find({ owner: ownerId }).sort({ createdAt: -1 }).lean();
-    let selectedOffer = null;
-
-    if (req.query.id) {
-      selectedOffer = await Offer.findOne({
-        _id: req.query.id,
-        owner: ownerId
-      }).lean();
-    }
-
+    const offers = await Offer.find({ owner: req.session.userId }).sort({ createdAt: -1 }).lean();
     res.render('bots_manage', {
       title: 'Gerenciar Ofertas',
       active: 'bots',
-      offers,
-      selectedOffer
+      offers
     });
-
   } catch (err) {
     console.error(err);
     res.send('Erro ao carregar ofertas.');
   }
 });
 
-// Atualizar token do bot
-app.post('/bots/:id/token', ensureAuth, async (req, res) => {
-  try {
-    const ownerId = req.session.userId;
-    const offer = await Offer.findOne({ _id: req.params.id, owner: ownerId });
+app.get('/api_pix', ensureAuth, (_, res) =>
+  res.render('api_pix', { title: 'Adquirentes', active: 'api_pix' })
+);
 
-    if (!offer) return res.send('Oferta não encontrada.');
+app.get('/perfil', ensureAuth, (_, res) =>
+  res.render('perfil', { title: 'Meu Perfil', active: 'perfil' })
+);
 
-    offer.botToken = req.body.botToken;
-    offer.telegramUsername = req.body.telegramUsername || null;
-    offer.status = req.body.botToken ? 'ativo' : 'incompleto';
-
-    await offer.save();
-
-    res.redirect(`/bots/manage?id=${offer._id}`);
-  } catch (err) {
-    console.error(err);
-    res.send('Erro ao salvar token.');
-  }
-});
-
+app.get('/conquistas', ensureAuth, (_, res) =>
+  res.render('conquistas', { title: 'Conquistas', active: 'conquistas' })
+);
 
 // ===============================
-// 🚀 INICIAR SERVIDOR
+// 🚀 START
 // ===============================
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
