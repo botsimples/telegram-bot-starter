@@ -12,20 +12,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* =======================
+
+    /* ============================
        FUNDO PREMIUM PONTILHADO
-    ======================= */
+    ============================ */
     body {
-      background: #0d0d0d url('/img/pattern.png') repeat !important;
-      background-size: 260px;
+      background: radial-gradient(circle, rgba(255,215,0,0.06) 1px, transparent 1px),
+                  radial-gradient(circle, rgba(255,215,0,0.03) 1px, transparent 1px),
+                  #0d0d0d !important;
+      background-size: 90px 90px, 180px 180px;
       color: #fff;
       font-family: "Inter", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* =======================
+    /* REMOVE QUALQUER MODO CLARO */
+    [data-theme="light"] {
+      background: #0d0d0d !important;
+      color: #fff !important;
+    }
+
+    /* ============================
        SIDEBAR
-    ======================= */
+    ============================ */
     .sidebar {
       width: 250px;
       background: #0a0a0a;
@@ -39,7 +48,6 @@
       z-index: 10;
     }
 
-    /* LOGO */
     .sidebar-header {
       padding: 25px 0 15px;
       display: flex;
@@ -48,26 +56,29 @@
       gap: 6px;
     }
 
+    /* LOGO ÚNICA */
     .logo-round {
       width: 58px;
       height: 58px;
       border-radius: 50%;
+      object-fit: contain;
       background: #111;
       padding: 6px;
-      object-fit: contain;
       box-shadow: 0 0 12px rgba(255, 204, 0, 0.25);
     }
 
     .brand-name {
       font-family: "Poppins", sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.28rem;
       font-weight: 700;
       background: linear-gradient(90deg, #ffcc00, #d4a100);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* MENU */
+    /* ============================
+       MENU
+    ============================ */
     .menu {
       display: flex;
       flex-direction: column;
@@ -153,15 +164,9 @@
       opacity: 1;
     }
 
-    .menu-bottom svg {
-      width: 22px;
-      height: 22px;
-      stroke: #ffcc00;
-    }
-
-    /* =======================
+    /* ============================
        MAIN CONTENT
-    ======================= */
+    ============================ */
     .main-content {
       margin-left: 250px;
       padding: 40px;
@@ -174,34 +179,32 @@
       to   { opacity: 1; transform: translateY(0);}
     }
 
-    /* =======================
-       LOADER CENTRALIZADO
-    ======================= */
+    /* ============================
+       LOADER
+    ============================ */
     #loaderBox {
       position: fixed;
-      top: 20px;
+      top: 18px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 8px 18px;
-      background: rgba(0, 0, 0, 0.75);
-      border: 1px solid rgba(255, 204, 0, 0.25);
+      padding: 9px 22px;
+      background: rgba(0, 0, 0, 0.72);
+      border: 1px solid rgba(255, 204, 0, 0.28);
       border-radius: 10px;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 600;
       color: #ffcc00;
       backdrop-filter: blur(6px);
       display: none;
       z-index: 9999;
+      opacity: 1;
       animation: fadeIn .3s ease;
-      min-width: 150px;
-      text-align: center;
     }
 
     #loaderBox.success {
       color: #ffe46a;
       border-color: rgba(255, 215, 0, 0.45);
     }
-
   </style>
 </head>
 
@@ -216,14 +219,23 @@
 
       loader.style.display = "block";
 
+      // 1° Fase — Processando
       setTimeout(() => {
+
+        // 2° Fase — Concluído
         loader.innerText = "Concluído!";
         loader.classList.add("success");
 
         setTimeout(() => {
           loader.style.opacity = "0";
-          setTimeout(() => loader.style.display = "none", 300);
-        }, 800);
+
+          // Remove só depois que anima sair
+          setTimeout(() => {
+            loader.style.display = "none";
+            loader.style.opacity = "1";
+          }, 300);
+
+        }, 900);
 
       }, 450);
     });
