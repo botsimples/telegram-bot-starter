@@ -466,4 +466,14 @@ window.addEventListener("load", () => {
   z-index: 0 !important;
 }
 
+.gateway-card,
+.gateway-card * {
+    pointer-events: auto !important;
+}
+
+.gateway-card::before,
+.gateway-card::after {
+    pointer-events: none !important;
+}
+
 </style>
