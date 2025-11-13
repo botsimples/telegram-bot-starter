@@ -3,12 +3,16 @@
     <h1>⚡ TigerFy</h1>
     <p class="subtitle">Acesse sua conta para continuar</p>
 
-    <form method="POST" action="/deck" class="login-form">
-      <label for="user">Usuário</label>
-      <input type="text" id="user" name="user" placeholder="Digite seu usuário" required />
+    <% if (typeof message !== "undefined" && message) { %>
+      <p style="color:#ff6b6b;font-size:13px;margin-bottom:10px;"><%= message %></p>
+    <% } %>
+
+    <form method="POST" action="/login" class="login-form">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
 
       <label for="pass">Senha</label>
-      <input type="password" id="pass" name="pass" placeholder="Digite sua senha" required />
+      <input type="password" id="pass" name="password" placeholder="Digite sua senha" required />
 
       <button type="submit" class="btn-login">Entrar na Plataforma</button>
     </form>
@@ -23,6 +27,7 @@
 </div>
 
 <style>
+  /* (SEU CSS ORIGINAL – NADA ALTERADO) */
   body {
     font-family: "Inter", sans-serif;
     background: radial-gradient(circle at center, #0d0d0d 0%, #000 100%);
