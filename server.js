@@ -10,14 +10,14 @@ require("dotenv").config();
 
 const app = express();
 
-// ===== MIDDLEWARES =====
+// Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(compression());
 app.use(helmet());
 app.use(morgan("tiny"));
 
-// ===== SESSÃO =====
+// Sessão
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "tigerfy_secret",
@@ -26,34 +26,40 @@ app.use(
   })
 );
 
-// ===== EJS + LAYOUT =====
+// 👇 EVITA O ERRO DO ACTIVE UNDEFINED EM QUALQUER TELA
+app.use((req, res, next) => {
+  res.locals.active = "";
+  next();
+});
+
+// EJS + Layout
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.set("layout", "layout");      // <--- OBRIGATÓRIO
-app.use(expressLayouts);          // <--- OBRIGATÓRIO
+app.set("layout", "layout");
+app.use(expressLayouts);
 
-// ===== STATIC =====
+// Public
 app.use(express.static(path.join(__dirname, "public")));
 
-// ===== MONGO =====
+// Mongo
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB conectado!"))
   .catch((err) => console.error("Erro MongoDB:", err));
 
-// ===== ROTAS =====
+// Rotas
 app.use("/", require("./routes/auth"));
 app.use("/", require("./routes/dashboard"));
 app.use("/", require("./routes/offers"));
 app.use("/", require("./routes/bots"));
 app.use("/", require("./routes/api_pix"));
 
-// ===== 404 =====
+// 404
 app.use((req, res) => {
   res.status(404).render("404", { title: "404 - TigerFy" });
 });
 
-// ===== SERVER START =====
+// Start
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () =>
   console.log(`🚀 TigerFy rodando! Porta ${PORT}`)
