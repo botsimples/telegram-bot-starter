@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %> | TigerFy</title>
 
-  <!-- Tema principal (AGORA UNIFICADO: theme.gold.css + tigerfy.css) -->
+  <!-- Tema único e sem conflitos -->
   <link rel="stylesheet" href="/css/theme.gold.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,9 +20,7 @@
       margin: 0;
       color: #fff;
       font-family: "Inter", sans-serif;
-      -webkit-font-smoothing: antialiased;
-
-      background-color: #050505;
+      background-color: #050505 !important;
       background-image:
         radial-gradient(circle at 0 0, rgba(255, 204, 0, 0.18) 0, transparent 55%),
         radial-gradient(circle at 100% 0, rgba(255, 204, 0, 0.09) 0, transparent 55%),
@@ -31,103 +29,203 @@
       background-repeat: no-repeat, no-repeat, no-repeat, repeat;
       background-size: auto, auto, auto, 4px 4px;
       display: flex;
+      overflow-x: hidden;
     }
 
-    /* força sempre tema escuro no HTML raiz */
     html, body {
-      background-color: #050505;
+      background-color: #050505 !important;
     }
 
-    /* Remove quaisquer toggles de tema que existam em algum lugar */
+    /* Remove toggles de tema */
     .theme-toggle,
     #themeToggle,
     #theme-toggle,
     .mode-toggle,
     [data-theme-toggle] {
       display: none !important;
-      visibility: hidden !important;
-    }
-
-    /* Ajuste pra garantir que o conteúdo principal respeite a margem da sidebar
-       (o grid e os detalhes vêm do CSS unificado) */
-    .main-content {
-      min-height: 100vh;
-      box-sizing: border-box;
     }
 
     /* =======================
-       LOADER TOPO DIREITO
+       CORREÇÃO CRÍTICA
+       Desbloqueia a sidebar (bug do overlay invisível)
     ======================= */
-    #loaderBox {
+    .sidebar {
       position: fixed;
-      top: 24px;
-      right: 32px;
-      padding: 8px 18px;
-      background: rgba(0, 0, 0, 0.78);
-      border: 1px solid rgba(255, 204, 0, 0.4);
-      border-radius: 999px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #ffcc00;
-      backdrop-filter: blur(6px);
-      display: none;
-      z-index: 9999;
-      min-width: 150px;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.25s ease;
+      width: 250px;
+      height: 100vh;
+      left: 0;
+      top: 0;
+      background: #050505;
+      border-right: 1px solid rgba(255, 204, 0, 0.08);
+      z-index: 10 !important;
+      display: flex;
+      flex-direction: column;
     }
 
-    #loaderBox.success {
-      color: #ffe46a;
-      border-color: rgba(255, 215, 0, 0.85);
+    /* desbloqueia cliques */
+    .sidebar * {
+      pointer-events: auto !important;
     }
+
+    /* =======================
+       HEADER SIDEBAR
+    ======================= */
+    .sidebar-header {
+      padding: 26px 22px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark svg {
+      width: 42px;
+      height: 42px;
+    }
+
+    .brand-name {
+      font-family: "Poppins", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ffcc00, #d4a100);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* MENU */
+    .menu {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 20px 0;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #b4b4b4;
+      font-weight: 500;
+      transition: 0.25s;
+      font-size: 0.95rem;
+    }
+
+    .menu a svg {
+      width: 19px;
+      height: 19px;
+      stroke: #b4b4b4;
+      stroke-width: 1.8;
+    }
+
+    .menu a:hover {
+      background: rgba(255, 204, 0, 0.08);
+      color: #ffcc00;
+    }
+
+    .menu a:hover svg { stroke: #ffcc00; }
+
+    .menu a.active {
+      background: rgba(255, 204, 0, 0.14);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: inset 0 0 14px rgba(255, 204, 0, 0.18);
+      position: relative;
+    }
+
+    .menu a.active svg { stroke: #ffcc00; }
+
+    .menu a.active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      background: linear-gradient(#ffea70, #ffcc00, #d4a100);
+      border-radius: 2px;
+    }
+
+    .menu-divider {
+      height: 1px;
+      width: 100%;
+      margin: 18px 0;
+      background: linear-gradient(to right, transparent, rgba(255, 204, 0, 0.25), transparent);
+    }
+
+    /* LOGOUT */
+    .menu-bottom {
+      margin-top: auto;
+      padding: 22px 26px 24px;
+    }
+
+    .menu-bottom a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffcc00;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      opacity: 0.85;
+      transition: 0.2s;
+    }
+
+    .menu-bottom a:hover { opacity: 1; }
+
+    .menu-bottom svg {
+      width: 22px;
+      height: 22px;
+      stroke: #ffcc00;
+      stroke-width: 2.2;
+    }
+
+    /* =======================
+       MAIN CONTENT
+       (corrige bug de click)
+    ======================= */
+    .main-content {
+      margin-left: 250px;
+      padding: 40px;
+      min-height: 100vh;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2 !important; /* libera cliques */
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
   </style>
 </head>
 
 <body>
-  <!-- LOADER -->
-  <div id="loaderBox">Processando…</div>
 
-  <script>
-    // animação do loader rápido ao carregar a página
-    document.addEventListener("DOMContentLoaded", () => {
-      const loader = document.getElementById("loaderBox");
-      if (!loader) return;
-
-      loader.style.display = "block";
-      loader.textContent = "Processando…";
-      loader.classList.remove("success");
-
-      requestAnimationFrame(() => {
-        loader.style.opacity = "1";
-
-        setTimeout(() => {
-          loader.textContent = "Concluído!";
-          loader.classList.add("success");
-
-          setTimeout(() => {
-            loader.style.opacity = "0";
-            setTimeout(() => loader.style.display = "none", 300);
-          }, 900);
-        }, 900);
-      });
-    });
-  </script>
-
-  <!-- SIDEBAR -->
+  <!-- SIDEBAR ORIGINAL RESTAURADA E FUNCIONAL -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <!-- LOGO SVG DO TIGRE -->
+
       <div class="logo-mark">
-        <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 58 58" fill="none">
           <circle cx="29" cy="29" r="27" stroke="#FFCC00" stroke-width="3"/>
           <path d="M20.5 34C20.5 28 24 23 29 23C34 23 37.5 28 37.5 34"
-                stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
+            stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
           <path d="M23 28C23 26 24.5 24.5 26.5 24.5"
-                stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
+            stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
           <path d="M35 28C35 26 33.5 24.5 31.5 24.5"
-                stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
+            stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
           <circle cx="25.5" cy="31.5" r="1.5" fill="#FFCC00"/>
           <circle cx="32.5" cy="31.5" r="1.5" fill="#FFCC00"/>
         </svg>
@@ -138,56 +236,42 @@
 
     <nav class="menu">
       <a href="/deck" class="<%= active === 'deck' ? 'active' : '' %>">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 8h7v10h-7V11zM3 14h7v7H3v-7z"
-                stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 8h7v10h-7V11zM3 14h7v7H3v-7z"/></svg>
         Dashboard
       </a>
 
       <a href="/bots" class="<%= active === 'bots' ? 'active' : '' %>">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M3 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"
-                stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6z"/></svg>
         Ofertas
       </a>
 
       <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"
-                stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
         Adquirentes
       </a>
 
       <div class="menu-divider"></div>
 
       <a href="/perfil" class="<%= active === 'perfil' ? 'active' : '' %>">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"
-                stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/></svg>
         Perfil
       </a>
 
       <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M8 4h8v3a4 4 0 01-4 4 4 4 0 01-4-4V4z" stroke-width="1.8"
-                stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M6 4h12" stroke-width="1.8" stroke-linecap="round" />
-          <path d="M9 15h6" stroke-width="1.8" stroke-linecap="round" />
-          <path d="M10 19h4" stroke-width="1.8" stroke-linecap="round" />
-          <path d="M5 7a3 3 0 003 3" stroke-width="1.5" stroke-linecap="round" />
-          <path d="M19 7a3 3 0 01-3 3" stroke-width="1.5" stroke-linecap="round" />
+        <svg viewBox="0 0 24 24">
+          <path d="M8 4h8v3a4 4 0 01-4 4 4 4 0 01-4-4V4z" />
+          <path d="M6 4h12" />
+          <path d="M9 15h6" />
+          <path d="M10 19h4" />
+          <path d="M5 7a3 3 0 003 3" />
+          <path d="M19 7a3 3 0 01-3 3" />
         </svg>
         Conquistas
       </a>
 
       <a href="https://wa.me/5543999562213?text=Olá!%20Preciso%20de%20ajuda%20no%20TigerFy⚡" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M12 20.5c4.694 0 8.5-3.806 8.5-8.5S16.694 3.5 12 3.5 3.5 7.306 3.5 12c0 1.293.293 2.517.818 3.607L3 21l5.548-1.414A8.468 8.468 0 0012 20.5z"
-                stroke-linecap="round" stroke-linejoin="round" />
+        <svg viewBox="0 0 24 24">
+          <path d="M12 20.5c4.694 0 8.5-3.806 8.5-8.5S16.694 3.5 12 3.5 3.5 7.306 3.5 12c0 1.293.293 2.517.818 3.607L3 21l5.548-1.414A8.468 8.468 0 0012 20.5z"/>
         </svg>
         Suporte
       </a>
@@ -195,10 +279,7 @@
 
     <div class="menu-bottom">
       <a href="/logout">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path d="M15 12H3m0 0l4-4m-4 4l4 4m8-8h5a2 2 0 012 2v6a2 2 0 01-2 2h-5"
-                stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M15 12H3m0 0l4-4m-4 4l4 4m8-8h5a2 2 0 012 2v6a2 2 0 01-2 2h-5"/></svg>
         Sair
       </a>
     </div>
@@ -208,24 +289,5 @@
     <%- body %>
   </main>
 
-  <script>
-    // Pré-carrega páginas internas pra navegação parecer instantânea
-    document.addEventListener("DOMContentLoaded", () => {
-      const links = document.querySelectorAll('a[href^="/"]');
-
-      links.forEach(link => {
-        const url = link.getAttribute("href");
-        if (!url || url === window.location.pathname) return;
-
-        fetch(url, { method: "GET" })
-          .then(() => console.log("Pré-carregado:", url))
-          .catch(() => {});
-      });
-    });
-  </script>
-
-  <!-- Dependências JS do painel -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="/js/tigerfy.js"></script>
 </body>
 </html>
