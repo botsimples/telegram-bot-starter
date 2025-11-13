@@ -322,28 +322,32 @@ window.addEventListener("load", () => {
 .taxa { color: #ffcc00; font-size: 0.85rem; text-decoration: none; }
 
 .right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+/* 🔥 Botões compactos e proporcionais — NÃO QUEBRAM O LAYOUT */
 .btn.glass {
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.06);
-  color: #ffcc00;
-  border-radius: 10px;
-  padding: 9px 18px;
-  font-weight: 500;
-  font-size: 0.85rem;
-  cursor: pointer;
-  backdrop-filter: blur(16px);
-  transition: all .25s ease;
-  width: 170px;
+  width: 140px !important;
+  padding: 8px 14px !important;
+  font-size: 0.82rem !important;
+  border-radius: 8px !important;
+  white-space: nowrap;
+  text-align: center;
 }
-.btn.glass:hover {
-  background: rgba(255,204,0,0.08);
-  box-shadow: 0 0 10px rgba(255,204,0,0.2);
-  transform: scale(1.03);
-}
+
+/* Botão ativo */
 .btn.glass.on {
-  background: rgba(255,204,0,0.12);
-  color: #fff;
-  border-color: rgba(255,204,0,0.5);
+  background: rgba(255,204,0,0.15) !important;
+  border-color: rgba(255,204,0,0.5) !important;
+  color: #fff !important;
+}
+
+/* Botão de token */
+.btn.glass.token {
+  width: 140px !important;
+}
+
+/* Em breve */
+.btn.glass.disabled {
+  width: 140px !important;
+  opacity: 0.6;
 }
 
 /* 🔥 gráfico – MAIS LARGO */
