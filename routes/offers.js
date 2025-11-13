@@ -7,7 +7,6 @@ function auth(req, res, next) {
   next();
 }
 
-// LISTAGEM OFERTAS
 router.get("/bots", auth, async (req, res) => {
   try {
     const offers = await Offer.find({ owner: req.session.userId }).sort({
@@ -16,7 +15,7 @@ router.get("/bots", auth, async (req, res) => {
 
     res.render("bots", {
       title: "Minhas Ofertas - TigerFy",
-      bots: offers,
+      offers,
       active: "bots",
     });
   } catch (err) {
@@ -25,7 +24,6 @@ router.get("/bots", auth, async (req, res) => {
   }
 });
 
-// FORM CRIAR
 router.get("/bots/create", auth, (req, res) => {
   res.render("bots_create", {
     title: "Criar Oferta - TigerFy",
@@ -33,7 +31,6 @@ router.get("/bots/create", auth, (req, res) => {
   });
 });
 
-// POST CRIAR OFERTA
 router.post("/bots/create", auth, async (req, res) => {
   try {
     const { name, botType, trackingType } = req.body;
