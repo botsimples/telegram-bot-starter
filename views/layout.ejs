@@ -13,7 +13,7 @@
 
   <style>
     /* =======================
-       ⚡ FUNDO PREMIUM PONTILHADO
+       FUNDO PREMIUM PONTILHADO
     ======================= */
     body {
       background: #0d0d0d url('/img/pattern.png') repeat !important;
@@ -175,15 +175,15 @@
     }
 
     /* =======================
-       CARREGAMENTO PREMIUM
+       LOADER CENTRALIZADO
     ======================= */
     #loaderBox {
       position: fixed;
-      top: 22px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       padding: 8px 18px;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.75);
       border: 1px solid rgba(255, 204, 0, 0.25);
       border-radius: 10px;
       font-size: 0.9rem;
@@ -193,12 +193,15 @@
       display: none;
       z-index: 9999;
       animation: fadeIn .3s ease;
+      min-width: 150px;
+      text-align: center;
     }
 
     #loaderBox.success {
       color: #ffe46a;
-      border-color: rgba(255, 215, 0, 0.4);
+      border-color: rgba(255, 215, 0, 0.45);
     }
+
   </style>
 </head>
 
@@ -208,7 +211,6 @@
   <div id="loaderBox">Processando…</div>
 
   <script>
-    // Ativa loader ao trocar rota
     document.addEventListener("DOMContentLoaded", () => {
       const loader = document.getElementById("loaderBox");
 
@@ -218,7 +220,10 @@
         loader.innerText = "Concluído!";
         loader.classList.add("success");
 
-        setTimeout(() => { loader.style.display = "none"; }, 700);
+        setTimeout(() => {
+          loader.style.opacity = "0";
+          setTimeout(() => loader.style.display = "none", 300);
+        }, 800);
 
       }, 450);
     });
@@ -245,7 +250,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path d="M3 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6z" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Bots
+        Ofertas
       </a>
 
       <a href="/api_pix" class="<%= active === 'api_pix' ? 'active' : '' %>">
