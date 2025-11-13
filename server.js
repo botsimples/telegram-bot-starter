@@ -12,6 +12,8 @@ const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
+
+// MODELS
 const Offer = require('./models/Offer');
 
 dotenv.config();
@@ -25,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layout');
 
-// ✅ Compressão e segurança
+// Segurança e otimização
 app.use(compression());
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -33,7 +35,7 @@ app.use(helmet({
 }));
 app.use(morgan('tiny'));
 
-// ✅ Cache de arquivos estáticos (CSS, JS, imagens)
+// Static cache
 app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: '30d',
   etag: true
@@ -42,18 +44,27 @@ app.use(express.static(path.join(__dirname, 'public'), {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Sessão
 app.use(session({
   secret: 'tigerfy_secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 2, // 2h
+    maxAge: 1000 * 60 * 60 * 2, 
     sameSite: 'strict'
   }
 }));
 
 // ===============================
-// 💾 CONEXÃO MONGODB
+// 🛡️ Middleware de autenticação
+// ===============================
+function ensureAuth(req, res, next) {
+  if (req.session && req.session.userId) return next();
+  return res.redirect('/login');
+}
+
+// ===============================
+// 💾 MONGODB
 // ===============================
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_URI, {
@@ -62,8 +73,9 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('✅ MongoDB conectado!'))
   .catch((err) => console.error('❌ Erro MongoDB:', err.message));
 
+
 // ===============================
-// 🌐 ROTAS PRINCIPAIS
+// 🌐 ROTAS PRINCIPAIS (Login/Views)
 // ===============================
 app.get('/', (_, res) => res.redirect('/login'));
 
@@ -80,22 +92,109 @@ app.post('/register', (req, res) => {
   });
 });
 
+// Fake login apenas para continuar
 app.post('/deck', (req, res) => {
-  const { user } = req.body;
-  console.log(`🔐 Login detectado: ${user}`);
+  req.session.userId = req.body.user || "123456";
   res.redirect('/deck');
 });
 
-// Views
-app.get('/deck', (_, res) => res.render('deck', { title: 'Dashboard', active: 'deck' }));
-app.get('/bots', (_, res) => res.render('bots', { title: 'Ofertas', active: 'bots' }));
-app.get('/api_pix', (_, res) => res.render('api_pix', { title: 'Adquirentes', active: 'api_pix' }));
-app.get('/perfil', (_, res) => res.render('perfil', { title: 'Meu Perfil', active: 'perfil' }));
-app.get('/conquistas', (_, res) => res.render('conquistas', { title: 'Conquistas', active: 'conquistas' }));
+app.get('/deck', ensureAuth, (_, res) => res.render('deck', { title: 'Dashboard', active: 'deck' }));
+app.get('/perfil', ensureAuth, (_, res) => res.render('perfil', { title: 'Meu Perfil', active: 'perfil' }));
+app.get('/conquistas', ensureAuth, (_, res) => res.render('conquistas', { title: 'Conquistas', active: 'conquistas' }));
+app.get('/api_pix', ensureAuth, (_, res) => res.render('api_pix', { title: 'Adquirentes', active: 'api_pix' }));
 
 app.get('/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/login'));
 });
+
+
+// ===============================
+// ⚡ ROTAS DE OFERTAS / BOTS
+// ===============================
+
+// HUB de ofertas
+app.get('/bots', ensureAuth, (_, res) => {
+  res.render('bots', { title: 'Ofertas', active: 'bots' });
+});
+
+// Criar oferta (view)
+app.get('/bots/create', ensureAuth, (_, res) => {
+  res.render('bots_create', {
+    title: 'Criar Oferta',
+    active: 'bots'
+  });
+});
+
+// Criar oferta (POST)
+app.post('/bots/create', ensureAuth, async (req, res) => {
+  try {
+    const ownerId = req.session.userId;
+    const { name, botType, trackingType } = req.body;
+
+    const offer = await Offer.create({
+      owner: ownerId,
+      name,
+      botType,
+      trackingType,
+      status: 'incompleto'
+    });
+
+    res.redirect(`/bots/manage?id=${offer._id}`);
+  } catch (err) {
+    console.error(err);
+    res.send('Erro ao criar oferta.');
+  }
+});
+
+// Gerenciar oferta (listagem + detalhe)
+app.get('/bots/manage', ensureAuth, async (req, res) => {
+  try {
+    const ownerId = req.session.userId;
+
+    const offers = await Offer.find({ owner: ownerId }).sort({ createdAt: -1 }).lean();
+    let selectedOffer = null;
+
+    if (req.query.id) {
+      selectedOffer = await Offer.findOne({
+        _id: req.query.id,
+        owner: ownerId
+      }).lean();
+    }
+
+    res.render('bots_manage', {
+      title: 'Gerenciar Ofertas',
+      active: 'bots',
+      offers,
+      selectedOffer
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.send('Erro ao carregar ofertas.');
+  }
+});
+
+// Atualizar token do bot
+app.post('/bots/:id/token', ensureAuth, async (req, res) => {
+  try {
+    const ownerId = req.session.userId;
+    const offer = await Offer.findOne({ _id: req.params.id, owner: ownerId });
+
+    if (!offer) return res.send('Oferta não encontrada.');
+
+    offer.botToken = req.body.botToken;
+    offer.telegramUsername = req.body.telegramUsername || null;
+    offer.status = req.body.botToken ? 'ativo' : 'incompleto';
+
+    await offer.save();
+
+    res.redirect(`/bots/manage?id=${offer._id}`);
+  } catch (err) {
+    console.error(err);
+    res.send('Erro ao salvar token.');
+  }
+});
+
 
 // ===============================
 // 🚀 INICIAR SERVIDOR
