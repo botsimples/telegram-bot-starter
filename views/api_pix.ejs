@@ -1,425 +1,304 @@
 <%- include('partials/visual_hottrack') %>
 
-<main class="api-pix">
-  <header>
-    <h1>Integrações de Gateways</h1>
-    <p>Escolha, ative e gerencie seus gateways de pagamento via API PIX.</p>
-  </header>
+<main class="gateways-page">
+  <h1 class="gateways-title">Integrações de Gateways</h1>
+  <p class="gateways-sub">Escolha, ative e gerencie seus gateways de pagamento via API PIX.</p>
 
-  <section class="gateway-grid">
-    <% const gateways = [
-      { nome: 'WiinPay', img: '/img/gateways/wiinpay.png', taxa: '4,99%', ativo: true, temToken: true, top: true },
-      { nome: 'ParadisePag', img: '/img/gateways/paradisepag.png', taxa: '1 Real', ativo: false },
-      { nome: 'OasyFy', img: '/img/gateways/oasyfy.png', taxa: '2,90%', ativo: false },
-      { nome: 'PushinPay', img: '/img/gateways/pushinpay.png', taxa: '0,35 Centavos', ativo: false },
-      { nome: 'SyncPay V2', img: '/img/gateways/syncpayv2.png', taxa: '0,35 Centavos', ativo: false },
-      { nome: 'Hoopay', img: '/img/gateways/hoopay.png', taxa: '1,85%', ativo: false },
-      { nome: 'ZeroOnePay', img: '', taxa: '—', soon: true },
-      { nome: 'HorsePay', img: '', taxa: '—', soon: true }
-    ]; %>
+  <div class="gateways-grid">
 
-    <% gateways.forEach(g => { %>
-      <div class="gateway-card <%= g.soon ? 'soon' : '' %> <%= g.ativo ? 'active' : '' %>">
-        <div class="left">
-          <% if (g.img) { %>
-            <img src="<%= g.img %>" alt="<%= g.nome %>" class="gateway-logo" />
-          <% } else { %>
-            <div class="logo-placeholder"></div>
-          <% } %>
-          <div class="gateway-info">
-            <% if (g.top) { %><span class="badge">🔥 TOP 1</span><% } %>
-            <div class="top-line">
-              <h3><%= g.nome %></h3>
-              <% if (g.ativo) { %><span class="status">● Ativo</span><% } %>
-            </div>
-            <span class="method">MÉTODO: API PIX</span>
-            <a href="#" target="_blank" class="taxa">Taxa: <%= g.taxa %></a>
+    <!-- WIINPAY -->
+    <div class="gateway-card highlight animate-in">
+      <div class="g-left">
+        <div class="g-badge">⚡ TOP 1</div>
+        <div class="g-header">
+          <img src="https://i.ibb.co/NLf1ghG/wiinpay.png" class="g-icon">
+          <div>
+            <h2>WiinPay</h2>
+            <span class="g-status ativo">Método: API PIX</span>
+            <span class="g-tax">Taxa: 4.9%</span>
           </div>
         </div>
+      </div>
 
-        <div class="right">
-          <% if (!g.soon) { %>
-            <button class="btn glass token" onclick="openTokenModal('<%= g.nome %>')">
-              <%= g.temToken ? 'Alterar Token' : 'Adicionar Token' %>
-            </button>
-            <button class="btn glass toggle <%= g.ativo ? 'on' : '' %>" onclick="toggleGateway(this)">
-              <%= g.ativo ? 'Desativar' : 'Ativar Gateway' %>
-            </button>
-          <% } else { %>
-            <button class="btn glass disabled">Em breve</button>
-          <% } %>
+      <div class="g-right">
+        <a href="#" class="btn-gateway">Alterar Token</a>
+        <a href="#" class="btn-gateway disable">Desativar</a>
+      </div>
+    </div>
+
+    <!-- PARADISEPAG -->
+    <div class="gateway-card animate-in">
+      <div class="g-header">
+        <img src="https://i.ibb.co/mJ4QsQJ/paradise.png" class="g-icon">
+        <div>
+          <h2>ParadisePag</h2>
+          <span class="g-status">Método: API PIX</span>
+          <span class="g-tax">Taxa: 1 Real</span>
         </div>
       </div>
-    <% }) %>
-  </section>
 
-  <!-- 🔥 Gráfico de Status do PIX -->
-  <section class="pix-status">
-    <h2>Monitoramento de Status do Pix</h2>
-    <div class="chart-wrapper">
-      <canvas id="pixIssuesChart"></canvas>
+      <div class="g-right">
+        <a href="#" class="btn-gateway">Adicionar Token</a>
+        <a href="#" class="btn-gateway">Ativar Gateway</a>
+      </div>
     </div>
-  </section>
+
+    <!-- OASYFY -->
+    <div class="gateway-card animate-in">
+      <div class="g-header">
+        <img src="https://i.ibb.co/DQjmV9V/oasy.png" class="g-icon">
+        <div>
+          <h2>OasyFy</h2>
+          <span class="g-status">Método: API PIX</span>
+          <span class="g-tax">Taxa: 2.90%</span>
+        </div>
+      </div>
+
+      <div class="g-right">
+        <a href="#" class="btn-gateway">Adicionar Token</a>
+        <a href="#" class="btn-gateway">Ativar Gateway</a>
+      </div>
+    </div>
+
+    <!-- PUSHINPAY -->
+    <div class="gateway-card animate-in">
+      <div class="g-header">
+        <img src="https://i.ibb.co/595LLHq/pushinpay.png" class="g-icon">
+        <div>
+          <h2>PushinPay</h2>
+          <span class="g-status">Método: API PIX</span>
+          <span class="g-tax">Taxa: 0,35 Centavos</span>
+        </div>
+      </div>
+
+      <div class="g-right">
+        <a href="#" class="btn-gateway">Adicionar Token</a>
+        <a href="#" class="btn-gateway">Ativar Gateway</a>
+      </div>
+    </div>
+
+    <!-- SYNCPAY -->
+    <div class="gateway-card animate-in">
+      <div class="g-header">
+        <img src="https://i.ibb.co/92D7Rss/sync.png" class="g-icon">
+        <div>
+          <h2>SyncPay V2</h2>
+          <span class="g-status">Método: API PIX</span>
+          <span class="g-tax">Taxa: 0,35 Centavos</span>
+        </div>
+      </div>
+
+      <div class="g-right">
+        <a href="#" class="btn-gateway">Adicionar Token</a>
+        <a href="#" class="btn-gateway">Ativar Gateway</a>
+      </div>
+    </div>
+
+    <!-- HOOPAY -->
+    <div class="gateway-card animate-in">
+      <div class="g-header">
+        <img src="https://i.ibb.co/hVJmVJX/hoopay.png" class="g-icon">
+        <div>
+          <h2>Hoopay</h2>
+          <span class="g-status">Método: API PIX</span>
+          <span class="g-tax">Taxa: 1.85%</span>
+        </div>
+      </div>
+
+      <div class="g-right">
+        <a href="#" class="btn-gateway">Adicionar Token</a>
+        <a href="#" class="btn-gateway">Ativar Gateway</a>
+      </div>
+    </div>
+
+    <!-- ZEROONE -->
+    <div class="gateway-card disabled animate-in">
+      <div class="g-header">
+        <img src="https://i.ibb.co/Jq4tCfw/zeroone.png" class="g-icon">
+        <div>
+          <h2>ZeroOnePay</h2>
+          <span class="g-status">Método: API PIX</span>
+          <span class="g-tax">Taxa: —</span>
+        </div>
+      </div>
+
+      <div class="g-right">
+        <span class="soon">Em breve</span>
+      </div>
+    </div>
+
+    <!-- HORSEPAY -->
+    <div class="gateway-card disabled animate-in">
+      <div class="g-header">
+        <img src="https://i.ibb.co/u17q4ZY/horse.png" class="g-icon">
+        <div>
+          <h2>HorsePay</h2>
+          <span class="g-status">Método: API PIX</span>
+          <span class="g-tax">Taxa: —</span>
+        </div>
+      </div>
+
+      <div class="g-right">
+        <span class="soon">Em breve</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MONITORAMENTO -->
+  <h2 class="monitor-title">Monitoramento de Status do Pix</h2>
+
+  <div class="pix-chart animate-in">
+    <canvas id="pixChart"></canvas>
+  </div>
 </main>
 
-<!-- Modal de Token -->
-<div id="tokenModal" class="modal hidden">
-  <div class="modal-content">
-    <h2 id="modalTitle">Gerenciar Token</h2>
-    <form id="tokenForm">
-      <div id="tokenFields"></div>
-      <div class="modal-actions">
-        <button type="button" class="btn glass cancel" onclick="closeTokenModal()">Cancelar</button>
-        <button type="submit" class="btn glass save">Salvar</button>
-      </div>
-    </form>
-  </div>
-</div>
+<!-- ESTILOS -->
+<style>
+  .gateways-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 20px;
+    transform: translateX(-32px);
+  }
 
+  .gateways-title {
+    color: #ffcc00;
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .gateways-sub {
+    color: #bdbdbd;
+    margin-bottom: 40px;
+  }
+
+  .gateways-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px;
+  }
+
+  .gateway-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,204,0,0.1);
+    padding: 26px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: .25s;
+  }
+
+  .gateway-card:hover {
+    border-color: rgba(255,204,0,0.25);
+    box-shadow: 0 0 20px rgba(255,204,0,0.12);
+  }
+
+  .gateway-card.disabled {
+    opacity: .55;
+    pointer-events: none;
+  }
+
+  .g-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .g-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+  }
+
+  .g-right .btn-gateway {
+    display: inline-block;
+    background: rgba(255,204,0,0.12);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: .9rem;
+    color: #ffcc00;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: .25s;
+  }
+
+  .g-right .btn-gateway:hover {
+    background: rgba(255,204,0,0.22);
+  }
+
+  .btn-gateway.disable {
+    background: rgba(255,60,60,0.12);
+    color: #ff6969;
+  }
+
+  .highlight {
+    border-color: rgba(255,204,0,0.35);
+    box-shadow: 0 0 24px rgba(255,204,0,0.18);
+  }
+
+  .soon {
+    color: #ffcc00;
+    opacity: .7;
+    font-weight: 600;
+  }
+
+  /* MONITOR */
+  .monitor-title {
+    margin-top: 60px;
+    margin-bottom: 16px;
+    color: #ffcc00;
+    font-size: 1.5rem;
+  }
+
+  .pix-chart {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,204,0,0.12);
+    border-radius: 14px;
+    padding: 20px;
+  }
+
+  /* ANIMAÇÃO SUAVE */
+  .animate-in {
+    opacity: 0;
+    transform: translateY(22px);
+    animation: fadeUp .55s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<!-- CHART -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-function toggleGateway(el){
-  const card = el.closest('.gateway-card');
-  const isActive = card.classList.contains('active');
-  if(isActive){
-    card.classList.remove('active');
-    el.innerText = 'Ativar Gateway';
-    el.classList.remove('on');
-    const status = card.querySelector('.status');
-    if(status) status.remove();
-  } else {
-    document.querySelectorAll('.gateway-card').forEach(c => {
-      c.classList.remove('active');
-      const s = c.querySelector('.status');
-      if(s) s.remove();
-      const btn = c.querySelector('.btn.toggle');
-      if(btn){ btn.classList.remove('on'); btn.innerText = 'Ativar Gateway'; }
-    });
-    card.classList.add('active');
-    el.innerText = 'Desativar';
-    el.classList.add('on');
-    const topLine = card.querySelector('.top-line');
-    const status = document.createElement('span');
-    status.className = 'status';
-    status.textContent = '● Ativo';
-    topLine.appendChild(status);
-  }
-}
-
-function openTokenModal(gateway){
-  const modal = document.getElementById('tokenModal');
-  const title = document.getElementById('modalTitle');
-  const fields = document.getElementById('tokenFields');
-  fields.innerHTML = '';
-
-  title.textContent = `Integração - ${gateway}`;
-
-  const configs = {
-    'WiinPay': ['Token API'],
-    'ParadisePag': ['Chave de API', 'Código do Produto'],
-    'OasyFy': ['Public Key', 'Secret Key'],
-    'PushinPay': ['API Token (Bearer)'],
-    'SyncPay V2': ['Client ID (pública)', 'Client Secret (privada)'],
-    'Hoopay': ['Client ID', 'Client Secret']
-  };
-
-  const campos = configs[gateway] || ['Token'];
-  campos.forEach(campo => {
-    const inputDiv = document.createElement('div');
-    inputDiv.className = 'field';
-    inputDiv.innerHTML = `
-      <label>${campo}</label>
-      <input type="text" placeholder="Insira ${campo.toLowerCase()}..." />
-    `;
-    fields.appendChild(inputDiv);
-  });
-
-  modal.classList.remove('hidden');
-  setTimeout(()=>modal.classList.add('visible'), 10);
-}
-
-/* ✅ Correção do bug da modal piscando */
-function closeTokenModal(){
-  const modal = document.getElementById('tokenModal');
-  modal.style.transition = "opacity 0.3s ease";
-  modal.style.opacity = "0";
-  setTimeout(() => {
-    modal.classList.add('hidden');
-    modal.classList.remove('visible');
-    modal.style.opacity = "";
-  }, 300);
-}
-
-/* =============================
-   Gráfico de status do PIX
-============================= */
-window.addEventListener("load", () => {
-  const ctx = document.getElementById('pixIssuesChart').getContext('2d');
-  const data = {
-    labels: ["04:00","07:00","10:00","13:00","16:00","19:00","22:00","01:00"],
-    datasets: [{
-      label: 'Problemas reportados',
-      data: [1,3,7,10,9,14,5,2],
-      fill: true,
-      backgroundColor: 'rgba(255, 204, 0, 0.25)',
-      borderColor: '#ffcc00',
-      borderWidth: 2,
-      tension: 0.35,
-      pointBackgroundColor: '#ffcc00'
-    }]
-  };
-
+  const ctx = document.getElementById('pixChart');
   new Chart(ctx, {
     type: 'line',
-    data,
+    data: {
+      labels: ['04:00','07:00','10:00','13:00','16:00','19:00','22:00','01:00'],
+      datasets: [{
+        label: '',
+        data: [1,2,4,7,6,12,4,1],
+        borderColor: '#ffcc00',
+        backgroundColor: 'rgba(255,204,0,0.15)',
+        tension: 0.4,
+        fill: true,
+        borderWidth: 2
+      }]
+    },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1a1a1a',
-          titleColor: '#ffcc00',
-          bodyColor: '#fff',
-          borderColor: 'rgba(255,204,0,0.2)',
-          borderWidth: 1
-        }
-      },
+      plugins: { legend: { display:false }},
       scales: {
-        x: {
-          ticks: { color: '#ccc', font: { size: 12 } },
-          grid: { color: 'rgba(255,255,255,0.05)' }
-        },
-        y: {
-          ticks: { color: '#ccc', font: { size: 12 } },
-          grid: { color: 'rgba(255,255,255,0.05)' }
-        }
+        x: { ticks: { color:'#aaa' }, grid:{ color:'rgba(255,255,255,0.06)' }},
+        y: { ticks: { color:'#aaa' }, grid:{ color:'rgba(255,255,255,0.06)' }}
       }
     }
   });
-});
 </script>
-
-<style>
-.api-pix header { width: 90%; margin: 40px auto 20px; }
-.api-pix h1 { color: #ffcc00; font-size: 1.8rem; margin-bottom: 6px; }
-.api-pix p { color: #b3b3b3; font-size: 1rem; margin: 0; }
-
-.gateway-grid {
-  width: 90%;
-  margin: 20px auto 60px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-  gap: 22px;
-}
-
-.gateway-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(18px);
-  border-radius: 16px;
-  padding: 26px 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  height: 140px;
-  transition: all .3s ease;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-}
-.gateway-card.active {
-  border-color: rgba(255, 204, 0, 0.5);
-  outline: 2px solid rgba(255, 204, 0, 0.35);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.left { display: flex; align-items: center; gap: 18px; }
-.gateway-logo {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.logo-placeholder {
-  width: 48px; height: 48px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 10px;
-}
-.gateway-info {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 3px;
-}
-
-.badge {
-  position: absolute;
-  top: -24px;
-  left: 0;
-  background: linear-gradient(90deg, #ffcc00, #ff9900);
-  color: #000;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(255, 204, 0, 0.25);
-  overflow: hidden;
-}
-.badge::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, rgba(255, 204, 0, 0.5) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 204, 0, 0.5) 100%);
-  animation: fireFlow 2.8s linear infinite;
-  filter: blur(3px);
-  opacity: 0.6;
-}
-@keyframes fireFlow {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-.badge::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 6px;
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6),
-              0 0 20px rgba(255, 153, 0, 0.4);
-  animation: flicker 1.6s ease-in-out infinite alternate;
-  opacity: 0.7;
-}
-@keyframes flicker { 0% { opacity: 0.7; } 100% { opacity: 1; } }
-
-.top-line { display: flex; align-items: center; gap: 6px; }
-.status {
-  font-size: 0.7rem;
-  color: #ffcc00;
-  background: rgba(255,204,0,0.08);
-  border: 1px solid rgba(255,204,0,0.25);
-  padding: 1px 6px;
-  border-radius: 5px;
-}
-.method { font-size: 0.85rem; color: #aaa; }
-.taxa { color: #ffcc00; font-size: 0.85rem; text-decoration: none; }
-
-.right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
-.btn.glass {
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.06);
-  color: #ffcc00;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-weight: 500;
-  font-size: 0.85rem;
-  cursor: pointer;
-  backdrop-filter: blur(16px);
-  transition: all .25s ease;
-  width: 160px;
-}
-.btn.glass:hover {
-  background: rgba(255,204,0,0.08);
-  box-shadow: 0 0 10px rgba(255,204,0,0.2);
-  transform: scale(1.03);
-}
-.btn.glass.on {
-  background: rgba(255,204,0,0.12);
-  color: #fff;
-  border-color: rgba(255,204,0,0.5);
-}
-
-/* 🔥 gráfico */
-.pix-status {
-  width: 100%;
-  max-width: 96%;
-  margin: 60px auto 80px;
-  color: #ffcc00;
-}
-.pix-status h2 {
-  font-size: 1.4rem;
-  margin-bottom: 16px;
-  text-shadow: 0 0 10px rgba(255,204,0,0.3);
-}
-.chart-wrapper {
-  width: 100%;
-  height: 420px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 14px;
-  padding: 20px 10px;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 0 20px rgba(255,204,0,0.08);
-}
-#pixIssuesChart { width: 100%; height: 100%; display: block; }
-
-/* modal */
-.modal.hidden {
-  display: none;
-}
-.modal.visible {
-  display: flex;
-  opacity: 1;
-}
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(10px);
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  transition: opacity .3s ease;
-  opacity: 0; /* garante fade suave */
-}
-.modal-content {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
-  padding: 28px;
-  width: 400px;
-  box-shadow: 0 0 25px rgba(255,204,0,0.15);
-  animation: fadeIn .3s ease;
-}
-.modal-content h2 {
-  margin-top: 0;
-  color: #ffcc00;
-  font-size: 1.2rem;
-  text-align: center;
-}
-.field { margin: 12px 0; display: flex; flex-direction: column; }
-.field label { font-size: 0.85rem; color: #ccc; margin-bottom: 4px; }
-.field input {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 8px;
-  padding: 8px 10px;
-  color: #fff;
-}
-.modal-actions { margin-top: 16px; display: flex; justify-content: space-between; }
-.btn.cancel { color: #bbb; }
-.btn.save {
-  background: rgba(255,204,0,0.1);
-  border-color: rgba(255,204,0,0.4);
-  color: #ffcc00;
-}
-
-/* 🔥 Fade rápido e fluido — sem blur, sem deslocamento */
-@keyframes pageFadeQuick {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-body,
-main,
-.tiger-dashboard,
-.tiger-offers,
-.journey,
-.api-pix,
-.offers-page {
-  animation: pageFadeQuick .25s ease-in forwards;
-  will-change: opacity;
-}
-
-</style>
