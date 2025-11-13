@@ -38,7 +38,7 @@
       background-color: #050505;
     }
 
-    /* Mata possíveis toggles de tema vindo de outros arquivos */
+    /* Remove quaisquer toggles de tema */
     .theme-toggle,
     #themeToggle,
     #theme-toggle,
@@ -64,7 +64,6 @@
       z-index: 10;
     }
 
-    /* LOGO — só texto + marca circular */
     .sidebar-header {
       padding: 26px 22px 18px;
       display: flex;
@@ -72,23 +71,18 @@
       gap: 12px;
     }
 
+    /* ⭐ NOVO LOGO SVG DO TIGRE */
     .logo-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 2px solid #ffcc00;
+      width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 10px rgba(255, 204, 0, 0.25);
     }
 
-    .logo-mark::before {
-      content: "";
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 204, 0, 0.8);
+    .logo-mark svg {
+      width: 42px;
+      height: 42px;
     }
 
     .brand-name {
@@ -99,6 +93,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
 
     /* MENU */
     .menu {
@@ -167,7 +162,7 @@
     }
 
     /* =======================
-       LOGOUT NO RODAPÉ
+       LOGOUT
     ======================= */
     .menu-bottom {
       margin-top: auto;
@@ -215,7 +210,7 @@
     }
 
     /* =======================
-       LOADER NO TOPO DIREITO
+       LOADER
     ======================= */
     #loaderBox {
       position: fixed;
@@ -245,34 +240,31 @@
 </head>
 
 <body>
-  <!-- LOADER (no lugar do antigo tema) -->
+  <!-- LOADER -->
   <div id="loaderBox">Processando…</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const loader = document.getElementById("loaderBox");
 
-    // Mostrar imediatamente como "Processando…"
+    // Mostrar imediatamente
     loader.style.display = "block";
     loader.textContent = "Processando…";
     loader.classList.remove("success");
 
-    // Força aparecer antes da troca
     requestAnimationFrame(() => {
       loader.style.opacity = "1";
 
-      // Agora sim — aguarda para mostrar "Concluído!"
       setTimeout(() => {
         loader.textContent = "Concluído!";
         loader.classList.add("success");
 
-        // Some suavemente
         setTimeout(() => {
           loader.style.opacity = "0";
           setTimeout(() => loader.style.display = "none", 300);
         }, 900);
 
-      }, 900); // tempo real mostrando "Processando…"
+      }, 900);
     });
   });
 </script>
@@ -280,7 +272,19 @@
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="logo-mark"></div>
+
+      <!-- ⭐ SVG DO TIGRE -->
+      <div class="logo-mark">
+        <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="29" cy="29" r="27" stroke="#FFCC00" stroke-width="3"/>
+          <path d="M20.5 34C20.5 28 24 23 29 23C34 23 37.5 28 37.5 34" stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
+          <path d="M23 28C23 26 24.5 24.5 26.5 24.5" stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
+          <path d="M35 28C35 26 33.5 24.5 31.5 24.5" stroke="#FFCC00" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="25.5" cy="31.5" r="1.5" fill="#FFCC00"/>
+          <circle cx="32.5" cy="31.5" r="1.5" fill="#FFCC00"/>
+        </svg>
+      </div>
+
       <div class="brand-name">TigerFy</div>
     </div>
 
@@ -316,7 +320,7 @@
       </a>
 
       <a href="/conquistas" class="<%= active === 'conquistas' ? 'active' : '' %>">
-        <!-- troféu estilo iOS mais clean -->
+        <!-- troféu estilo iOS -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path d="M8 4h8v3a4 4 0 01-4 4 4 4 0 01-4-4V4z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
           <path d="M6 4h12" stroke-width="1.8" stroke-linecap="round" />
@@ -349,5 +353,6 @@
   <main class="main-content">
     <%- body %>
   </main>
+
 </body>
 </html>
