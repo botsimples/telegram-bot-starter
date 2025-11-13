@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+
+<style>
+  /* DEBUG COMPLETO PARA REVELAR O BLOQUEADOR */
+  * {
+    outline: 1px solid rgba(255, 0, 0, 0.20) !important;
+  }
+
+  /* tudo que tem position fixa ou absoluta */
+  *[style*="position: fixed"],
+  *[style*="position: absolute"],
+  .fixed,
+  .absolute {
+    outline: 2px solid red !important;
+    background: rgba(255,0,0,0.05) !important;
+  }
+</style>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %> | TigerFy</title>
