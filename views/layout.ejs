@@ -168,13 +168,6 @@
       animation: fadeIn 0.25s ease-out;
     }
 
-    /* quando não tiver sidebar (login/register) */
-    .no-sidebar {
-      margin-left: 0 !important;
-      width: 100% !important;
-      padding: 0 !important;
-    }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -188,10 +181,13 @@
 <body>
   <div id="loaderBox"></div>
 
-  <% if (userId) { %>
+  <!-- fundo com pontinhos dourados / partículas -->
+  <%- include('partials/visual_hottrack') %>
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
+
       <div class="logo-mark">
         <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="29" cy="29" r="27" stroke="#FFCC00" stroke-width="3"/>
@@ -281,9 +277,8 @@
       </a>
     </div>
   </aside>
-  <% } %>
 
-  <main class="main-content <%= userId ? '' : 'no-sidebar' %>">
+  <main class="main-content">
     <%- body %>
   </main>
 </body>
